@@ -19,6 +19,9 @@ namespace QBuild
 
         [SerializeField] private Vector3Int _blockSpawnPosition;
 
+        [SerializeField] private BlockGenerator _planeBlockGenerator;
+        [SerializeField] private GameObject _floorParent;
+
         [SerializeField] private GameObject _blockPrefab;
         [SerializeField] private GameObject _blocksParent;
         private int generatorCounter = 0;
@@ -40,6 +43,20 @@ namespace QBuild
 
         private void Start()
         {
+            for (int x = 0; x < 10; x++)
+            {
+                for (int z = 0; z < 10; z++)
+                {
+                    var position = new Vector3Int(x, 0, z);
+                    var blockGameObject = Instantiate(_blockPrefab, position, Quaternion.identity,
+                        _blocksParent.transform);
+
+                    if (!blockGameObject.TryGetComponent(out Block block)) continue;
+                    block.GenerateBlock(_planeBlockGenerator, position);
+                    blockGameObject.name = $"plate {position}";
+                    _blocks.Add(block);
+                }
+            }
         }
 
         private void Update()
@@ -71,14 +88,14 @@ namespace QBuild
             CreatePolymino();
         }
 #if UNITY_EDITOR
-        
+
         [Button]
         private void CreateStart()
         {
             if (!EditorApplication.isPlaying) return;
             CreatePolymino();
         }
-        
+
 #endif
         [Button]
         private void CreatePolymino()
