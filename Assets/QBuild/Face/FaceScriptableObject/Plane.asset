@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: Plane
   m_EditorClassIdentifier: 
   type: Plane
-  facePrefab: {fileID: 1341231482613275763, guid: db3ec35f571e60b45845a21312229a8a, type: 3}
+  facePrefab: {fileID: 1341231482613275763, guid: db3ec35f571e60b45845a21312229a8a,
+    type: 3}
+  maxLoaded: 40

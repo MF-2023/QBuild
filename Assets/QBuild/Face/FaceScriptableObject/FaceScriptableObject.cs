@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace QBuild.Face
+namespace QBuild
 {
     
     [CreateAssetMenu(fileName = "FaceScriptable", menuName = "Tools/QBuild/Face", order = 0)]
@@ -9,10 +9,16 @@ namespace QBuild.Face
     {
         [SerializeField] private string type;
         [SerializeField] private GameObject facePrefab;
+        [FormerlySerializedAs("maxLoaded")] [SerializeField] private float stability; 
 
         public GameObject GetFace()
         {
             return facePrefab;
+        }
+
+        public Face MakeFace()
+        {
+            return new Face(type,stability);
         }
     }
 }
