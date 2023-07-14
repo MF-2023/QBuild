@@ -956,8 +956,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: 0.35355338, y: -0.35355338, z: 0.1464466, w: 0.8535535}
+  m_LocalPosition: {x: 14, y: 16, z: -6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1252,7 +1252,7 @@ MonoBehaviour:
   _polyminoGenerators: []
   _polyminoGeneratorList: {fileID: 11400000, guid: 3819ee5dcf5ea0e469515d4fca439cf1,
     type: 2}
-  _blockSpawnPosition: {x: 0, y: 10, z: 0}
+  _blockSpawnPosition: {x: 5, y: 10, z: 5}
   _planeBlockGenerator: {fileID: 11400000, guid: 818e8284dba62b0449643b3a4536ddea,
     type: 2}
   _floorParent: {fileID: 1877186177}
@@ -2632,3 +2632,4 @@ MonoBehaviour:
       type: 
       maxLoaded: 0
   _gridPosition: {x: 0, y: 0, z: 0}
+  isFalling: 1

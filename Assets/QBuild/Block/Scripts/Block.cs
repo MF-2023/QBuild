@@ -27,7 +27,7 @@ namespace QBuild
 
         [SerializeField] private Vector3Int _gridPosition;
 
-        private bool isFalling = true;
+        [SerializeField] private bool isFalling = true;
 
         private static BlockManager _blockManager;
 
@@ -44,10 +44,15 @@ namespace QBuild
             _blockManager.UpdateBlock(this);
         }
 
-        public void MoveNext()
+        public bool CanMove(Vector3Int move)
+        {
+            return _blockManager.CanPlace(_gridPosition + move);
+        }
+        
+        public void MoveNext(Vector3Int move)
         {
             var before = _gridPosition;
-            _gridPosition.y -= 1;
+            _gridPosition += move;
             transform.localPosition = _gridPosition;
             _blockManager.UpdateBlock(this, before);
         }
@@ -61,6 +66,7 @@ namespace QBuild
         public void OnBlockPlaced()
         {
             isFalling = false;
+            Debug.Log("Place");
         }
 
         public bool IsFalling()

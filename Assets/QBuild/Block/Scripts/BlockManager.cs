@@ -9,6 +9,7 @@ using UnityEditor;
 #endif
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 namespace QBuild
 {
@@ -32,18 +33,22 @@ namespace QBuild
 
         private List<Block> _blockTable;
 
-        private List<Block> fallsBlock = new List<Block>();
+        private List<Polyomino> fallsMino = new List<Polyomino>();
         [SerializeField] private UnityEvent _onBlockPlacedEvent;
         private float tick = 0;
 
         [SerializeField] private Vector3Int _maxArea;
+
 
         private void Awake()
         {
             BlockManagerBind.Init(this);
             generatorCounter = 0;
             _onBlockPlacedEvent.AddListener(this.OnBlockPlaced);
+
             Block.Init(this);
+            Polyomino.Init(this);
+
             var capacity = _maxArea.x * _maxArea.y * _maxArea.z;
 
             _blockTable = new List<Block>(capacity);
@@ -72,7 +77,40 @@ namespace QBuild
 
         private void Update()
         {
+            InputUpdate();
             TickUpdate();
+        }
+
+        private void InputUpdate()
+        {
+            var key = Keyboard.current;
+            Vector3Int move = Vector3Int.zero;
+            if (key.aKey.wasPressedThisFrame)
+            {
+                move += new Vector3Int(-1, 0, 0);
+            }
+
+            if (key.sKey.wasPressedThisFrame)
+            {
+                move += new Vector3Int(0, 0, -1);
+            }
+
+            if (key.dKey.wasPressedThisFrame)
+            {
+                move += new Vector3Int(1, 0, 0);
+            }
+
+            if (key.wKey.wasPressedThisFrame)
+            {
+                move += new Vector3Int(0, 0, 1);
+            }
+
+            if (move == Vector3Int.zero) return;
+
+            foreach (var mino in fallsMino)
+            {
+                mino.MoveNext(move);
+            }
         }
 
         private void TickUpdate()
@@ -81,36 +119,21 @@ namespace QBuild
 
             if (tick < 1) return;
             tick = 0;
-            var dirs = new Vector3Int[]
-            {
-                new Vector3Int(1, 0, 0),
-                new Vector3Int(-1, 0, 0),
-                new Vector3Int(0, 0, 1),
-                new Vector3Int(0, 0, -1),
-                new Vector3Int(0, -1, 0)
-            };
-            var stoppedBlocks = new List<Block>();
-            foreach (var block in fallsBlock)
-            {
-                block.MoveNext();
 
-                foreach (var pos in dirs.Select(x => x + block.GetGridPosition()))
+            var stoppedBlocks = new List<Polyomino>();
+            foreach (var mino in fallsMino)
+            {
+                mino.MoveNext(0, -1, 0);
+                if (!mino.isFalling)
                 {
-                    if (!TryGetBlock(pos, out var dirBlock)) continue;
-                    if (!dirBlock.IsFalling())
-                    {
-                        stoppedBlocks.Add(block);
-                    }
+                    stoppedBlocks.Add(mino);
                 }
             }
 
-            foreach (var block in stoppedBlocks)
-            {
-                block.OnBlockPlaced();
-                fallsBlock.Remove(block);
-            }
+            stoppedBlocks.ForEach(x => fallsMino.Remove(x));
 
-            if (stoppedBlocks.Count > 0 && fallsBlock.Count == 0)
+
+            if (stoppedBlocks.Count > 0 && fallsMino.Count == 0)
             {
                 OnBlockPlaced();
             }
@@ -118,11 +141,20 @@ namespace QBuild
 
         private void OnBlockPlaced()
         {
-            fallsBlock.Clear();
+            fallsMino.Clear();
             StartCoroutine(DelayCreatePolymino());
         }
 
-        private bool TryGetBlock(Vector3Int position, out Block block)
+        public bool CanPlace(Vector3Int position)
+        {
+            if (position.x >= _maxArea.x || position.x < 0) return false;
+            if (position.y >= _maxArea.y || position.y < 0) return false;
+            if (position.z >= _maxArea.z || position.z < 0) return false;
+            
+            return true;
+        }
+
+        public bool TryGetBlock(Vector3Int position, out Block block)
         {
             var index = CalcVector3ToIndex(position);
             if (index < 0 || index >= _blockTable.Count)
@@ -182,9 +214,9 @@ namespace QBuild
                 blockGameObject.name = $"Block {position}";
                 polyomino.AddBlock(block);
                 _blocks.Add(block);
-                fallsBlock.Add(block);
             }
 
+            fallsMino.Add(polyomino);
             _polyominos.Add(polyomino);
 
             generatorCounter++;
