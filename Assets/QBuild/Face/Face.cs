@@ -1,14 +1,19 @@
 ﻿using System;
 using UnityEngine;
 
-namespace QBuild.Face
+namespace QBuild
 {
     
     [Serializable]
     public struct Face
     {
-        [SerializeField] private FaceScriptableObject faceObject;
-        [SerializeField] private int loaded;
+        [SerializeField] private string type;
+        [SerializeField] private float maxLoaded;
 
+        public Face(string type, float maxLoaded)
+        {
+            this.type = type;
+            this.maxLoaded = maxLoaded;
+        }
     }
 }
