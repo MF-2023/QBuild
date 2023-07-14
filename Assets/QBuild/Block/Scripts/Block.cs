@@ -24,28 +24,50 @@ namespace QBuild
         [SerializeField] private BlockGenerator blockScriptableObjects;
 
         [SerializeField] private Faces faces;
-        
+
         [SerializeField] private Vector3Int _gridPosition;
 
+        private bool isFalling = true;
+
         private static BlockManager _blockManager;
+
         public static void Init(BlockManager manager)
         {
             _blockManager = manager;
         }
-        public void GenerateBlock(BlockGenerator generator,Vector3Int pos)
+
+        public void GenerateBlock(BlockGenerator generator, Vector3Int pos)
         {
             blockScriptableObjects = generator;
             _gridPosition = pos;
             GenerateBlock();
+            _blockManager.UpdateBlock(this);
         }
 
         public void MoveNext()
         {
+            var before = _gridPosition;
             _gridPosition.y -= 1;
             transform.localPosition = _gridPosition;
+            _blockManager.UpdateBlock(this, before);
         }
-        
-        
+
+        public Vector3Int GetGridPosition()
+        {
+            return _gridPosition;
+        }
+
+
+        public void OnBlockPlaced()
+        {
+            isFalling = false;
+        }
+
+        public bool IsFalling()
+        {
+            return isFalling;
+        }
+
         [Button]
         private void GenerateBlock()
         {

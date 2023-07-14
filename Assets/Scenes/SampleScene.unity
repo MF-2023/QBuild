@@ -1264,6 +1264,7 @@ MonoBehaviour:
   _onBlockPlacedEvent:
     m_PersistentCalls:
       m_Calls: []
+  _maxArea: {x: 10, y: 20, z: 10}
 --- !u!4 &731420310
 Transform:
   m_ObjectHideFlags: 0
