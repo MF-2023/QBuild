@@ -41,7 +41,6 @@ namespace QBuild
             };
             var shouldMove = _blocks.All(block => block.CanMove(move));
 
-            
 
             foreach (var block in _blocks)
             {
@@ -68,8 +67,44 @@ namespace QBuild
                 block.OnBlockPlaced();
             }
 
-            
+
             isFalling = false;
+        }
+
+        public List<Vector3Int> GetProvisionalPlacePosition()
+        {
+            var dirs = new Vector3Int[]
+            {
+                new Vector3Int(1, 0, 0),
+                new Vector3Int(-1, 0, 0),
+                new Vector3Int(0, 0, 1),
+                new Vector3Int(0, 0, -1),
+                new Vector3Int(0, -1, 0)
+            };
+
+            int checkRowMin = int.MinValue;
+
+            foreach (var block in _blocks)
+            {
+                var empty = false;
+                var checkRow = 0;
+                do
+                {
+                    var blockPos = block.GetGridPosition() + new Vector3Int(0, checkRow, 0);
+                    foreach (var pos in dirs.Select(x => x + blockPos))
+                    {
+                        if (!_blockManager.TryGetBlock(pos, out var dirBlock)) continue;
+                        if (dirBlock.IsFalling()) continue;
+                        if (checkRowMin < checkRow) checkRowMin = checkRow;
+                        empty = true;
+                        break;
+                    }
+
+                    checkRow--;
+                } while (!empty);
+            }
+
+            return _blocks.Select(block => block.GetGridPosition() + new Vector3Int(0, checkRowMin, 0)).ToList();
         }
     }
 }

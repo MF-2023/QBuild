@@ -39,6 +39,8 @@ namespace QBuild
 
         [SerializeField] private Vector3Int _maxArea;
 
+        [SerializeField] private GameObject _plannedSitePrefab;
+        private List<GameObject> _plannedSites = new List<GameObject>();
 
         private void Awake()
         {
@@ -58,9 +60,9 @@ namespace QBuild
 
         private void Start()
         {
-            for (int x = 0; x < 10; x++)
+            for (var x = 0; x < 10; x++)
             {
-                for (int z = 0; z < 10; z++)
+                for (var z = 0; z < 10; z++)
                 {
                     var position = new Vector3Int(x, 0, z);
                     var blockGameObject = Instantiate(_blockPrefab, position, Quaternion.identity,
@@ -107,10 +109,7 @@ namespace QBuild
 
             if (move == Vector3Int.zero) return;
 
-            foreach (var mino in fallsMino)
-            {
-                mino.MoveNext(move);
-            }
+            FallMinoUpdate(move);
         }
 
         private void TickUpdate()
@@ -120,10 +119,16 @@ namespace QBuild
             if (tick < 1) return;
             tick = 0;
 
+            FallMinoUpdate(new Vector3Int(0, -1, 0));
+        }
+
+
+        private void FallMinoUpdate(Vector3Int move)
+        {
             var stoppedBlocks = new List<Polyomino>();
             foreach (var mino in fallsMino)
             {
-                mino.MoveNext(0, -1, 0);
+                mino.MoveNext(move);
                 if (!mino.isFalling)
                 {
                     stoppedBlocks.Add(mino);
@@ -136,6 +141,29 @@ namespace QBuild
             if (stoppedBlocks.Count > 0 && fallsMino.Count == 0)
             {
                 OnBlockPlaced();
+            }
+            else
+            {
+                ProvisionalBlockUpdate();
+            }
+        }
+
+        private void ProvisionalBlockUpdate()
+        {
+            foreach (var obj in _plannedSites)
+            {
+                Destroy(obj);
+            }
+            _plannedSites.Clear();
+
+            foreach (var mino in fallsMino)
+            {
+                var positions = mino.GetProvisionalPlacePosition();
+
+                foreach (var plannedSite in positions.Select(pos => Instantiate(_plannedSitePrefab, pos, Quaternion.identity, _blocksParent.transform)))
+                {
+                    _plannedSites.Add(plannedSite);
+                }
             }
         }
 
@@ -150,7 +178,7 @@ namespace QBuild
             if (position.x >= _maxArea.x || position.x < 0) return false;
             if (position.y >= _maxArea.y || position.y < 0) return false;
             if (position.z >= _maxArea.z || position.z < 0) return false;
-            
+
             return true;
         }
 
