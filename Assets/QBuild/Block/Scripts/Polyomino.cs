@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -105,6 +106,11 @@ namespace QBuild
             }
 
             return _blocks.Select(block => block.GetGridPosition() + new Vector3Int(0, checkRowMin, 0)).ToList();
+        }
+
+        public IReadOnlyList<Block> GetBlocks()
+        {
+            return _blocks;
         }
     }
 }

@@ -33,18 +33,19 @@ namespace QBuild
 
         private List<Block> _blockTable;
 
-        private List<Polyomino> fallsMino = new List<Polyomino>();
+        [SerializeField] private List<Polyomino> fallsMino = new List<Polyomino>();
         [SerializeField] private UnityEvent _onBlockPlacedEvent;
         private float tick = 0;
 
         [SerializeField] private Vector3Int _maxArea;
 
         [SerializeField] private GameObject _plannedSitePrefab;
-        private List<GameObject> _plannedSites = new List<GameObject>();
-
+        private List<GameObject> plannedSites = new List<GameObject>();
+        [SerializeField] private StabilityCalculator stabilityCalculator = new StabilityCalculator();
         private void Awake()
         {
             BlockManagerBind.Init(this);
+            stabilityCalculator.Init(this);
             generatorCounter = 0;
             _onBlockPlacedEvent.AddListener(this.OnBlockPlaced);
 
@@ -135,10 +136,7 @@ namespace QBuild
                 }
             }
 
-            stoppedBlocks.ForEach(x => fallsMino.Remove(x));
-
-
-            if (stoppedBlocks.Count > 0 && fallsMino.Count == 0)
+            if (fallsMino.Count != 0 && stoppedBlocks.Count == fallsMino.Count)
             {
                 OnBlockPlaced();
             }
@@ -150,11 +148,11 @@ namespace QBuild
 
         private void ProvisionalBlockUpdate()
         {
-            foreach (var obj in _plannedSites)
+            foreach (var obj in plannedSites)
             {
                 Destroy(obj);
             }
-            _plannedSites.Clear();
+            plannedSites.Clear();
 
             foreach (var mino in fallsMino)
             {
@@ -162,13 +160,14 @@ namespace QBuild
 
                 foreach (var plannedSite in positions.Select(pos => Instantiate(_plannedSitePrefab, pos, Quaternion.identity, _blocksParent.transform)))
                 {
-                    _plannedSites.Add(plannedSite);
+                    plannedSites.Add(plannedSite);
                 }
             }
         }
 
         private void OnBlockPlaced()
         {
+            stabilityCalculator.RegisterMino(fallsMino[0]);
             fallsMino.Clear();
             StartCoroutine(DelayCreatePolymino());
         }
@@ -253,7 +252,9 @@ namespace QBuild
 
         public void UpdateBlock(Block block)
         {
-            _blockTable[CalcVector3ToIndex(block.GetGridPosition())] = block;
+            var index = CalcVector3ToIndex(block.GetGridPosition());
+            _blockTable[index] = block;
+            
         }
 
         public void UpdateBlock(Block block, Vector3Int beforePosition)

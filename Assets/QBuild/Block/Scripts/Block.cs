@@ -28,6 +28,9 @@ namespace QBuild
         [SerializeField] private Vector3Int _gridPosition;
 
         [SerializeField] private bool isFalling = true;
+        
+        [SerializeField] private float stability = 0;
+        [SerializeField] private float mass = 1;
 
         private static BlockManager _blockManager;
 
@@ -69,11 +72,43 @@ namespace QBuild
             Debug.Log("Place");
         }
 
+        public void GlueBlock(BlockFace blockFace,Block block)
+        {
+            switch (blockFace)
+            {
+                case BlockFace.Top:
+                    faces.top.SetGlueBlock(block);
+                    break;
+                case BlockFace.Bottom:
+                    faces.bottom.SetGlueBlock(block);
+                    break;
+                case BlockFace.West:
+                    faces.left.SetGlueBlock(block);
+                    break;
+                case BlockFace.East:
+                    faces.right.SetGlueBlock(block);
+                    break;
+                case BlockFace.South:
+                    faces.center.SetGlueBlock(block);
+                    break;
+                case BlockFace.North:
+                    faces.back.SetGlueBlock(block);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(blockFace), blockFace, null);
+            }
+        }
+        
         public bool IsFalling()
         {
             return isFalling;
         }
 
+        public float GetStability()
+        {
+            return stability;
+        }
+        
         [Button]
         private void GenerateBlock()
         {
@@ -91,6 +126,7 @@ namespace QBuild
                 return face.MakeFace();
             }
 
+            stability = 40;
             faces.top = FaceGenerate(blockScriptableObjects.top, Vector3.up / 2, Quaternion.identity);
             faces.bottom = FaceGenerate(blockScriptableObjects.bottom, Vector3.down / 2, Quaternion.Euler(180, 0, 0));
 
@@ -99,6 +135,11 @@ namespace QBuild
 
             faces.center = FaceGenerate(blockScriptableObjects.center, Vector3.forward / 2, Quaternion.Euler(90, 0, 0));
             faces.back = FaceGenerate(blockScriptableObjects.back, Vector3.back / 2, Quaternion.Euler(-90, 0, 0));
+        }
+
+        public float GetMass()
+        {
+            return mass;
         }
     }
 }
