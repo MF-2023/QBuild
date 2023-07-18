@@ -167,20 +167,23 @@ namespace QBuild
 
         private void OnBlockPlaced()
         {
+            HashSet<Vector3Int> removeBlocks = new HashSet<Vector3Int>();
             foreach (var block in fallsMino[0].GetBlocks())
             {
                 var list = stabilityCalculator.CalcPhysicsStabilityToFall(block.GetGridPosition(),32,out var stability);
 
-                if (list.Any())
+                if (!list.Any()) continue;
+                Debug.Log($"list:{list.Count} stability:{stability}");
+                foreach (var pos in list)
                 {
-                    Debug.Log($"list:{list.Count} stability:{stability}");
-                    foreach (var pos in list)
-                    {
-                        Debug.Log($"pos:{pos}");
-                        TryGetBlock(pos, out var fallBlock);
-                        RemoveBlock(fallBlock);
-                    }
+                    Debug.Log($"pos:{pos}");
+                    removeBlocks.Add(pos);
                 }
+            }
+            foreach (var removeBlockPosition in removeBlocks)
+            {
+                TryGetBlock(removeBlockPosition, out var fallBlock);
+                RemoveBlock(fallBlock);
             }
             fallsMino.Clear();
             StartCoroutine(DelayCreatePolymino());
