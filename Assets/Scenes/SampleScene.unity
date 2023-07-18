@@ -547,12 +547,15 @@ MonoBehaviour:
   _blocksParent: {fileID: 731420308}
   _blocks: []
   _polyominos: []
+  fallsMino: []
   _onBlockPlacedEvent:
     m_PersistentCalls:
       m_Calls: []
   _maxArea: {x: 10, y: 20, z: 10}
   _plannedSitePrefab: {fileID: 234447182654292897, guid: 60e09dbfaf193e94796734646fe3004e,
     type: 3}
+  stabilityCalculator:
+    nodes: []
 --- !u!4 &731420310
 Transform:
   m_ObjectHideFlags: 0

@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: Convex
   m_EditorClassIdentifier: 
   type: Convex
-  facePrefab: {fileID: 5114599319013716350, guid: b99300a3527b3134fa0c6c79b01f9597, type: 3}
+  facePrefab: {fileID: 5114599319013716350, guid: b99300a3527b3134fa0c6c79b01f9597,
+    type: 3}
+  stability: 10

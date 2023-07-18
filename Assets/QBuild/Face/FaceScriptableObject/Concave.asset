@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: Concave
   m_EditorClassIdentifier: 
   type: Concave
-  facePrefab: {fileID: 2078916131801785398, guid: 7c89985a0de01d24eb1f9e9503ec3848, type: 3}
+  facePrefab: {fileID: 2078916131801785398, guid: 7c89985a0de01d24eb1f9e9503ec3848,
+    type: 3}
+  stability: 10

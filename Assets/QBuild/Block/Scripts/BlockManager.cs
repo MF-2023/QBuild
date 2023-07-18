@@ -117,7 +117,7 @@ namespace QBuild
         {
             tick += Time.deltaTime;
 
-            if (tick < 1) return;
+            if (tick < 0.8f) return;
             tick = 0;
 
             FallMinoUpdate(new Vector3Int(0, -1, 0));
@@ -167,7 +167,21 @@ namespace QBuild
 
         private void OnBlockPlaced()
         {
-            stabilityCalculator.RegisterMino(fallsMino[0]);
+            foreach (var block in fallsMino[0].GetBlocks())
+            {
+                var list = stabilityCalculator.CalcPhysicsStabilityToFall(block.GetGridPosition(),32,out var stability);
+
+                if (list.Any())
+                {
+                    Debug.Log($"list:{list.Count} stability:{stability}");
+                    foreach (var pos in list)
+                    {
+                        Debug.Log($"pos:{pos}");
+                        TryGetBlock(pos, out var fallBlock);
+                        RemoveBlock(fallBlock);
+                    }
+                }
+            }
             fallsMino.Clear();
             StartCoroutine(DelayCreatePolymino());
         }
@@ -196,7 +210,7 @@ namespace QBuild
 
         private IEnumerator DelayCreatePolymino()
         {
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(0.5f);
             CreatePolymino();
         }
 
@@ -261,6 +275,13 @@ namespace QBuild
         {
             _blockTable[CalcVector3ToIndex(beforePosition)] = null;
             _blockTable[CalcVector3ToIndex(block.GetGridPosition())] = block;
+        }
+
+        public void RemoveBlock(Block block)
+        {
+            _blockTable[CalcVector3ToIndex(block.GetGridPosition())] = null;
+            _blocks.Remove(block);
+            Destroy(block.gameObject);
         }
 
         [Button]

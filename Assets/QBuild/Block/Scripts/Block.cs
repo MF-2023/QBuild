@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using SherbetInspector.Core.Attributes;
 using UnityEditor;
@@ -29,7 +30,8 @@ namespace QBuild
 
         [SerializeField] private bool isFalling = true;
         
-        [SerializeField] private float stability = 0;
+        [SerializeField] private float stabilityGlue = 0;
+        [SerializeField] private float stability= 0;
         [SerializeField] private float mass = 1;
 
         private static BlockManager _blockManager;
@@ -58,6 +60,7 @@ namespace QBuild
             _gridPosition += move;
             transform.localPosition = _gridPosition;
             _blockManager.UpdateBlock(this, before);
+            name = $"Block_{_gridPosition}";
         }
 
         public Vector3Int GetGridPosition()
@@ -69,6 +72,50 @@ namespace QBuild
         public void OnBlockPlaced()
         {
             isFalling = false;
+            
+            float num = 0;
+            List<Vector3Int> HORIZONTAL_DIRECTIONS = new List<Vector3Int>()
+            {
+                Vector3Int.forward,
+                Vector3Int.back,
+                Vector3Int.left,
+                Vector3Int.right
+            };
+            foreach (var t in HORIZONTAL_DIRECTIONS)
+            {
+                if (_blockManager.TryGetBlock(_gridPosition + t, out var block))
+                {
+                    num = Math.Max(block.GetStability(), num);
+                }
+            }
+            num--;
+            
+            float stabilityUp = 0;
+            float stabilityDown = 0;
+            
+            if (_blockManager.TryGetBlock(_gridPosition + Vector3Int.up, out var topBlock))
+            {
+                stabilityUp = topBlock.GetStability();
+            }
+            if (_blockManager.TryGetBlock(_gridPosition + Vector3Int.down, out var downBlock))
+            {
+                stabilityDown = downBlock.GetStability();
+            }
+            if (stabilityDown != 10)
+            {
+                stabilityDown--;
+            }
+
+            stabilityUp--;
+            
+            
+            float val = Math.Max(stabilityUp, stabilityDown);
+            float num6 = Math.Max(Math.Min(Math.Max(num, val), 10), 0);
+            if (GetGridPosition().y == 0)
+            {
+                num6 = 10;
+            }
+            stability = num6;
             Debug.Log("Place");
         }
 
@@ -104,6 +151,11 @@ namespace QBuild
             return isFalling;
         }
 
+        public float GetStabilityGlue()
+        {
+            return stabilityGlue;
+        }
+        
         public float GetStability()
         {
             return stability;
@@ -126,7 +178,8 @@ namespace QBuild
                 return face.MakeFace();
             }
 
-            stability = 40;
+            stabilityGlue = 9;
+            stability = 10;
             faces.top = FaceGenerate(blockScriptableObjects.top, Vector3.up / 2, Quaternion.identity);
             faces.bottom = FaceGenerate(blockScriptableObjects.bottom, Vector3.down / 2, Quaternion.Euler(180, 0, 0));
 
@@ -140,6 +193,10 @@ namespace QBuild
         public float GetMass()
         {
             return mass;
+        }
+        public float GetForceToOtherBlock(Block _other)
+        {
+            return  Math.Min(this.GetStabilityGlue(), _other.GetStabilityGlue());
         }
     }
 }
