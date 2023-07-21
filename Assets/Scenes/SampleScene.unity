@@ -547,6 +547,7 @@ MonoBehaviour:
   _blocksParent: {fileID: 731420308}
   _blocks: []
   _polyominos: []
+  _blockTable: []
   fallsMino: []
   _onBlockPlacedEvent:
     m_PersistentCalls:
@@ -556,6 +557,7 @@ MonoBehaviour:
     type: 3}
   stabilityCalculator:
     nodes: []
+  _conditionMap: {fileID: 11400000, guid: 9206c3adc8ae34a46b6cdd6be0758f36, type: 2}
 --- !u!4 &731420310
 Transform:
   m_ObjectHideFlags: 0

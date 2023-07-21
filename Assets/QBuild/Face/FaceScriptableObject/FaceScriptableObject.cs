@@ -9,7 +9,6 @@ namespace QBuild
     {
         [SerializeField] private string type;
         [SerializeField] private GameObject facePrefab;
-        [FormerlySerializedAs("maxLoaded")] [SerializeField] private float stability; 
 
         public GameObject GetFace()
         {
@@ -18,7 +17,7 @@ namespace QBuild
 
         public Face MakeFace()
         {
-            return new Face(type,stability);
+            return new Face(this);
         }
     }
 }

@@ -29,31 +29,44 @@ namespace QBuild
         [SerializeField] private Vector3Int _gridPosition;
 
         [SerializeField] private bool isFalling = true;
-        
+
         [SerializeField] private float stabilityGlue = 0;
-        [SerializeField] private float stability= 0;
+        [SerializeField] private float stability = 0;
         [SerializeField] private float mass = 1;
 
         private static BlockManager _blockManager;
+
+        private long ownerMinoKey = -1;
 
         public static void Init(BlockManager manager)
         {
             _blockManager = manager;
         }
 
-        public void GenerateBlock(BlockGenerator generator, Vector3Int pos)
+        public void GenerateBlock(BlockGenerator generator, Vector3Int pos, long ownerKey = -1)
         {
             blockScriptableObjects = generator;
+            ownerMinoKey = ownerKey;
             _gridPosition = pos;
             GenerateBlock();
             _blockManager.UpdateBlock(this);
         }
 
+        public long GetMinoKey()
+        {
+            return ownerMinoKey;
+        }
+
+        public void SetMinoKey(long key)
+        {
+            ownerMinoKey = key;
+        }
+        
         public bool CanMove(Vector3Int move)
         {
             return _blockManager.CanPlace(_gridPosition + move);
         }
-        
+
         public void MoveNext(Vector3Int move)
         {
             var before = _gridPosition;
@@ -69,11 +82,19 @@ namespace QBuild
         }
 
 
-        public void OnBlockPlaced()
+        public void OnBlockPlaced(float stabilityNext = -1)
         {
             isFalling = false;
-            
-            float num = 0;
+
+            if(stabilityNext < 0)stabilityNext = CalcStability();
+
+            stability = stabilityNext;
+            Debug.Log("Place");
+        }
+
+        private float CalcStability()
+        {
+            float supportHorizontalStability = 0;
             List<Vector3Int> HORIZONTAL_DIRECTIONS = new List<Vector3Int>()
             {
                 Vector3Int.forward,
@@ -85,41 +106,44 @@ namespace QBuild
             {
                 if (_blockManager.TryGetBlock(_gridPosition + t, out var block))
                 {
-                    num = Math.Max(block.GetStability(), num);
+                    supportHorizontalStability = Math.Max(block.GetStability(), supportHorizontalStability);
                 }
             }
-            num--;
-            
+
+            supportHorizontalStability--;
+
             float stabilityUp = 0;
             float stabilityDown = 0;
-            
+
             if (_blockManager.TryGetBlock(_gridPosition + Vector3Int.up, out var topBlock))
             {
                 stabilityUp = topBlock.GetStability();
             }
+
             if (_blockManager.TryGetBlock(_gridPosition + Vector3Int.down, out var downBlock))
             {
                 stabilityDown = downBlock.GetStability();
             }
+
             if (stabilityDown != 10)
             {
                 stabilityDown--;
             }
 
             stabilityUp--;
-            
-            
-            float val = Math.Max(stabilityUp, stabilityDown);
-            float num6 = Math.Max(Math.Min(Math.Max(num, val), 10), 0);
+
+
+            float supportVerticalStability = Math.Max(stabilityUp, stabilityDown);
+            float stabilityNext = Math.Max(Math.Min(Math.Max(supportHorizontalStability, supportVerticalStability), 10), 0);
             if (GetGridPosition().y == 0)
             {
-                num6 = 10;
+                stabilityNext = 10;
             }
-            stability = num6;
-            Debug.Log("Place");
+
+            return stabilityNext;
         }
 
-        public void GlueBlock(BlockFace blockFace,Block block)
+        public void GlueBlock(BlockFace blockFace, Block block)
         {
             switch (blockFace)
             {
@@ -129,23 +153,36 @@ namespace QBuild
                 case BlockFace.Bottom:
                     faces.bottom.SetGlueBlock(block);
                     break;
-                case BlockFace.West:
+                case BlockFace.Left:
                     faces.left.SetGlueBlock(block);
                     break;
-                case BlockFace.East:
+                case BlockFace.Right:
                     faces.right.SetGlueBlock(block);
                     break;
-                case BlockFace.South:
+                case BlockFace.Front:
                     faces.center.SetGlueBlock(block);
                     break;
-                case BlockFace.North:
+                case BlockFace.Back:
                     faces.back.SetGlueBlock(block);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(blockFace), blockFace, null);
             }
         }
-        
+
+        public Face GetFace(BlockFace face)
+        {
+            return face switch
+            {
+                BlockFace.Top => faces.top,
+                BlockFace.Bottom => faces.bottom,
+                BlockFace.Left => faces.left,
+                BlockFace.Right => faces.right,
+                BlockFace.Front => faces.center,
+                BlockFace.Back => faces.back,
+                _ => throw new ArgumentOutOfRangeException(nameof(face), face, null)
+            };
+        }
         public bool IsFalling()
         {
             return isFalling;
@@ -155,12 +192,12 @@ namespace QBuild
         {
             return stabilityGlue;
         }
-        
+
         public float GetStability()
         {
             return stability;
         }
-        
+
         [Button]
         private void GenerateBlock()
         {
@@ -174,7 +211,6 @@ namespace QBuild
                 var obj = PrefabUtility.InstantiatePrefab(face.GetFace(), this.transform) as GameObject;
                 obj.transform.localPosition = position;
                 obj.transform.localRotation = quaternion;
-
                 return face.MakeFace();
             }
 
@@ -194,9 +230,10 @@ namespace QBuild
         {
             return mass;
         }
+
         public float GetForceToOtherBlock(Block _other)
         {
-            return  Math.Min(this.GetStabilityGlue(), _other.GetStabilityGlue());
+            return Math.Min(this.GetStabilityGlue(), _other.GetStabilityGlue());
         }
     }
 }

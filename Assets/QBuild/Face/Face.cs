@@ -8,19 +8,20 @@ namespace QBuild
     [Serializable]
     public struct Face
     {
-        [SerializeField] private string type;
-        [SerializeField] private float maxLoaded;
+        [SerializeField] private FaceScriptableObject type;
         
         public Block glueBlock { private set; get; }
         
 
-        public Face(string type, float maxLoaded)
+        public Face(FaceScriptableObject type)
         {
             this.type = type;
-            this.maxLoaded = maxLoaded;
             glueBlock = null;
         }
-        
+        public FaceScriptableObject GetFaceType()
+        {
+            return type;
+        }
         public void SetGlueBlock(Block block)
         {
             glueBlock = block;

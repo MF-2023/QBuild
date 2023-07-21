@@ -1,0 +1,111 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0bb426634954e36a7b9ac4eeee85e27, type: 3}
+  m_Name: FaceJointMatrix
+  m_EditorClassIdentifier: 
+  faceScriptableObjects:
+  - {fileID: 11400000, guid: 2e4d2528d3a62f24698791d13f96e69e, type: 2}
+  - {fileID: 11400000, guid: 5e457a1eb1605bc40969480f3f53d433, type: 2}
+  - {fileID: 11400000, guid: 8a52e26001f9615439f0578b44cd05b0, type: 2}
+  conditionFaces:
+    buckets: 01000000050000000400000000000000ffffffff0300000002000000
+    count: 6
+    entriesHashCode: 206e0000fa6d00000e6e0000226e0000fc6d0000106e000000000000
+    entriesNext: ffffffffffffffffffffffffffffffffffffffffffffffff00000000
+    entriesKey:
+    - {fileID: 11400000, guid: 2e4d2528d3a62f24698791d13f96e69e, type: 2}
+    - {fileID: 11400000, guid: 5e457a1eb1605bc40969480f3f53d433, type: 2}
+    - {fileID: 11400000, guid: 8a52e26001f9615439f0578b44cd05b0, type: 2}
+    - {fileID: 11400000, guid: 2e4d2528d3a62f24698791d13f96e69e, type: 2}
+    - {fileID: 11400000, guid: 5e457a1eb1605bc40969480f3f53d433, type: 2}
+    - {fileID: 11400000, guid: 8a52e26001f9615439f0578b44cd05b0, type: 2}
+    - {fileID: 0}
+    entriesValue:
+    - buckets: ffffffff0200000001000000
+      count: 3
+      entriesHashCode: 206e0000fa6d00000e6e0000
+      entriesNext: ffffffffffffffff00000000
+      entriesKey:
+      - {fileID: 11400000, guid: 2e4d2528d3a62f24698791d13f96e69e, type: 2}
+      - {fileID: 11400000, guid: 5e457a1eb1605bc40969480f3f53d433, type: 2}
+      - {fileID: 11400000, guid: 8a52e26001f9615439f0578b44cd05b0, type: 2}
+      entriesValue: 010001
+      freeCount: 0
+      freeList: -1
+    - buckets: ffffffff0200000001000000
+      count: 3
+      entriesHashCode: 206e0000fa6d00000e6e0000
+      entriesNext: ffffffffffffffff00000000
+      entriesKey:
+      - {fileID: 11400000, guid: 2e4d2528d3a62f24698791d13f96e69e, type: 2}
+      - {fileID: 11400000, guid: 5e457a1eb1605bc40969480f3f53d433, type: 2}
+      - {fileID: 11400000, guid: 8a52e26001f9615439f0578b44cd05b0, type: 2}
+      entriesValue: 000101
+      freeCount: 0
+      freeList: -1
+    - buckets: ffffffff0200000001000000
+      count: 3
+      entriesHashCode: 206e0000fa6d00000e6e0000
+      entriesNext: ffffffffffffffff00000000
+      entriesKey:
+      - {fileID: 11400000, guid: 2e4d2528d3a62f24698791d13f96e69e, type: 2}
+      - {fileID: 11400000, guid: 5e457a1eb1605bc40969480f3f53d433, type: 2}
+      - {fileID: 11400000, guid: 8a52e26001f9615439f0578b44cd05b0, type: 2}
+      entriesValue: 010101
+      freeCount: 0
+      freeList: -1
+    - buckets: 0200000001000000ffffffff
+      count: 3
+      entriesHashCode: 226e0000fc6d0000106e0000
+      entriesNext: ffffffffffffffff00000000
+      entriesKey:
+      - {fileID: 11400000, guid: 2e4d2528d3a62f24698791d13f96e69e, type: 2}
+      - {fileID: 11400000, guid: 5e457a1eb1605bc40969480f3f53d433, type: 2}
+      - {fileID: 11400000, guid: 8a52e26001f9615439f0578b44cd05b0, type: 2}
+      entriesValue: 010101
+      freeCount: 0
+      freeList: -1
+    - buckets: 0200000001000000ffffffff
+      count: 3
+      entriesHashCode: 226e0000fc6d0000106e0000
+      entriesNext: ffffffffffffffff00000000
+      entriesKey:
+      - {fileID: 11400000, guid: 2e4d2528d3a62f24698791d13f96e69e, type: 2}
+      - {fileID: 11400000, guid: 5e457a1eb1605bc40969480f3f53d433, type: 2}
+      - {fileID: 11400000, guid: 8a52e26001f9615439f0578b44cd05b0, type: 2}
+      entriesValue: 010001
+      freeCount: 0
+      freeList: -1
+    - buckets: 0200000001000000ffffffff
+      count: 3
+      entriesHashCode: 226e0000fc6d0000106e0000
+      entriesNext: ffffffffffffffff00000000
+      entriesKey:
+      - {fileID: 11400000, guid: 2e4d2528d3a62f24698791d13f96e69e, type: 2}
+      - {fileID: 11400000, guid: 5e457a1eb1605bc40969480f3f53d433, type: 2}
+      - {fileID: 11400000, guid: 8a52e26001f9615439f0578b44cd05b0, type: 2}
+      entriesValue: 010101
+      freeCount: 0
+      freeList: -1
+    - buckets: ffffffffffffffffffffffff
+      count: 0
+      entriesHashCode: 000000000000000000000000
+      entriesNext: 000000000000000000000000
+      entriesKey:
+      - {fileID: 0}
+      - {fileID: 0}
+      - {fileID: 0}
+      entriesValue: 000000
+      freeCount: 0
+      freeList: -1
+    freeCount: 0
+    freeList: -1
