@@ -4,7 +4,7 @@ using System.Collections;
 using System.Diagnostics;
 using UnityEngine;
 
-namespace SherbetInspector.Script.Serializable
+namespace SherbetInspector.Serializable
 {
     [Serializable]
     public class SerializableDictionary<TKey, TValue> : IDictionary<TKey, TValue>, IDictionary

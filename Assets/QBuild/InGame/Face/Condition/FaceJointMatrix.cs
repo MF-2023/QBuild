@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using SherbetInspector.Core.Attributes;
-using SherbetInspector.Script.Serializable;
+using SherbetInspector.Serializable;
 using UnityEditor;
 using UnityEngine;
 
