@@ -10,6 +10,7 @@ public class PlayerState
 
     protected string animBoolName;
 
+    protected bool isExit;
     protected bool animationFinishedTrigger;
 
     public PlayerState(PlayerController player,PlayerStateMachine stateMachine,PlayerData playerData,string animBoolName)
@@ -28,6 +29,7 @@ public class PlayerState
         DoCheck();
         player._Anim.SetBool(animBoolName, true);
         animationFinishedTrigger = false;
+        isExit = false;
     }
 
     /// <summary>

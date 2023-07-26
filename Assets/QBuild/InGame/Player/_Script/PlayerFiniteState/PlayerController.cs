@@ -6,6 +6,8 @@ public class PlayerController : MonoBehaviour
 {
     #region States
     private PlayerStateMachine stateMachine;
+
+    public PlayerIdle IdleState { get; private set; }
     #endregion
 
     #region UnityComponent
@@ -22,12 +24,16 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         stateMachine = new PlayerStateMachine();
+
+        IdleState = new PlayerIdle(this, stateMachine, playerData, "idle");
     }
 
     private void Start()
     {
-        //TODO::PlayerController::StateMachine‚Ì‰Šú‰»ˆ—
-        //stateMachine.Initialize();
+        _Anim = GetComponent<Animator>();
+        _Rb = GetComponent<Rigidbody>();
+
+        stateMachine.Initialize(IdleState);
         Core = GetComponentInChildren<Core>();
     }
     #endregion
