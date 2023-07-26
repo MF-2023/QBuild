@@ -9,7 +9,7 @@ public class CoreComponent : MonoBehaviour
     /// <summary>
     /// オブジェクト生成時にCoreにコンポーネント追加
     /// </summary>
-    private void Start()
+    protected virtual void Start()
     {
         core = transform.parent.GetComponent<Core>();
 
