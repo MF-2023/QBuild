@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerIdle : PlayerState
-{
-    public PlayerIdle(PlayerController player,PlayerStateMachine stateMachine,PlayerData playerData,string animBoolName):base(player,stateMachine,playerData,animBoolName)
+public class PlayerGroundState : PlayerState
+{    
+    public PlayerGroundState(PlayerController player,PlayerStateMachine stateMachine,PlayerData playerData,string animBoolName):base(player,stateMachine,playerData,animBoolName)
     {
     }
 
@@ -26,6 +26,8 @@ public class PlayerIdle : PlayerState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+
+        //äeéÌStateÇ…à⁄çs
     }
 
     public override void PhycsUpdate()

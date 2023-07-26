@@ -13,12 +13,21 @@ public class PlayerState
     protected bool isExit;
     protected bool animationFinishedTrigger;
 
+    //各種入力変数
+    protected float xInput;
+    protected float zInput;
+    protected bool jumpInput;
+
     public PlayerState(PlayerController player,PlayerStateMachine stateMachine,PlayerData playerData,string animBoolName)
     {
         this.player = player;
         this.stateMachine = stateMachine;
         this.playerData = playerData;
         this.animBoolName = animBoolName;
+
+        xInput = 0f;
+        zInput = 0f;
+        jumpInput = false;
     }
 
     /// <summary>
@@ -48,7 +57,11 @@ public class PlayerState
     /// <summary>
     /// 現在の状態のアップデート処理
     /// </summary>
-    public virtual void LogicUpdate() { }
+    public virtual void LogicUpdate() 
+    {
+        xInput = player.inputHandler.xInput;
+        zInput = player.inputHandler.zInput;
+    }
 
     /// <summary>
     /// 現在の状態の物理アップデート処理

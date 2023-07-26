@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     private PlayerStateMachine stateMachine;
 
     public PlayerIdle IdleState { get; private set; }
+    public PlayerMove MoveState { get; private set; }
     #endregion
 
     #region UnityComponent
@@ -18,6 +19,11 @@ public class PlayerController : MonoBehaviour
     #region Variables
     [SerializeField] private PlayerData playerData;
     public Core Core { get; private set; }
+    public PlayerInputHandler inputHandler { get; private set; }
+
+
+    public Movement Movement { get => movement ?? Core.GetCoreComponent(ref movement); }
+    private Movement movement;
     #endregion
 
     #region UnityCallBack
@@ -26,15 +32,27 @@ public class PlayerController : MonoBehaviour
         stateMachine = new PlayerStateMachine();
 
         IdleState = new PlayerIdle(this, stateMachine, playerData, "idle");
+        MoveState = new PlayerMove(this, stateMachine, playerData, "move");
     }
 
     private void Start()
     {
         _Anim = GetComponent<Animator>();
         _Rb = GetComponent<Rigidbody>();
+        inputHandler = GetComponent<PlayerInputHandler>();
+        Core = GetComponentInChildren<Core>();
 
         stateMachine.Initialize(IdleState);
-        Core = GetComponentInChildren<Core>();
+    }
+
+    private void Update()
+    {
+        stateMachine.currentState.LogicUpdate();
+    }
+
+    private void FixedUpdate()
+    {
+        stateMachine.currentState.PhycsUpdate();
     }
     #endregion
 

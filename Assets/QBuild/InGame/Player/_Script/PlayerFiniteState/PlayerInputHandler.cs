@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class PlayerInputHandler : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public float xInput { get;private set; }
+    public float zInput { get; private set; }
+    public bool jumpInput { get; private set; }
+
+    private void Update()
     {
-        
+        //仮インプット処理
+        xInput = Input.GetAxisRaw("Horizontal");
+        zInput = Input.GetAxisRaw("Vertical");
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public void UseJumpInput() => jumpInput = false;
 }
