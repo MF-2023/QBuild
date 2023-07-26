@@ -23,7 +23,9 @@ public class PlayerController : MonoBehaviour
 
 
     public Movement Movement { get => movement ?? Core.GetCoreComponent(ref movement); }
+    public Rotation Rotation { get => rotation ?? Core.GetCoreComponent(ref rotation); }
     private Movement movement;
+    private Rotation rotation;
     #endregion
 
     #region UnityCallBack

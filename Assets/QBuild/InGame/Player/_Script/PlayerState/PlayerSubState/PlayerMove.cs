@@ -38,6 +38,10 @@ public class PlayerMove : PlayerGroundState
         Vector3 moveForward = cameraForward * zInput + Camera.main.transform.right * xInput;
 
         player.Movement?.SetVelocity(moveForward, playerData.moveSpeed);
+
+        Vector3 pos = player.transform.position;
+        workspace = new Vector3(moveForward.x + pos.x, moveForward.y + pos.y, moveForward.z + pos.z);
+        player.Rotation?.SetRotation(workspace);
     }
 
     public override void AnimationTrigger()

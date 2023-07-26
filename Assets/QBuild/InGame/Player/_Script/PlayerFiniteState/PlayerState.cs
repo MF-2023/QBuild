@@ -18,6 +18,8 @@ public class PlayerState
     protected float zInput;
     protected bool jumpInput;
 
+    protected Vector3 workspace;
+
     public PlayerState(PlayerController player,PlayerStateMachine stateMachine,PlayerData playerData,string animBoolName)
     {
         this.player = player;
