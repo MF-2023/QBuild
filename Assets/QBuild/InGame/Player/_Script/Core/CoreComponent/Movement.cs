@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class Movement : CoreComponent
 {
+    public Vector3 currentVelocity { get; private set; }
+
     private Vector3 workspace;
-    private Vector3 currentVelocity;
-    private bool canSetVelocity;
+    public bool canSetVelocity;
     private Rigidbody myRB;
 
-    protected override void Start()
+    protected override void Awake()
     {
-        base.Start();
+        base.Awake();
         myRB = GetComponentInParent<Rigidbody>();
         if (myRB == null) Debug.LogError(transform.root.name + "‚ÉRigidBody‚ª‘¶Ý‚µ‚Ü‚¹‚ñB");
         workspace = Vector3.zero;
@@ -33,7 +34,27 @@ public class Movement : CoreComponent
     public void SetVelocity(Vector3 velocity,float speed)
     {
         workspace = velocity.normalized * speed;
+        //workspace = new Vector3(velocity.x, 0, velocity.z).normalized * speed;
         SetFinalVelocity();
+    }
+
+    public void SetVelocity(Vector3 velocity)
+    {
+        workspace = velocity;
+        SetFinalVelocity();
+    }
+
+    public void SetVelocityXZ(Vector3 velocity, float speed)
+    {
+        workspace = velocity.normalized * speed;
+        workspace.y = myRB.velocity.y;
+        SetFinalVelocity();
+    }
+
+    public void AddForce(Vector3 force,ForceMode mode)
+    {
+        workspace = force;
+        AddForceFinalVelocity(mode);
     }
 
     private void SetFinalVelocity()
@@ -43,11 +64,13 @@ public class Movement : CoreComponent
         currentVelocity = workspace;
     }
 
-    private void AddForceFinalVelocity()
+    private void AddForceFinalVelocity(ForceMode mode)
     {
         if (!canSetVelocity) return;
-        myRB.AddForce(workspace);
-        currentVelocity = workspace;
+        myRB.AddForce(workspace, mode);
+        currentVelocity = myRB.velocity;
     }
+
+    public void SetCanVelocity(bool can) => canSetVelocity = can;
     #endregion
 }

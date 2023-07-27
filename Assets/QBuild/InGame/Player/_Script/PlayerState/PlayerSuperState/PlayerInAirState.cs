@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class PlayerMove : PlayerGroundState
+public class PlayerInAirState : PlayerState
 {
-    public PlayerMove(PlayerController player,PlayerStateMachine stateMachine,PlayerData playerData,string animBoolName):base(player,stateMachine,playerData,animBoolName)
+    public PlayerInAirState(PlayerController player,PlayerStateMachine stateMachine,PlayerData playerData,string animBoolName):base(player,stateMachine,playerData,animBoolName)
     { }
 
     public override void DoCheck()
@@ -26,13 +27,12 @@ public class PlayerMove : PlayerGroundState
     {
         base.LogicUpdate();
 
-        if(jumpInput)
+        if (isGrounded && player._Rb.velocity.y <= 0)
         {
-            player.inputHandler.UseJumpInput();
-            stateMachine.ChangeState(player.JumpState);
-        }
-        else if (xInput == 0 && zInput == 0)
+            //TODO::PlayerInAirState::プレイヤーが地面についた時の処理
+            //仮でとりあえずIdleStateに戻してます
             stateMachine.ChangeState(player.IdleState);
+        }
     }
 
     public override void PhycsUpdate()
@@ -42,7 +42,7 @@ public class PlayerMove : PlayerGroundState
         Vector3 cameraForward = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
         Vector3 moveForward = cameraForward * zInput + Camera.main.transform.right * xInput;
 
-        player.Movement?.SetVelocityXZ(moveForward, playerData.moveSpeed);
+        player.Movement?.SetVelocityXZ(moveForward, playerData.inAirmoveSpeed);
 
         Vector3 pos = player.transform.position;
         workspace = new Vector3(moveForward.x + pos.x, moveForward.y + pos.y, moveForward.z + pos.z);

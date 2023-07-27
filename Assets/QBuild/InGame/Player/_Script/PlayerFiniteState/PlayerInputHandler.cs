@@ -13,6 +13,7 @@ public class PlayerInputHandler : MonoBehaviour
         //仮インプット処理
         xInput = Input.GetAxisRaw("Horizontal");
         zInput = Input.GetAxisRaw("Vertical");
+        jumpInput = Input.GetButton("Jump");
     }
 
     public void UseJumpInput() => jumpInput = false;

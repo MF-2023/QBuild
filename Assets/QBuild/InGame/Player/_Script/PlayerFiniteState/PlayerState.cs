@@ -12,6 +12,7 @@ public class PlayerState
 
     protected bool isExit;
     protected bool animationFinishedTrigger;
+    protected bool isGrounded;
 
     //各種入力変数
     protected float xInput;
@@ -54,7 +55,7 @@ public class PlayerState
     /// <summary>
     /// 状態に遷移したときにチェックする処理
     /// </summary>
-    public virtual void DoCheck() { }
+    public virtual void DoCheck() { isGrounded = CheckIsGround(); }
 
     /// <summary>
     /// 現在の状態のアップデート処理
@@ -63,6 +64,8 @@ public class PlayerState
     {
         xInput = player.inputHandler.xInput;
         zInput = player.inputHandler.zInput;
+        jumpInput = player.inputHandler.jumpInput;
+        isGrounded = CheckIsGround();
     }
 
     /// <summary>
@@ -79,4 +82,25 @@ public class PlayerState
     /// アニメーション終了トリガー
     /// </summary>
     public void AnimationFinishedTrigger() => animationFinishedTrigger = true;
+
+    /// <summary>
+    /// 地面の上にいるのか判定する
+    /// </summary>
+    /// <returns></returns>
+    protected bool CheckIsGround()
+    {
+        bool ret = false;
+        RaycastHit hit;
+        Ray ray = new Ray(player.transform.position, player.transform.up * -1);
+        if (Physics.Raycast(ray, out hit, playerData.checkGroundDistance))
+        {
+            foreach (LayerMask ground in playerData.groundLayer)
+            {
+                int objectLayer = hit.transform.root.gameObject.layer;
+                ret = ground == (ground | (1 << objectLayer));
+            }
+        }
+
+        return ret;
+    }
 }

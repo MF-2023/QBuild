@@ -28,6 +28,8 @@ public class PlayerGroundState : PlayerState
         base.LogicUpdate();
 
         //ŠeíState‚ÉˆÚs
+        if (!isGrounded)
+            stateMachine.ChangeState(player.FallState);
     }
 
     public override void PhycsUpdate()

@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour
 
     public PlayerIdle IdleState { get; private set; }
     public PlayerMove MoveState { get; private set; }
+    public PlayerJump JumpState { get; private set; }
+    public PlayerFall FallState { get; private set; }
     #endregion
 
     #region UnityComponent
@@ -35,6 +37,8 @@ public class PlayerController : MonoBehaviour
 
         IdleState = new PlayerIdle(this, stateMachine, playerData, "idle");
         MoveState = new PlayerMove(this, stateMachine, playerData, "move");
+        JumpState = new PlayerJump(this, stateMachine, playerData, "jump");
+        FallState = new PlayerFall(this, stateMachine, playerData, "fall");
     }
 
     private void Start()
@@ -55,6 +59,12 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         stateMachine.currentState.PhycsUpdate();
+    }
+
+    private void OnDrawGizmos()
+    {
+        //地面チェック用Ray
+        Debug.DrawRay(transform.position, (transform.up * -1) * playerData.checkGroundDistance, Color.blue);
     }
     #endregion
 

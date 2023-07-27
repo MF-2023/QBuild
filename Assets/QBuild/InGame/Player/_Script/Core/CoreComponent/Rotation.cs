@@ -10,9 +10,9 @@ public class Rotation : CoreComponent
     private Vector3 workspace;
     private Vector3 currentDir;
 
-    protected override void Start()
+    protected override void Awake()
     {
-        base.Start();
+        base.Awake();
         rootTransform = transform.root.GetComponent<Transform>();
         workspace = Vector3.zero;
         canRotation = true;

@@ -646,7 +646,7 @@ GameObject:
   - component: {fileID: 793921197}
   - component: {fileID: 793921196}
   - component: {fileID: 793921195}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -777,6 +777,11 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 827673890}
+    - target: {fileID: 2049879627040552988, guid: 01404876c42fab940a18646b630c9bb7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2053092783585974859, guid: 01404876c42fab940a18646b630c9bb7,
         type: 3}
       propertyPath: m_Mesh
@@ -822,15 +827,35 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 827673890}
+    - target: {fileID: 5560294965503633364, guid: 01404876c42fab940a18646b630c9bb7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5954249187185949503, guid: 01404876c42fab940a18646b630c9bb7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6134005648371425486, guid: 01404876c42fab940a18646b630c9bb7,
         type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 2080983905}
+    - target: {fileID: 6363877281056230212, guid: 01404876c42fab940a18646b630c9bb7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7085934378338776102, guid: 01404876c42fab940a18646b630c9bb7,
         type: 3}
       propertyPath: m_Name
       value: Block
+      objectReference: {fileID: 0}
+    - target: {fileID: 7085934378338776102, guid: 01404876c42fab940a18646b630c9bb7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 7382708381621452937, guid: 01404876c42fab940a18646b630c9bb7,
         type: 3}
@@ -887,11 +912,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7960158838720345269, guid: 01404876c42fab940a18646b630c9bb7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8606749806859155629, guid: 01404876c42fab940a18646b630c9bb7,
         type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 2080983905}
+    - target: {fileID: 9007884391958820842, guid: 01404876c42fab940a18646b630c9bb7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9011351604476843453, guid: 01404876c42fab940a18646b630c9bb7,
         type: 3}
       propertyPath: m_Mesh
@@ -1143,6 +1178,7 @@ GameObject:
   - component: {fileID: 1042848872}
   - component: {fileID: 1042848873}
   - component: {fileID: 1042848874}
+  - component: {fileID: 1042848875}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1174,7 +1210,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1042848868}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 9c95604eca479664b8eda3afc9e1e935, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1261,6 +1297,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5509615b9bc2aa047884da40262bdf96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1042848875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1042848868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1afe16303c7bac64d9b0492b0a3851d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!43 &1065466418
@@ -1520,6 +1568,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Block (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7085934378338776102, guid: 01404876c42fab940a18646b630c9bb7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 7382708381621452937, guid: 01404876c42fab940a18646b630c9bb7,
         type: 3}
@@ -1970,6 +2023,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b66274fe70d1ac4c945d63bbd7ae22e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canSetVelocity: 0
 --- !u!43 &2080983905
 Mesh:
   m_ObjectHideFlags: 0

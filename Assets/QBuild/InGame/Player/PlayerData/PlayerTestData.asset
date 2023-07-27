@@ -13,3 +13,9 @@ MonoBehaviour:
   m_Name: PlayerTestData
   m_EditorClassIdentifier: 
   moveSpeed: 5
+  inAirmoveSpeed: 2.6
+  jumpPower: 5
+  groundLayer:
+  - serializedVersion: 2
+    m_Bits: 2147483648
+  checkGroundDistance: 0.2

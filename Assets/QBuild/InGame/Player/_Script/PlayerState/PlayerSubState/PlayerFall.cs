@@ -2,11 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerIdle : PlayerGroundState
+public class PlayerFall : PlayerInAirState
 {
-    public PlayerIdle(PlayerController player,PlayerStateMachine stateMachine,PlayerData playerData,string animBoolName):base(player,stateMachine,playerData,animBoolName)
-    {
-    }
+    public PlayerFall(PlayerController player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
+    { }
 
     public override void DoCheck()
     {
@@ -16,8 +15,6 @@ public class PlayerIdle : PlayerGroundState
     public override void Enter()
     {
         base.Enter();
-
-        player.Movement?.SetVelocityZero();
     }
 
     public override void Exit()
@@ -28,14 +25,6 @@ public class PlayerIdle : PlayerGroundState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-
-        if (jumpInput)
-        {
-            player.inputHandler.UseJumpInput();
-            stateMachine.ChangeState(player.JumpState);
-        }
-        else if (xInput != 0 || zInput != 0)
-            stateMachine.ChangeState(player.MoveState);
     }
 
     public override void PhycsUpdate()
