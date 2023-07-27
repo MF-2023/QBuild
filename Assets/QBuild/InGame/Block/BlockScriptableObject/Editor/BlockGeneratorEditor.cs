@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -48,6 +49,8 @@ namespace QBuild.BlockScriptableObject
                 if (_meshPreviews.ContainsKey(previewTarget)) continue;
 
                 var blockGenerator = target as BlockGenerator;
+                if (blockGenerator == null || blockGenerator.GetFaces().Select(x => x.face).Any(face => face == null))
+                    return;
                 var mesh = UnfoldedBlock.GenerateMesh(blockGenerator);
                 var preview = new PreviewData(mesh);
                 _meshPreviews.Add(previewTarget, preview);
@@ -58,6 +61,7 @@ namespace QBuild.BlockScriptableObject
         {
             foreach (var previewTarget in targets)
             {
+                if (!_meshPreviews.ContainsKey(previewTarget)) continue;
                 var meshPreview = _meshPreviews[previewTarget];
                 meshPreview.Dispose();
             }
@@ -68,8 +72,8 @@ namespace QBuild.BlockScriptableObject
         private void DoRenderPreview(PreviewData previewData)
         {
             previewData.RenderUtility.camera.farClipPlane = 100;
-            previewData.RenderUtility.camera.transform.position = new Vector3(0.5f, 6, -6);
-            previewData.RenderUtility.camera.transform.rotation = Quaternion.Euler(45, 0, 0);
+            previewData.RenderUtility.camera.transform.position = new Vector3(0.5f, 4, -7);
+            previewData.RenderUtility.camera.transform.rotation = Quaternion.Euler(25, 0, 0);
             previewData.RenderUtility.camera.clearFlags = CameraClearFlags.SolidColor;
 
             var prim = GameObject.CreatePrimitive(PrimitiveType.Sphere);
@@ -87,6 +91,7 @@ namespace QBuild.BlockScriptableObject
             int height
         )
         {
+            if (!_meshPreviews.ContainsKey(target)) return null;
             var previewData = _meshPreviews[target];
             previewData.RenderUtility.BeginStaticPreview(new Rect(0, 0, width, height));
             DoRenderPreview(previewData);
