@@ -11,35 +11,33 @@ namespace QBuild.BlockScriptableObject
     {
         private readonly Dictionary<Object, PreviewData> _meshPreviews = new();
 
-        class PreviewData : IDisposable
+        private class PreviewData : IDisposable
         {
-            bool m_Disposed;
+            private bool _disposed;
 
-            public readonly PreviewRenderUtility renderUtility;
-            public Mesh target { get; private set; }
-
-            public string prefabAssetPath { get; private set; }
-
-            public Bounds renderableBounds { get; private set; }
-
-            public bool useStaticAssetPreview { get; set; }
+            public readonly PreviewRenderUtility RenderUtility;
+            public Mesh Target { get; private set; }
 
             public PreviewData(Mesh target)
             {
-                renderUtility = new PreviewRenderUtility();
-                renderUtility.camera.fieldOfView = 30.0f;
-                renderableBounds = new Bounds(new Vector3(0, 0, 0), new Vector3(128, 128));
-                this.target = target;
+                RenderUtility = new PreviewRenderUtility
+                {
+                    camera =
+                    {
+                        fieldOfView = 30.0f
+                    }
+                };
+                this.Target = target;
             }
 
 
             public void Dispose()
             {
-                if (m_Disposed)
+                if (_disposed)
                     return;
-                renderUtility.Cleanup();
-                target = null;
-                m_Disposed = true;
+                RenderUtility.Cleanup();
+                Target = null;
+                _disposed = true;
             }
         }
 
@@ -54,8 +52,6 @@ namespace QBuild.BlockScriptableObject
                 var preview = new PreviewData(mesh);
                 _meshPreviews.Add(previewTarget, preview);
             }
-
-            PreviewRenderUtility a;
         }
 
         private void OnDisable()
@@ -71,16 +67,15 @@ namespace QBuild.BlockScriptableObject
 
         private void DoRenderPreview(PreviewData previewData)
         {
-            
-            previewData.renderUtility.camera.farClipPlane = 100;
-            previewData.renderUtility.camera.transform.position = new Vector3(0.5f, 6, -6);
-            previewData.renderUtility.camera.transform.rotation = Quaternion.Euler(45, 0, 0);
-            previewData.renderUtility.camera.clearFlags = CameraClearFlags.SolidColor;
-            
+            previewData.RenderUtility.camera.farClipPlane = 100;
+            previewData.RenderUtility.camera.transform.position = new Vector3(0.5f, 6, -6);
+            previewData.RenderUtility.camera.transform.rotation = Quaternion.Euler(45, 0, 0);
+            previewData.RenderUtility.camera.clearFlags = CameraClearFlags.SolidColor;
+
             var prim = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             var material = prim.GetComponent<MeshRenderer>().sharedMaterial;
-            previewData.renderUtility.DrawMesh(previewData.target, Matrix4x4.identity, material, 0);
-            previewData.renderUtility.Render(true);
+            previewData.RenderUtility.DrawMesh(previewData.Target, Matrix4x4.identity, material, 0);
+            previewData.RenderUtility.Render(true);
             DestroyImmediate(prim);
         }
 
@@ -93,10 +88,10 @@ namespace QBuild.BlockScriptableObject
         )
         {
             var previewData = _meshPreviews[target];
-            previewData.renderUtility.BeginStaticPreview(new Rect(0, 0, width, height));
+            previewData.RenderUtility.BeginStaticPreview(new Rect(0, 0, width, height));
             DoRenderPreview(previewData);
 
-            return previewData.renderUtility.EndStaticPreview();
+            return previewData.RenderUtility.EndStaticPreview();
         }
     }
 }
