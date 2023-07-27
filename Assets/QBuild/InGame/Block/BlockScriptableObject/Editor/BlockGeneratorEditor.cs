@@ -51,7 +51,7 @@ namespace QBuild.BlockScriptableObject
                 var blockGenerator = target as BlockGenerator;
                 if (blockGenerator == null || blockGenerator.GetFaces().Select(x => x.face).Any(face => face == null))
                     return;
-                var mesh = UnfoldedBlock.GenerateMesh(blockGenerator);
+                var mesh = UnfoldedBlockMesh.GenerateMesh(blockGenerator);
                 var preview = new PreviewData(mesh);
                 _meshPreviews.Add(previewTarget, preview);
             }
@@ -95,7 +95,6 @@ namespace QBuild.BlockScriptableObject
             var previewData = _meshPreviews[target];
             previewData.RenderUtility.BeginStaticPreview(new Rect(0, 0, width, height));
             DoRenderPreview(previewData);
-
             return previewData.RenderUtility.EndStaticPreview();
         }
     }

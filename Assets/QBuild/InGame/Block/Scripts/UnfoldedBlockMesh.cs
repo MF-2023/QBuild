@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace QBuild
 {
-    public static class UnfoldedBlock
+    public static class UnfoldedBlockMesh
     {
         private static readonly Dictionary<BlockFace, Vector3> FacePositions = new()
         {
