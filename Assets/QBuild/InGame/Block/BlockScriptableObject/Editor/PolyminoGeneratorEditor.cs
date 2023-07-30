@@ -1,4 +1,6 @@
-﻿using UnityEditor;
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 namespace QBuild.BlockScriptableObject
@@ -11,12 +13,37 @@ namespace QBuild.BlockScriptableObject
         private Mesh _mesh;
         private Material _material;
         private Vector2 _rotation;
-        
+
         private float _distance = 10f;
+
+        private List<PolyminoGenerator.PositionToBlockGenerator> _generatorsBuffer =
+            new List<PolyminoGenerator.PositionToBlockGenerator>();
 
         public override bool HasPreviewGUI()
         {
+            var polyminoGenerator = (PolyminoGenerator)target;
+
+            if (polyminoGenerator.GetBlockGenerators() == null) return false;
+            if (polyminoGenerator.GetBlockGenerators().Count == 0) return false;
+
+            if (IsChanged()) MeshInitialize();
             return true;
+        }
+
+        private bool IsChanged()
+        {
+            var polyminoGenerator = (PolyminoGenerator)target;
+            var generators = polyminoGenerator.GetBlockGenerators();
+
+            var changed = false;
+            for (var i = 0; i < generators.Count; i++)
+            {
+                if (i <= _generatorsBuffer.Count) return true;
+                changed = generators[i] != _generatorsBuffer[i];
+                if (changed) break;
+            }
+
+            return changed;
         }
 
         public void OnEnable()
@@ -27,17 +54,26 @@ namespace QBuild.BlockScriptableObject
 
             _previewUtility.camera.nearClipPlane = 5f;
             _previewUtility.camera.farClipPlane = 50f;
-            
+
             // マテリアルの設定
             var prim = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             _material = prim.GetComponent<MeshRenderer>().sharedMaterial;
             DestroyImmediate(prim);
 
-            _mesh = new Mesh();
+            MeshInitialize();
+        }
 
+        private void MeshInitialize()
+        {
+            _mesh = new Mesh();
             // 各ブロックのメッシュ結合して一つにまとめる
             var polyminoGenerator = (PolyminoGenerator)target;
             var generators = polyminoGenerator.GetBlockGenerators();
+
+            if (generators == null) return;
+            if (generators.Count == 0) return;
+
+            _generatorsBuffer = generators.ToList();
             var combine = new CombineInstance[generators.Count];
             for (var i = 0; i < generators.Count; i++)
             {
@@ -48,6 +84,7 @@ namespace QBuild.BlockScriptableObject
 
             _mesh.CombineMeshes(combine);
         }
+
         public void OnDisable()
         {
             if (this._previewUtility != null)
@@ -56,6 +93,7 @@ namespace QBuild.BlockScriptableObject
                 this._previewUtility = null;
             }
         }
+
         public override void OnPreviewGUI(Rect r, GUIStyle background)
         {
             if (_mesh == null) return;
@@ -78,9 +116,14 @@ namespace QBuild.BlockScriptableObject
             );
 
             _previewUtility.camera.Render();
-
             var resultRender = _previewUtility.EndPreview();
             GUI.DrawTexture(r, resultRender, ScaleMode.StretchToFill, false);
+        }
+
+        private void OnValidate()
+        {
+            Debug.Log("OnValidate");
+            MeshInitialize();
         }
 
         private static Vector2 DragToRotate(Rect r, Vector2 rotation)
@@ -127,6 +170,7 @@ namespace QBuild.BlockScriptableObject
                 distance += Event.current.delta.y * 0.1f;
                 Event.current.Use();
             }
+
             return Mathf.Clamp(distance, 1f, 50f);
         }
     }

@@ -46,7 +46,7 @@ namespace QBuild
         [SerializeField] private StabilityCalculator stabilityCalculator = new StabilityCalculator();
 
         [SerializeField] private FaceJointMatrix _conditionMap;
-        
+
         private void Awake()
         {
             BlockManagerBind.Init(this);
@@ -149,7 +149,7 @@ namespace QBuild
 
             if (fallsMino.Count != 0 && stoppedBlocks.Count == fallsMino.Count)
             {
-                OnBlockPlaced();
+                _onBlockPlacedEvent.Invoke();
             }
             else
             {
@@ -180,7 +180,7 @@ namespace QBuild
 
         private void OnBlockPlaced()
         {
-            HashSet<Vector3Int> removeBlocks = new HashSet<Vector3Int>();
+            var removeBlocks = new HashSet<Vector3Int>();
             foreach (var block in fallsMino[0].GetBlocks())
             {
                 var list = stabilityCalculator.CalcPhysicsStabilityToFall(block.GetGridPosition(), 32,
@@ -286,6 +286,11 @@ namespace QBuild
         }
 
 #endif
+        public void OnStartGame()
+        {
+            CreatePolymino();
+        }
+
         List<Color> ColorTable = new List<Color>()
         {
             Color.black,

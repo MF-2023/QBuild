@@ -1,30 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
+using QBuild;
 using SherbetInspector.Core.Attributes;
-using SherbetInspector.Serializable;
+
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 
+[Serializable]
+public class ConditionMap : SerializableDictionary<FaceScriptableObject, bool>
+{
+}
+
+[Serializable]
+public class ConditionMatrix : SerializableDictionary<FaceScriptableObject, ConditionMap>
+{
+}
 
 namespace QBuild.Condition
 {
-    [Serializable]
-    public class ConditionMap : SerializableDictionary<FaceScriptableObject,bool>
-    {
 
-    }
-    [Serializable]
-    public class ConditionMatrix : SerializableDictionary<FaceScriptableObject,ConditionMap>
-    {
 
-    }
-    [CreateAssetMenu(fileName = "FaceJointMatrix", menuName = "Tools/QBuild/FaceConditionMatrix", order = 0)]
+    [CreateAssetMenu(fileName = "FaceJointMatrix", menuName = "Tools/QBuild/FaceConditionMatrix", order = 13)]
     public class FaceJointMatrix : ScriptableObject
     {
         [SerializeField] private List<FaceScriptableObject> faceScriptableObjects;
-        
+
         [SerializeField] private ConditionMatrix conditionFaces;
 
 
@@ -32,10 +35,12 @@ namespace QBuild.Condition
         {
             return faceScriptableObjects;
         }
+
         public ConditionMatrix GetMatrix()
         {
             return conditionFaces;
         }
+
         [Button]
         public void Refresh()
         {
@@ -69,7 +74,7 @@ namespace QBuild.Condition
             return conditionFaces[face1][face2];
         }
 
-        public void SetCondition(FaceScriptableObject face1, FaceScriptableObject face2,bool flg)
+        public void SetCondition(FaceScriptableObject face1, FaceScriptableObject face2, bool flg)
         {
             conditionFaces[face1][face2] = flg;
             EditorUtility.SetDirty(this);

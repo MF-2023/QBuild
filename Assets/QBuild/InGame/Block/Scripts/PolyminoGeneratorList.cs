@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace QBuild
 {
-    [CreateAssetMenu(fileName = "PolyminoGeneratorList", menuName = "Tools/QBuild/PolyminoGeneratorList", order = 0)]
+    [CreateAssetMenu(fileName = "PolyminoGeneratorList", menuName = "Tools/QBuild/PolyminoGeneratorList", order = 12)]
     public class PolyminoGeneratorList : ScriptableObject
     {
         [SerializeField] private List<PolyminoGenerator> _generators;

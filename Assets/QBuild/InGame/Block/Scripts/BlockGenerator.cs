@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace QBuild
 {
-    [CreateAssetMenu(fileName = "BlockGenerator", menuName = "Tools/QBuild/BlockGenerator", order = 0)]
+    [CreateAssetMenu(fileName = "BlockGenerator", menuName = "Tools/QBuild/BlockGenerator", order = 11)]
     public class BlockGenerator : ScriptableObject
     {
         public FaceScriptableObject top;

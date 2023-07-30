@@ -4,7 +4,7 @@ using UnityEngine.Serialization;
 namespace QBuild
 {
     
-    [CreateAssetMenu(fileName = "FaceScriptable", menuName = "Tools/QBuild/Face", order = 0)]
+    [CreateAssetMenu(fileName = "FaceScriptable", menuName = "Tools/QBuild/Face", order = 14)]
     public class FaceScriptableObject : ScriptableObject
     {
         [SerializeField] private string type;
