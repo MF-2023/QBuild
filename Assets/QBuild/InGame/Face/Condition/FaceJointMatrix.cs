@@ -11,12 +11,12 @@ using UnityEngine;
 namespace QBuild.Condition
 {
     [Serializable]
-    public class ConditionMap : SerializableDictionary<FaceScriptableObject,bool>
+    public class ConditionMap : SerializableDictionary<string,bool>
     {
 
     }
     [Serializable]
-    public class ConditionMatrix : SerializableDictionary<FaceScriptableObject,ConditionMap>
+    public class ConditionMatrix : SerializableDictionary<string,ConditionMap>
     {
 
     }
@@ -50,14 +50,14 @@ namespace QBuild.Condition
             {
                 foreach (var faceScriptableObject in faceScriptableObjects)
                 {
-                    if (conditionFaces.ContainsKey(faceScriptableObject))
+                    if (conditionFaces.ContainsKey(faceScriptableObject.name))
                     {
                     }
                     else
                     {
                         var conditions = new ConditionMap();
-                        foreach (var scriptableObject in faceScriptableObjects) conditions.Add(scriptableObject, true);
-                        conditionFaces.Add(faceScriptableObject, conditions);
+                        foreach (var scriptableObject in faceScriptableObjects) conditions.Add(scriptableObject.name, true);
+                        conditionFaces.Add(faceScriptableObject.name, conditions);
                     }
                 }
             }
@@ -66,12 +66,12 @@ namespace QBuild.Condition
 
         public bool GetCondition(FaceScriptableObject face1, FaceScriptableObject face2)
         {
-            return conditionFaces[face1][face2];
+            return conditionFaces[face1.name][face2.name];
         }
 
         public void SetCondition(FaceScriptableObject face1, FaceScriptableObject face2,bool flg)
         {
-            conditionFaces[face1][face2] = flg;
+            conditionFaces[face1.name][face2.name] = flg;
             EditorUtility.SetDirty(this);
         }
     }

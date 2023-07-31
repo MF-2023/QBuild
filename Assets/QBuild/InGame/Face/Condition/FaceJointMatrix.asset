@@ -17,37 +17,37 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5e457a1eb1605bc40969480f3f53d433, type: 2}
   - {fileID: 11400000, guid: 8a52e26001f9615439f0578b44cd05b0, type: 2}
   conditionFaces:
-    buckets: ffffffff0800000006000000ffffffff0400000007000000000000000500000003000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-    count: 9
-    entriesHashCode: 206e0000fa6d00000e6e0000226e0000fc6d0000106e00001c6e0000526e00000a6e00000000000000000000000000000000000000000000000000000000000000000000
-    entriesNext: ffffffffffffffffffffffffffffffffffffffffffffffff0100000002000000ffffffff0000000000000000000000000000000000000000000000000000000000000000
+    buckets: ffffffff0800000009000000ffffffff04000000070000000b0000000500000003000000ffffffffffffffffffffffff0a000000ffffffffffffffffffffffffffffffff
+    count: 12
+    entriesHashCode: 206e0000fa6d00000e6e0000226e0000fc6d0000106e00001c6e0000526e00000a6e000047660f23c1c1a10954fb3b470000000000000000000000000000000000000000
+    entriesNext: ffffffffffffffffffffffffffffffffffffffffffffffff0100000002000000ffffffff06000000ffffffff000000000000000000000000000000000000000000000000
     entriesKey:
-    - {fileID: 11400000, guid: 2e4d2528d3a62f24698791d13f96e69e, type: 2}
-    - {fileID: 11400000, guid: 5e457a1eb1605bc40969480f3f53d433, type: 2}
-    - {fileID: 11400000, guid: 8a52e26001f9615439f0578b44cd05b0, type: 2}
-    - {fileID: 11400000, guid: 2e4d2528d3a62f24698791d13f96e69e, type: 2}
-    - {fileID: 11400000, guid: 5e457a1eb1605bc40969480f3f53d433, type: 2}
-    - {fileID: 11400000, guid: 8a52e26001f9615439f0578b44cd05b0, type: 2}
-    - {fileID: 11400000, guid: 2e4d2528d3a62f24698791d13f96e69e, type: 2}
-    - {fileID: 11400000, guid: 5e457a1eb1605bc40969480f3f53d433, type: 2}
-    - {fileID: 11400000, guid: 8a52e26001f9615439f0578b44cd05b0, type: 2}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - Concave
+    - Convex
+    - Plane
+    - 
+    - 
+    - 
+    - 
+    - 
     entriesValue:
     - buckets: ffffffff0200000001000000
       count: 3
       entriesHashCode: 206e0000fa6d00000e6e0000
       entriesNext: ffffffffffffffff00000000
       entriesKey:
-      - {fileID: 11400000, guid: 2e4d2528d3a62f24698791d13f96e69e, type: 2}
-      - {fileID: 11400000, guid: 5e457a1eb1605bc40969480f3f53d433, type: 2}
-      - {fileID: 11400000, guid: 8a52e26001f9615439f0578b44cd05b0, type: 2}
+      - 
+      - 
+      - 
       entriesValue: 010001
       freeCount: 0
       freeList: -1
@@ -56,9 +56,9 @@ MonoBehaviour:
       entriesHashCode: 206e0000fa6d00000e6e0000
       entriesNext: ffffffffffffffff00000000
       entriesKey:
-      - {fileID: 11400000, guid: 2e4d2528d3a62f24698791d13f96e69e, type: 2}
-      - {fileID: 11400000, guid: 5e457a1eb1605bc40969480f3f53d433, type: 2}
-      - {fileID: 11400000, guid: 8a52e26001f9615439f0578b44cd05b0, type: 2}
+      - 
+      - 
+      - 
       entriesValue: 000101
       freeCount: 0
       freeList: -1
@@ -67,9 +67,9 @@ MonoBehaviour:
       entriesHashCode: 206e0000fa6d00000e6e0000
       entriesNext: ffffffffffffffff00000000
       entriesKey:
-      - {fileID: 11400000, guid: 2e4d2528d3a62f24698791d13f96e69e, type: 2}
-      - {fileID: 11400000, guid: 5e457a1eb1605bc40969480f3f53d433, type: 2}
-      - {fileID: 11400000, guid: 8a52e26001f9615439f0578b44cd05b0, type: 2}
+      - 
+      - 
+      - 
       entriesValue: 010101
       freeCount: 0
       freeList: -1
@@ -78,9 +78,9 @@ MonoBehaviour:
       entriesHashCode: 226e0000fc6d0000106e0000
       entriesNext: ffffffffffffffff00000000
       entriesKey:
-      - {fileID: 11400000, guid: 2e4d2528d3a62f24698791d13f96e69e, type: 2}
-      - {fileID: 11400000, guid: 5e457a1eb1605bc40969480f3f53d433, type: 2}
-      - {fileID: 11400000, guid: 8a52e26001f9615439f0578b44cd05b0, type: 2}
+      - 
+      - 
+      - 
       entriesValue: 010101
       freeCount: 0
       freeList: -1
@@ -89,9 +89,9 @@ MonoBehaviour:
       entriesHashCode: 226e0000fc6d0000106e0000
       entriesNext: ffffffffffffffff00000000
       entriesKey:
-      - {fileID: 11400000, guid: 2e4d2528d3a62f24698791d13f96e69e, type: 2}
-      - {fileID: 11400000, guid: 5e457a1eb1605bc40969480f3f53d433, type: 2}
-      - {fileID: 11400000, guid: 8a52e26001f9615439f0578b44cd05b0, type: 2}
+      - 
+      - 
+      - 
       entriesValue: 010001
       freeCount: 0
       freeList: -1
@@ -100,9 +100,9 @@ MonoBehaviour:
       entriesHashCode: 226e0000fc6d0000106e0000
       entriesNext: ffffffffffffffff00000000
       entriesKey:
-      - {fileID: 11400000, guid: 2e4d2528d3a62f24698791d13f96e69e, type: 2}
-      - {fileID: 11400000, guid: 5e457a1eb1605bc40969480f3f53d433, type: 2}
-      - {fileID: 11400000, guid: 8a52e26001f9615439f0578b44cd05b0, type: 2}
+      - 
+      - 
+      - 
       entriesValue: 010101
       freeCount: 0
       freeList: -1
@@ -111,9 +111,9 @@ MonoBehaviour:
       entriesHashCode: 1c6e0000526e00000a6e0000
       entriesNext: ffffffff0000000001000000
       entriesKey:
-      - {fileID: 11400000, guid: 2e4d2528d3a62f24698791d13f96e69e, type: 2}
-      - {fileID: 11400000, guid: 5e457a1eb1605bc40969480f3f53d433, type: 2}
-      - {fileID: 11400000, guid: 8a52e26001f9615439f0578b44cd05b0, type: 2}
+      - 
+      - 
+      - 
       entriesValue: 010101
       freeCount: 0
       freeList: -1
@@ -122,9 +122,9 @@ MonoBehaviour:
       entriesHashCode: 1c6e0000526e00000a6e0000
       entriesNext: ffffffff0000000001000000
       entriesKey:
-      - {fileID: 11400000, guid: 2e4d2528d3a62f24698791d13f96e69e, type: 2}
-      - {fileID: 11400000, guid: 5e457a1eb1605bc40969480f3f53d433, type: 2}
-      - {fileID: 11400000, guid: 8a52e26001f9615439f0578b44cd05b0, type: 2}
+      - 
+      - 
+      - 
       entriesValue: 010001
       freeCount: 0
       freeList: -1
@@ -133,9 +133,42 @@ MonoBehaviour:
       entriesHashCode: 1c6e0000526e00000a6e0000
       entriesNext: ffffffff0000000001000000
       entriesKey:
-      - {fileID: 11400000, guid: 2e4d2528d3a62f24698791d13f96e69e, type: 2}
-      - {fileID: 11400000, guid: 5e457a1eb1605bc40969480f3f53d433, type: 2}
-      - {fileID: 11400000, guid: 8a52e26001f9615439f0578b44cd05b0, type: 2}
+      - 
+      - 
+      - 
+      entriesValue: 010101
+      freeCount: 0
+      freeList: -1
+    - buckets: 0200000001000000ffffffff
+      count: 3
+      entriesHashCode: 47660f23c1c1a10954fb3b47
+      entriesNext: ffffffff00000000ffffffff
+      entriesKey:
+      - Concave
+      - Convex
+      - Plane
+      entriesValue: 010101
+      freeCount: 0
+      freeList: -1
+    - buckets: 0200000001000000ffffffff
+      count: 3
+      entriesHashCode: 47660f23c1c1a10954fb3b47
+      entriesNext: ffffffff00000000ffffffff
+      entriesKey:
+      - Concave
+      - Convex
+      - Plane
+      entriesValue: 010001
+      freeCount: 0
+      freeList: -1
+    - buckets: 0200000001000000ffffffff
+      count: 3
+      entriesHashCode: 47660f23c1c1a10954fb3b47
+      entriesNext: ffffffff00000000ffffffff
+      entriesKey:
+      - Concave
+      - Convex
+      - Plane
       entriesValue: 010101
       freeCount: 0
       freeList: -1
@@ -144,9 +177,9 @@ MonoBehaviour:
       entriesHashCode: 000000000000000000000000
       entriesNext: 000000000000000000000000
       entriesKey:
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
+      - 
+      - 
+      - 
       entriesValue: 000000
       freeCount: 0
       freeList: -1
@@ -155,9 +188,9 @@ MonoBehaviour:
       entriesHashCode: 000000000000000000000000
       entriesNext: 000000000000000000000000
       entriesKey:
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
+      - 
+      - 
+      - 
       entriesValue: 000000
       freeCount: 0
       freeList: -1
@@ -166,9 +199,9 @@ MonoBehaviour:
       entriesHashCode: 000000000000000000000000
       entriesNext: 000000000000000000000000
       entriesKey:
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
+      - 
+      - 
+      - 
       entriesValue: 000000
       freeCount: 0
       freeList: -1
@@ -177,9 +210,9 @@ MonoBehaviour:
       entriesHashCode: 000000000000000000000000
       entriesNext: 000000000000000000000000
       entriesKey:
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
+      - 
+      - 
+      - 
       entriesValue: 000000
       freeCount: 0
       freeList: -1
@@ -188,42 +221,9 @@ MonoBehaviour:
       entriesHashCode: 000000000000000000000000
       entriesNext: 000000000000000000000000
       entriesKey:
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      entriesValue: 000000
-      freeCount: 0
-      freeList: -1
-    - buckets: ffffffffffffffffffffffff
-      count: 0
-      entriesHashCode: 000000000000000000000000
-      entriesNext: 000000000000000000000000
-      entriesKey:
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      entriesValue: 000000
-      freeCount: 0
-      freeList: -1
-    - buckets: ffffffffffffffffffffffff
-      count: 0
-      entriesHashCode: 000000000000000000000000
-      entriesNext: 000000000000000000000000
-      entriesKey:
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      entriesValue: 000000
-      freeCount: 0
-      freeList: -1
-    - buckets: ffffffffffffffffffffffff
-      count: 0
-      entriesHashCode: 000000000000000000000000
-      entriesNext: 000000000000000000000000
-      entriesKey:
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
+      - 
+      - 
+      - 
       entriesValue: 000000
       freeCount: 0
       freeList: -1
