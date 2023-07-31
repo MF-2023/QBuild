@@ -17,10 +17,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5e457a1eb1605bc40969480f3f53d433, type: 2}
   - {fileID: 11400000, guid: 8a52e26001f9615439f0578b44cd05b0, type: 2}
   conditionFaces:
-    buckets: 01000000050000000400000000000000ffffffff0300000002000000
-    count: 6
-    entriesHashCode: 206e0000fa6d00000e6e0000226e0000fc6d0000106e000000000000
-    entriesNext: ffffffffffffffffffffffffffffffffffffffffffffffff00000000
+    buckets: ffffffff0800000006000000ffffffff0400000007000000000000000500000003000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+    count: 9
+    entriesHashCode: 206e0000fa6d00000e6e0000226e0000fc6d0000106e00001c6e0000526e00000a6e00000000000000000000000000000000000000000000000000000000000000000000
+    entriesNext: ffffffffffffffffffffffffffffffffffffffffffffffff0100000002000000ffffffff0000000000000000000000000000000000000000000000000000000000000000
     entriesKey:
     - {fileID: 11400000, guid: 2e4d2528d3a62f24698791d13f96e69e, type: 2}
     - {fileID: 11400000, guid: 5e457a1eb1605bc40969480f3f53d433, type: 2}
@@ -28,6 +28,16 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 2e4d2528d3a62f24698791d13f96e69e, type: 2}
     - {fileID: 11400000, guid: 5e457a1eb1605bc40969480f3f53d433, type: 2}
     - {fileID: 11400000, guid: 8a52e26001f9615439f0578b44cd05b0, type: 2}
+    - {fileID: 11400000, guid: 2e4d2528d3a62f24698791d13f96e69e, type: 2}
+    - {fileID: 11400000, guid: 5e457a1eb1605bc40969480f3f53d433, type: 2}
+    - {fileID: 11400000, guid: 8a52e26001f9615439f0578b44cd05b0, type: 2}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
     - {fileID: 0}
     entriesValue:
     - buckets: ffffffff0200000001000000
@@ -94,6 +104,116 @@ MonoBehaviour:
       - {fileID: 11400000, guid: 5e457a1eb1605bc40969480f3f53d433, type: 2}
       - {fileID: 11400000, guid: 8a52e26001f9615439f0578b44cd05b0, type: 2}
       entriesValue: 010101
+      freeCount: 0
+      freeList: -1
+    - buckets: 02000000ffffffffffffffff
+      count: 3
+      entriesHashCode: 1c6e0000526e00000a6e0000
+      entriesNext: ffffffff0000000001000000
+      entriesKey:
+      - {fileID: 11400000, guid: 2e4d2528d3a62f24698791d13f96e69e, type: 2}
+      - {fileID: 11400000, guid: 5e457a1eb1605bc40969480f3f53d433, type: 2}
+      - {fileID: 11400000, guid: 8a52e26001f9615439f0578b44cd05b0, type: 2}
+      entriesValue: 010101
+      freeCount: 0
+      freeList: -1
+    - buckets: 02000000ffffffffffffffff
+      count: 3
+      entriesHashCode: 1c6e0000526e00000a6e0000
+      entriesNext: ffffffff0000000001000000
+      entriesKey:
+      - {fileID: 11400000, guid: 2e4d2528d3a62f24698791d13f96e69e, type: 2}
+      - {fileID: 11400000, guid: 5e457a1eb1605bc40969480f3f53d433, type: 2}
+      - {fileID: 11400000, guid: 8a52e26001f9615439f0578b44cd05b0, type: 2}
+      entriesValue: 010001
+      freeCount: 0
+      freeList: -1
+    - buckets: 02000000ffffffffffffffff
+      count: 3
+      entriesHashCode: 1c6e0000526e00000a6e0000
+      entriesNext: ffffffff0000000001000000
+      entriesKey:
+      - {fileID: 11400000, guid: 2e4d2528d3a62f24698791d13f96e69e, type: 2}
+      - {fileID: 11400000, guid: 5e457a1eb1605bc40969480f3f53d433, type: 2}
+      - {fileID: 11400000, guid: 8a52e26001f9615439f0578b44cd05b0, type: 2}
+      entriesValue: 010101
+      freeCount: 0
+      freeList: -1
+    - buckets: ffffffffffffffffffffffff
+      count: 0
+      entriesHashCode: 000000000000000000000000
+      entriesNext: 000000000000000000000000
+      entriesKey:
+      - {fileID: 0}
+      - {fileID: 0}
+      - {fileID: 0}
+      entriesValue: 000000
+      freeCount: 0
+      freeList: -1
+    - buckets: ffffffffffffffffffffffff
+      count: 0
+      entriesHashCode: 000000000000000000000000
+      entriesNext: 000000000000000000000000
+      entriesKey:
+      - {fileID: 0}
+      - {fileID: 0}
+      - {fileID: 0}
+      entriesValue: 000000
+      freeCount: 0
+      freeList: -1
+    - buckets: ffffffffffffffffffffffff
+      count: 0
+      entriesHashCode: 000000000000000000000000
+      entriesNext: 000000000000000000000000
+      entriesKey:
+      - {fileID: 0}
+      - {fileID: 0}
+      - {fileID: 0}
+      entriesValue: 000000
+      freeCount: 0
+      freeList: -1
+    - buckets: ffffffffffffffffffffffff
+      count: 0
+      entriesHashCode: 000000000000000000000000
+      entriesNext: 000000000000000000000000
+      entriesKey:
+      - {fileID: 0}
+      - {fileID: 0}
+      - {fileID: 0}
+      entriesValue: 000000
+      freeCount: 0
+      freeList: -1
+    - buckets: ffffffffffffffffffffffff
+      count: 0
+      entriesHashCode: 000000000000000000000000
+      entriesNext: 000000000000000000000000
+      entriesKey:
+      - {fileID: 0}
+      - {fileID: 0}
+      - {fileID: 0}
+      entriesValue: 000000
+      freeCount: 0
+      freeList: -1
+    - buckets: ffffffffffffffffffffffff
+      count: 0
+      entriesHashCode: 000000000000000000000000
+      entriesNext: 000000000000000000000000
+      entriesKey:
+      - {fileID: 0}
+      - {fileID: 0}
+      - {fileID: 0}
+      entriesValue: 000000
+      freeCount: 0
+      freeList: -1
+    - buckets: ffffffffffffffffffffffff
+      count: 0
+      entriesHashCode: 000000000000000000000000
+      entriesNext: 000000000000000000000000
+      entriesKey:
+      - {fileID: 0}
+      - {fileID: 0}
+      - {fileID: 0}
+      entriesValue: 000000
       freeCount: 0
       freeList: -1
     - buckets: ffffffffffffffffffffffff
