@@ -286,6 +286,11 @@ namespace QBuild
         }
 
 #endif
+        
+        public void OnStartButton()
+        {
+            CreatePolymino();
+        }
         List<Color> ColorTable = new List<Color>()
         {
             Color.black,
