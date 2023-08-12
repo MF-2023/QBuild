@@ -23,7 +23,6 @@ namespace QBuild.Condition
 
             var conditionFaces = faceJoints.GetMatrix();
 
-            //bool Matrix
             EditorGUILayout.LabelField("Face Joint Matrix", EditorStyles.boldLabel);
             selectPage = EditorGUILayout.Popup("Sample", selectPage, tables.Select(x => x.name).ToArray());
             var selectedFace = tables[selectPage];
