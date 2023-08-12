@@ -27,16 +27,16 @@ namespace QBuild.Condition
             EditorGUILayout.LabelField("Face Joint Matrix", EditorStyles.boldLabel);
             selectPage = EditorGUILayout.Popup("Sample", selectPage, tables.Select(x => x.name).ToArray());
             var selectedFace = tables[selectPage];
-            if (!conditionFaces.ContainsKey(selectedFace))
+            if (!conditionFaces.ContainsKey(selectedFace.name))
             {
                 faceJoints.Refresh();
             }
-            var conditionMap = conditionFaces[selectedFace];
+            var conditionMap = conditionFaces[selectedFace.name];
             foreach (var faceScriptableObject in tables)
             {
                 var toggle =
-                    EditorGUILayout.Toggle(faceScriptableObject.name, conditionMap[faceScriptableObject]);
-                if(toggle != conditionMap[faceScriptableObject])
+                    EditorGUILayout.Toggle(faceScriptableObject.name, conditionMap[faceScriptableObject.name]);
+                if(toggle != conditionMap[faceScriptableObject.name])
                 {
                     faceJoints.SetCondition(selectedFace, faceScriptableObject, toggle);
                     faceJoints.SetCondition(faceScriptableObject, selectedFace, toggle);
