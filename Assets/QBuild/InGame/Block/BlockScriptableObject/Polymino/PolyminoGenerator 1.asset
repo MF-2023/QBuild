@@ -12,4 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74db12f03228476ea7cacdee693fe02f, type: 3}
   m_Name: PolyminoGenerator 1
   m_EditorClassIdentifier: 
-  _blockGenerators: []
+  _blockGenerators:
+  - pos: {x: 0, y: 0, z: 0}
+    blockGenerator: {fileID: 11400000, guid: 818e8284dba62b0449643b3a4536ddea, type: 2}
+  - pos: {x: 1, y: 0, z: 0}
+    blockGenerator: {fileID: 11400000, guid: 818e8284dba62b0449643b3a4536ddea, type: 2}

@@ -16,4 +16,4 @@ MonoBehaviour:
   - pos: {x: 0, y: 0, z: 0}
     blockGenerator: {fileID: 11400000, guid: 818e8284dba62b0449643b3a4536ddea, type: 2}
   - pos: {x: 1, y: 0, z: 0}
-    blockGenerator: {fileID: 11400000, guid: d46d0bb5c32c5de49a431f7a2f94dc59, type: 2}
+    blockGenerator: {fileID: 11400000, guid: ba211775797d7ab4ebb7e15d8cdf8b76, type: 2}
