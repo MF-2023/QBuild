@@ -11,6 +11,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 namespace QBuild
 {
@@ -46,6 +47,9 @@ namespace QBuild
         [SerializeField] private StabilityCalculator stabilityCalculator = new StabilityCalculator();
 
         [SerializeField] private FaceJointMatrix _conditionMap;
+
+
+        [SerializeField] private List<int> _ratio = new();
 
         private void Awake()
         {
@@ -244,7 +248,7 @@ namespace QBuild
         private IEnumerator DelayCreatePolymino()
         {
             yield return new WaitForSeconds(0.5f);
-            CreatePolymino();
+            CreatePolyomino();
         }
 
 
@@ -282,13 +286,13 @@ namespace QBuild
         private void CreateStart()
         {
             if (!EditorApplication.isPlaying) return;
-            CreatePolymino();
+            CreatePolyomino();
         }
 
 #endif
         public void OnStartGame()
         {
-            CreatePolymino();
+            CreatePolyomino();
         }
 
         List<Color> ColorTable = new List<Color>()
@@ -304,29 +308,31 @@ namespace QBuild
         };
 
         [Button]
-        private void CreatePolymino()
+        private void CreatePolyomino()
         {
             if (_polyminoGeneratorList == null)
             {
                 Debug.LogError("_polyminoGeneratorList:生成リストが登録されていません。", this);
             }
 
-            var generators = _polyminoGeneratorList.Generators();
-            if (_generatorCounter >= generators.Count)
+            var generators = _polyminoGeneratorList.NextGenerator();
+            if (_generatorCounter >= _polyminoGeneratorList.GetCount())
             {
                 _generatorCounter = 0;
             }
 
             var polyomino = new Polyomino();
-            var polyminoSize = _polyominoDictionary.Count;
-            _polyominoDictionary.Add(polyminoSize, polyomino);
-            polyomino.SetDictionaryKey(polyminoSize);
+            
+            var polyominoSize = _polyominoDictionary.Count;
+
+            _polyominoDictionary.Add(polyominoSize, polyomino);
+            polyomino.SetDictionaryKey(polyominoSize);
             var color = ColorTable[_polyominos.Count % ColorTable.Count];
             //カラーテーブルを周回するごとに色を明るくする
 
             var t = (_polyominos.Count / ColorTable.Count) / 5f;
             color = Color.Lerp(color, Color.white, t);
-            foreach (var positionToBlockGenerator in generators[_generatorCounter].GetBlockGenerators())
+            foreach (var positionToBlockGenerator in generators.GetBlockGenerators())
             {
                 var position = positionToBlockGenerator.pos + _blockSpawnPosition;
                 var blockGameObject = Instantiate(_blockPrefab, position, Quaternion.identity, _blocksParent.transform);
@@ -352,6 +358,7 @@ namespace QBuild
             Debug.Log("Created Polymino");
         }
 
+       
         public void UpdateBlock(Block block)
         {
             var index = CalcVector3ToIndex(block.GetGridPosition());

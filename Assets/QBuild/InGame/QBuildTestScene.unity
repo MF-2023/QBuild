@@ -624,6 +624,7 @@ MonoBehaviour:
   _plannedSitePrefab: {fileID: 234447182654292897, guid: 60e09dbfaf193e94796734646fe3004e,
     type: 3}
   _conditionMap: {fileID: 11400000, guid: 9206c3adc8ae34a46b6cdd6be0758f36, type: 2}
+  _ratio: 640000000a000000
 --- !u!4 &731420310
 Transform:
   m_ObjectHideFlags: 0
