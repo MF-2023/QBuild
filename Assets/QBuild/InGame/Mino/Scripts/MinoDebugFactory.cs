@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using VContainer;
 
 namespace QBuild.Mino
 {
-    public class MinoFactory : IMinoFactory
+    public class MinoDebugFactory : IMinoFactory
     {
         [Inject]
-        public MinoFactory(BlockManager blockManager, BlockFactory blockFactory, GameObject blockPrefab)
+        public MinoDebugFactory(BlockManager blockManager, BlockFactory blockFactory, GameObject blockPrefab)
         {
             _blockManager = blockManager;
             _blockFactory = blockFactory;

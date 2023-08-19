@@ -32,7 +32,7 @@ namespace QBuild.Stage
                 for (var z = 0; z < _stageScriptableObject.Depth; z++)
                 {
                     var position = new Vector3Int(x, 0, z);
-                    var block = _blockFactory.CreateBlock(position, _planeBlockType, floorParent.transform);
+                    var block = _blockFactory.CreateBlock(_planeBlockType, position, floorParent.transform);
                     if (block == null) continue;
                     block.OnBlockPlaced();
                     block.name = $"floor {position}";

@@ -12,7 +12,7 @@ namespace QBuild
             _blockPrefab = blockPrefab;
         }
 
-        public Block CreateBlock(Vector3Int position, BlockType blockType, Transform parent)
+        public Block CreateBlock(BlockType blockType, Vector3Int position, Transform parent)
         {
             var blockGameObject = Object.Instantiate(_blockPrefab, position, Quaternion.identity, parent);
 

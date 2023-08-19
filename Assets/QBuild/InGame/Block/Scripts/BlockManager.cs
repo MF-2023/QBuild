@@ -81,10 +81,11 @@ namespace QBuild
         }
 
         [Inject]
-        private void Inject(StageFactory factory)
+        private void Inject(StageFactory factory, MinoFactory minoFactory)
         {
-            Debug.Log("Inject");
+            Debug.Log("Inject BlockManager");
             _stageFactory = factory;
+            _minoFactory = minoFactory;
         }
 
         private void Update()
@@ -402,7 +403,9 @@ namespace QBuild
 
         private StageFactory _stageFactory;
 
+        private MinoFactory _minoFactory;
 
+        
 #if UNITY_EDITOR
 
         [Button]
