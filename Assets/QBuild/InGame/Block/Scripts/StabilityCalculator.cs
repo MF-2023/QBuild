@@ -46,16 +46,7 @@ namespace QBuild
             float glueForce = 0;
             float mass = 0;
             int i = 0;
-
-            var allDirections = new Vector3Int[]
-            {
-                Vector3Int.up,
-                Vector3Int.down,
-                Vector3Int.left,
-                Vector3Int.forward,
-                Vector3Int.right,
-                Vector3Int.back,
-            };
+            
             while (i < maxBlocksToCheck)
             {
                 var force = glueForce;
@@ -85,14 +76,9 @@ namespace QBuild
                     }
 
                     mass += block.GetMass() * scale;
-                    foreach (var direction in allDirections)
+                    foreach (var direction in Vector3IntDirs.AllDirections)
                     {
                         var targetPosition = checkPosition + direction;
-
-                        if (targetPosition.y == 0)
-                        {
-                            continue;
-                        }
 
                         var isAir = !blockManager.TryGetBlock(targetPosition, out var other);
                         if (isAir) continue;

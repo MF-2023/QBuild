@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using QBuild.Condition;
@@ -19,11 +20,15 @@ namespace QBuild
     public class BlockManager : MonoBehaviour
     {
         [SerializeField] private List<MinoType> _polyminoGenerators;
-        [FormerlySerializedAs("_polyminoGeneratorList")] [SerializeField] private MinoTypeList _minoTypeList;
+
+        [FormerlySerializedAs("_polyminoGeneratorList")] [SerializeField]
+        private MinoTypeList _minoTypeList;
 
         [SerializeField] private Vector3Int _blockSpawnPosition;
 
-        [FormerlySerializedAs("_planeBlockGenerator")] [SerializeField] private BlockType _planeBlockType;
+        [FormerlySerializedAs("_planeBlockGenerator")] [SerializeField]
+        private BlockType _planeBlockType;
+
         [SerializeField] private GameObject _floorParent;
 
         [SerializeField] private GameObject _blockPrefab;
@@ -222,6 +227,24 @@ namespace QBuild
                 return false;
             }
 
+            if (position.y < 0 || position.y >= _maxArea.y)
+            {
+                block = null;
+                return false;
+            }
+
+            if (position.x < 0 || position.x >= _maxArea.x)
+            {
+                block = null;
+                return false;
+            }
+
+            if (position.z < 0 || position.z >= _maxArea.z)
+            {
+                block = null;
+                return false;
+            }
+
             block = _blockTable[index];
             return block != null;
         }
@@ -253,7 +276,6 @@ namespace QBuild
             var faceDirType = dir.ToVectorBlockFace();
             var ownerFace = owner.GetFace(faceDirType);
             var otherFace = other.GetFace(faceDirType.Opposite());
-
             return _conditionMap.GetCondition(ownerFace.GetFaceType(), otherFace.GetFaceType());
         }
 
