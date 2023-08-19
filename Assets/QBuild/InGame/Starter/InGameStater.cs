@@ -20,6 +20,10 @@ namespace QBuild.Starter
             
             builder.Register<StageFactory>(Lifetime.Singleton);
 
+            builder.Register<BlockStore>(Lifetime.Singleton);
+            
+            builder.RegisterEntryPoint<BlockPresenter>(Lifetime.Singleton);
+
             builder.RegisterInstance(_blockManager);
             builder.RegisterInstance(_currentStageVariable);
             builder.RegisterInstance(_currentStageVariable.RuntimeValue);

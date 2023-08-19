@@ -1,5 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using VContainer;
+using Object = UnityEngine.Object;
 
 namespace QBuild
 {
@@ -24,8 +26,13 @@ namespace QBuild
             }
 
             block.GenerateBlock(blockType, position);
+            
+            OnBlockCreated?.Invoke(block);
+
             return block;
         }
+
+        public event Action<Block> OnBlockCreated;
 
         private readonly GameObject _blockPrefab;
         private readonly BlockManager _blockManager;
