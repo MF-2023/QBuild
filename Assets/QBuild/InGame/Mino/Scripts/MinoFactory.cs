@@ -7,11 +7,10 @@ namespace QBuild.Mino
     public class MinoFactory : IMinoFactory
     {
         [Inject]
-        public MinoFactory(BlockManager blockManager, BlockFactory blockFactory, GameObject blockPrefab)
+        public MinoFactory(BlockManager blockManager, BlockFactory blockFactory)
         {
             _blockManager = blockManager;
             _blockFactory = blockFactory;
-            _blockPrefab = blockPrefab;
         }
 
 
@@ -37,6 +36,5 @@ namespace QBuild.Mino
 
         private readonly BlockManager _blockManager;
         private readonly BlockFactory _blockFactory;
-        private readonly GameObject _blockPrefab;
     }
 }
