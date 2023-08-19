@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75a8804fe0c14773973b9f479b84a157, type: 3}
   m_Name: PolyminoGeneratorList
   m_EditorClassIdentifier: 
-  _generators:
-  - {fileID: 11400000, guid: 220b253b508dffa45ba32b2bf1f9771c, type: 2}
-  - {fileID: 11400000, guid: bca543b27f3d2084b8fea1804c93d0b0, type: 2}
+  _types:
+  - _expectedValue: 1
+    _minoType: {fileID: 11400000, guid: 220b253b508dffa45ba32b2bf1f9771c, type: 2}
+  - _expectedValue: 1
+    _minoType: {fileID: 11400000, guid: bca543b27f3d2084b8fea1804c93d0b0, type: 2}

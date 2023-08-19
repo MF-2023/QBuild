@@ -15,11 +15,11 @@ namespace QBuild
             { BlockFace.Bottom, Matrix4x4.TRS(Vector3.down / 2, Quaternion.Euler(180, 0, 0), Vector3.one) },
         };
         
-        public static Mesh GenerateMesh(BlockGenerator generator)
+        public static Mesh GenerateMesh(BlockType type)
         {
             var result = new Mesh();
             var combine = new CombineInstance[6];
-            foreach (var dirFacePair in generator.GetFaces())
+            foreach (var dirFacePair in type.GetFaces())
             {
                 combine[(int)dirFacePair.dir].mesh = dirFacePair.face.GetFace().GetComponent<MeshFilter>().sharedMesh;
                 combine[(int)dirFacePair.dir].transform = FacePositions[dirFacePair.dir];

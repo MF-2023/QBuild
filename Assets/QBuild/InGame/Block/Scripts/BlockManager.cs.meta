@@ -1,3 +1,19 @@
 fileFormatVersion: 2
 guid: 42af8d1b62f14612854cb0a259861ac7
-timeCreated: 1689281429
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - _polyminoGeneratorList: {fileID: 11400000, guid: 3819ee5dcf5ea0e469515d4fca439cf1,
+      type: 2}
+  - _planeBlockGenerator: {instanceID: 0}
+  - _floorParent: {instanceID: 0}
+  - _blockPrefab: {instanceID: 0}
+  - _blocksParent: {instanceID: 0}
+  - _plannedSitePrefab: {instanceID: 0}
+  - _conditionMap: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

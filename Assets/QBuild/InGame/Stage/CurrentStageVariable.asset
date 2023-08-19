@@ -9,9 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74db12f03228476ea7cacdee693fe02f, type: 3}
-  m_Name: PolyminoGenerator
+  m_Script: {fileID: 11500000, guid: a905ac390ff14eeabd2b79990bbc089c, type: 3}
+  m_Name: CurrentStageVariable
   m_EditorClassIdentifier: 
-  _blockGenerators:
-  - pos: {x: 0, y: 0, z: 0}
-    blockGenerator: {fileID: 11400000, guid: e0afdc1d5095e0d459bdf3ff2e90163e, type: 2}
+  _initialValue: {fileID: 11400000, guid: c0c92a57dae861a4b8379770406bb832, type: 2}

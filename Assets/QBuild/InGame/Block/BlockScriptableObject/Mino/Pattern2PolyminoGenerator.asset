@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 74db12f03228476ea7cacdee693fe02f, type: 3}
-  m_Name: Pattern1PolyminoGenerator
+  m_Name: Pattern2PolyminoGenerator
   m_EditorClassIdentifier: 
-  _blockGenerators:
-  - pos: {x: 0, y: 0, z: 0}
-    blockGenerator: {fileID: 11400000, guid: 818e8284dba62b0449643b3a4536ddea, type: 2}
-  - pos: {x: 1, y: 0, z: 0}
-    blockGenerator: {fileID: 11400000, guid: ba211775797d7ab4ebb7e15d8cdf8b76, type: 2}
+  _blockTypes:
+  - _pos: {x: 0, y: 0, z: 0}
+    _blockType: {fileID: 11400000, guid: e0afdc1d5095e0d459bdf3ff2e90163e, type: 2}
+  - _pos: {x: 0, y: 0, z: 1}
+    _blockType: {fileID: 11400000, guid: 2be08fb585c1f0544a863782919f2cd8, type: 2}

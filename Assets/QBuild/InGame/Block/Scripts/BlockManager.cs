@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using QBuild.Condition;
+using QBuild.Mino;
+using QBuild.Stage;
 using SherbetInspector.Core.Attributes;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -12,17 +12,18 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
+using VContainer;
 
 namespace QBuild
 {
     public class BlockManager : MonoBehaviour
     {
-        [SerializeField] private List<PolyminoGenerator> _polyminoGenerators;
-        [SerializeField] private PolyminoGeneratorList _polyminoGeneratorList;
+        [SerializeField] private List<MinoType> _polyminoGenerators;
+        [FormerlySerializedAs("_polyminoGeneratorList")] [SerializeField] private MinoTypeList _minoTypeList;
 
         [SerializeField] private Vector3Int _blockSpawnPosition;
 
-        [SerializeField] private BlockGenerator _planeBlockGenerator;
+        [FormerlySerializedAs("_planeBlockGenerator")] [SerializeField] private BlockType _planeBlockType;
         [SerializeField] private GameObject _floorParent;
 
         [SerializeField] private GameObject _blockPrefab;
@@ -36,7 +37,7 @@ namespace QBuild
 
         [SerializeField] private List<Block> _blockTable;
 
-        [SerializeField] private List<Polyomino> fallsMino = new List<Polyomino>();
+        [SerializeField] private List<Polyomino> _fallsMino = new List<Polyomino>();
         [SerializeField] private UnityEvent _onBlockPlacedEvent;
         private float _tick = 0;
 
@@ -70,21 +71,15 @@ namespace QBuild
 
         private void Start()
         {
-            for (var x = 0; x < 10; x++)
-            {
-                for (var z = 0; z < 10; z++)
-                {
-                    var position = new Vector3Int(x, 0, z);
-                    var blockGameObject = Instantiate(_blockPrefab, position, Quaternion.identity,
-                        _floorParent.transform);
+            var floorBlocks = _stageFactory.CreateFloor(_blockPrefab, _floorParent);
+            _blocks.AddRange(floorBlocks);
+        }
 
-                    if (!blockGameObject.TryGetComponent(out Block block)) continue;
-                    block.GenerateBlock(_planeBlockGenerator, position);
-                    block.OnBlockPlaced();
-                    blockGameObject.name = $"floor {position}";
-                    _blocks.Add(block);
-                }
-            }
+        [Inject]
+        private void Inject(StageFactory factory)
+        {
+            Debug.Log("Inject");
+            _stageFactory = factory;
         }
 
         private void Update()
@@ -142,16 +137,16 @@ namespace QBuild
         private void FallMinoUpdate(Vector3Int move)
         {
             var stoppedBlocks = new List<Polyomino>();
-            foreach (var mino in fallsMino)
+            foreach (var mino in _fallsMino)
             {
                 mino.MoveNext(move);
-                if (!mino.isFalling)
+                if (!mino.IsFalling)
                 {
                     stoppedBlocks.Add(mino);
                 }
             }
 
-            if (fallsMino.Count != 0 && stoppedBlocks.Count == fallsMino.Count)
+            if (_fallsMino.Count != 0 && stoppedBlocks.Count == _fallsMino.Count)
             {
                 _onBlockPlacedEvent.Invoke();
             }
@@ -170,7 +165,7 @@ namespace QBuild
 
             _plannedSites.Clear();
 
-            foreach (var mino in fallsMino)
+            foreach (var mino in _fallsMino)
             {
                 var positions = mino.GetProvisionalPlacePosition();
 
@@ -185,7 +180,7 @@ namespace QBuild
         private void OnBlockPlaced()
         {
             var removeBlocks = new HashSet<Vector3Int>();
-            foreach (var block in fallsMino[0].GetBlocks())
+            foreach (var block in _fallsMino[0].GetBlocks())
             {
                 var list = stabilityCalculator.CalcPhysicsStabilityToFall(block.GetGridPosition(), 32,
                     out var stability);
@@ -205,7 +200,7 @@ namespace QBuild
                 RemoveBlock(fallBlock);
             }
 
-            fallsMino.Clear();
+            _fallsMino.Clear();
             StartCoroutine(DelayCreatePolymino());
         }
 
@@ -280,16 +275,6 @@ namespace QBuild
             return result;
         }
 
-#if UNITY_EDITOR
-
-        [Button]
-        private void CreateStart()
-        {
-            if (!EditorApplication.isPlaying) return;
-            CreatePolyomino();
-        }
-
-#endif
         public void OnStartGame()
         {
             CreatePolyomino();
@@ -310,19 +295,19 @@ namespace QBuild
         [Button]
         private void CreatePolyomino()
         {
-            if (_polyminoGeneratorList == null)
+            if (_minoTypeList == null)
             {
                 Debug.LogError("_polyminoGeneratorList:生成リストが登録されていません。", this);
             }
 
-            var generators = _polyminoGeneratorList.NextGenerator();
-            if (_generatorCounter >= _polyminoGeneratorList.GetCount())
+            var generators = _minoTypeList.NextGenerator();
+            if (_generatorCounter >= _minoTypeList.GetCount())
             {
                 _generatorCounter = 0;
             }
 
             var polyomino = new Polyomino();
-            
+
             var polyominoSize = _polyominoDictionary.Count;
 
             _polyominoDictionary.Add(polyominoSize, polyomino);
@@ -332,13 +317,13 @@ namespace QBuild
 
             var t = (_polyominos.Count / ColorTable.Count) / 5f;
             color = Color.Lerp(color, Color.white, t);
-            foreach (var positionToBlockGenerator in generators.GetBlockGenerators())
+            foreach (var positionToBlockGenerator in generators.GetBlockTypes())
             {
-                var position = positionToBlockGenerator.pos + _blockSpawnPosition;
+                var position = positionToBlockGenerator._pos + _blockSpawnPosition;
                 var blockGameObject = Instantiate(_blockPrefab, position, Quaternion.identity, _blocksParent.transform);
 
                 if (!blockGameObject.TryGetComponent(out Block block)) continue;
-                block.GenerateBlock(positionToBlockGenerator.blockGenerator, position, polyomino.GetDictionaryKey());
+                block.GenerateBlock(positionToBlockGenerator._blockType, position, polyomino.GetDictionaryKey());
 
 
                 foreach (var renderer in block.GetComponentsInChildren<Renderer>())
@@ -351,14 +336,14 @@ namespace QBuild
                 _blocks.Add(block);
             }
 
-            fallsMino.Add(polyomino);
+            _fallsMino.Add(polyomino);
             _polyominos.Add(polyomino);
 
             _generatorCounter++;
             Debug.Log("Created Polymino");
         }
 
-       
+
         public void UpdateBlock(Block block)
         {
             var index = CalcVector3ToIndex(block.GetGridPosition());
@@ -392,5 +377,19 @@ namespace QBuild
                 DestroyImmediate(child.gameObject);
             }
         }
+
+        private StageFactory _stageFactory;
+
+
+#if UNITY_EDITOR
+
+        [Button]
+        private void CreateStart()
+        {
+            if (!EditorApplication.isPlaying) return;
+            CreatePolyomino();
+        }
+
+#endif
     }
 }

@@ -7,7 +7,7 @@ using Object = UnityEngine.Object;
 
 namespace QBuild.BlockScriptableObject
 {
-    [CustomEditor(typeof(BlockGenerator))]
+    [CustomEditor(typeof(BlockType))]
     public class BlockGeneratorEditor : Editor
     {
         private readonly Dictionary<Object, PreviewData> _meshPreviews = new();
@@ -48,7 +48,7 @@ namespace QBuild.BlockScriptableObject
             {
                 if (_meshPreviews.ContainsKey(previewTarget)) continue;
 
-                var blockGenerator = target as BlockGenerator;
+                var blockGenerator = target as BlockType;
                 if (blockGenerator == null || blockGenerator.GetFaces().Select(x => x.face).Any(face => face == null))
                     return;
                 var mesh = UnfoldedBlockMesh.GenerateMesh(blockGenerator);

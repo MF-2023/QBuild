@@ -1,21 +1,20 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace QBuild
+namespace QBuild.Mino
 {
     [Serializable]
     public class Polyomino
     {
         [SerializeField] private List<Block> _blocks = new List<Block>();
 
-        public bool isFalling { get; private set; } = true;
+        public bool IsFalling { get; private set; } = true;
 
         private static BlockManager _blockManager;
 
-        private long dictionaryKey;
+        private long _dictionaryKey;
 
         public static void Init(BlockManager manager)
         {
@@ -24,13 +23,13 @@ namespace QBuild
 
         public void SetDictionaryKey(long key)
         {
-            dictionaryKey = key;
+            _dictionaryKey = key;
         }
 
 
         public long GetDictionaryKey()
         {
-            return dictionaryKey;
+            return _dictionaryKey;
         }
 
         public void AddBlock(Block block)
@@ -47,15 +46,14 @@ namespace QBuild
         {
             var dirs = new Vector3Int[]
             {
-                new Vector3Int(1, 0, 0),
-                new Vector3Int(-1, 0, 0),
-                new Vector3Int(0, 0, 1),
-                new Vector3Int(0, 0, -1),
-                new Vector3Int(0, -1, 0)
+                new(1, 0, 0),
+                new(-1, 0, 0),
+                new(0, 0, 1),
+                new(0, 0, -1),
+                new(0, -1, 0)
             };
             var shouldMove = _blocks.All(block => block.CanMove(move));
-
-
+            
             if (shouldMove)
             {
                 foreach (var block in _blocks)
@@ -76,25 +74,16 @@ namespace QBuild
                     break;
                 }
 
-                if (!isFalling) break;
+                if (!IsFalling) break;
             }
         }
 
         private void Place()
         {
-            var dirs = new Vector3Int[]
-            {
-                new Vector3Int(1, 0, 0),
-                new Vector3Int(-1, 0, 0),
-                new Vector3Int(0, 0, 1),
-                new Vector3Int(0, 0, -1),
-                new Vector3Int(0, -1, 0),
-                new Vector3Int(0, 1, 0)
-            };
             float stability = -1;
             foreach (var block in _blocks)
             {
-                foreach (var dir in dirs)
+                foreach (var dir in Vector3IntDirs.AllDirections)
                 {
                     var targetPos = block.GetGridPosition() + dir;
                     if(targetPos.y <= 0) continue;
@@ -104,7 +93,7 @@ namespace QBuild
                     if (!_blockManager.TryGetMino(targetBlock.GetMinoKey(), out var otherMino)) continue;
                     if(!_blockManager.ContactTest(block,targetBlock)) continue;
                     otherMino.ContactMino(this);
-                    isFalling = false;
+                    IsFalling = false;
                     return;
                 }
             }
@@ -115,7 +104,7 @@ namespace QBuild
                 stability = block.GetStability();
             }
 
-            isFalling = false;
+            IsFalling = false;
         }
 
         public void ContactMino(Polyomino otherMino)
@@ -124,9 +113,9 @@ namespace QBuild
             foreach (var block in otherMino.GetBlocks())
             {
                 block.GetComponentsInChildren<Renderer>().ToList().ForEach(x => x.material = material);
-                if (isFalling) continue;
+                if (IsFalling) continue;
                 block.OnBlockPlaced(_blocks[0].GetStability());
-                block.SetMinoKey(dictionaryKey);
+                block.SetMinoKey(_dictionaryKey);
             }
             _blockManager.RemoveMino(otherMino.GetDictionaryKey());
         }
@@ -142,7 +131,7 @@ namespace QBuild
                 new Vector3Int(0, -1, 0)
             };
 
-            int checkRowMin = int.MinValue;
+            var checkRowMin = int.MinValue;
 
             foreach (var block in _blocks)
             {

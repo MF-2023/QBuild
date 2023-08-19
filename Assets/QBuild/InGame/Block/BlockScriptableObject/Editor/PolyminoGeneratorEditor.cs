@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace QBuild.BlockScriptableObject
 {
-    [CustomEditor(typeof(PolyminoGenerator))]
+    [CustomEditor(typeof(MinoType))]
     public class PolyminoGeneratorEditor : Editor
     {
         private PreviewRenderUtility _previewUtility;
@@ -16,15 +16,15 @@ namespace QBuild.BlockScriptableObject
 
         private float _distance = 10f;
 
-        private List<PolyminoGenerator.PositionToBlockGenerator> _generatorsBuffer =
-            new List<PolyminoGenerator.PositionToBlockGenerator>();
+        private List<MinoType.PositionToBlockGenerator> _generatorsBuffer =
+            new List<MinoType.PositionToBlockGenerator>();
 
         public override bool HasPreviewGUI()
         {
-            var polyminoGenerator = (PolyminoGenerator)target;
+            var polyminoGenerator = (MinoType)target;
 
-            if (polyminoGenerator.GetBlockGenerators() == null) return false;
-            if (polyminoGenerator.GetBlockGenerators().Count == 0) return false;
+            if (polyminoGenerator.GetBlockTypes() == null) return false;
+            if (polyminoGenerator.GetBlockTypes().Count == 0) return false;
 
             if (IsChanged()) MeshInitialize();
             return true;
@@ -32,8 +32,8 @@ namespace QBuild.BlockScriptableObject
 
         private bool IsChanged()
         {
-            var polyminoGenerator = (PolyminoGenerator)target;
-            var generators = polyminoGenerator.GetBlockGenerators();
+            var polyminoGenerator = (MinoType)target;
+            var generators = polyminoGenerator.GetBlockTypes();
 
             var changed = false;
             for (var i = 0; i < generators.Count; i++)
@@ -67,8 +67,8 @@ namespace QBuild.BlockScriptableObject
         {
             _mesh = new Mesh();
             // 各ブロックのメッシュ結合して一つにまとめる
-            var polyminoGenerator = (PolyminoGenerator)target;
-            var generators = polyminoGenerator.GetBlockGenerators();
+            var polyminoGenerator = (MinoType)target;
+            var generators = polyminoGenerator.GetBlockTypes();
 
             if (generators == null) return;
             if (generators.Count == 0) return;
@@ -78,8 +78,8 @@ namespace QBuild.BlockScriptableObject
             for (var i = 0; i < generators.Count; i++)
             {
                 combine[i].mesh =
-                    BlockMesh.GenerateMesh(generators[i].blockGenerator);
-                combine[i].transform = Matrix4x4.Translate(generators[i].pos);
+                    BlockMesh.GenerateMesh(generators[i]._blockType);
+                combine[i].transform = Matrix4x4.Translate(generators[i]._pos);
             }
 
             _mesh.CombineMeshes(combine);

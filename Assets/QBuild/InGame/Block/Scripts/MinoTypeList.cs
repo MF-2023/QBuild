@@ -1,22 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using QBuild.Const;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace QBuild
 {
-    [CreateAssetMenu(fileName = "PolyminoGeneratorList", menuName = "Tools/QBuild/PolyminoGeneratorList", order = 12)]
-    public class PolyminoGeneratorList : ScriptableObject
+    [CreateAssetMenu(fileName = "PolyminoGeneratorList",
+        menuName = EditorConst.ScriptablePrePath + "PolyminoGeneratorList", order = EditorConst.OtherOrder)]
+    public class MinoTypeList : ScriptableObject
     {
         [Serializable]
-        private class MinoGeneratorElement
+        private class MinoTypeElement
         {
             [SerializeField] private int _expectedValue;
-            [SerializeField] private PolyminoGenerator _generator;
+            [SerializeField] private MinoType _minoType;
 
-            public PolyminoGenerator GetGenerator()
+            public MinoType GetMinoType()
             {
-                return _generator;
+                return _minoType;
             }
 
             public int GetExpectedValue()
@@ -24,32 +27,32 @@ namespace QBuild
                 return _expectedValue;
             }
         }
-        
-        [SerializeField] private List<MinoGeneratorElement> _generators;
 
-        public PolyminoGenerator NextGenerator()
+        [SerializeField] private List<MinoTypeElement> _types;
+
+        public MinoType NextGenerator()
         {
-            var list = _generators.Select(element => element.GetExpectedValue());
+            var list = _types.Select(element => element.GetExpectedValue());
 
             var index = GetRandomMino(list);
 
-            var generator =  _generators[index].GetGenerator();
+            var generator = _types[index].GetMinoType();
 
             if (generator == null)
             {
-                Debug.LogError($"{index + 1}番目のGeneratorが割り当てられていません",this);
+                Debug.LogError($"{index + 1}番目のGeneratorが割り当てられていません", this);
                 return null;
             }
-            
+
             Debug.Log($"generate mino {generator.name}");
-            
+
             return generator;
         }
-        
+
         private int GetRandomMino(IEnumerable<int> ratioList)
         {
             var enumerable = ratioList as int[] ?? ratioList.ToArray();
-            
+
             var total = enumerable.Sum();
 
             //calculation random value
@@ -69,7 +72,7 @@ namespace QBuild
         [Obsolete("実装に依存してしまうため、使わないこと")]
         public int GetCount()
         {
-            return _generators.Count;
+            return _types.Count;
         }
     }
 }

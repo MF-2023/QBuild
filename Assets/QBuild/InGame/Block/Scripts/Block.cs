@@ -22,7 +22,7 @@ namespace QBuild
 
     public class Block : MonoBehaviour
     {
-        [SerializeField] private BlockGenerator blockScriptableObjects;
+        [SerializeField] private BlockType blockScriptableObjects;
 
         [SerializeField] private Faces faces;
 
@@ -43,9 +43,9 @@ namespace QBuild
             _blockManager = manager;
         }
 
-        public void GenerateBlock(BlockGenerator generator, Vector3Int pos, long ownerKey = -1)
+        public void GenerateBlock(BlockType type, Vector3Int pos, long ownerKey = -1)
         {
-            blockScriptableObjects = generator;
+            blockScriptableObjects = type;
             ownerMinoKey = ownerKey;
             _gridPosition = pos;
             GenerateBlock();

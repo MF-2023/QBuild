@@ -604,11 +604,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _polyminoGenerators: []
-  _polyminoGeneratorList: {fileID: 11400000, guid: 3819ee5dcf5ea0e469515d4fca439cf1,
-    type: 2}
+  _minoTypeList: {fileID: 11400000, guid: 3819ee5dcf5ea0e469515d4fca439cf1, type: 2}
   _blockSpawnPosition: {x: 5, y: 10, z: 5}
-  _planeBlockGenerator: {fileID: 11400000, guid: 818e8284dba62b0449643b3a4536ddea,
-    type: 2}
+  _planeBlockType: {fileID: 11400000, guid: 818e8284dba62b0449643b3a4536ddea, type: 2}
   _floorParent: {fileID: 1270036916}
   _blockPrefab: {fileID: 7085934378338776102, guid: 01404876c42fab940a18646b630c9bb7,
     type: 3}
@@ -616,7 +614,7 @@ MonoBehaviour:
   _blocks: []
   _polyominos: []
   _blockTable: []
-  fallsMino: []
+  _fallsMino: []
   _onBlockPlacedEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -1306,6 +1304,61 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1312260065
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1312260067}
+  - component: {fileID: 1312260066}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1312260066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1312260065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a370eb8b398f4c0a95db7636614198fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parentReference:
+    TypeName: 
+  autoRun: 1
+  autoInjectGameObjects:
+  - {fileID: 731420308}
+  _blockManager: {fileID: 731420309}
+  _currentStageVariable: {fileID: 11400000, guid: 113842f3a0ef9184da42da1f3e0ce60a,
+    type: 2}
+  _planeBlockType: {fileID: 11400000, guid: 818e8284dba62b0449643b3a4536ddea, type: 2}
+  _blockPrefab: {fileID: 7085934378338776102, guid: 01404876c42fab940a18646b630c9bb7,
+    type: 3}
+--- !u!4 &1312260067
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1312260065}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1338835297
 GameObject:

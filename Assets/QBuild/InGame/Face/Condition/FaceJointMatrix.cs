@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using QBuild;
+using QBuild.Const;
 using SherbetInspector.Core.Attributes;
 
 #if UNITY_EDITOR
@@ -21,9 +22,8 @@ public class ConditionMatrix : SerializableDictionary<FaceScriptableObject, Cond
 
 namespace QBuild.Condition
 {
-
-
-    [CreateAssetMenu(fileName = "FaceJointMatrix", menuName = "Tools/QBuild/FaceConditionMatrix", order = 13)]
+    [CreateAssetMenu(fileName = "FaceJointMatrix", menuName = EditorConst.ScriptablePrePath + "FaceConditionMatrix",
+        order = EditorConst.OtherOrder)]
     public class FaceJointMatrix : ScriptableObject
     {
         [SerializeField] private List<FaceScriptableObject> faceScriptableObjects;
