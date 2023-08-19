@@ -24,15 +24,15 @@ namespace QBuild.Starter
             builder.RegisterInstance(_currentStageVariable);
             builder.RegisterInstance(_currentStageVariable.RuntimeValue);
             builder.RegisterInstance(_planeBlockType);
-            builder.RegisterInstance(_blockPrefab);
+            builder.RegisterInstance(_blockPrefabInfo);
             //builder.RegisterEntryPoint<>()
         }
 
         
         [SerializeField] private BlockManager _blockManager;
         [SerializeField] private CurrentStageVariable _currentStageVariable;
-        [FormerlySerializedAs("_planeBlockGenerator")] [SerializeField] private BlockType _planeBlockType;
-        [SerializeField] private GameObject _blockPrefab;
+        [SerializeField] private BlockType _planeBlockType;
+        [SerializeField] private BlockCreateInfo _blockPrefabInfo;
         
     }
 }
