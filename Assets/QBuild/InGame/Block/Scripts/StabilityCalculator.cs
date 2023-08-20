@@ -13,9 +13,9 @@ namespace QBuild
     {
         
         [Inject]
-        public StabilityCalculator(BlockStore blockStore)
+        public StabilityCalculator(BlockUseCase blockUseCase)
         {
-            _blockStore = blockStore;
+            _blockUseCase = blockUseCase;
         }
 
 
@@ -47,7 +47,7 @@ namespace QBuild
                 while (this._positionsToCheck.Count > 0)
                 {
                     var checkPosition = this._positionsToCheck.Dequeue();
-                    if (!_blockStore.TryGetBlock(checkPosition, out var block))
+                    if (!_blockUseCase.TryGetBlock(checkPosition, out var block))
                         continue;
                     minoKey = block.GetMinoKey();
                     if (glueForce > 0)
@@ -73,7 +73,7 @@ namespace QBuild
                     {
                         var targetPosition = checkPosition + direction;
 
-                        var isAir = !_blockStore.TryGetBlock(targetPosition, out var other);
+                        var isAir = !_blockUseCase.TryGetBlock(targetPosition, out var other);
                         if (isAir) continue;
                         var equalMino = minoKey == other.GetMinoKey();
                         //ブロックの安定性
@@ -137,7 +137,7 @@ namespace QBuild
             return list;
         }
 
-        private readonly BlockStore _blockStore;
+        private readonly BlockUseCase _blockUseCase;
 
         private Dictionary<Vector3Int, int> _posPlaced = new(20 * 20 * 20);
 

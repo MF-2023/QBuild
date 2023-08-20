@@ -140,33 +140,6 @@ namespace QBuild
             return stabilityNext;
         }
 
-        public void GlueBlock(BlockFace blockFace, Block block)
-        {
-            switch (blockFace)
-            {
-                case BlockFace.Top:
-                    faces.top.SetGlueBlock(block);
-                    break;
-                case BlockFace.Bottom:
-                    faces.bottom.SetGlueBlock(block);
-                    break;
-                case BlockFace.Left:
-                    faces.left.SetGlueBlock(block);
-                    break;
-                case BlockFace.Right:
-                    faces.right.SetGlueBlock(block);
-                    break;
-                case BlockFace.Front:
-                    faces.center.SetGlueBlock(block);
-                    break;
-                case BlockFace.Back:
-                    faces.back.SetGlueBlock(block);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(blockFace), blockFace, null);
-            }
-        }
-
         public Face GetFace(BlockFace face)
         {
             return face switch
