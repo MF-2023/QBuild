@@ -6,6 +6,9 @@ using UnityEditor;
 
 namespace QBuild
 {
+    /// <summary>
+    /// デバッグ用機能を紐づけるクラス
+    /// </summary>
     [InitializeOnLoad]
     public static class BlockManagerBind
     {
