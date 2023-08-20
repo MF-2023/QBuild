@@ -31,11 +31,11 @@ namespace QBuild
 
         [SerializeField] private Vector3Int _gridPosition;
 
-        [SerializeField] private bool isFalling = true;
+        [SerializeField] private bool _isFalling = true;
 
-        [SerializeField] private float stabilityGlue = 0;
-        [SerializeField] private float stability = 0;
-        [SerializeField] private float mass = 1;
+        [SerializeField] private float _stabilityGlue = 0;
+        [SerializeField] private float _stability = 0;
+        [SerializeField] private float _mass = 1;
 
         [Inject]
         private void Inject(BlockUseCase blockUseCase)
@@ -86,11 +86,11 @@ namespace QBuild
 
         public void OnBlockPlaced(float stabilityNext = -1)
         {
-            isFalling = false;
+            _isFalling = false;
 
             if (stabilityNext < 0) stabilityNext = CalcStability();
 
-            stability = stabilityNext;
+            _stability = stabilityNext;
             Debug.Log("Place");
         }
 
@@ -183,17 +183,17 @@ namespace QBuild
 
         public bool IsFalling()
         {
-            return isFalling;
+            return _isFalling;
         }
 
         public float GetStabilityGlue()
         {
-            return stabilityGlue;
+            return _stabilityGlue;
         }
 
         public float GetStability()
         {
-            return stability;
+            return _stability;
         }
 
         [Button]
@@ -212,8 +212,8 @@ namespace QBuild
                 return face.MakeFace();
             }
 
-            stabilityGlue = 9;
-            stability = 10;
+            _stabilityGlue = 9;
+            _stability = 10;
             faces.top = FaceGenerate(blockScriptableObjects.top, Vector3.up / 2, Quaternion.identity);
             faces.bottom = FaceGenerate(blockScriptableObjects.bottom, Vector3.down / 2, Quaternion.Euler(180, 0, 0));
 
@@ -226,12 +226,12 @@ namespace QBuild
 
         public float GetMass()
         {
-            return mass;
+            return _mass;
         }
 
-        public float GetForceToOtherBlock(Block _other)
+        public float GetForceToOtherBlock(Block other)
         {
-            return Math.Min(this.GetStabilityGlue(), _other.GetStabilityGlue());
+            return Math.Min(this.GetStabilityGlue(), other.GetStabilityGlue());
         }
 
         private BlockUseCase _blockUseCase;
