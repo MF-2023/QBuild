@@ -1,20 +1,41 @@
-﻿using System;
-using VContainer;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace QBuild
 {
-    public class BlockStore : IDisposable
+    /// <summary>
+    /// ブロックを管理するクラス
+    /// </summary>
+    public class BlockStore
     {
-
-        
         public void AddBlock(Block block)
         {
+            _blockDictionary.Add(block.GetGridPosition(), block);
         }
 
-        public void Dispose()
+        public bool TryGetBlock(Vector3Int pos, out Block block)
         {
-            
+            var contains = _blockDictionary.ContainsKey(pos);
+            block = contains ? _blockDictionary[pos] : null;
+            return contains;
         }
-        
+
+        public void Update(Block block,Vector3Int beforePos)
+        {
+            RemoveBlock(beforePos);
+            AddBlock(block);
+        }
+
+        public void Clear()
+        {
+            _blockDictionary.Clear();
+        }
+
+        public void RemoveBlock(Vector3Int pos)
+        {
+            _blockDictionary.Remove(pos);
+        }
+
+        private readonly Dictionary<Vector3Int, Block> _blockDictionary = new();
     }
 }

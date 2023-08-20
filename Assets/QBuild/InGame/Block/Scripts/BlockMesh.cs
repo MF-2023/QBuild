@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace QBuild
 {
+    /// <summary>
+    /// ブロックのメッシュを生成するクラス
+    /// </summary>
     public static class BlockMesh
     {
         private static readonly Dictionary<BlockFace, Matrix4x4> FacePositions = new()

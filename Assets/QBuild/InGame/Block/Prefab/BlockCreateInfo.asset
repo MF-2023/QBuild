@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4a83bca6fed465b83aba0107a133cb7, type: 3}
   m_Name: BlockCreateInfo
   m_EditorClassIdentifier: 
-  _prefab: {fileID: 0}
+  _prefab: {fileID: 7085934378338776102, guid: 01404876c42fab940a18646b630c9bb7, type: 3}

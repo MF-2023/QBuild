@@ -1,4 +1,6 @@
-﻿using QBuild.Mino;
+﻿using System;
+using QBuild.Condition;
+using QBuild.Mino;
 using QBuild.Stage;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -16,12 +18,16 @@ namespace QBuild.Starter
         {
             Debug.Log("InGameStater.Configure");
             builder.Register<BlockFactory>(Lifetime.Singleton);
-            builder.Register<MinoFactory>(Lifetime.Singleton);
-            
+            builder.Register<MinoDebugFactory>(Lifetime.Singleton).As<IMinoFactory>();
             builder.Register<StageFactory>(Lifetime.Singleton);
 
             builder.Register<BlockStore>(Lifetime.Singleton);
-            
+            builder.Register<MinoStore>(Lifetime.Singleton);
+
+            builder.Register<BlockUseCase>(Lifetime.Singleton);
+            builder.Register<MinoUseCase>(Lifetime.Singleton);
+            builder.Register<StabilityCalculator>(Lifetime.Singleton);
+
             builder.RegisterEntryPoint<BlockPresenter>(Lifetime.Singleton);
 
             builder.RegisterInstance(_blockManager);
@@ -29,14 +35,13 @@ namespace QBuild.Starter
             builder.RegisterInstance(_currentStageVariable.RuntimeValue);
             builder.RegisterInstance(_planeBlockType);
             builder.RegisterInstance(_blockPrefabInfo);
-            //builder.RegisterEntryPoint<>()
+            builder.RegisterInstance(_faceJointMatrix);
         }
 
-        
         [SerializeField] private BlockManager _blockManager;
         [SerializeField] private CurrentStageVariable _currentStageVariable;
         [SerializeField] private BlockType _planeBlockType;
         [SerializeField] private BlockCreateInfo _blockPrefabInfo;
-        
+        [SerializeField] private FaceJointMatrix _faceJointMatrix;
     }
 }

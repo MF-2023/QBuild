@@ -1,5 +1,4 @@
-﻿using System;
-using VContainer;
+﻿using VContainer;
 using VContainer.Unity;
 
 namespace QBuild

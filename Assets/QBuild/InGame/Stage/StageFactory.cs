@@ -21,10 +21,8 @@ namespace QBuild.Stage
         /// <summary>
         /// ステージの生成
         /// </summary>
-        /// <param name="blockPrefab">ブロックのプレハブ</param>
         /// <param name="floorParent">ステージを生成する際の親オブジェクト</param>
-        public IEnumerable<Block> CreateFloor(GameObject blockPrefab,
-            GameObject floorParent)
+        public IEnumerable<Block> CreateFloor(GameObject floorParent)
         {
             var result = new List<Block>();
             for (var x = 0; x < _stageScriptableObject.Width; x++)

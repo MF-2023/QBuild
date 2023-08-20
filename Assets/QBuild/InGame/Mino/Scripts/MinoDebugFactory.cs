@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using VContainer;
 
 namespace QBuild.Mino
@@ -6,10 +7,10 @@ namespace QBuild.Mino
     public class MinoDebugFactory : IMinoFactory
     {
         [Inject]
-        public MinoDebugFactory(BlockManager blockManager, BlockFactory blockFactory)
+        public MinoDebugFactory(BlockFactory blockFactory, MinoStore minoStore)
         {
-            _blockManager = blockManager;
             _blockFactory = blockFactory;
+            _minoStore = minoStore;
         }
 
 
@@ -17,23 +18,47 @@ namespace QBuild.Mino
         {
             var polyomino = new Polyomino();
 
-            var key = 0;
+            var key = new MinoKey(_minoStore.Count);
             polyomino.SetDictionaryKey(key);
+
+            var color = ColorTable[_minoStore.Count % ColorTable.Count];
+            //カラーテーブルを周回するごとに色を明るくする
+            var t = _minoStore.Count / ColorTable.Count / 5f;
+            color = Color.Lerp(color, Color.white, t);
+
 
             foreach (var positionToBlockType in minoType.GetBlockTypes())
             {
                 var position = positionToBlockType._pos + origin;
                 var block = _blockFactory.CreateBlock(positionToBlockType._blockType, position, parent);
+                block.SetMinoKey(key);
                 block.name = $"Block {position}";
-                polyomino.AddBlock(block);
 
-                //_blocks.Add(block);
+                foreach (var renderer in block.GetComponentsInChildren<Renderer>())
+                {
+                    renderer.material.color = color;
+                }
+
+                polyomino.AddBlock(block);
             }
 
+            _minoStore.AddMino(key, polyomino);
             return polyomino;
         }
 
-        private readonly BlockManager _blockManager;
+        private static readonly List<Color> ColorTable = new()
+        {
+            Color.black,
+            Color.blue,
+            Color.cyan,
+            Color.gray,
+            Color.green,
+            Color.magenta,
+            Color.red,
+            Color.yellow,
+        };
+
         private readonly BlockFactory _blockFactory;
+        private readonly MinoStore _minoStore;
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine;
 namespace QBuild.BlockScriptableObject
 {
     [CustomEditor(typeof(MinoType))]
-    public class PolyminoGeneratorEditor : Editor
+    public class MinoGeneratorEditor : Editor
     {
         private PreviewRenderUtility _previewUtility;
 
@@ -21,10 +21,10 @@ namespace QBuild.BlockScriptableObject
 
         public override bool HasPreviewGUI()
         {
-            var polyminoGenerator = (MinoType)target;
+            var minoType = (MinoType)target;
 
-            if (polyminoGenerator.GetBlockTypes() == null) return false;
-            if (polyminoGenerator.GetBlockTypes().Count == 0) return false;
+            if (minoType.GetBlockTypes() == null) return false;
+            if (minoType.GetBlockTypes().Count == 0) return false;
 
             if (IsChanged()) MeshInitialize();
             return true;

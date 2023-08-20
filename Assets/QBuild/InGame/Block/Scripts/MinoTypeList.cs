@@ -7,8 +7,11 @@ using UnityEngine.Serialization;
 
 namespace QBuild
 {
-    [CreateAssetMenu(fileName = "PolyminoGeneratorList",
-        menuName = EditorConst.ScriptablePrePath + "PolyminoGeneratorList", order = EditorConst.OtherOrder)]
+    /// <summary>
+    /// ミノの種類をまとめて、生成に使用するテーブル
+    /// </summary>
+    [CreateAssetMenu(fileName = "MinoTypeList",
+        menuName = EditorConst.ScriptablePrePath + "MinoTypeList", order = EditorConst.OtherOrder)]
     public class MinoTypeList : ScriptableObject
     {
         [Serializable]

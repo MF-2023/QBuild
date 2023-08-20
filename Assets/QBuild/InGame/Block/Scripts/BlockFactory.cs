@@ -1,23 +1,24 @@
 ﻿using System;
 using UnityEngine;
 using VContainer;
-using Object = UnityEngine.Object;
+using VContainer.Unity;
 
 namespace QBuild
 {
     public class BlockFactory
     {
         [Inject]
-        public BlockFactory(BlockManager blockManager, BlockCreateInfo createInfo)
+        public BlockFactory(BlockManager blockManager, BlockCreateInfo createInfo,IObjectResolver resolver)
         {
             _blockManager = blockManager;
             _blockPrefab = createInfo.Prefab;
+            _resolver = resolver;
         }
 
         public Block CreateBlock(BlockType blockType, Vector3Int position, Transform parent)
         {
             
-            var blockGameObject = Object.Instantiate(_blockPrefab, position, Quaternion.identity, parent);
+            var blockGameObject = _resolver.Instantiate(_blockPrefab, position, Quaternion.identity, parent);
 
             if (!blockGameObject.TryGetComponent(out Block block))
             {
@@ -36,5 +37,6 @@ namespace QBuild
 
         private readonly GameObject _blockPrefab;
         private readonly BlockManager _blockManager;
+        private readonly IObjectResolver _resolver;
     }
 }

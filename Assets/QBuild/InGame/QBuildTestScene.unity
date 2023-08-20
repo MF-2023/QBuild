@@ -606,23 +606,13 @@ MonoBehaviour:
   _polyminoGenerators: []
   _minoTypeList: {fileID: 11400000, guid: 3819ee5dcf5ea0e469515d4fca439cf1, type: 2}
   _blockSpawnPosition: {x: 5, y: 10, z: 5}
-  _planeBlockType: {fileID: 11400000, guid: 818e8284dba62b0449643b3a4536ddea, type: 2}
   _floorParent: {fileID: 1270036916}
-  _blockPrefab: {fileID: 7085934378338776102, guid: 01404876c42fab940a18646b630c9bb7,
-    type: 3}
   _blocksParent: {fileID: 731420308}
-  _blocks: []
-  _polyominos: []
-  _blockTable: []
-  _fallsMino: []
   _onBlockPlacedEvent:
     m_PersistentCalls:
       m_Calls: []
-  _maxArea: {x: 10, y: 20, z: 10}
   _plannedSitePrefab: {fileID: 234447182654292897, guid: 60e09dbfaf193e94796734646fe3004e,
     type: 3}
-  _conditionMap: {fileID: 11400000, guid: 9206c3adc8ae34a46b6cdd6be0758f36, type: 2}
-  _ratio: 640000000a000000
 --- !u!4 &731420310
 Transform:
   m_ObjectHideFlags: 0
@@ -1316,7 +1306,7 @@ GameObject:
   - component: {fileID: 1312260067}
   - component: {fileID: 1312260066}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Installer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1343,8 +1333,8 @@ MonoBehaviour:
   _currentStageVariable: {fileID: 11400000, guid: 113842f3a0ef9184da42da1f3e0ce60a,
     type: 2}
   _planeBlockType: {fileID: 11400000, guid: 818e8284dba62b0449643b3a4536ddea, type: 2}
-  _blockPrefab: {fileID: 7085934378338776102, guid: 01404876c42fab940a18646b630c9bb7,
-    type: 3}
+  _blockPrefabInfo: {fileID: 11400000, guid: 785e894b1fd75e44594ea65496334d41, type: 2}
+  _faceJointMatrix: {fileID: 11400000, guid: 9206c3adc8ae34a46b6cdd6be0758f36, type: 2}
 --- !u!4 &1312260067
 Transform:
   m_ObjectHideFlags: 0

@@ -4,37 +4,41 @@ using VContainer;
 
 namespace QBuild.Mino
 {
+    /// <summary>
+    /// Polyomino の生成を行う
+    /// </summary>
     public class MinoFactory : IMinoFactory
     {
         [Inject]
-        public MinoFactory(BlockManager blockManager, BlockFactory blockFactory)
+        public MinoFactory(BlockFactory blockFactory, MinoStore minoStore)
         {
-            _blockManager = blockManager;
             _blockFactory = blockFactory;
+            _minoStore = minoStore;
         }
 
 
         public Polyomino CreateMino(MinoType minoType, Vector3Int origin, Transform parent)
         {
-            var polyomino = new Polyomino();
+            var mino = new Polyomino();
 
-            var key = 0;
-            polyomino.SetDictionaryKey(key);
+            var key = new MinoKey(_minoStore.Count);
+            mino.SetDictionaryKey(key);
 
             foreach (var positionToBlockType in minoType.GetBlockTypes())
             {
                 var position = positionToBlockType._pos + origin;
                 var block = _blockFactory.CreateBlock(positionToBlockType._blockType, position, parent);
+                block.SetMinoKey(key);
                 block.name = $"Block {position}";
-                polyomino.AddBlock(block);
 
-                //_blocks.Add(block);
+                mino.AddBlock(block);
             }
 
-            return polyomino;
+            _minoStore.AddMino(key, mino);
+            return mino;
         }
 
-        private readonly BlockManager _blockManager;
         private readonly BlockFactory _blockFactory;
+        private readonly MinoStore _minoStore;
     }
 }
