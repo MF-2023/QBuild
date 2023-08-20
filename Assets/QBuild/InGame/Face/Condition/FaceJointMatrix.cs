@@ -4,6 +4,7 @@ using System.Linq;
 using QBuild;
 using QBuild.Const;
 using SherbetInspector.Core.Attributes;
+using SherbetInspector.Serializable;
 
 #if UNITY_EDITOR
 using UnityEditor;
