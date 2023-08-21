@@ -1,6 +1,7 @@
 ﻿using System;
 using QBuild.Condition;
 using QBuild.Mino;
+using QBuild.Mino.ProvisionalMino;
 using QBuild.Stage;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -17,12 +18,13 @@ namespace QBuild.Starter
         protected override void Configure(IContainerBuilder builder)
         {
             Debug.Log("InGameStater.Configure");
-            builder.Register<BlockFactory>(Lifetime.Singleton);
             builder.Register<StageFactory>(Lifetime.Singleton);
-
+            
+            builder.Register<BlockFactory>(Lifetime.Singleton);
             builder.Register<BlockStore>(Lifetime.Singleton);
-
             builder.Register<BlockService>(Lifetime.Singleton);
+
+            
             builder.Register<StabilityCalculator>(Lifetime.Singleton);
 
             builder.Register<MinoDebugFactory>(Lifetime.Singleton).As<IMinoFactory>();
@@ -33,6 +35,10 @@ namespace QBuild.Starter
             builder.Register<MinoPhysicsSimulation>(Lifetime.Singleton);
             builder.RegisterEntryPoint<MinoPresenter>();
             
+            builder.Register<ProvisionalMinoView>(Lifetime.Singleton);
+            builder.Register<ProvisionalMinoService>(Lifetime.Singleton);
+            builder.RegisterEntryPoint<ProvisionalMinoPresenter>(Lifetime.Singleton);
+
             builder.RegisterEntryPoint<MinoEventLifeCycle>();
             builder.Register<MinoFallTick>(Lifetime.Singleton);
             builder.Register<MinoDestroyTick>(Lifetime.Singleton);
@@ -49,7 +55,8 @@ namespace QBuild.Starter
             builder.RegisterInstance(_blockPrefabInfo);
             builder.RegisterInstance(_faceJointMatrix);
             builder.RegisterInstance(_minoTypeList);
-
+            builder.RegisterInstance(_provisionalMinoSetting);
+            builder.RegisterInstance(_blockParentObject.GetComponent<IBlockParentObject>());
         }
 
         [SerializeField] private BlockManager _blockManager;
@@ -58,5 +65,7 @@ namespace QBuild.Starter
         [SerializeField] private BlockCreateInfo _blockPrefabInfo;
         [SerializeField] private FaceJointMatrix _faceJointMatrix;
         [SerializeField] private MinoTypeList _minoTypeList;
+        [SerializeField] private ProvisionalMinoSetting _provisionalMinoSetting;
+        [SerializeField] private GameObject _blockParentObject;
     }
 }

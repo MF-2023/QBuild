@@ -33,6 +33,8 @@ namespace QBuild.Mino
             
             
             _minoPhysicsSimulation.OnDropBlocks += OnMinoSimulated;
+            
+            
         }
 
         public void Dispose()

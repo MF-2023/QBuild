@@ -9,11 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 372f3bfa381348f8826fceaf6fe3772c, type: 3}
-  m_Name: StageDebug
+  m_Script: {fileID: 11500000, guid: fbd6ed39dd104c7db335356b8bc5139e, type: 3}
+  m_Name: ProvisionalSetting
   m_EditorClassIdentifier: 
-  _width: 10
-  _depth: 10
-  _height: 20
-  _playerSpawnPosition: {x: 0, y: 0, z: 0}
-  _MinoSpawnPosition: {x: 5, y: 10, z: 5}
+  _provisionalMinoPrefab: {fileID: 234447182654292897, guid: 60e09dbfaf193e94796734646fe3004e,
+    type: 3}
