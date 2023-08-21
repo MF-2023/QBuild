@@ -8,10 +8,10 @@ namespace QBuild
     /// <summary>
     /// ブロックの振る舞いを定義するクラス
     /// </summary>
-    public class BlockUseCase
+    public class BlockService
     {
         [Inject]
-        public BlockUseCase(BlockStore blockStore, FaceJointMatrix conditionMap,
+        public BlockService(BlockStore blockStore, FaceJointMatrix conditionMap,
             StageScriptableObject stageScriptableObject)
         {
             _blockStore = blockStore;

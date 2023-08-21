@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using QBuild.Stage;
 using UnityEngine;
 using VContainer;
 
@@ -8,13 +10,29 @@ namespace QBuild.Mino
     /// <summary>
     /// ミノの振る舞いを定義するクラス
     /// </summary>
-    public class MinoUseCase
+    public class MinoService
     {
+        public event Action<Polyomino> OnMinoPlaced;
+        public event Action<Polyomino> OnMinoMoved; 
+
         [Inject]
-        public MinoUseCase(MinoStore minoStore, BlockUseCase blockUseCase)
+        public MinoService(MinoStore minoStore, BlockService blockService, StabilityCalculator stabilityCalculator,
+            IMinoFactory minoFactory, MinoTypeList minoTypeList, StageScriptableObject stageScriptableObject
+        )
         {
             _minoStore = minoStore;
-            _blockUseCase = blockUseCase;
+            _blockService = blockService;
+            _stabilityCalculator = stabilityCalculator;
+            _minoFactory = minoFactory;
+            _minoTypeList = minoTypeList;
+            _stageScriptableObject = stageScriptableObject;
+        }
+
+        public MinoKey SpawnMino()
+        {
+            var minoType = _minoTypeList.NextGenerator();
+            var mino = _minoFactory.CreateMino(minoType, _stageScriptableObject.MinoSpawnPosition, null);
+            return mino.GetStoreKey();
         }
 
         public bool TryGetMino(MinoKey key, out Polyomino polyomino)
@@ -40,7 +58,7 @@ namespace QBuild.Mino
             {
                 if (block.CanMove(move)) continue;
 
-                _blockUseCase.TryGetBlock(block.GetGridPosition() + move, out var otherBlock);
+                _blockService.TryGetBlock(block.GetGridPosition() + move, out var otherBlock);
                 if (block.GetMinoKey() == otherBlock.GetMinoKey()) continue;
 
                 shouldMove = false;
@@ -52,15 +70,16 @@ namespace QBuild.Mino
                 {
                     block.MoveNext(move);
                 }
+                OnMinoMoved?.Invoke(mino);
             }
 
             foreach (var block in blocks)
             {
                 foreach (var pos in dirs.Select(x => x + block.GetGridPosition()))
                 {
-                    if (!_blockUseCase.TryGetBlock(pos, out var dirBlock)) continue;
+                    if (!_blockService.TryGetBlock(pos, out var dirBlock)) continue;
                     if (dirBlock.IsFalling()) continue;
-                    if (!_blockUseCase.ContactCondition(block, dirBlock)) continue;
+                    if (!_blockService.ContactCondition(block, dirBlock)) continue;
 
                     Place(mino);
                     break;
@@ -78,6 +97,7 @@ namespace QBuild.Mino
             }
 
             mino.Place();
+            OnMinoPlaced?.Invoke(mino);
         }
 
         public bool ContactMino(Polyomino mino)
@@ -88,11 +108,11 @@ namespace QBuild.Mino
                 {
                     var targetPos = block.GetGridPosition() + dir;
                     if (targetPos.y <= 0) continue;
-                    if (!_blockUseCase.TryGetBlock(targetPos, out var targetBlock)) continue;
+                    if (!_blockService.TryGetBlock(targetPos, out var targetBlock)) continue;
                     if (targetBlock.IsFalling()) continue;
                     if (targetBlock.GetMinoKey() == block.GetMinoKey()) continue;
                     if (!TryGetMino(targetBlock.GetMinoKey(), out var otherMino)) continue;
-                    if (!BlockUseCase.CanJoint(block, targetBlock)) continue;
+                    if (!BlockService.CanJoint(block, targetBlock)) continue;
                     otherMino.ContactMino(mino);
                     return true;
                 }
@@ -129,7 +149,7 @@ namespace QBuild.Mino
                     var blockPos = block.GetGridPosition() + new Vector3Int(0, checkRow, 0);
                     foreach (var pos in dirs.Select(x => x + blockPos))
                     {
-                        if (!_blockUseCase.TryGetBlock(pos, out var dirBlock)) continue;
+                        if (!_blockService.TryGetBlock(pos, out var dirBlock)) continue;
                         if (dirBlock.IsFalling()) continue;
                         if (checkRowMin < checkRow) checkRowMin = checkRow;
                         empty = true;
@@ -143,8 +163,13 @@ namespace QBuild.Mino
             return blocks.Select(block => block.GetGridPosition() + new Vector3Int(0, checkRowMin, 0)).ToList();
         }
 
-        public bool RemoveMino(Polyomino mino)
+        public bool DestroyMino(Polyomino mino)
         {
+            foreach (var block in mino.GetBlocks())
+            {
+                _blockService.RemoveBlock(block);
+            }
+
             return _minoStore.RemoveMino(mino.GetStoreKey());
         }
 
@@ -153,7 +178,13 @@ namespace QBuild.Mino
             _minoStore.Clear();
         }
 
-        private readonly BlockUseCase _blockUseCase;
+        private readonly StabilityCalculator _stabilityCalculator;
+
+        private readonly BlockService _blockService;
         private readonly MinoStore _minoStore;
+
+        private readonly IMinoFactory _minoFactory;
+        private readonly MinoTypeList _minoTypeList;
+        private readonly StageScriptableObject _stageScriptableObject;
     }
 }

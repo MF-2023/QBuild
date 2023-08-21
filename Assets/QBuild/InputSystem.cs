@@ -30,9 +30,18 @@ namespace QBuild
             ""id"": ""b1a074f7-cf3c-4c45-9b06-fff4f65a9f73"",
             ""actions"": [
                 {
-                    ""name"": ""PlayerMove"",
+                    ""name"": ""BlockMove"",
                     ""type"": ""Value"",
                     ""id"": ""2197e7fe-cd57-4966-ac38-da8ddbe05303"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""PlayerMove"",
+                    ""type"": ""Value"",
+                    ""id"": ""d3969a38-698f-4c99-adee-194f52e4ab88"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -47,7 +56,7 @@ namespace QBuild
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""PlayerMove"",
+                    ""action"": ""BlockMove"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -58,7 +67,7 @@ namespace QBuild
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""PlayerMove"",
+                    ""action"": ""BlockMove"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -69,7 +78,7 @@ namespace QBuild
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""PlayerMove"",
+                    ""action"": ""BlockMove"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -80,7 +89,7 @@ namespace QBuild
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""PlayerMove"",
+                    ""action"": ""BlockMove"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -88,6 +97,61 @@ namespace QBuild
                     ""name"": ""right"",
                     ""id"": ""45ffcb8d-3c00-44f7-8588-2c2850ad3183"",
                     ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""BlockMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""AWSD"",
+                    ""id"": ""952b13e3-ecdc-43fc-8407-67f299561be0"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlayerMove"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""297da6d3-15dc-4ae2-9fd0-48366c4e3d4b"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlayerMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""d857a8af-46af-43ec-ba22-7c4c22180d24"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlayerMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""c54a8a0e-eecf-4012-8eae-0aa16ae36c7e"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlayerMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""4b364bd3-5240-47f4-a5de-0471625c05ab"",
+                    ""path"": ""<Keyboard>/rightArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -102,6 +166,7 @@ namespace QBuild
 }");
             // InGame
             m_InGame = asset.FindActionMap("InGame", throwIfNotFound: true);
+            m_InGame_BlockMove = m_InGame.FindAction("BlockMove", throwIfNotFound: true);
             m_InGame_PlayerMove = m_InGame.FindAction("PlayerMove", throwIfNotFound: true);
         }
 
@@ -164,11 +229,13 @@ namespace QBuild
         // InGame
         private readonly InputActionMap m_InGame;
         private List<IInGameActions> m_InGameActionsCallbackInterfaces = new List<IInGameActions>();
+        private readonly InputAction m_InGame_BlockMove;
         private readonly InputAction m_InGame_PlayerMove;
         public struct InGameActions
         {
             private @InputSystem m_Wrapper;
             public InGameActions(@InputSystem wrapper) { m_Wrapper = wrapper; }
+            public InputAction @BlockMove => m_Wrapper.m_InGame_BlockMove;
             public InputAction @PlayerMove => m_Wrapper.m_InGame_PlayerMove;
             public InputActionMap Get() { return m_Wrapper.m_InGame; }
             public void Enable() { Get().Enable(); }
@@ -179,6 +246,9 @@ namespace QBuild
             {
                 if (instance == null || m_Wrapper.m_InGameActionsCallbackInterfaces.Contains(instance)) return;
                 m_Wrapper.m_InGameActionsCallbackInterfaces.Add(instance);
+                @BlockMove.started += instance.OnBlockMove;
+                @BlockMove.performed += instance.OnBlockMove;
+                @BlockMove.canceled += instance.OnBlockMove;
                 @PlayerMove.started += instance.OnPlayerMove;
                 @PlayerMove.performed += instance.OnPlayerMove;
                 @PlayerMove.canceled += instance.OnPlayerMove;
@@ -186,6 +256,9 @@ namespace QBuild
 
             private void UnregisterCallbacks(IInGameActions instance)
             {
+                @BlockMove.started -= instance.OnBlockMove;
+                @BlockMove.performed -= instance.OnBlockMove;
+                @BlockMove.canceled -= instance.OnBlockMove;
                 @PlayerMove.started -= instance.OnPlayerMove;
                 @PlayerMove.performed -= instance.OnPlayerMove;
                 @PlayerMove.canceled -= instance.OnPlayerMove;
@@ -208,6 +281,7 @@ namespace QBuild
         public InGameActions @InGame => new InGameActions(this);
         public interface IInGameActions
         {
+            void OnBlockMove(InputAction.CallbackContext context);
             void OnPlayerMove(InputAction.CallbackContext context);
         }
     }

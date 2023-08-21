@@ -15,10 +15,16 @@ namespace QBuild.Stage
         [SerializeField] private int _depth;
         [SerializeField] private int _height;
         
+        [SerializeField] private Vector3Int _playerSpawnPosition;
+        [SerializeField] private Vector3Int _MinoSpawnPosition;
+        
         public int Width => _width;
         public int Depth => _depth;
         public int Height => _height;
         
         public Vector3Int Size => new(_width, _height, _depth);
+        
+        public Vector3Int PlayerSpawnPosition => _playerSpawnPosition;
+        public Vector3Int MinoSpawnPosition => _MinoSpawnPosition;
     }
 }

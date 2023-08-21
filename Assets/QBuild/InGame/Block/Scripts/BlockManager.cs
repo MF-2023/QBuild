@@ -22,56 +22,24 @@ namespace QBuild
             _onBlockPlacedEvent.AddListener(this.OnBlockPlaced);
         }
 
-
         private void Start()
         {
             _stageFactory.CreateFloor(_floorParent);
         }
 
         [Inject]
-        private void Inject(StageFactory factory, IMinoFactory minoFactory, BlockUseCase blockUseCase, MinoUseCase minoUseCase,StabilityCalculator stabilityCalculator)
+        private void Inject(StageFactory factory, IMinoFactory minoFactory, BlockService blockService, MinoService minoService,StabilityCalculator stabilityCalculator)
         {
             Debug.Log("Inject BlockManager");
             _stageFactory = factory;
             _minoFactory = minoFactory;
-            _blockUseCase = blockUseCase;
-            _minoUseCase = minoUseCase;
+            _blockService = blockService;
+            _minoService = minoService;
             _stabilityCalculator = stabilityCalculator;
         }
 
         private void Update()
         {
-            InputUpdate();
-            TickUpdate();
-        }
-
-        private void InputUpdate()
-        {
-            var key = Keyboard.current;
-            Vector3Int move = Vector3Int.zero;
-            if (key.aKey.wasPressedThisFrame)
-            {
-                move += new Vector3Int(-1, 0, 0);
-            }
-
-            if (key.sKey.wasPressedThisFrame)
-            {
-                move += new Vector3Int(0, 0, -1);
-            }
-
-            if (key.dKey.wasPressedThisFrame)
-            {
-                move += new Vector3Int(1, 0, 0);
-            }
-
-            if (key.wKey.wasPressedThisFrame)
-            {
-                move += new Vector3Int(0, 0, 1);
-            }
-
-            if (move == Vector3Int.zero) return;
-
-            FallMinoUpdate(move);
         }
 
         private void TickUpdate()
@@ -95,7 +63,7 @@ namespace QBuild
         {
             if (_fallsMino == null) return;
             var stoppedBlocks = new List<Polyomino>();
-            _minoUseCase.TranslationMino(_fallsMino, move);
+            _minoService.TranslationMino(_fallsMino, move);
             if (!_fallsMino.IsFalling)
             {
                 stoppedBlocks.Add(_fallsMino);
@@ -120,7 +88,7 @@ namespace QBuild
 
             _plannedSites.Clear();
 
-            var positions = _minoUseCase.GetProvisionalPlacePosition(_fallsMino);
+            var positions = _minoService.GetProvisionalPlacePosition(_fallsMino);
 
             foreach (var plannedSite in positions.Select(pos =>
                          Instantiate(_plannedSitePrefab, pos, Quaternion.identity, _blocksParent.transform)))
@@ -148,8 +116,8 @@ namespace QBuild
 
             foreach (var removeBlockPosition in removeBlocks)
             {
-                _blockUseCase.TryGetBlock(removeBlockPosition, out var fallBlock);
-                _blockUseCase.RemoveBlock(fallBlock);
+                _blockService.TryGetBlock(removeBlockPosition, out var fallBlock);
+                _blockService.RemoveBlock(fallBlock);
             }
 
             _fallsMino = null;
@@ -183,15 +151,13 @@ namespace QBuild
 
             var minoType = _minoTypeList.NextGenerator();
             _fallsMino = _minoFactory.CreateMino(minoType, _blockSpawnPosition, _blocksParent.transform);
-
-            Debug.Log("Created Mino");
         }
 
         [Button]
         public void Clear()
         {
-            _blockUseCase.Clear();
-            _minoUseCase.Clear();
+            _blockService.Clear();
+            _minoService.Clear();
             foreach (var child in _blocksParent.transform.OfType<Transform>().ToArray())
             {
                 DestroyImmediate(child.gameObject);
@@ -220,8 +186,8 @@ namespace QBuild
 
         private StageFactory _stageFactory;
 
-        private BlockUseCase _blockUseCase;
-        private MinoUseCase _minoUseCase;
+        private BlockService _blockService;
+        private MinoService _minoService;
         private IMinoFactory _minoFactory;
 
         private StabilityCalculator _stabilityCalculator;

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using VContainer;
 
@@ -6,20 +7,22 @@ namespace QBuild.Mino
 {
     public class MinoDebugFactory : IMinoFactory
     {
+
+        public event Action<Polyomino> OnMinoCreated;
+        
         [Inject]
         public MinoDebugFactory(BlockFactory blockFactory, MinoStore minoStore)
         {
             _blockFactory = blockFactory;
             _minoStore = minoStore;
         }
-
-
+        
         public Polyomino CreateMino(MinoType minoType, Vector3Int origin, Transform parent)
         {
-            var polyomino = new Polyomino();
+            var mino = new Polyomino();
 
             var key = new MinoKey(_minoStore.Count);
-            polyomino.SetDictionaryKey(key);
+            mino.SetDictionaryKey(key);
 
             var color = ColorTable[_minoStore.Count % ColorTable.Count];
             //カラーテーブルを周回するごとに色を明るくする
@@ -39,11 +42,15 @@ namespace QBuild.Mino
                     renderer.material.color = color;
                 }
 
-                polyomino.AddBlock(block);
+                mino.AddBlock(block);
             }
 
-            _minoStore.AddMino(key, polyomino);
-            return polyomino;
+            _minoStore.AddMino(key, mino);
+            
+            Debug.Log("Created Mino");
+            
+            OnMinoCreated?.Invoke(mino);
+            return mino;
         }
 
         private static readonly List<Color> ColorTable = new()

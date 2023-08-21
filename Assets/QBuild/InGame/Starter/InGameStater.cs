@@ -18,17 +18,29 @@ namespace QBuild.Starter
         {
             Debug.Log("InGameStater.Configure");
             builder.Register<BlockFactory>(Lifetime.Singleton);
-            builder.Register<MinoDebugFactory>(Lifetime.Singleton).As<IMinoFactory>();
             builder.Register<StageFactory>(Lifetime.Singleton);
 
             builder.Register<BlockStore>(Lifetime.Singleton);
-            builder.Register<MinoStore>(Lifetime.Singleton);
 
-            builder.Register<BlockUseCase>(Lifetime.Singleton);
-            builder.Register<MinoUseCase>(Lifetime.Singleton);
+            builder.Register<BlockService>(Lifetime.Singleton);
             builder.Register<StabilityCalculator>(Lifetime.Singleton);
 
+            builder.Register<MinoDebugFactory>(Lifetime.Singleton).As<IMinoFactory>();
+            builder.Register<MinoStore>(Lifetime.Singleton);
+            builder.Register<MinoService>(Lifetime.Singleton);
+            builder.Register<FallMino>(Lifetime.Singleton);
+            builder.Register<MinoInput>(Lifetime.Singleton);
+            builder.Register<MinoPhysicsSimulation>(Lifetime.Singleton);
+            builder.RegisterEntryPoint<MinoPresenter>();
+            
+            builder.RegisterEntryPoint<MinoEventLifeCycle>();
+            builder.Register<MinoFallTick>(Lifetime.Singleton);
+            builder.Register<MinoDestroyTick>(Lifetime.Singleton);
+            builder.Register<MinoSpawnTick>(Lifetime.Singleton);
+
             builder.RegisterEntryPoint<BlockPresenter>(Lifetime.Singleton);
+            
+            builder.Register<@InputSystem>(Lifetime.Singleton);
 
             builder.RegisterInstance(_blockManager);
             builder.RegisterInstance(_currentStageVariable);
@@ -36,6 +48,8 @@ namespace QBuild.Starter
             builder.RegisterInstance(_planeBlockType);
             builder.RegisterInstance(_blockPrefabInfo);
             builder.RegisterInstance(_faceJointMatrix);
+            builder.RegisterInstance(_minoTypeList);
+
         }
 
         [SerializeField] private BlockManager _blockManager;
@@ -43,5 +57,6 @@ namespace QBuild.Starter
         [SerializeField] private BlockType _planeBlockType;
         [SerializeField] private BlockCreateInfo _blockPrefabInfo;
         [SerializeField] private FaceJointMatrix _faceJointMatrix;
+        [SerializeField] private MinoTypeList _minoTypeList;
     }
 }

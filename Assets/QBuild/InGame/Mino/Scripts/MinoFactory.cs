@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using VContainer;
 
@@ -9,6 +10,8 @@ namespace QBuild.Mino
     /// </summary>
     public class MinoFactory : IMinoFactory
     {
+        public event Action<Polyomino> OnMinoCreated;
+
         [Inject]
         public MinoFactory(BlockFactory blockFactory, MinoStore minoStore)
         {
@@ -35,6 +38,7 @@ namespace QBuild.Mino
             }
 
             _minoStore.AddMino(key, mino);
+            OnMinoCreated?.Invoke(mino);
             return mino;
         }
 

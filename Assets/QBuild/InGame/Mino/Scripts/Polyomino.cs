@@ -27,6 +27,15 @@ namespace QBuild.Mino
             _blocks.Add(block);
         }
 
+        public void OnFall()
+        {
+            IsFalling = true;
+            foreach (var block in _blocks)
+            {
+                block.OnFall();
+            }
+        }
+        
         public void Place()
         {
             float stability = -1;
