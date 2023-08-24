@@ -57,6 +57,7 @@ namespace QBuild.Mino
                 if (IsFalling) continue;
                 block.OnBlockPlaced(_blocks[0].GetStability());
                 block.SetMinoKey(_selfKey);
+                _blocks.Add(block);
             }
 
             IsFalling = false;
@@ -71,6 +72,6 @@ namespace QBuild.Mino
 
         public bool IsFalling { get; private set; } = true;
 
-        private MinoKey _selfKey;
+        [SerializeField] private MinoKey _selfKey;
     }
 }

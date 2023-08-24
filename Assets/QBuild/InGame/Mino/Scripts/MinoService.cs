@@ -93,6 +93,7 @@ namespace QBuild.Mino
         {
             if (ContactMino(mino))
             {
+                OnMinoPlaced?.Invoke(mino);
                 return;
             }
 
