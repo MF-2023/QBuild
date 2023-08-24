@@ -31,7 +31,13 @@ namespace QBuild.Mino
             _minoDictionary.Clear();
         }
 
+        public int CreateKey()
+        {
+            _createCount++;
+            return _createCount;
+        }
         public int Count => _minoDictionary.Count;
+        private int _createCount = 0;
         
         private readonly Dictionary<MinoKey, Polyomino> _minoDictionary = new();
     }

@@ -21,7 +21,8 @@ namespace QBuild.Mino
         {
             var mino = new Polyomino();
 
-            var key = new MinoKey(_minoStore.Count);
+            
+            var key = new MinoKey(_minoStore.CreateKey());
             mino.SetDictionaryKey(key);
 
             var color = ColorTable[_minoStore.Count % ColorTable.Count];
