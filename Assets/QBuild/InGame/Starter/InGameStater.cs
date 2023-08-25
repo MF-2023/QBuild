@@ -1,4 +1,5 @@
 ﻿using System;
+using QBuild.Camera;
 using QBuild.Condition;
 using QBuild.Mino;
 using QBuild.Mino.ProvisionalMino;
@@ -48,6 +49,8 @@ namespace QBuild.Starter
             
             builder.Register<@InputSystem>(Lifetime.Singleton);
 
+
+
             builder.RegisterInstance(_blockManager);
             builder.RegisterInstance(_currentStageVariable);
             builder.RegisterInstance(_currentStageVariable.RuntimeValue);
@@ -57,6 +60,10 @@ namespace QBuild.Starter
             builder.RegisterInstance(_minoTypeList);
             builder.RegisterInstance(_provisionalMinoSetting);
             builder.RegisterInstance(_blockParentObject.GetComponent<IBlockParentObject>());
+            
+            // Camera
+            builder.Register<CameraModel>(Lifetime.Singleton);
+
         }
 
         [SerializeField] private BlockManager _blockManager;
@@ -67,5 +74,7 @@ namespace QBuild.Starter
         [SerializeField] private MinoTypeList _minoTypeList;
         [SerializeField] private ProvisionalMinoSetting _provisionalMinoSetting;
         [SerializeField] private GameObject _blockParentObject;
+        
+        [SerializeField] private LifetimeScope _cameraPrefab;
     }
 }

@@ -46,6 +46,15 @@ namespace QBuild
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""CameraMove"",
+                    ""type"": ""Value"",
+                    ""id"": ""e0ee1f94-7098-49b0-9153-59ef1ed138d4"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -158,6 +167,39 @@ namespace QBuild
                     ""action"": ""PlayerMove"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""8fa4db13-fc24-46b9-ae09-6e31f448d311"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraMove"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""09296c1f-dfb5-4b5a-9182-29b63783a518"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""ceea0950-a640-4e57-89ad-50b025be77f5"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -168,6 +210,7 @@ namespace QBuild
             m_InGame = asset.FindActionMap("InGame", throwIfNotFound: true);
             m_InGame_BlockMove = m_InGame.FindAction("BlockMove", throwIfNotFound: true);
             m_InGame_PlayerMove = m_InGame.FindAction("PlayerMove", throwIfNotFound: true);
+            m_InGame_CameraMove = m_InGame.FindAction("CameraMove", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -231,12 +274,14 @@ namespace QBuild
         private List<IInGameActions> m_InGameActionsCallbackInterfaces = new List<IInGameActions>();
         private readonly InputAction m_InGame_BlockMove;
         private readonly InputAction m_InGame_PlayerMove;
+        private readonly InputAction m_InGame_CameraMove;
         public struct InGameActions
         {
             private @InputSystem m_Wrapper;
             public InGameActions(@InputSystem wrapper) { m_Wrapper = wrapper; }
             public InputAction @BlockMove => m_Wrapper.m_InGame_BlockMove;
             public InputAction @PlayerMove => m_Wrapper.m_InGame_PlayerMove;
+            public InputAction @CameraMove => m_Wrapper.m_InGame_CameraMove;
             public InputActionMap Get() { return m_Wrapper.m_InGame; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -252,6 +297,9 @@ namespace QBuild
                 @PlayerMove.started += instance.OnPlayerMove;
                 @PlayerMove.performed += instance.OnPlayerMove;
                 @PlayerMove.canceled += instance.OnPlayerMove;
+                @CameraMove.started += instance.OnCameraMove;
+                @CameraMove.performed += instance.OnCameraMove;
+                @CameraMove.canceled += instance.OnCameraMove;
             }
 
             private void UnregisterCallbacks(IInGameActions instance)
@@ -262,6 +310,9 @@ namespace QBuild
                 @PlayerMove.started -= instance.OnPlayerMove;
                 @PlayerMove.performed -= instance.OnPlayerMove;
                 @PlayerMove.canceled -= instance.OnPlayerMove;
+                @CameraMove.started -= instance.OnCameraMove;
+                @CameraMove.performed -= instance.OnCameraMove;
+                @CameraMove.canceled -= instance.OnCameraMove;
             }
 
             public void RemoveCallbacks(IInGameActions instance)
@@ -283,6 +334,7 @@ namespace QBuild
         {
             void OnBlockMove(InputAction.CallbackContext context);
             void OnPlayerMove(InputAction.CallbackContext context);
+            void OnCameraMove(InputAction.CallbackContext context);
         }
     }
 }

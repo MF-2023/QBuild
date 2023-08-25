@@ -8,9 +8,8 @@ namespace QBuild
     public class BlockFactory
     {
         [Inject]
-        public BlockFactory(BlockManager blockManager, BlockCreateInfo createInfo,IObjectResolver resolver)
+        public BlockFactory(BlockCreateInfo createInfo,IObjectResolver resolver)
         {
-            _blockManager = blockManager;
             _blockPrefab = createInfo.Prefab;
             _resolver = resolver;
         }
@@ -36,7 +35,6 @@ namespace QBuild
         public event Action<Block> OnBlockCreated;
 
         private readonly GameObject _blockPrefab;
-        private readonly BlockManager _blockManager;
         private readonly IObjectResolver _resolver;
     }
 }

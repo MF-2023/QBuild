@@ -1,4 +1,5 @@
 ﻿using System;
+using QBuild.Camera;
 using UniRx;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -11,13 +12,13 @@ namespace QBuild.Mino
         public IObservable<Vector3Int> OnMinoMove => _onMinoMove;
 
         [Inject]
-        public MinoInput(@InputSystem inputSystem)
+        public MinoInput(@InputSystem inputSystem, CameraModel cameraInput)
         {
             inputSystem.Enable();
             _inputSystem = inputSystem;
             _inputSystem.InGame.BlockMove.performed += MinoMove;
         }
-        
+
         public void Dispose()
         {
             _inputSystem.InGame.BlockMove.performed -= MinoMove;
@@ -36,5 +37,7 @@ namespace QBuild.Mino
         private readonly Subject<Vector3Int> _onMinoMove = new();
 
         private readonly InputSystem _inputSystem;
+        
+        
     }
 }
