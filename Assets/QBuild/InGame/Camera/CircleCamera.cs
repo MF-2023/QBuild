@@ -88,7 +88,7 @@ namespace QBuild.Camera
 
         private CameraState _state = CameraState.Default;
         [SerializeField] private Transform _lookAt;
-        private int _currentCameraIndex = 0;
+        [SerializeField] private int _currentCameraIndex = 0;
         private int _prevCameraIndex = -1;
         [SerializeField] private List<CinemachineVirtualCameraBase> _virtualCameraBase;
         [SerializeField] private float _radius = 15f;

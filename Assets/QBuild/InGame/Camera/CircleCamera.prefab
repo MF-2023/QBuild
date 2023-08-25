@@ -273,6 +273,7 @@ MonoBehaviour:
   m_StandbyUpdate: 2
   follow: {fileID: 0}
   _lookAt: {fileID: 0}
+  _currentCameraIndex: 0
   _virtualCameraBase:
   - {fileID: 7741733718640316260}
   - {fileID: 7920978535130493075}

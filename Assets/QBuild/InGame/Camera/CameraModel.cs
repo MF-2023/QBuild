@@ -1,27 +1,30 @@
 ﻿using System;
+using QBuild.Utilities;
 using UnityEngine;
 
 namespace QBuild.Camera
 {
     public class CameraModel
     {
-        public event Action<int> OnCameraDirectionChanged;
+        public event Action<Direction> OnCameraDirectionChanged;
         public event Action<Transform> OnLookAtChanged; 
 
         public void TurnLeft()
         {
-            _cameraIndex--;
-            if(_cameraIndex < 0) _cameraIndex = 3;
-            
-            OnCameraDirectionChanged?.Invoke(_cameraIndex);
+            _cameraDir = _cameraDir.TurnLeft();
+            OnCameraDirectionChanged?.Invoke(_cameraDir);
         }
         
         public void TurnRight()
         {
-            _cameraIndex++;
-            if(_cameraIndex > 3) _cameraIndex = 0;
-
-            OnCameraDirectionChanged?.Invoke(_cameraIndex);
+            _cameraDir = _cameraDir.TurnRight();
+            OnCameraDirectionChanged?.Invoke(_cameraDir);
+        }
+        
+        public void SetCameraDirection(Direction direction)
+        {
+            _cameraDir = direction;
+            OnCameraDirectionChanged?.Invoke(_cameraDir);
         }
         
         public void SetLookAt(Transform lookAt)
@@ -30,7 +33,12 @@ namespace QBuild.Camera
             OnLookAtChanged?.Invoke(_lookAt);
         }
         
-        private int _cameraIndex = 0;
+        public Direction GetCameraDirection()
+        {
+            return _cameraDir;
+        }
+        
+        private Direction _cameraDir = Direction.East;
         private Transform _lookAt;
     }
 }
