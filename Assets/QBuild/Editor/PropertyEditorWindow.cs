@@ -1,11 +1,12 @@
-﻿using UnityEditor;
+﻿using QBuild.Const;
+using UnityEditor;
 using UnityEngine;
 
 namespace QBuild
 {
     public class PropertyEditorWindow : EditorWindow
     {
-        [MenuItem(Edito)]
+        [MenuItem(EditorConst.WindowPrePath + "プロパティエディタ")]
         private static void ShowWindow()
         {
             var window = GetWindow<PropertyEditorWindow>();
