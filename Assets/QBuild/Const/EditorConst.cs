@@ -15,6 +15,11 @@ namespace QBuild.Const
         public const string VariablePrePath = "Tools/QBuild/Variable/";
         
         /// <summary>
+        /// QBuild用のエディタWindowのパスの先頭
+        /// </summary>
+        public const string WindowPrePath = "Tools/QBuild/";
+        
+        /// <summary>
         /// 重要度の低い順に並べるための定数
         /// </summary>
         public const int OtherOrder = 11;
