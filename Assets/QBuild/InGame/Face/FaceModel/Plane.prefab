@@ -975,6 +975,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5342549839850721094, guid: 095e700e6eb7d054ba508207125ad3e1,
         type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5342549839850721094, guid: 095e700e6eb7d054ba508207125ad3e1,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+    - target: {fileID: 5342549839850721094, guid: 095e700e6eb7d054ba508207125ad3e1,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 5874639415424179301, guid: 190bd406e37e866439fe9a7c8bf22ece,
+        type: 3}
+    - target: {fileID: 5342549839850721094, guid: 095e700e6eb7d054ba508207125ad3e1,
+        type: 3}
       propertyPath: m_SelectedEditorRenderState
       value: 3
       objectReference: {fileID: 0}

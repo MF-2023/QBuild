@@ -83,7 +83,18 @@ namespace QBuild.Camera
         {
             _lookAt = lookAt;
         }
-
+        
+        public void SetCameraHeight(float height)
+        {
+            Debug.Log("SetCameraHeight");
+            transform.position = new Vector3(transform.position.x, height, transform.position.z);
+        }
+        
+        public void SetCameraRadius(float radius)
+        {
+            _radius = radius;
+        }
+        
         public int CurrentCameraIndex => _currentCameraIndex;
 
         private CameraState _state = CameraState.Default;
