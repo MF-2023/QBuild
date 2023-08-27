@@ -11,7 +11,7 @@ namespace QBuild
     public class BlockService
     {
         [Inject]
-        public BlockService(BlockStore blockStore, FaceJointMatrix conditionMap,
+        public BlockService(BlockStore blockStore, FaceConditionable conditionMap,
             StageScriptableObject stageScriptableObject)
         {
             _blockStore = blockStore;
@@ -51,7 +51,7 @@ namespace QBuild
             var faceDirType = dir.ToVectorBlockFace();
             var ownerFace = owner.GetFace(faceDirType);
             var otherFace = other.GetFace(faceDirType.Opposite());
-            return _conditionMap.GetCondition(ownerFace.GetFaceType(), otherFace.GetFaceType());
+            return _conditionMap.IsExclude(ownerFace.GetFaceType(), otherFace.GetFaceType());
         }
 
         public void RemoveBlock(Block block)
@@ -79,6 +79,6 @@ namespace QBuild
 
         private readonly StageScriptableObject _stageScriptableObject;
         private readonly BlockStore _blockStore;
-        private readonly FaceJointMatrix _conditionMap;
+        private readonly FaceConditionable _conditionMap;
     }
 }

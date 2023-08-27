@@ -25,7 +25,7 @@ namespace QBuild.Condition
 {
     [CreateAssetMenu(fileName = "FaceJointMatrix", menuName = EditorConst.ScriptablePrePath + "FaceConditionMatrix",
         order = EditorConst.OtherOrder)]
-    public class FaceJointMatrix : ScriptableObject
+    public class FaceJointMatrix : FaceConditionable
     {
         [SerializeField] private List<FaceScriptableObject> faceScriptableObjects;
 
@@ -70,7 +70,7 @@ namespace QBuild.Condition
             EditorUtility.SetDirty(this);
         }
 
-        public bool GetCondition(FaceScriptableObject face1, FaceScriptableObject face2)
+        public override bool IsExclude(FaceScriptableObject face1, FaceScriptableObject face2)
         {
             return conditionFaces[face1][face2];
         }

@@ -942,7 +942,7 @@ MonoBehaviour:
     type: 2}
   _planeBlockType: {fileID: 11400000, guid: 818e8284dba62b0449643b3a4536ddea, type: 2}
   _blockPrefabInfo: {fileID: 11400000, guid: 785e894b1fd75e44594ea65496334d41, type: 2}
-  _faceJointMatrix: {fileID: 11400000, guid: 9206c3adc8ae34a46b6cdd6be0758f36, type: 2}
+  _faceJointMatrix: {fileID: 11400000, guid: b4f675218cbdfd24194c84fa59a28951, type: 2}
   _minoTypeList: {fileID: 11400000, guid: 3819ee5dcf5ea0e469515d4fca439cf1, type: 2}
   _provisionalMinoSetting: {fileID: 11400000, guid: ab3425a905b0237419e8099718d7cf07,
     type: 2}

@@ -70,7 +70,7 @@ namespace QBuild.Starter
         [SerializeField] private CurrentStageVariable _currentStageVariable;
         [SerializeField] private BlockType _planeBlockType;
         [SerializeField] private BlockCreateInfo _blockPrefabInfo;
-        [SerializeField] private FaceJointMatrix _faceJointMatrix;
+        [SerializeField] private FaceConditionable _faceJointMatrix;
         [SerializeField] private MinoTypeList _minoTypeList;
         [SerializeField] private ProvisionalMinoSetting _provisionalMinoSetting;
         [SerializeField] private GameObject _blockParentObject;
