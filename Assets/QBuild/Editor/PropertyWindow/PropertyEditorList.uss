@@ -1,0 +1,5 @@
+Label {
+    -unity-text-align: middle-left;
+    padding-top: 2px;
+    font-size: 14px;
+}

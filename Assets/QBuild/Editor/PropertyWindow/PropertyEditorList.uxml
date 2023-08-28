@@ -1,0 +1,4 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/QBuild/Editor/PropertyWindow/PropertyEditorList.uss?fileID=7433441132597879392&amp;guid=6ca50b2e1e3704a459af3a9a69f711e9&amp;type=3#PropertyEditorList" />
+    <ui:TreeView view-data-key="unity-tree-view" focusable="true" show-border="false" />
+</ui:UXML>

@@ -976,13 +976,14 @@ PrefabInstance:
     - target: {fileID: 5342549839850721094, guid: 095e700e6eb7d054ba508207125ad3e1,
         type: 3}
       propertyPath: m_Materials.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5342549839850721094, guid: 095e700e6eb7d054ba508207125ad3e1,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+      objectReference: {fileID: 8122850955595500952, guid: 190bd406e37e866439fe9a7c8bf22ece,
+        type: 3}
     - target: {fileID: 5342549839850721094, guid: 095e700e6eb7d054ba508207125ad3e1,
         type: 3}
       propertyPath: m_Materials.Array.data[1]
@@ -1023,4 +1024,4 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1341231482613275763}
-  m_Mesh: {fileID: 4300000, guid: e43bf2257595a2245a5e1fab749f749c, type: 2}
+  m_Mesh: {fileID: 1779601754579333883, guid: e76c1e9af8c5a3a4c93f7b3679acca66, type: 3}
