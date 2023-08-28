@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace QBuild.Condition
+namespace QBuild
 {
     public abstract class FaceConditionable : ScriptableObject
     {
