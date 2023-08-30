@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerJump : PlayerGroundState
 {
-    public PlayerJump(PlayerController player,PlayerStateMachine stateMachine,PlayerData playerData,string animBoolName):base(player,stateMachine,playerData,animBoolName)
+    public PlayerJump(PlayerStateController player,PlayerStateMachine stateMachine,PlayerData playerData,string animBoolName):base(player,stateMachine,playerData,animBoolName)
     { }
 
     public override void DoCheck()

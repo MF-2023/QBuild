@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerState
 {
-    protected PlayerController player;
+    protected PlayerStateController player;
     protected PlayerStateMachine stateMachine;
     protected PlayerData playerData;
 
@@ -21,7 +21,7 @@ public class PlayerState
 
     protected Vector3 workspace;
 
-    public PlayerState(PlayerController player,PlayerStateMachine stateMachine,PlayerData playerData,string animBoolName)
+    public PlayerState(PlayerStateController player,PlayerStateMachine stateMachine,PlayerData playerData,string animBoolName)
     {
         this.player = player;
         this.stateMachine = stateMachine;
@@ -90,17 +90,9 @@ public class PlayerState
     protected bool CheckIsGround()
     {
         bool ret = false;
-        RaycastHit hit;
-        Ray ray = new Ray(player.transform.position, player.transform.up * -1);
-        if (Physics.Raycast(ray, out hit, playerData.checkGroundDistance))
-        {
-            foreach (LayerMask ground in playerData.groundLayer)
-            {
-                int objectLayer = hit.transform.root.gameObject.layer;
-                ret = ground == (ground | (1 << objectLayer));
-            }
-        }
-
+        Vector3 pos = player.GroundCheck.position;
+        ret = Physics.CheckSphere(pos, playerData.groundCheckRadius, playerData.groundLayer,QueryTriggerInteraction.Ignore);
+        //ret = Physics.CheckSphere(pos, playerData.groundCheckRadius);
         return ret;
     }
 }

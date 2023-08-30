@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerIdle : PlayerGroundState
 {
-    public PlayerIdle(PlayerController player,PlayerStateMachine stateMachine,PlayerData playerData,string animBoolName):base(player,stateMachine,playerData,animBoolName)
+    public PlayerIdle(PlayerStateController player,PlayerStateMachine stateMachine,PlayerData playerData,string animBoolName):base(player,stateMachine,playerData,animBoolName)
     {
     }
 

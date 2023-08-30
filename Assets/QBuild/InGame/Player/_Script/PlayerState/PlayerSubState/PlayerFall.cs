@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerFall : PlayerInAirState
 {
-    public PlayerFall(PlayerController player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
+    public PlayerFall(PlayerStateController player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
     { }
 
     public override void DoCheck()

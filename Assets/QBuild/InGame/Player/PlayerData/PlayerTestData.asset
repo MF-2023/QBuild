@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e7f824d076ea18428fca317893ba050, type: 3}
   m_Name: PlayerTestData
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  moveSpeed: 2
   inAirmoveSpeed: 2.6
   jumpPower: 5
   groundLayer:
-  - serializedVersion: 2
+    serializedVersion: 2
     m_Bits: 2147483648
-  checkGroundDistance: 0.2
+  groundCheckRadius: 0.35

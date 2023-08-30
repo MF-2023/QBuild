@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerInAirState : PlayerState
 {
-    public PlayerInAirState(PlayerController player,PlayerStateMachine stateMachine,PlayerData playerData,string animBoolName):base(player,stateMachine,playerData,animBoolName)
+    public PlayerInAirState(PlayerStateController player,PlayerStateMachine stateMachine,PlayerData playerData,string animBoolName):base(player,stateMachine,playerData,animBoolName)
     { }
 
     public override void DoCheck()

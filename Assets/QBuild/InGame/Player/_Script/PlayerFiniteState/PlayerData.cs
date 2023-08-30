@@ -17,7 +17,8 @@ public class PlayerData : ScriptableObject
 
     [Header("Check Ground")]
     [Tooltip("地面判定になるオブジェクトのレイヤー")]
-    public List<LayerMask> groundLayer = new List<LayerMask>();
-    [Tooltip("プレイヤーから地面までの判定距離")]
-    public float checkGroundDistance = 0.5f;
+    public LayerMask groundLayer;
+    [Tooltip("半径")] public float groundCheckRadius = 0.5f;
+    //[Tooltip("プレイヤーから地面までの判定距離")]
+   //public float checkGroundDistance = 0.5f;
 }

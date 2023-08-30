@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerMove : PlayerGroundState
 {
-    public PlayerMove(PlayerController player,PlayerStateMachine stateMachine,PlayerData playerData,string animBoolName):base(player,stateMachine,playerData,animBoolName)
+    public PlayerMove(PlayerStateController player,PlayerStateMachine stateMachine,PlayerData playerData,string animBoolName):base(player,stateMachine,playerData,animBoolName)
     { }
 
     public override void DoCheck()
