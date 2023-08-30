@@ -1,0 +1,16 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="true">
+    <Style src="project://database/Assets/QBuild/Editor/PropertyWindow/PropertyEditorWindow.uss?fileID=7433441132597879392&amp;guid=1b79f1f5b3800c74f8d6beb036ab139c&amp;type=3#PropertyEditorWindow" />
+    <ui:VisualElement name="container" style="flex-direction: row; min-height: 100%; border-left-color: rgb(89, 89, 89); border-right-color: rgb(89, 89, 89); border-top-color: rgb(89, 89, 89); border-bottom-color: rgb(89, 89, 89); border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 1px; height: 100%;">
+        <ui:VisualElement name="left-container" style="position: relative; left: 0; top: 0; right: 0; bottom: 0; min-width: 200px;">
+            <ui:VisualElement name="header" style="background-color: rgb(37, 37, 37); border-bottom-width: 0; margin-bottom: 5px; height: 18px; min-height: 18px; padding-left: 2px; padding-right: 2px; padding-top: 2px; padding-bottom: 2px;">
+                <ui:Label tabindex="-1" text="ゲームパラメータ" display-tooltip-when-elided="true" name="Label" style="-unity-text-align: middle-left; color: rgb(208, 208, 208); padding-top: 0; font-size: 12px; padding-bottom: 0; -unity-font: url(&apos;project://database/Assets/QBuild/Font/NotoSansJP-VariableFont_wght.ttf?fileID=12800000&amp;guid=bb7b7c0fe25c3d246afef625d5ab7301&amp;type=3#NotoSansJP-VariableFont_wght&apos;);" />
+            </ui:VisualElement>
+            <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+                <QBuild.PropertyWindow.PropertyEditorList name="PropertyEditorList" picking-mode="Ignore" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="right-container" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); min-width: 0; min-height: 100%; border-left-color: rgb(89, 89, 89); border-right-color: rgb(89, 89, 89); border-top-color: rgb(89, 89, 89); border-bottom-color: rgb(89, 89, 89); border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 1px;">
+            <QBuild.PropertyWindow.PropertyEditorView />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -41,10 +41,10 @@ namespace QBuild.Utilities
 
         static PlaymodeStateObserver()
         {
-            EditorApplication.playmodeStateChanged += OnPlayModeStateChanged;
+            EditorApplication.pauseStateChanged += OnPlayModeStateChanged;
         }
 
-        private static void OnPlayModeStateChanged()
+        private static void OnPlayModeStateChanged(PauseState pauseState)
         {
             var playModeStateChangedType = PlayModeStateChangedType.Exception;
 

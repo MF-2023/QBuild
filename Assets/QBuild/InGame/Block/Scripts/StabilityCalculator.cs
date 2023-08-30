@@ -1,31 +1,24 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using QBuild.Mino;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
+using VContainer;
 
 namespace QBuild
 {
-
-    [Serializable]
+    /// <summary>
+    /// ブロックの安定性を計算するクラス
+    /// </summary>
     public class StabilityCalculator
     {
-        private BlockManager blockManager;
-        private Dictionary<Vector3Int, int> posPlaced = new(20 * 20 * 20);
         
-        public void Init(BlockManager bm)
+        [Inject]
+        public StabilityCalculator(BlockService blockService)
         {
-            blockManager = bm;
+            _blockService = blockService;
         }
 
-        private HashSet<Vector3Int> unstablePositions = new();
 
-        private Queue<Vector3Int> positionsToCheck = new();
-
-        private Queue<Vector3Int> uniqueUnstablePositions = new();
-
-        
         /// <summary>
         /// 落下するブロックを計算して取得する
         /// </summary>
@@ -38,32 +31,23 @@ namespace QBuild
         {
             var list = new List<Vector3Int>();
             calculatedStability = 0f;
-            this.unstablePositions.Clear();
-            this.unstablePositions.Add(pos);
-            this.positionsToCheck.Clear();
-            this.positionsToCheck.Enqueue(pos);
-            this.uniqueUnstablePositions.Clear();
+            this._unstablePositions.Clear();
+            this._unstablePositions.Add(pos);
+            this._positionsToCheck.Clear();
+            this._positionsToCheck.Enqueue(pos);
+            this._uniqueUnstablePositions.Clear();
             float glueForce = 0;
             float mass = 0;
             int i = 0;
 
-            var allDirections = new Vector3Int[]
-            {
-                Vector3Int.up,
-                Vector3Int.down,
-                Vector3Int.left,
-                Vector3Int.forward,
-                Vector3Int.right,
-                Vector3Int.back,
-            };
             while (i < maxBlocksToCheck)
             {
                 var force = glueForce;
-                long minoKey = -1;
-                while (this.positionsToCheck.Count > 0)
+                var minoKey = MinoKey.NullMino;
+                while (this._positionsToCheck.Count > 0)
                 {
-                    var checkPosition = this.positionsToCheck.Dequeue();
-                    if (!blockManager.TryGetBlock(checkPosition, out var block))
+                    var checkPosition = this._positionsToCheck.Dequeue();
+                    if (!_blockService.TryGetBlock(checkPosition, out var block))
                         continue;
                     minoKey = block.GetMinoKey();
                     if (glueForce > 0)
@@ -85,16 +69,11 @@ namespace QBuild
                     }
 
                     mass += block.GetMass() * scale;
-                    foreach (var direction in allDirections)
+                    foreach (var direction in Vector3IntDirs.AllDirections)
                     {
                         var targetPosition = checkPosition + direction;
 
-                        if (targetPosition.y == 0)
-                        {
-                            continue;
-                        }
-
-                        var isAir = !blockManager.TryGetBlock(targetPosition, out var other);
+                        var isAir = !_blockService.TryGetBlock(targetPosition, out var other);
                         if (isAir) continue;
                         var equalMino = minoKey == other.GetMinoKey();
                         //ブロックの安定性
@@ -111,15 +90,14 @@ namespace QBuild
                             force += forceToOtherBlock;
                         }
                         else if ((stability > 1) &&
-                                 this.unstablePositions.Add(targetPosition))
+                                 this._unstablePositions.Add(targetPosition))
                         {
-
-                            this.uniqueUnstablePositions.Enqueue(targetPosition);
+                            this._uniqueUnstablePositions.Enqueue(targetPosition);
                             Debug.Log(
                                 $"unstable {force},{block.GetForceToOtherBlock(other)},{block.GetStabilityGlue()}, {other.GetStabilityGlue()}");
                             force += block.GetForceToOtherBlock(other);
-                            
-                            if (mass > force && equalMino) this.positionsToCheck.Enqueue(targetPosition);
+
+                            if (mass > force && equalMino) this._positionsToCheck.Enqueue(targetPosition);
                         }
                     }
                 }
@@ -132,7 +110,7 @@ namespace QBuild
                 if (mass > force)
                 {
                     Debug.Log($"{mass},{force}");
-                    list = this.unstablePositions.Except(this.uniqueUnstablePositions).ToList<Vector3Int>();
+                    list = this._unstablePositions.Except(this._uniqueUnstablePositions).ToList<Vector3Int>();
                     if (list.Count == 0)
                     {
                         calculatedStability = 1f;
@@ -143,20 +121,30 @@ namespace QBuild
                 }
                 else
                 {
-                    if (this.uniqueUnstablePositions.Count == 0)
+                    if (this._uniqueUnstablePositions.Count == 0)
                     {
                         break;
                     }
 
-                    this.positionsToCheck.Clear();
-                    (this.uniqueUnstablePositions, this.positionsToCheck) =
-                        (this.positionsToCheck, this.uniqueUnstablePositions);
-                    this.uniqueUnstablePositions.Clear();
+                    this._positionsToCheck.Clear();
+                    (this._uniqueUnstablePositions, this._positionsToCheck) =
+                        (this._positionsToCheck, this._uniqueUnstablePositions);
+                    this._uniqueUnstablePositions.Clear();
                     i++;
                 }
             }
 
             return list;
         }
+
+        private readonly BlockService _blockService;
+
+        private Dictionary<Vector3Int, int> _posPlaced = new(20 * 20 * 20);
+
+        private readonly HashSet<Vector3Int> _unstablePositions = new();
+
+        private Queue<Vector3Int> _positionsToCheck = new();
+
+        private Queue<Vector3Int> _uniqueUnstablePositions = new();
     }
 }

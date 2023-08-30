@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using QBuild.Const;
+using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace QBuild
 {
-    
-    [CreateAssetMenu(fileName = "FaceScriptable", menuName = "Tools/QBuild/Face", order = 0)]
+    [CreateAssetMenu(fileName = "FaceScriptable", menuName = EditorConst.ScriptablePrePath + "Face",
+        order = EditorConst.OtherOrder)]
     public class FaceScriptableObject : ScriptableObject
     {
         [SerializeField] private string type;

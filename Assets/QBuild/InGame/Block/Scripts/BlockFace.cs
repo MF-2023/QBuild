@@ -2,6 +2,10 @@
 
 namespace QBuild
 {
+
+    /// <summary>
+    /// ブロックの面の向きを表す
+    /// </summary>
     public enum BlockFace : byte
     {
         Top,
@@ -11,8 +15,6 @@ namespace QBuild
         Front,
         Right,
         None
-        
-        
     }
     
     public static class BlockFaceExtensions

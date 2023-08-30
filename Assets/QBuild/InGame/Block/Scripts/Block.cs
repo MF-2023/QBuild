@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using QBuild.Mino;
 using SherbetInspector.Core.Attributes;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
+using VContainer;
 
 namespace QBuild
 {
@@ -22,49 +24,46 @@ namespace QBuild
 
     public class Block : MonoBehaviour
     {
-        [SerializeField] private BlockGenerator blockScriptableObjects;
+        [SerializeField] private BlockType blockScriptableObjects;
 
         [SerializeField] private Faces faces;
 
+
         [SerializeField] private Vector3Int _gridPosition;
+        
+        [SerializeField] private float _stabilityGlue = 0;
+        [SerializeField] private float _stability = 0;
+        [SerializeField] private float _mass = 1;
 
-        [SerializeField] private bool isFalling = true;
-
-        [SerializeField] private float stabilityGlue = 0;
-        [SerializeField] private float stability = 0;
-        [SerializeField] private float mass = 1;
-
-        private static BlockManager _blockManager;
-
-        private long ownerMinoKey = -1;
-
-        public static void Init(BlockManager manager)
+        [Inject]
+        private void Inject(BlockService blockService)
         {
-            _blockManager = manager;
+            Debug.Log("Inject Block");
+            _blockService = blockService;
         }
 
-        public void GenerateBlock(BlockGenerator generator, Vector3Int pos, long ownerKey = -1)
+        public void GenerateBlock(BlockType type, Vector3Int pos)
         {
-            blockScriptableObjects = generator;
-            ownerMinoKey = ownerKey;
+            _ownerMinoKey = MinoKey.NullMino; 
+            
+            blockScriptableObjects = type;
             _gridPosition = pos;
             GenerateBlock();
-            _blockManager.UpdateBlock(this);
         }
 
-        public long GetMinoKey()
+        public MinoKey GetMinoKey()
         {
-            return ownerMinoKey;
+            return _ownerMinoKey;
         }
 
-        public void SetMinoKey(long key)
+        public void SetMinoKey(MinoKey key)
         {
-            ownerMinoKey = key;
+            _ownerMinoKey = key;
         }
-        
+
         public bool CanMove(Vector3Int move)
         {
-            return _blockManager.CanPlace(_gridPosition + move);
+            return _blockService.CanPlace(_gridPosition + move);
         }
 
         public void MoveNext(Vector3Int move)
@@ -72,7 +71,8 @@ namespace QBuild
             var before = _gridPosition;
             _gridPosition += move;
             transform.localPosition = _gridPosition;
-            _blockManager.UpdateBlock(this, before);
+            _blockService.UpdateBlock(this, before);
+
             name = $"Block_{_gridPosition}";
         }
 
@@ -81,30 +81,28 @@ namespace QBuild
             return _gridPosition;
         }
 
+        public void OnFall()
+        {
+            _isFalling = true;
+        }
 
         public void OnBlockPlaced(float stabilityNext = -1)
         {
-            isFalling = false;
+            _isFalling = false;
 
-            if(stabilityNext < 0)stabilityNext = CalcStability();
+            if (stabilityNext < 0) stabilityNext = CalcStability();
 
-            stability = stabilityNext;
+            _stability = stabilityNext;
             Debug.Log("Place");
         }
 
         private float CalcStability()
         {
             float supportHorizontalStability = 0;
-            List<Vector3Int> HORIZONTAL_DIRECTIONS = new List<Vector3Int>()
+
+            foreach (var t in Vector3IntDirs.HorizontalDirections)
             {
-                Vector3Int.forward,
-                Vector3Int.back,
-                Vector3Int.left,
-                Vector3Int.right
-            };
-            foreach (var t in HORIZONTAL_DIRECTIONS)
-            {
-                if (_blockManager.TryGetBlock(_gridPosition + t, out var block))
+                if (_blockService.TryGetBlock(_gridPosition + t, out var block))
                 {
                     supportHorizontalStability = Math.Max(block.GetStability(), supportHorizontalStability);
                 }
@@ -115,12 +113,12 @@ namespace QBuild
             float stabilityUp = 0;
             float stabilityDown = 0;
 
-            if (_blockManager.TryGetBlock(_gridPosition + Vector3Int.up, out var topBlock))
+            if (_blockService.TryGetBlock(_gridPosition + Vector3Int.up, out var topBlock))
             {
                 stabilityUp = topBlock.GetStability();
             }
 
-            if (_blockManager.TryGetBlock(_gridPosition + Vector3Int.down, out var downBlock))
+            if (_blockService.TryGetBlock(_gridPosition + Vector3Int.down, out var downBlock))
             {
                 stabilityDown = downBlock.GetStability();
             }
@@ -134,40 +132,14 @@ namespace QBuild
 
 
             float supportVerticalStability = Math.Max(stabilityUp, stabilityDown);
-            float stabilityNext = Math.Max(Math.Min(Math.Max(supportHorizontalStability, supportVerticalStability), 10), 0);
+            float stabilityNext = Math.Max(Math.Min(Math.Max(supportHorizontalStability, supportVerticalStability), 10),
+                0);
             if (GetGridPosition().y == 0)
             {
                 stabilityNext = 10;
             }
 
             return stabilityNext;
-        }
-
-        public void GlueBlock(BlockFace blockFace, Block block)
-        {
-            switch (blockFace)
-            {
-                case BlockFace.Top:
-                    faces.top.SetGlueBlock(block);
-                    break;
-                case BlockFace.Bottom:
-                    faces.bottom.SetGlueBlock(block);
-                    break;
-                case BlockFace.Left:
-                    faces.left.SetGlueBlock(block);
-                    break;
-                case BlockFace.Right:
-                    faces.right.SetGlueBlock(block);
-                    break;
-                case BlockFace.Front:
-                    faces.center.SetGlueBlock(block);
-                    break;
-                case BlockFace.Back:
-                    faces.back.SetGlueBlock(block);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(blockFace), blockFace, null);
-            }
         }
 
         public Face GetFace(BlockFace face)
@@ -183,19 +155,20 @@ namespace QBuild
                 _ => throw new ArgumentOutOfRangeException(nameof(face), face, null)
             };
         }
+
         public bool IsFalling()
         {
-            return isFalling;
+            return _isFalling;
         }
 
         public float GetStabilityGlue()
         {
-            return stabilityGlue;
+            return _stabilityGlue;
         }
 
         public float GetStability()
         {
-            return stability;
+            return _stability;
         }
 
         [Button]
@@ -214,8 +187,8 @@ namespace QBuild
                 return face.MakeFace();
             }
 
-            stabilityGlue = 9;
-            stability = 10;
+            _stabilityGlue = 9;
+            _stability = 10;
             faces.top = FaceGenerate(blockScriptableObjects.top, Vector3.up / 2, Quaternion.identity);
             faces.bottom = FaceGenerate(blockScriptableObjects.bottom, Vector3.down / 2, Quaternion.Euler(180, 0, 0));
 
@@ -228,12 +201,17 @@ namespace QBuild
 
         public float GetMass()
         {
-            return mass;
+            return _mass;
         }
 
-        public float GetForceToOtherBlock(Block _other)
+        public float GetForceToOtherBlock(Block other)
         {
-            return Math.Min(this.GetStabilityGlue(), _other.GetStabilityGlue());
+            return Math.Min(this.GetStabilityGlue(), other.GetStabilityGlue());
         }
+
+        private BlockService _blockService;
+        
+        private bool _isFalling = false;
+        private MinoKey _ownerMinoKey = MinoKey.NullMino;
     }
 }
