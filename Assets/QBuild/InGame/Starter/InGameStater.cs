@@ -3,6 +3,7 @@ using QBuild.Camera;
 using QBuild.Condition;
 using QBuild.Mino;
 using QBuild.Mino.ProvisionalMino;
+using QBuild.Player;
 using QBuild.Stage;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -63,7 +64,9 @@ namespace QBuild.Starter
             
             // Camera
             builder.Register<CameraModel>(Lifetime.Singleton);
-
+            
+            builder.RegisterComponentInNewPrefab(_playerPrefab, Lifetime.Singleton);
+            builder.RegisterEntryPoint<PlayerPresenter>();
         }
 
         [SerializeField] private BlockManager _blockManager;
@@ -74,7 +77,7 @@ namespace QBuild.Starter
         [SerializeField] private MinoTypeList _minoTypeList;
         [SerializeField] private ProvisionalMinoSetting _provisionalMinoSetting;
         [SerializeField] private GameObject _blockParentObject;
-        
-        [SerializeField] private LifetimeScope _cameraPrefab;
+
+        [SerializeField] private PlayerController _playerPrefab;
     }
 }

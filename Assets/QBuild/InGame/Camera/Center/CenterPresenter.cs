@@ -1,6 +1,8 @@
 ﻿using System;
+using QBuild.Behavior;
 using QBuild.Stage;
 using UniRx;
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 using Object = UnityEngine.Object;
@@ -12,19 +14,23 @@ namespace QBuild.Camera.Center
         private readonly CameraModel _cameraModel;
         private readonly CameraScriptableObject _cameraScriptableObject;
         private readonly CenterView _centerView;
+        private readonly PlayerController _playerController;
 
         [Inject]
         public CenterPresenter(CameraModel cameraModel, StageScriptableObject stageScriptableObject,
-            CameraScriptableObject cameraScriptableObject, CenterView centerView)
+            CameraScriptableObject cameraScriptableObject, CenterView centerView,PlayerController playerController)
         {
             _cameraModel = cameraModel;
             _cameraScriptableObject = cameraScriptableObject;
             _centerView = centerView;
+            _playerController = playerController;
         }
 
         public void Dispose()
         {
             Object.Destroy(_centerView);
+            _playerController.OnChangeGridPosition -= CameraMove;
+
         }
 
         public void Initialize()
@@ -33,6 +39,13 @@ namespace QBuild.Camera.Center
             _cameraScriptableObject.CenterOffset.Subscribe(
                 offset => _centerView.transform.position = _centerView.GetCenterPosition() + offset
             );
+
+            _playerController.OnChangeGridPosition += CameraMove;
+        }
+        
+        private void CameraMove(Vector3 position)
+        {
+            _centerView.GetComponent<GridMove>().MoveTo(position);
         }
     }
 }

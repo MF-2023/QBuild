@@ -947,7 +947,7 @@ MonoBehaviour:
   _provisionalMinoSetting: {fileID: 11400000, guid: ab3425a905b0237419e8099718d7cf07,
     type: 2}
   _blockParentObject: {fileID: 731420308}
-  _cameraPrefab: {fileID: 3476832123396132886, guid: 99b7d52e7c457824f8c2e08929b84eac,
+  _playerPrefab: {fileID: 7288135099793665904, guid: 96ae53abbfcde3e4f93bddb78bef659a,
     type: 3}
 --- !u!4 &1312260067
 Transform:
