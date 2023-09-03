@@ -7,8 +7,7 @@ namespace QBuild.PropertyWindow
 {
     public class PropertyEditorWindow : EditorWindow
     {
-        [SerializeField]
-        private VisualTreeAsset m_VisualTreeAsset = default;
+        private VisualTreeAsset m_VisualTreeAsset;
 
         [MenuItem(EditorConst.WindowPrePath + "プロパティエディタ")]
         public static void ShowExample()
@@ -21,7 +20,8 @@ namespace QBuild.PropertyWindow
         {
             // Each editor window contains a root VisualElement object
             var root = rootVisualElement;
-            
+
+            m_VisualTreeAsset = UIToolkitUtility.GetVisualTree("PropertyWindow/PropertyEditorWindow");
             m_VisualTreeAsset.CloneTree(root);
             
             

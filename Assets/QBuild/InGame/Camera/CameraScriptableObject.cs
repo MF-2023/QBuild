@@ -11,10 +11,14 @@ namespace QBuild.Camera
     {
         public IReadOnlyReactiveProperty<float> Height => _height;
         public IReadOnlyReactiveProperty<float> Distance => _distance;
+        
+        public IReadOnlyReactiveProperty<float> angleOffset => _angleOffset;
+        
         public IReadOnlyReactiveProperty<Vector3> CenterOffset => _centerOffset;
         
         [SerializeField] private FloatReactiveProperty _height = new(10f);
         [SerializeField] private FloatReactiveProperty _distance = new(15f);
+        [SerializeField] private FloatReactiveProperty _angleOffset = new(0f);
         [SerializeField] private Vector3ReactiveProperty _centerOffset = new(Vector3.zero);
         
     }

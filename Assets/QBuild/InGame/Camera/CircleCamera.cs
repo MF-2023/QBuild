@@ -95,8 +95,13 @@ namespace QBuild.Camera
             _radius = radius;
         }
         
+        public void SetCameraAngle(float angle)
+        {
+            _offsetRadian = angle;
+        }
+        
         public int CurrentCameraIndex => _currentCameraIndex;
-
+        
         private CameraState _state = CameraState.Default;
         [SerializeField] private Transform _lookAt;
         [SerializeField] private int _currentCameraIndex = 0;

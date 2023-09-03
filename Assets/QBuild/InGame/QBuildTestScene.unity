@@ -934,7 +934,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parentReference:
     TypeName: 
-  autoRun: 1
+  autoRun: 0
   autoInjectGameObjects:
   - {fileID: 731420308}
   _blockManager: {fileID: 731420309}

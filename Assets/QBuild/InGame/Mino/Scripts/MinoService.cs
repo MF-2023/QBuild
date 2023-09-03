@@ -175,6 +175,7 @@ namespace QBuild.Mino
         public void Place(Polyomino mino)
         {
             Debug.Log($"MinoService.Place {mino.GetBlocks()[0].name}");
+            if (!mino.IsFalling) return;
             if (JointMino(mino))
             {
                 OnMinoPlaced?.Invoke(mino);

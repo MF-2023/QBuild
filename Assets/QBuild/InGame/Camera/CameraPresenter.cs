@@ -44,6 +44,10 @@ namespace QBuild.Camera
             _cameraScriptableObject.CenterOffset.Subscribe(
                 offset => _center.transform.position = _centerPosition + offset
             );
+            
+            _cameraScriptableObject.angleOffset.Subscribe(
+                angle => _cameraView.SetCameraAngle(angle)
+            );
         }
 
         public void Dispose()

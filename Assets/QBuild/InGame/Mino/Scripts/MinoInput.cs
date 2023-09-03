@@ -18,9 +18,10 @@ namespace QBuild.Mino
         public MinoInput(@InputSystem inputSystem, CameraModel cameraModel)
         {
             inputSystem.Enable();
+            Debug.Log("MinoInput.Inject");
             _inputSystem = inputSystem;
             _inputSystem.InGame.BlockMove.performed += MinoMove;
-            
+
             Observable.FromEvent<InputAction.CallbackContext>(
                     h => _inputSystem.InGame.BlockDone.performed += h,
                     h => _inputSystem.InGame.BlockDone.performed -= h)
@@ -34,30 +35,30 @@ namespace QBuild.Mino
         }
 
 
-        
         private void MinoMove(InputAction.CallbackContext context)
         {
             var inputValue = context.ReadValue<Vector2>();
 
-            var move = new Vector3Int((int)inputValue.x, 0, (int)inputValue.y);
+            var move = new Vector3Int((int) inputValue.x, 0, (int) inputValue.y);
             var direction = _cameraModel.GetCameraDirection();
 
-            //directionを元にmoveを回転させる
+            //directionを元にmoveを回転させる(東を基準)
             switch (direction)
             {
-                case Direction.East:
+                case Direction.North:
+                    move = new Vector3Int(move.x, 0, move.z);
                     break;
-                case Direction.South:
+                case Direction.East:
                     move = new Vector3Int(-move.z, 0, move.x);
                     break;
-                case Direction.West:
+                case Direction.South:
                     move = new Vector3Int(-move.x, 0, -move.z);
                     break;
-                case Direction.North:
+                case Direction.West:
                     move = new Vector3Int(move.z, 0, -move.x);
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    break;
             }
 
             _onMinoMove.OnNext(move);
@@ -66,7 +67,7 @@ namespace QBuild.Mino
         private readonly Subject<Vector3Int> _onMinoMove = new();
 
         private readonly InputSystem _inputSystem;
-        
+
         private readonly CameraModel _cameraModel;
     }
 }
