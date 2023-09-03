@@ -40,7 +40,10 @@ namespace QBuild.Mino
 
                 foreach (var renderer in block.GetComponentsInChildren<Renderer>())
                 {
-                    renderer.material.color = color;
+                    foreach (var rendererMaterial in renderer.materials)
+                    {
+                        rendererMaterial.color = color;
+                    }
                 }
 
                 mino.AddBlock(block);
@@ -59,7 +62,6 @@ namespace QBuild.Mino
             Color.black,
             Color.blue,
             Color.cyan,
-            Color.gray,
             Color.green,
             Color.magenta,
             Color.red,

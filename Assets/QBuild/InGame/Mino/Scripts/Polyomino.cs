@@ -53,16 +53,18 @@ namespace QBuild.Mino
 
         public void JointMino(Polyomino otherMino)
         {
-            var material = _blocks[0].GetComponentInChildren<Renderer>().material;
             foreach (var block in otherMino.GetBlocks())
             {
-                block.GetComponentsInChildren<Renderer>().ToList().ForEach(x => x.material = material);
                 if (IsFalling) continue;
                 block.OnBlockPlaced(_blocks[0].GetStability());
                 block.SetMinoKey(_selfKey);
                 _blocks.Add(block);
             }
 
+            foreach (var rendererMaterial in from block in _blocks from renderer in block.GetComponentsInChildren<Renderer>() from rendererMaterial in renderer.materials select rendererMaterial)
+            {
+                rendererMaterial.color = Color.gray;
+            }
             IsFalling = false;
         }
 

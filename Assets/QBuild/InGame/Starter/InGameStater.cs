@@ -28,7 +28,7 @@ namespace QBuild.Starter
             
             builder.Register<StabilityCalculator>(Lifetime.Singleton);
 
-            builder.Register<MinoFactory>(Lifetime.Singleton).As<IMinoFactory>();
+            builder.Register<MinoDebugFactory>(Lifetime.Singleton).As<IMinoFactory>();
             builder.Register<MinoStore>(Lifetime.Singleton);
             builder.Register<MinoService>(Lifetime.Singleton);
             builder.Register<FallMino>(Lifetime.Singleton);
