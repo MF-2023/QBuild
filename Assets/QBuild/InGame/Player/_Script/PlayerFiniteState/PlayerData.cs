@@ -14,11 +14,4 @@ public class PlayerData : ScriptableObject
 
     [Tooltip("プレイヤーのジャンプ")]
     public float jumpPower = 1.0f;
-
-    [Header("Check Ground")]
-    [Tooltip("地面判定になるオブジェクトのレイヤー")]
-    public LayerMask groundLayer;
-    [Tooltip("半径")] public float groundCheckRadius = 0.5f;
-    //[Tooltip("プレイヤーから地面までの判定距離")]
-   //public float checkGroundDistance = 0.5f;
 }

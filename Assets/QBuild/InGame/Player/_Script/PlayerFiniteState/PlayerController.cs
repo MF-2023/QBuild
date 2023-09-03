@@ -14,9 +14,10 @@ public class PlayerController : MonoBehaviour
     private PlayerAnimationController _AnimationController;
     private Core Core;
 
-    private Vector3 currentPosition;
+    private Vector3Int currentPosition;
 
     public event Action<Vector3> OnChangeGridPosition;
+    public event Func<Vector3Int, bool> OnCheckBlock;
     #endregion
 
     #region UnityCallBack
@@ -27,8 +28,8 @@ public class PlayerController : MonoBehaviour
         _StateController = new PlayerStateController(Core, _inputHandler, groundCheck, playerData);
         _StateController.OnChangeAnimation += _AnimationController.ChangeAnimation;
         _StateController.OnGetPlayerPos += GetPlayerPosition;
-        currentPosition = transform.position;
-        currentPosition = new Vector3((int)currentPosition.x, (int)currentPosition.y, (int)currentPosition.z);
+        _StateController.OnCheckBlock += CheckGround;
+        currentPosition = new Vector3Int((int)transform.position.x, (int)transform.position.y, (int)transform.position.z);
     }
 
     private void Update()
@@ -41,17 +42,12 @@ public class PlayerController : MonoBehaviour
     {
         _StateController.FixedUpdate();
     }
-
-    private void OnDrawGizmos()
-    {
-        //地面チェック用Ray
-        Gizmos.DrawSphere(groundCheck.position, playerData.groundCheckRadius);
-    }
     #endregion
 
-    private Vector3 GetPlayerPosition()
+    private Vector3Int GetPlayerPosition()
     {
-        return transform.position;
+        Vector3Int ret = new Vector3Int((int)transform.position.x, (int)transform.position.y, (int)transform.position.z);
+        return ret;
     }
 
     public void AnimationTrigger() => _StateController.AnimationTrigger();
@@ -60,14 +56,23 @@ public class PlayerController : MonoBehaviour
 
     private void CheckGridPosition()
     {
-        Vector3 nowPos = transform.position;
-        nowPos = new Vector3((int)nowPos.x, (int)nowPos.y, (int)nowPos.z);
+        Vector3Int nowPos = new Vector3Int((int)transform.position.x, (int)transform.position.y, (int)transform.position.z);
 
         if(nowPos != currentPosition)
         {
             //グリッド変更のイベント呼び出し
-            if (OnChangeGridPosition != null) OnChangeGridPosition(nowPos);
+            OnChangeGridPosition?.Invoke(nowPos);
             currentPosition = nowPos;
         }
+    }
+
+    private bool CheckGround()
+    {
+        bool ret = false;
+        //プレイヤーのポジションの一つ下を指定
+        Vector3Int check = new Vector3Int(currentPosition.x, currentPosition.y - 1, currentPosition.z);
+        if(OnCheckBlock != null) ret = OnCheckBlock(currentPosition);
+
+        return ret;
     }
 }

@@ -55,7 +55,7 @@ public class PlayerState
     /// <summary>
     /// 状態に遷移したときにチェックする処理
     /// </summary>
-    public virtual void DoCheck() { isGrounded = CheckIsGround(); }
+    public virtual void DoCheck() { isGrounded = player.CheckBlock(); }
 
     /// <summary>
     /// 現在の状態のアップデート処理
@@ -65,7 +65,7 @@ public class PlayerState
         xInput = player.inputHandler.xInput;
         zInput = player.inputHandler.zInput;
         jumpInput = player.inputHandler.jumpInput;
-        isGrounded = CheckIsGround();
+        isGrounded = player.CheckBlock();
     }
 
     /// <summary>
@@ -82,27 +82,4 @@ public class PlayerState
     /// アニメーション終了トリガー
     /// </summary>
     public void AnimationFinishedTrigger() => animationFinishedTrigger = true;
-
-    /// <summary>
-    /// 地面の上にいるのか判定する
-    /// </summary>
-    /// <returns></returns>
-    protected bool CheckIsGround()
-    {
-        Vector3 pos = player.GroundCheck.position;
-        Collider[] hitColliders = Physics.OverlapSphere(pos, playerData.groundCheckRadius, playerData.groundLayer, QueryTriggerInteraction.Ignore);
-        if (hitColliders.Length > 0)
-        {
-            foreach (Collider hitCollider in hitColliders)
-            {
-                // ヒットしたオブジェクトがPlayerタグを持っていない場合のみ処理を行う
-                if (!hitCollider.CompareTag("Player"))
-                {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
 }
