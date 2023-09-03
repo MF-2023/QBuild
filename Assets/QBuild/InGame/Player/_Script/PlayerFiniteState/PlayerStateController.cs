@@ -28,7 +28,8 @@ public class PlayerStateController
     public Rotation Rotation { get => rotation ?? Core.GetCoreComponent(ref rotation); }
 
     public event Action<string, bool> OnChangeAnimation;
-    public event Func<Vector3> OnGetPlayerPos;
+    public event Func<Vector3Int> OnGetPlayerPos;
+    public event Func<bool> OnCheckBlock;
 
 
     public PlayerStateController(Core core, PlayerInputHandler playerInputHandler, Transform groundCheck, PlayerData data)
@@ -71,15 +72,22 @@ public class PlayerStateController
         }
     }
 
-    public Vector3 GetPlayerPos()
+    public Vector3Int GetPlayerPos()
     {
-        Vector3 ret = Vector3.zero;
+        Vector3Int ret = Vector3Int.zero;
 
         if(OnGetPlayerPos != null)
         {
             ret = OnGetPlayerPos();
         }
 
+        return ret;
+    }
+
+    public bool CheckBlock()
+    {
+        bool ret = false;
+        if (OnCheckBlock != null) ret = OnCheckBlock();
         return ret;
     }
 }

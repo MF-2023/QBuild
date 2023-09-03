@@ -44,7 +44,7 @@ public class PlayerInAirState : PlayerState
 
         player.Movement?.SetVelocityXZ(moveForward, playerData.inAirmoveSpeed);
 
-        Vector3 pos = player.GetPlayerPos();
+        Vector3Int pos = player.GetPlayerPos();
         workspace = new Vector3(moveForward.x + pos.x, moveForward.y + pos.y, moveForward.z + pos.z);
         player.Rotation?.SetRotation(workspace);
     }
