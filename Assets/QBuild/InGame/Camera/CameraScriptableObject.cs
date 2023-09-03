@@ -2,6 +2,7 @@
 using QBuild.Const;
 using UniRx;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace QBuild.Camera
 {
@@ -9,14 +10,14 @@ namespace QBuild.Camera
         order = EditorConst.OtherOrder)]
     public class CameraScriptableObject : ScriptableObject
     {
-        public IReadOnlyReactiveProperty<float> Height => _height;
+        public IReadOnlyReactiveProperty<float> HeightOffset => _heightOffset;
         public IReadOnlyReactiveProperty<float> Distance => _distance;
         
         public IReadOnlyReactiveProperty<float> angleOffset => _angleOffset;
         
         public IReadOnlyReactiveProperty<Vector3> CenterOffset => _centerOffset;
         
-        [SerializeField] private FloatReactiveProperty _height = new(10f);
+        [FormerlySerializedAs("_height")] [SerializeField] private FloatReactiveProperty _heightOffset = new(10f);
         [SerializeField] private FloatReactiveProperty _distance = new(15f);
         [SerializeField] private FloatReactiveProperty _angleOffset = new(0f);
         [SerializeField] private Vector3ReactiveProperty _centerOffset = new(Vector3.zero);

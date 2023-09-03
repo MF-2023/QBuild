@@ -979,6 +979,8 @@ MonoBehaviour:
   _inGameStater: {fileID: 1312260066}
   _cameraScope: {fileID: 3476832123396132886, guid: 99b7d52e7c457824f8c2e08929b84eac,
     type: 3}
+  _centerScope: {fileID: 5104160117491178289, guid: 2b75b610d2c6ab34e90adae06ab79ecf,
+    type: 3}
 --- !u!1 &1338835297
 GameObject:
   m_ObjectHideFlags: 0

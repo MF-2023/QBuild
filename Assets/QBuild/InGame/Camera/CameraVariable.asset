@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbea3c6b95134d6b8baa7d343ad50544, type: 3}
   m_Name: CameraVariable
   m_EditorClassIdentifier: 
-  _height:
-    value: 20
+  _heightOffset:
+    value: 21
   _distance:
     value: 15
+  _angleOffset:
+    value: 0
   _centerOffset:
     value: {x: 0, y: 0, z: 0}

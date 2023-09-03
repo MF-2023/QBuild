@@ -295,7 +295,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parentReference:
     TypeName: QBuild.Starter.InGameStater
-  autoRun: 1
+  autoRun: 0
   autoInjectGameObjects: []
   _cameraView: {fileID: 1156492014862107872}
   _cameraScriptableObject: {fileID: 11400000, guid: 8136fc3c2fef9514080ecdb47dc3f0f2,

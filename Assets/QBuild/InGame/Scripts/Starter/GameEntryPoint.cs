@@ -1,5 +1,6 @@
 ﻿using System;
 using QBuild.Camera;
+using QBuild.Camera.Center;
 using QBuild.Starter;
 using UnityEngine;
 using VContainer.Unity;
@@ -14,11 +15,18 @@ namespace QBuild.Scripts.Starter
 
             using (LifetimeScope.EnqueueParent(_inGameStater))
             {
-                _inGameStater.CreateChildFromPrefab(_cameraScope);
+                var scope = _inGameStater.CreateChildFromPrefab(_cameraScope);
+                scope.Build();
+                using (LifetimeScope.EnqueueParent(scope))
+                {
+                    var centerScope = scope.CreateChildFromPrefab(_centerScope);
+                    centerScope.Build();
+                }
             }
         }
 
         [SerializeField] private InGameStater _inGameStater;
         [SerializeField] private CameraScope _cameraScope;
+        [SerializeField] private CenterScope _centerScope;
     }
 }
