@@ -27,7 +27,7 @@ public class PlayerInAirState : PlayerState
     {
         base.LogicUpdate();
 
-        if (isGrounded && player._Rb.velocity.y <= 0)
+        if (isGrounded &&  player.Movement.GetNowVelocity().y<= 0)
         {
             //TODO::PlayerInAirState::プレイヤーが地面についた時の処理
             //仮でとりあえずIdleStateに戻してます
@@ -44,7 +44,7 @@ public class PlayerInAirState : PlayerState
 
         player.Movement?.SetVelocityXZ(moveForward, playerData.inAirmoveSpeed);
 
-        Vector3 pos = player.transform.position;
+        Vector3 pos = player.GetPlayerPos();
         workspace = new Vector3(moveForward.x + pos.x, moveForward.y + pos.y, moveForward.z + pos.z);
         player.Rotation?.SetRotation(workspace);
     }

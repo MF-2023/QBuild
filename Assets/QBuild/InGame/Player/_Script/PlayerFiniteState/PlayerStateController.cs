@@ -1,8 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStateController : MonoBehaviour
+public class PlayerStateController
 { 
     private PlayerStateMachine stateMachine;
 
@@ -19,9 +20,6 @@ public class PlayerStateController : MonoBehaviour
     private Core _Core;
     private Movement movement;
     private Rotation rotation;
-
-    public Rigidbody _Rb { get; private set; }
-    public Animator _Anim { get; private set; }
     public PlayerInputHandler inputHandler { get; private set; }
 
     public Transform GroundCheck { get { return _GroundCheck; } }
@@ -29,14 +27,16 @@ public class PlayerStateController : MonoBehaviour
     public Movement Movement { get => movement ?? Core.GetCoreComponent(ref movement); }
     public Rotation Rotation { get => rotation ?? Core.GetCoreComponent(ref rotation); }
 
-    public void Initialize(PlayerData data , Transform groundCheck, PlayerInputHandler inputHandler)
+    public event Action<string, bool> OnChangeAnimation;
+    public event Func<Vector3> OnGetPlayerPos;
+
+
+    public PlayerStateController(Core core, PlayerInputHandler playerInputHandler, Transform groundCheck, PlayerData data)
     {
-        this.inputHandler = inputHandler;
-        _Core = GetComponentInChildren<Core>();
+        _Core = core;
+        this.inputHandler = playerInputHandler;
         _GroundCheck = groundCheck;
         stateMachine = new PlayerStateMachine();
-        _Rb = GetComponent<Rigidbody>();
-        _Anim = GetComponent<Animator>();
 
         //各種ステータスの生成
         _IdleState = new PlayerIdle(this, stateMachine, data, "idle");
@@ -62,4 +62,24 @@ public class PlayerStateController : MonoBehaviour
     public void AnimationTrigger() => stateMachine.currentState.AnimationTrigger();
 
     public void AnimationFinishedTrigger() => stateMachine.currentState.AnimationFinishedTrigger();
+
+    public void ChangeAnimationDelegateEvent(string animName, bool setBool)
+    {
+        if(OnChangeAnimation != null)
+        {
+            OnChangeAnimation(animName, setBool);
+        }
+    }
+
+    public Vector3 GetPlayerPos()
+    {
+        Vector3 ret = Vector3.zero;
+
+        if(OnGetPlayerPos != null)
+        {
+            ret = OnGetPlayerPos();
+        }
+
+        return ret;
+    }
 }

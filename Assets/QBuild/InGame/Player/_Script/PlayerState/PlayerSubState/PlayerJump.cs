@@ -29,7 +29,7 @@ public class PlayerJump : PlayerGroundState
 
         if(animationFinishedTrigger)
         {
-            workspace = new Vector3(player._Rb.velocity.x, playerData.jumpPower, player._Rb.velocity.z);
+            workspace = new Vector3(player.Movement.GetNowVelocity().x, playerData.jumpPower, player.Movement.GetNowVelocity().z);
             player.Movement?.SetVelocity(workspace);
             stateMachine.ChangeState(player.FallState);
         }

@@ -39,7 +39,7 @@ public class PlayerState
     public virtual void Enter()
     {
         DoCheck();
-        player._Anim.SetBool(animBoolName, true);
+        player.ChangeAnimationDelegateEvent(animBoolName, true);
         animationFinishedTrigger = false;
         isExit = false;
     }
@@ -48,8 +48,8 @@ public class PlayerState
     /// 状態が終了したときに行われる処理
     /// </summary>
     public virtual void Exit() 
-    { 
-        player._Anim.SetBool(animBoolName, false);    
+    {
+        player.ChangeAnimationDelegateEvent(animBoolName, false);
     }
 
     /// <summary>
@@ -89,10 +89,20 @@ public class PlayerState
     /// <returns></returns>
     protected bool CheckIsGround()
     {
-        bool ret = false;
         Vector3 pos = player.GroundCheck.position;
-        ret = Physics.CheckSphere(pos, playerData.groundCheckRadius, playerData.groundLayer,QueryTriggerInteraction.Ignore);
-        //ret = Physics.CheckSphere(pos, playerData.groundCheckRadius);
-        return ret;
+        Collider[] hitColliders = Physics.OverlapSphere(pos, playerData.groundCheckRadius, playerData.groundLayer, QueryTriggerInteraction.Ignore);
+        if (hitColliders.Length > 0)
+        {
+            foreach (Collider hitCollider in hitColliders)
+            {
+                // ヒットしたオブジェクトがPlayerタグを持っていない場合のみ処理を行う
+                if (!hitCollider.CompareTag("Player"))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

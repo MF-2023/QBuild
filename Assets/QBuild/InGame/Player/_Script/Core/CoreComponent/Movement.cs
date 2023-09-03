@@ -57,6 +57,11 @@ public class Movement : CoreComponent
         AddForceFinalVelocity(mode);
     }
 
+    public Vector3 GetNowVelocity()
+    {
+        return myRB.velocity;
+    }
+
     private void SetFinalVelocity()
     {
         if (!canSetVelocity) return;
