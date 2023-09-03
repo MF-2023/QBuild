@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UniRx;
 using UnityEngine;
 using VContainer;
@@ -30,11 +33,9 @@ namespace QBuild.Mino
             _fallMino.OnMinoFall += OnMinoFall;
             _fallMino.OnMinoDown += OnMinoDown;
             _minoService.OnMinoPlaced += OnMinoPlaced;
-            
-            
+            _minoInput.OnMinoDone += _fallMino.MinoDone;
+            _fallMino.OnMinoDone += _minoService.MinoContact;
             _minoPhysicsSimulation.OnDropBlocks += OnMinoSimulated;
-            
-            
         }
 
         public void Dispose()
@@ -44,23 +45,34 @@ namespace QBuild.Mino
             _fallMino.OnMinoDown -= OnMinoDown;
             _minoService.OnMinoPlaced -= OnMinoPlaced;
 
+            _minoInput.OnMinoDone -= _fallMino.MinoDone;
+            _fallMino.OnMinoDone -= _minoService.MinoContact;
             _minoPhysicsSimulation.OnDropBlocks -= OnMinoSimulated;
         }
 
+
         private void OnMinoFall(Polyomino mino)
         {
-            _minoMoveSubscription = _minoInput.OnMinoMove.Subscribe(x => _minoService.TranslationMino(mino, x));
+            _minoMoveSubscription =
+                _minoInput.OnMinoMove.Subscribe(x => _minoService.TranslateMino(mino, x).Forget());
         }
 
-        private void OnMinoDown(Polyomino mino, int moveY)
+        private void OnMinoDown(Polyomino mino, int moveY, UniTaskCompletionSource source)
         {
-            _minoService.TranslationMino(mino, new Vector3Int(0, -moveY, 0));
+            UniTask.Create(async () =>
+            {
+                Debug.Log("Down Source");
+                await _minoService.TranslateFallMino(mino, new Vector3Int(0, -moveY, 0));
+                Debug.Log("Down Source Finish");
+                source.TrySetResult();
+            });
         }
 
         private void OnMinoPlaced(Polyomino mino)
         {
             _minoMoveSubscription?.Dispose();
-            
+            _minoDoneSubscription?.Dispose();
+
             _minoPhysicsSimulation.Execute(mino);
         }
 
@@ -72,8 +84,7 @@ namespace QBuild.Mino
                 _minoService.DestroyMino(mino);
             }
         }
-        
-        
+
 
         private readonly IMinoFactory _minoFactory;
         private readonly MinoInput _minoInput;
@@ -82,5 +93,7 @@ namespace QBuild.Mino
         private readonly MinoPhysicsSimulation _minoPhysicsSimulation;
 
         private IDisposable _minoMoveSubscription;
+        private IDisposable _minoDoneSubscription;
+        private CancellationTokenSource cancellation;
     }
 }

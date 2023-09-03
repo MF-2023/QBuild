@@ -1,7 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using QBuild.Stage;
+using UniRx;
 using UnityEngine;
 using VContainer;
 
@@ -13,7 +15,10 @@ namespace QBuild.Mino
     public class MinoService
     {
         public event Action<Polyomino> OnMinoPlaced;
-        public event Action<Polyomino> OnMinoMoved; 
+        public event Action<Polyomino> OnMinoMoved;
+
+        public IObservable<Polyomino> MinoContacted => _onMinoContactedSubject;
+        private Subject<Polyomino> _onMinoContactedSubject = new();
 
         [Inject]
         public MinoService(MinoStore minoStore, BlockService blockService, StabilityCalculator stabilityCalculator,
@@ -40,19 +45,9 @@ namespace QBuild.Mino
             return _minoStore.TryGetMino(key, out polyomino);
         }
 
-        public void TranslationMino(Polyomino mino, Vector3Int move)
+        private bool MinoMove(Polyomino mino, Vector3Int move)
         {
-            var dirs = new Vector3Int[]
-            {
-                new(1, 0, 0),
-                new(-1, 0, 0),
-                new(0, 0, 1),
-                new(0, 0, -1),
-                new(0, -1, 0)
-            };
             var blocks = mino.GetBlocks();
-            var shouldMove = true;
-
 
             foreach (var block in blocks)
             {
@@ -61,18 +56,48 @@ namespace QBuild.Mino
                 _blockService.TryGetBlock(block.GetGridPosition() + move, out var otherBlock);
                 if (block.GetMinoKey() == otherBlock.GetMinoKey()) continue;
 
-                shouldMove = false;
+                return false;
             }
 
-            if (shouldMove)
+            foreach (var block in blocks)
             {
-                foreach (var block in blocks)
-                {
-                    block.MoveNext(move);
-                }
-                OnMinoMoved?.Invoke(mino);
+                block.MoveNext(move);
             }
 
+            OnMinoMoved?.Invoke(mino);
+            return true;
+        }
+
+        public async UniTask TranslateFallMino(Polyomino mino, Vector3Int move)
+        {
+            await TranslateMino(mino, move);
+        }
+
+        public async UniTask TranslateMino(Polyomino mino, Vector3Int move)
+        {
+            mino.StartTranslate();
+            
+            if (MinoMove(mino, move))
+            {
+                cancellation?.Cancel();
+                cancellation = null;
+            }
+
+            await AsyncMinoContact(mino);
+            
+            mino.FinishTranslate();
+        }
+
+        private async UniTask AsyncMinoContact(Polyomino mino)
+        {
+            if (cancellation != null) return;
+            var blocks = mino.GetBlocks();
+            
+            var dirs = new Vector3Int[]
+            {
+                new(0, -1, 0)
+            };
+            
             foreach (var block in blocks)
             {
                 foreach (var pos in dirs.Select(x => x + block.GetGridPosition()))
@@ -80,8 +105,16 @@ namespace QBuild.Mino
                     if (!_blockService.TryGetBlock(pos, out var dirBlock)) continue;
                     if (dirBlock.IsFalling()) continue;
                     if (!_blockService.ContactCondition(block, dirBlock)) continue;
+                    cancellation = new CancellationTokenSource();
+                    Debug.Log("MinoService Contact");
+                    if (block.GetGridPosition().y >= 9)
+                    {
+                        Debug.LogError($"ミノの位置が異常です:{dirBlock.GetGridPosition()}");
+                    }
 
-                    Place(mino);
+                    await AsyncOnMinoContacted(mino, cancellation.Token);
+                    cancellation?.Cancel();
+                    cancellation = null;
                     break;
                 }
 
@@ -89,9 +122,60 @@ namespace QBuild.Mino
             }
         }
 
+        
+        public void MinoContact(Polyomino mino)
+        {
+            var blocks = mino.GetBlocks();
+            
+            var dirs = new Vector3Int[]
+            {
+                new(1, 0, 0),
+                new(-1, 0, 0),
+                new(0, 0, 1),
+                new(0, 0, -1),
+                new(0, -1, 0)
+            };
+            
+            foreach (var block in blocks)
+            {
+                foreach (var pos in dirs.Select(x => x + block.GetGridPosition()))
+                {
+                    if (!_blockService.TryGetBlock(pos, out var dirBlock)) continue;
+                    if (dirBlock.IsFalling()) continue;
+                    if (!_blockService.ContactCondition(block, dirBlock)) continue;
+                    Place(mino);
+                    cancellation?.Cancel();
+                    cancellation = null;
+                    break;
+                }
+
+                if (!mino.IsFalling) break;
+            }
+        }
+        private CancellationTokenSource cancellation;
+
+        private async UniTask AsyncOnMinoContacted(Polyomino mino, CancellationToken cancellationToken)
+        {
+            try
+            {
+                await UniTask.Delay(TimeSpan.FromSeconds(1), cancellationToken: cancellationToken);
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    Debug.Log("Canceled.");
+                    return;
+                }
+
+                Place(mino);
+            }
+            catch (OperationCanceledException e)
+            {
+                Debug.Log("AsyncOnMinoContacted Cancel");
+            }
+        }
         public void Place(Polyomino mino)
         {
-            if (ContactMino(mino))
+            Debug.Log($"MinoService.Place {mino.GetBlocks()[0].name}");
+            if (JointMino(mino))
             {
                 OnMinoPlaced?.Invoke(mino);
                 return;
@@ -101,7 +185,7 @@ namespace QBuild.Mino
             OnMinoPlaced?.Invoke(mino);
         }
 
-        public bool ContactMino(Polyomino mino)
+        public bool JointMino(Polyomino mino)
         {
             foreach (var block in mino.GetBlocks())
             {
@@ -114,14 +198,14 @@ namespace QBuild.Mino
                     if (targetBlock.GetMinoKey() == block.GetMinoKey()) continue;
                     if (!TryGetMino(targetBlock.GetMinoKey(), out var otherMino)) continue;
                     if (!BlockService.CanJoint(block, targetBlock)) continue;
-                    otherMino.ContactMino(mino);
+                    otherMino.JointMino(mino);
                     return true;
                 }
             }
 
             return false;
         }
-        
+
 
         public bool DestroyMino(Polyomino mino)
         {

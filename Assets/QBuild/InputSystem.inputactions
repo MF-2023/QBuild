@@ -15,6 +15,15 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "BlockDone",
+                    "type": "Button",
+                    "id": "db3c1581-1106-4f76-bf1f-3e8a5968c551",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "PlayerMove",
                     "type": "Value",
                     "id": "d3969a38-698f-4c99-adee-194f52e4ab88",
@@ -176,6 +185,17 @@
                     "action": "CameraMove",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "8ab72f64-aa79-4e9f-93c1-59d22f59b010",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BlockDone",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

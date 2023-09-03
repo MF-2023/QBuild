@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks.Linq;
 using VContainer;
-using VContainer.Unity;
 
 namespace QBuild.Mino
 {
@@ -11,19 +12,16 @@ namespace QBuild.Mino
         {
             _fallMino = fallMino;
         }
-        
-        public void Tick()
+
+        public async UniTask Start()
         {
-            
-            _tick += Time.deltaTime;
-
-            if (_tick < 0.4f) return;
-            _tick = 0;
-
-            _fallMino.Down(1);
+            await foreach (var _ in UniTaskAsyncEnumerable.EveryUpdate())
+            {
+                await UniTask.Delay(TimeSpan.FromSeconds(0.4));
+                await _fallMino.Down(1);
+                await UniTask.WaitWhile(() => _fallMino.IsBusy());
+            }
         }
-
-        private float _tick = 0;
 
         private readonly FallMino _fallMino;
     }

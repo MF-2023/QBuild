@@ -12,12 +12,19 @@ namespace QBuild.Mino
     {
         public IObservable<Vector3Int> OnMinoMove => _onMinoMove;
 
+        public event Action OnMinoDone;
+
         [Inject]
         public MinoInput(@InputSystem inputSystem, CameraModel cameraModel)
         {
             inputSystem.Enable();
             _inputSystem = inputSystem;
             _inputSystem.InGame.BlockMove.performed += MinoMove;
+            
+            Observable.FromEvent<InputAction.CallbackContext>(
+                    h => _inputSystem.InGame.BlockDone.performed += h,
+                    h => _inputSystem.InGame.BlockDone.performed -= h)
+                .Subscribe(a => OnMinoDone?.Invoke());
             _cameraModel = cameraModel;
         }
 
@@ -27,10 +34,10 @@ namespace QBuild.Mino
         }
 
 
+        
         private void MinoMove(InputAction.CallbackContext context)
         {
             var inputValue = context.ReadValue<Vector2>();
-            Debug.Log($"InputValue:{inputValue}");
 
             var move = new Vector3Int((int)inputValue.x, 0, (int)inputValue.y);
             var direction = _cameraModel.GetCameraDirection();

@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using UniRx;
 using UnityEngine;
 
 namespace QBuild.Mino
@@ -48,7 +51,7 @@ namespace QBuild.Mino
             IsFalling = false;
         }
 
-        public void ContactMino(Polyomino otherMino)
+        public void JointMino(Polyomino otherMino)
         {
             var material = _blocks[0].GetComponentInChildren<Renderer>().material;
             foreach (var block in otherMino.GetBlocks())
@@ -63,6 +66,27 @@ namespace QBuild.Mino
             IsFalling = false;
         }
 
+        public IEnumerator ContactMino(CancellationToken cancellationToken)
+        {
+            yield return Observable.Timer(System.TimeSpan.FromSeconds(1))
+                .FirstOrDefault()
+                .ToYieldInstruction(cancellationToken);
+        }
+        
+        public void StartTranslate()
+        {
+            isTranslate = true;
+        }
+        
+        public void FinishTranslate()
+        {
+            isTranslate = false;
+        }
+        
+        public bool IsBusy()
+        {
+            return isTranslate;
+        }
         public IReadOnlyList<Block> GetBlocks()
         {
             return _blocks;
@@ -72,6 +96,8 @@ namespace QBuild.Mino
 
         public bool IsFalling { get; private set; } = true;
 
+        public bool isTranslate = false;
+        
         [SerializeField] private MinoKey _selfKey;
     }
 }

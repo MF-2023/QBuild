@@ -1,4 +1,5 @@
 ﻿using System;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -11,12 +12,14 @@ namespace QBuild.Mino
         /// 落下開始時イベント
         /// </summary>
         public event Action<Polyomino> OnMinoFall;
-        
+
         /// <summary>
         /// 落下更新時イベント
         /// </summary>
-        public event Action<Polyomino,int> OnMinoDown;
+        public event Action<Polyomino, int, UniTaskCompletionSource> OnMinoDown;
 
+        public event Action<Polyomino> OnMinoDone;
+        
         [Inject]
         public FallMino()
         {
@@ -30,11 +33,27 @@ namespace QBuild.Mino
             OnMinoFall?.Invoke(mino);
         }
 
-        public void Down(int moveY)
+        public async UniTask Down(int moveY)
         {
             if (_fallingMino == null) return;
             Debug.Log("Mino Down");
-            OnMinoDown?.Invoke(_fallingMino, moveY);
+
+            var source = new UniTaskCompletionSource();
+            OnMinoDown?.Invoke(_fallingMino, moveY, source);
+
+            await source.Task;
+        }
+
+        public bool IsBusy()
+        {
+            if (_fallingMino == null) return false;
+            return _fallingMino.IsBusy();
+        }
+
+        public void MinoDone()
+        {
+            if(_fallingMino == null) return;
+            OnMinoDone?.Invoke(_fallingMino);
         }
 
         private Polyomino _fallingMino;

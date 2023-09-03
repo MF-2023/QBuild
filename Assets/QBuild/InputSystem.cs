@@ -39,6 +39,15 @@ namespace QBuild
                     ""initialStateCheck"": true
                 },
                 {
+                    ""name"": ""BlockDone"",
+                    ""type"": ""Button"",
+                    ""id"": ""db3c1581-1106-4f76-bf1f-3e8a5968c551"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""PlayerMove"",
                     ""type"": ""Value"",
                     ""id"": ""d3969a38-698f-4c99-adee-194f52e4ab88"",
@@ -200,6 +209,17 @@ namespace QBuild
                     ""action"": ""CameraMove"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8ab72f64-aa79-4e9f-93c1-59d22f59b010"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""BlockDone"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -209,6 +229,7 @@ namespace QBuild
             // InGame
             m_InGame = asset.FindActionMap("InGame", throwIfNotFound: true);
             m_InGame_BlockMove = m_InGame.FindAction("BlockMove", throwIfNotFound: true);
+            m_InGame_BlockDone = m_InGame.FindAction("BlockDone", throwIfNotFound: true);
             m_InGame_PlayerMove = m_InGame.FindAction("PlayerMove", throwIfNotFound: true);
             m_InGame_CameraMove = m_InGame.FindAction("CameraMove", throwIfNotFound: true);
         }
@@ -273,6 +294,7 @@ namespace QBuild
         private readonly InputActionMap m_InGame;
         private List<IInGameActions> m_InGameActionsCallbackInterfaces = new List<IInGameActions>();
         private readonly InputAction m_InGame_BlockMove;
+        private readonly InputAction m_InGame_BlockDone;
         private readonly InputAction m_InGame_PlayerMove;
         private readonly InputAction m_InGame_CameraMove;
         public struct InGameActions
@@ -280,6 +302,7 @@ namespace QBuild
             private @InputSystem m_Wrapper;
             public InGameActions(@InputSystem wrapper) { m_Wrapper = wrapper; }
             public InputAction @BlockMove => m_Wrapper.m_InGame_BlockMove;
+            public InputAction @BlockDone => m_Wrapper.m_InGame_BlockDone;
             public InputAction @PlayerMove => m_Wrapper.m_InGame_PlayerMove;
             public InputAction @CameraMove => m_Wrapper.m_InGame_CameraMove;
             public InputActionMap Get() { return m_Wrapper.m_InGame; }
@@ -294,6 +317,9 @@ namespace QBuild
                 @BlockMove.started += instance.OnBlockMove;
                 @BlockMove.performed += instance.OnBlockMove;
                 @BlockMove.canceled += instance.OnBlockMove;
+                @BlockDone.started += instance.OnBlockDone;
+                @BlockDone.performed += instance.OnBlockDone;
+                @BlockDone.canceled += instance.OnBlockDone;
                 @PlayerMove.started += instance.OnPlayerMove;
                 @PlayerMove.performed += instance.OnPlayerMove;
                 @PlayerMove.canceled += instance.OnPlayerMove;
@@ -307,6 +333,9 @@ namespace QBuild
                 @BlockMove.started -= instance.OnBlockMove;
                 @BlockMove.performed -= instance.OnBlockMove;
                 @BlockMove.canceled -= instance.OnBlockMove;
+                @BlockDone.started -= instance.OnBlockDone;
+                @BlockDone.performed -= instance.OnBlockDone;
+                @BlockDone.canceled -= instance.OnBlockDone;
                 @PlayerMove.started -= instance.OnPlayerMove;
                 @PlayerMove.performed -= instance.OnPlayerMove;
                 @PlayerMove.canceled -= instance.OnPlayerMove;
@@ -333,6 +362,7 @@ namespace QBuild
         public interface IInGameActions
         {
             void OnBlockMove(InputAction.CallbackContext context);
+            void OnBlockDone(InputAction.CallbackContext context);
             void OnPlayerMove(InputAction.CallbackContext context);
             void OnCameraMove(InputAction.CallbackContext context);
         }

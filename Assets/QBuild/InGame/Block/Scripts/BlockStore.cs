@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace QBuild
@@ -10,7 +11,14 @@ namespace QBuild
     {
         public void AddBlock(Block block)
         {
-            _blockDictionary.Add(block.GetGridPosition(), block);
+            try
+            {
+                _blockDictionary.Add(block.GetGridPosition(), block);
+            }
+            catch (Exception e)
+            {
+                Debug.Log($"Block重複 {_blockDictionary[block.GetGridPosition()].name}");
+            }
         }
 
         public bool TryGetBlock(Vector3Int pos, out Block block)
