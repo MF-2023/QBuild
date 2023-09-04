@@ -1,19 +1,33 @@
-using System.Collections;
+using System;using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using VContainer;
+using InputSystem = QBuild.InputSystem;
 
-public class PlayerInputHandler : MonoBehaviour
+public class PlayerInputHandler : MonoBehaviour ,IDisposable
 {
     public float xInput { get;private set; }
     public float zInput { get; private set; }
     public bool jumpInput { get; private set; }
-
-    private void Update()
+    
+    public @InputSystem inputSystem;
+    
+    [Inject]
+    public void Construct(InputSystem input)
     {
-        //仮インプット処理
-        xInput = Input.GetAxisRaw("Horizontal");
-        zInput = Input.GetAxisRaw("Vertical");
-        jumpInput = Input.GetButton("Jump");
+        inputSystem = input;
+        inputSystem.InGame.PlayerMove.performed += InputMove;
+    }
+    public void Dispose()
+    {
+        inputSystem.InGame.PlayerMove.performed -= InputMove;
+    }
+    private void InputMove(InputAction.CallbackContext context)
+    {
+        var inputValue = context.ReadValue<Vector2>();
+        xInput = inputValue.x;
+        zInput = inputValue.y;
     }
 
     public void UseJumpInput() => jumpInput = false;
