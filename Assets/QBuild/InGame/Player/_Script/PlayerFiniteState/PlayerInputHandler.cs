@@ -18,10 +18,13 @@ public class PlayerInputHandler : MonoBehaviour ,IDisposable
     {
         inputSystem = input;
         inputSystem.InGame.PlayerMove.performed += InputMove;
+        inputSystem.InGame.PlayerMove.canceled += InputMove;
+        
     }
     public void Dispose()
     {
         inputSystem.InGame.PlayerMove.performed -= InputMove;
+        inputSystem.InGame.PlayerMove.canceled -= InputMove;
     }
     private void InputMove(InputAction.CallbackContext context)
     {

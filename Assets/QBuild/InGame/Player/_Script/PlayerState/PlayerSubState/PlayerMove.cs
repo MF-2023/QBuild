@@ -41,15 +41,15 @@ public class PlayerMove : PlayerGroundState
     {
         base.PhycsUpdate();
 
-        Vector3 cameraForward = Vector3.Scale(new Vector3(Camera.main.transform.forward.x, 0,Camera.main.transform.forward.z), new Vector3(1, 0, 1))
+        Vector3 cameraForward = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1))
             .normalized;
         Vector3 moveForward = cameraForward * zInput + Camera.main.transform.right * xInput;
-        
         
         player.Movement?.SetVelocityXZ(moveForward, playerData.moveSpeed);
 
         Vector3 pos = player.GetPlayerPos();
         workspace = new Vector3(moveForward.x + pos.x, moveForward.y + pos.y, moveForward.z + pos.z);
+        
         player.Rotation?.SetRotation(workspace);
     }
 

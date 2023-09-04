@@ -82,7 +82,7 @@ public class PlayerController : MonoBehaviour
         bool ret = false;
         //?¿½v?¿½?¿½?¿½C?¿½?¿½?¿½[?¿½Ìƒ|?¿½W?¿½V?¿½?¿½?¿½?¿½?¿½Ìˆï¿½Â‰ï¿½?¿½?¿½?¿½w?¿½?¿½
         Vector3Int check = new Vector3Int(currentPosition.x, currentPosition.y - 1, currentPosition.z);
-        if(OnCheckBlock != null) ret = OnCheckBlock(currentPosition);
+        if(OnCheckBlock != null) ret = OnCheckBlock(check);
 
         return ret;
     }

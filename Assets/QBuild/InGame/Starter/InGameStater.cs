@@ -69,7 +69,7 @@ namespace QBuild.Starter
             //builder.RegisterComponentInNewPrefab(_playerPrefab, Lifetime.Singleton);
             builder.Register(container =>
             {
-                var playerController = container.Instantiate(_playerPrefab);
+                var playerController = container.Instantiate(_playerPrefab,new Vector3(5,0.5f,5),Quaternion.identity,null);
                 return playerController;
             }, Lifetime.Singleton);
             builder.RegisterEntryPoint<PlayerPresenter>();
