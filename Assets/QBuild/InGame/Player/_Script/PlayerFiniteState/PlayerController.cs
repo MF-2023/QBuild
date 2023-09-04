@@ -27,7 +27,6 @@ public class PlayerController : MonoBehaviour
         _AnimationController = new PlayerAnimationController(GetComponent<Animator>());
         _StateController = new PlayerStateController(Core, _inputHandler, groundCheck, playerData);
         _StateController.OnChangeAnimation += _AnimationController.ChangeAnimation;
-        _StateController.OnGetPlayerGridPos += GetPlayerGridPosition;
         _StateController.OnGetPlayerPos += GetPlayerPosition;
         _StateController.OnCheckBlock += CheckGround;
         currentPosition = GetPlayerGridPosition();
@@ -62,11 +61,6 @@ public class PlayerController : MonoBehaviour
         return transform.position;
     }
 
-    private Vector3 GetPlayerPosition()
-    {
-        return transform.position;
-    }
-
     public void AnimationTrigger() => _StateController.AnimationTrigger();
 
     public void AnimationFinishedTrigger() => _StateController.AnimationFinishedTrigger();
@@ -77,7 +71,7 @@ public class PlayerController : MonoBehaviour
 
         if(nowPos != currentPosition)
         {
-            //ï¿½Oï¿½ï¿½ï¿½bï¿½hï¿½ÏXï¿½ÌƒCï¿½xï¿½ï¿½ï¿½gï¿½Ä‚Ñoï¿½ï¿½
+            //?¿½O?¿½?¿½?¿½b?¿½h?¿½ÏX?¿½ÌƒC?¿½x?¿½?¿½?¿½g?¿½Ä‚Ño?¿½?¿½
             OnChangeGridPosition?.Invoke(nowPos);
             currentPosition = nowPos;
         }
@@ -86,7 +80,7 @@ public class PlayerController : MonoBehaviour
     private bool CheckGround()
     {
         bool ret = false;
-        //ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½Ìƒ|ï¿½Wï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Ìˆï¿½Â‰ï¿½ï¿½ï¿½ï¿½wï¿½ï¿½
+        //?¿½v?¿½?¿½?¿½C?¿½?¿½?¿½[?¿½Ìƒ|?¿½W?¿½V?¿½?¿½?¿½?¿½?¿½Ìˆï¿½Â‰ï¿½?¿½?¿½?¿½w?¿½?¿½
         Vector3Int check = new Vector3Int(currentPosition.x, currentPosition.y - 1, currentPosition.z);
         if(OnCheckBlock != null) ret = OnCheckBlock(currentPosition);
 
