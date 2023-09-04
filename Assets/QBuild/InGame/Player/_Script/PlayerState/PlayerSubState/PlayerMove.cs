@@ -44,7 +44,7 @@ public class PlayerMove : PlayerGroundState
 
         player.Movement?.SetVelocityXZ(moveForward, playerData.moveSpeed);
 
-        Vector3Int pos = player.GetPlayerPos();
+        Vector3 pos = player.GetPlayerPos();
         workspace = new Vector3(moveForward.x + pos.x, moveForward.y + pos.y, moveForward.z + pos.z);
         player.Rotation?.SetRotation(workspace);
     }

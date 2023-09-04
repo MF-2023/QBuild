@@ -28,7 +28,7 @@ public class PlayerStateController
     public Rotation Rotation { get => rotation ?? Core.GetCoreComponent(ref rotation); }
 
     public event Action<string, bool> OnChangeAnimation;
-    public event Func<Vector3Int> OnGetPlayerPos;
+    public event Func<Vector3> OnGetPlayerPos;
     public event Func<bool> OnCheckBlock;
 
 
@@ -72,9 +72,9 @@ public class PlayerStateController
         }
     }
 
-    public Vector3Int GetPlayerPos()
+    public Vector3 GetPlayerPos()
     {
-        Vector3Int ret = Vector3Int.zero;
+        Vector3 ret = Vector3.zero;
 
         if(OnGetPlayerPos != null)
         {

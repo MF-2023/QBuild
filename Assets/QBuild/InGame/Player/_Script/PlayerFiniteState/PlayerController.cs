@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
         _StateController.OnChangeAnimation += _AnimationController.ChangeAnimation;
         _StateController.OnGetPlayerPos += GetPlayerPosition;
         _StateController.OnCheckBlock += CheckGround;
-        currentPosition = new Vector3Int((int)transform.position.x, (int)transform.position.y, (int)transform.position.z);
+        currentPosition = GetPlayerGridPosition();
     }
 
     private void Update()
@@ -44,10 +44,22 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
-    private Vector3Int GetPlayerPosition()
+    private Vector3Int GetPlayerGridPosition()
     {
-        Vector3Int ret = new Vector3Int((int)transform.position.x, (int)transform.position.y, (int)transform.position.z);
+        //Ø‚èŽÌ‚Ä
+        //Vector3Int ret = new Vector3Int((int)transform.position.x, (int)transform.position.y, (int)transform.position.z);
+
+        //Ø‚èã‚°‚Ì‚Ù‚¤‚ª‚æ‚³‚°H
+        Vector3Int ret = new Vector3Int(Mathf.CeilToInt(transform.position.x),
+                                        Mathf.CeilToInt(transform.position.y),
+                                        Mathf.CeilToInt(transform.position.z));
+
         return ret;
+    }
+
+    private Vector3 GetPlayerPosition()
+    {
+        return transform.position;
     }
 
     public void AnimationTrigger() => _StateController.AnimationTrigger();
@@ -56,7 +68,7 @@ public class PlayerController : MonoBehaviour
 
     private void CheckGridPosition()
     {
-        Vector3Int nowPos = new Vector3Int((int)transform.position.x, (int)transform.position.y, (int)transform.position.z);
+        Vector3Int nowPos = GetPlayerGridPosition();
 
         if(nowPos != currentPosition)
         {
