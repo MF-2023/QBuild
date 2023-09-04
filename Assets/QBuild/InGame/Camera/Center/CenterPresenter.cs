@@ -45,7 +45,8 @@ namespace QBuild.Camera.Center
         
         private void CameraMove(Vector3 position)
         {
-            _centerView.GetComponent<GridMove>().MoveTo(position);
+            var targetPosition = _centerView.transform.position;
+            _centerView.GetComponent<GridMove>().MoveTo(new Vector3(targetPosition.x, position.y, targetPosition.z));
         }
     }
 }

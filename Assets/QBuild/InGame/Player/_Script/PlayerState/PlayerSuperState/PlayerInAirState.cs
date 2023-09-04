@@ -29,8 +29,8 @@ public class PlayerInAirState : PlayerState
 
         if (isGrounded &&  player.Movement.GetNowVelocity().y<= 0)
         {
-            //TODO::PlayerInAirState::ƒvƒŒƒCƒ„[‚ª’n–Ê‚É‚Â‚¢‚½Žž‚Ìˆ—
-            //‰¼‚Å‚Æ‚è‚ ‚¦‚¸IdleState‚É–ß‚µ‚Ä‚Ü‚·
+            //TODO::PlayerInAirState::ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒåœ°é¢ã«ã¤ã„ãŸæ™‚ã®å‡¦ç†
+            //ä»®ã§ã¨ã‚Šã‚ãˆãšIdleStateã«æˆ»ã—ã¦ã¾ã™
             stateMachine.ChangeState(player.IdleState);
         }
     }
@@ -42,9 +42,10 @@ public class PlayerInAirState : PlayerState
         Vector3 cameraForward = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
         Vector3 moveForward = cameraForward * zInput + Camera.main.transform.right * xInput;
 
+        Debug.Log($"cameraForward:{cameraForward} moveForward:{moveForward} right:{Camera.main.transform.right}");
         player.Movement?.SetVelocityXZ(moveForward, playerData.inAirmoveSpeed);
 
-        Vector3Int pos = player.GetPlayerPos();
+        Vector3Int pos = player.GetPlayerGridPos();
         workspace = new Vector3(moveForward.x + pos.x, moveForward.y + pos.y, moveForward.z + pos.z);
         player.Rotation?.SetRotation(workspace);
     }

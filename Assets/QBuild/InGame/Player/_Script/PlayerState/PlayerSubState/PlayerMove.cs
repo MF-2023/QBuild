@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class PlayerMove : PlayerGroundState
 {
-    public PlayerMove(PlayerStateController player,PlayerStateMachine stateMachine,PlayerData playerData,string animBoolName):base(player,stateMachine,playerData,animBoolName)
-    { }
+    public PlayerMove(PlayerStateController player, PlayerStateMachine stateMachine, PlayerData playerData,
+        string animBoolName) : base(player, stateMachine, playerData, animBoolName)
+    {
+    }
 
     public override void DoCheck()
     {
@@ -26,7 +28,7 @@ public class PlayerMove : PlayerGroundState
     {
         base.LogicUpdate();
 
-        if(jumpInput)
+        if (jumpInput)
         {
             player.inputHandler.UseJumpInput();
             stateMachine.ChangeState(player.JumpState);
@@ -39,12 +41,14 @@ public class PlayerMove : PlayerGroundState
     {
         base.PhycsUpdate();
 
-        Vector3 cameraForward = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
+        Vector3 cameraForward = Vector3.Scale(new Vector3(Camera.main.transform.forward.x, 0,Camera.main.transform.forward.z), new Vector3(1, 0, 1))
+            .normalized;
         Vector3 moveForward = cameraForward * zInput + Camera.main.transform.right * xInput;
-
+        
+        
         player.Movement?.SetVelocityXZ(moveForward, playerData.moveSpeed);
 
-        Vector3Int pos = player.GetPlayerPos();
+        Vector3 pos = player.GetPlayerPos();
         workspace = new Vector3(moveForward.x + pos.x, moveForward.y + pos.y, moveForward.z + pos.z);
         player.Rotation?.SetRotation(workspace);
     }

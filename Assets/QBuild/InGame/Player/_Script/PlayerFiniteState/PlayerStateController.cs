@@ -28,7 +28,8 @@ public class PlayerStateController
     public Rotation Rotation { get => rotation ?? Core.GetCoreComponent(ref rotation); }
 
     public event Action<string, bool> OnChangeAnimation;
-    public event Func<Vector3Int> OnGetPlayerPos;
+    public event Func<Vector3Int> OnGetPlayerGridPos;
+    public event Func<Vector3> OnGetPlayerPos;
     public event Func<bool> OnCheckBlock;
 
 
@@ -39,7 +40,7 @@ public class PlayerStateController
         _GroundCheck = groundCheck;
         stateMachine = new PlayerStateMachine();
 
-        //ŠeŽíƒXƒe[ƒ^ƒX‚Ì¶¬
+        //å„ç¨®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã®ç”Ÿæˆ
         _IdleState = new PlayerIdle(this, stateMachine, data, "idle");
         _MoveState = new PlayerMove(this, stateMachine, data, "move");
         _JumpState = new PlayerJump(this, stateMachine, data, "jump");
@@ -72,9 +73,21 @@ public class PlayerStateController
         }
     }
 
-    public Vector3Int GetPlayerPos()
+    public Vector3Int GetPlayerGridPos()
     {
         Vector3Int ret = Vector3Int.zero;
+
+        if(OnGetPlayerGridPos != null)
+        {
+            ret = OnGetPlayerGridPos();
+        }
+
+        return ret;
+    }
+
+    public Vector3 GetPlayerPos()
+    {
+        Vector3 ret = Vector3.zero;
 
         if(OnGetPlayerPos != null)
         {
@@ -83,7 +96,6 @@ public class PlayerStateController
 
         return ret;
     }
-
     public bool CheckBlock()
     {
         bool ret = false;

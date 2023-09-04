@@ -14,7 +14,7 @@ public class PlayerState
     protected bool animationFinishedTrigger;
     protected bool isGrounded;
 
-    //�e����͕ϐ�
+    //各種入力変数
     protected float xInput;
     protected float zInput;
     protected bool jumpInput;
@@ -34,7 +34,7 @@ public class PlayerState
     }
 
     /// <summary>
-    /// ��ԂɑJ�ڂ����Ƃ��ɏ��߂ɍs���鏈��
+    /// 状態に遷移したときに初めに行われる処理
     /// </summary>
     public virtual void Enter()
     {
@@ -45,7 +45,7 @@ public class PlayerState
     }
 
     /// <summary>
-    /// ��Ԃ��I�������Ƃ��ɍs���鏈��
+    /// 状態が終了したときに行われる処理
     /// </summary>
     public virtual void Exit() 
     {
@@ -53,12 +53,12 @@ public class PlayerState
     }
 
     /// <summary>
-    /// ��ԂɑJ�ڂ����Ƃ��Ƀ`�F�b�N���鏈��
+    /// 状態に遷移したときにチェックする処理
     /// </summary>
     public virtual void DoCheck() { isGrounded = player.CheckBlock(); }
 
     /// <summary>
-    /// ���݂̏�Ԃ̃A�b�v�f�[�g����
+    /// 現在の状態のアップデート処理
     /// </summary>
     public virtual void LogicUpdate() 
     {
@@ -69,17 +69,17 @@ public class PlayerState
     }
 
     /// <summary>
-    /// ���݂̏�Ԃ̕����A�b�v�f�[�g����
+    /// 現在の状態の物理アップデート処理
     /// </summary>
     public virtual void PhycsUpdate() { }
 
     /// <summary>
-    /// �A�j���[�V�����p�g���K�[
+    /// アニメーション用トリガー
     /// </summary>
     public virtual void AnimationTrigger() { }
     
     /// <summary>
-    /// �A�j���[�V�����I���g���K�[
+    /// アニメーション終了トリガー
     /// </summary>
     public void AnimationFinishedTrigger() => animationFinishedTrigger = true;
 }
