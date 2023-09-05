@@ -19,7 +19,6 @@ namespace QBuild.Player.State
         //各種入力変数
         protected float xInput;
         protected float zInput;
-        protected bool jumpInput;
 
         protected Vector3 workspace;
 
@@ -32,7 +31,6 @@ namespace QBuild.Player.State
 
             xInput = 0f;
             zInput = 0f;
-            jumpInput = false;
         }
 
         /// <summary>
@@ -66,7 +64,6 @@ namespace QBuild.Player.State
         {
             xInput = player.inputHandler.xInput;
             zInput = player.inputHandler.zInput;
-            jumpInput = player.inputHandler.jumpInput;
             isGrounded = player.CheckBlock();
         }
 

@@ -11,7 +11,6 @@ namespace QBuild.Player.Controller
     {
         public float xInput { get; private set; }
         public float zInput { get; private set; }
-        public bool jumpInput { get; private set; }
 
         public @InputSystem inputSystem;
 
@@ -34,7 +33,5 @@ namespace QBuild.Player.Controller
             xInput = inputValue.x;
             zInput = inputValue.y;
         }
-
-        public void UseJumpInput() => jumpInput = false;
     }
 }

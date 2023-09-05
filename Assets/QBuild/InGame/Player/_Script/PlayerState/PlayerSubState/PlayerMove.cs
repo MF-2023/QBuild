@@ -32,13 +32,17 @@ namespace QBuild.Player.State
         public override void LogicUpdate()
         {
             base.LogicUpdate();
-
-            if (jumpInput)
+            /*
+            TODO::林君::プレイヤーの前にブロックがあるか判定
+            if()
             {
-                player.inputHandler.UseJumpInput();
-                stateMachine.ChangeState(player.JumpState);
+                //ブロックの上に上るステータスに移行
             }
-            else if (xInput == 0 && zInput == 0)
+            */
+
+            //TODO::仮のブロック上る処理
+            //if()
+            if (xInput == 0 && zInput == 0)
                 stateMachine.ChangeState(player.IdleState);
         }
 

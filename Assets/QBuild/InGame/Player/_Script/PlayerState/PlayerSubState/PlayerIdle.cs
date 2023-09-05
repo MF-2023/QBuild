@@ -34,12 +34,7 @@ namespace QBuild.Player.State
         {
             base.LogicUpdate();
 
-            if (jumpInput)
-            {
-                player.inputHandler.UseJumpInput();
-                stateMachine.ChangeState(player.JumpState);
-            }
-            else if (xInput != 0 || zInput != 0)
+            if (xInput != 0 || zInput != 0)
                 stateMachine.ChangeState(player.MoveState);
         }
 

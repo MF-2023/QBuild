@@ -11,11 +11,9 @@ namespace QBuild.Player.Controller
 
         private PlayerIdle _IdleState;
         private PlayerMove _MoveState;
-        private PlayerJump _JumpState;
         private PlayerFall _FallState;
         public PlayerIdle IdleState { get { return _IdleState; } }
         public PlayerMove MoveState { get { return _MoveState; } }
-        public PlayerJump JumpState { get { return _JumpState; } }
         public PlayerFall FallState { get { return _FallState; } }
 
         private Core.Core _Core;
@@ -41,7 +39,6 @@ namespace QBuild.Player.Controller
             //各種ステータスの生成
             _IdleState = new PlayerIdle(this, stateMachine, data, "idle");
             _MoveState = new PlayerMove(this, stateMachine, data, "move");
-            _JumpState = new PlayerJump(this, stateMachine, data, "jump");
             _FallState = new PlayerFall(this, stateMachine, data, "fall");
 
             stateMachine.Initialize(_IdleState);

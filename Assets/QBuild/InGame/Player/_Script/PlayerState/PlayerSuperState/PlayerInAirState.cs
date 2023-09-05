@@ -32,8 +32,6 @@ namespace QBuild.Player.State
 
             if (isGrounded && player.Movement.GetNowVelocity().y <= 0)
             {
-                //TODO::PlayerInAirState::プレイヤーが地面についた時の処理
-                //仮でとりあえずIdleStateに戻してます
                 stateMachine.ChangeState(player.IdleState);
             }
         }
