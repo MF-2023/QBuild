@@ -6,6 +6,7 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 using Object = UnityEngine.Object;
+using QBuild.Player.Controller;
 
 namespace QBuild.Camera.Center
 {

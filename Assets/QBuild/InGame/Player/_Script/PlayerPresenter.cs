@@ -2,6 +2,7 @@
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
+using QBuild.Player.Controller;
 
 namespace QBuild.Player
 {

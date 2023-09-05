@@ -1,56 +1,60 @@
+using QBuild.Player.Controller;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class PlayerInAirState : PlayerState
+namespace QBuild.Player.State
 {
-    public PlayerInAirState(PlayerStateController player,PlayerStateMachine stateMachine,PlayerData playerData,string animBoolName):base(player,stateMachine,playerData,animBoolName)
-    { }
-
-    public override void DoCheck()
+    public class PlayerInAirState : PlayerState
     {
-        base.DoCheck();
-    }
+        public PlayerInAirState(PlayerStateController player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
+        { }
 
-    public override void Enter()
-    {
-        base.Enter();
-    }
-
-    public override void Exit()
-    {
-        base.Exit();
-    }
-
-    public override void LogicUpdate()
-    {
-        base.LogicUpdate();
-
-        if (isGrounded &&  player.Movement.GetNowVelocity().y<= 0)
+        public override void DoCheck()
         {
-            //TODO::PlayerInAirState::プレイヤーが地面についた時の処理
-            //仮でとりあえずIdleStateに戻してます
-            stateMachine.ChangeState(player.IdleState);
+            base.DoCheck();
         }
-    }
 
-    public override void PhycsUpdate()
-    {
-        base.PhycsUpdate();
+        public override void Enter()
+        {
+            base.Enter();
+        }
 
-        Vector3 cameraForward = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
-        Vector3 moveForward = cameraForward * zInput + Camera.main.transform.right * xInput;
+        public override void Exit()
+        {
+            base.Exit();
+        }
 
-        player.Movement?.SetVelocityXZ(moveForward, playerData.inAirmoveSpeed);
+        public override void LogicUpdate()
+        {
+            base.LogicUpdate();
 
-        Vector3 pos = player.GetPlayerPos();
-        workspace = new Vector3(moveForward.x + pos.x, moveForward.y + pos.y, moveForward.z + pos.z);
-        player.Rotation?.SetRotation(workspace);
-    }
+            if (isGrounded && player.Movement.GetNowVelocity().y <= 0)
+            {
+                //TODO::PlayerInAirState::プレイヤーが地面についた時の処理
+                //仮でとりあえずIdleStateに戻してます
+                stateMachine.ChangeState(player.IdleState);
+            }
+        }
 
-    public override void AnimationTrigger()
-    {
-        base.AnimationTrigger();
+        public override void PhycsUpdate()
+        {
+            base.PhycsUpdate();
+
+            Vector3 cameraForward = Vector3.Scale(UnityEngine.Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
+            Vector3 moveForward = cameraForward * zInput + UnityEngine.Camera.main.transform.right * xInput;
+
+            player.Movement?.SetVelocityXZ(moveForward, playerData.inAirmoveSpeed);
+
+            Vector3 pos = player.GetPlayerPos();
+            workspace = new Vector3(moveForward.x + pos.x, moveForward.y + pos.y, moveForward.z + pos.z);
+            player.Rotation?.SetRotation(workspace);
+        }
+
+        public override void AnimationTrigger()
+        {
+            base.AnimationTrigger();
+        }
     }
 }

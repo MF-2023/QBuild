@@ -1,18 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAnimationController
+namespace QBuild.Player.Controller
 {
-    private Animator anim;
-
-    public PlayerAnimationController(Animator anim)
+    public class PlayerAnimationController
     {
-        this.anim = anim;
-    }
+        private Animator anim;
 
-    public void ChangeAnimation(string animName,bool setBool)
-    {
-        anim.SetBool(animName, setBool);
+        public PlayerAnimationController(Animator anim)
+        {
+            this.anim = anim;
+        }
+
+        public void ChangeAnimation(string animName, bool setBool)
+        {
+            anim.SetBool(animName, setBool);
+        }
     }
 }

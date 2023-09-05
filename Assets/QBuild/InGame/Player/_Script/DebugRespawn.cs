@@ -1,14 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class DebugRespawn : MonoBehaviour
+namespace QBuild.Player.Debug
 {
-    private void Update()
+    public class DebugRespawn : MonoBehaviour
     {
-        if(transform.position.y < -5.0f)
+        private void Update()
         {
-            transform.position = new Vector3(0, 5, 0);
+            if (transform.position.y < -5.0f)
+            {
+                transform.position = new Vector3(0, 5, 0);
+            }
         }
     }
 }

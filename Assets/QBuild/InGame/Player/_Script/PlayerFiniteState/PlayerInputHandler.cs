@@ -5,33 +5,36 @@ using UnityEngine.InputSystem;
 using VContainer;
 using InputSystem = QBuild.InputSystem;
 
-public class PlayerInputHandler : MonoBehaviour ,IDisposable
+namespace QBuild.Player.Controller
 {
-    public float xInput { get;private set; }
-    public float zInput { get; private set; }
-    public bool jumpInput { get; private set; }
-    
-    public @InputSystem inputSystem;
-    
-    [Inject]
-    public void Construct(InputSystem input)
+    public class PlayerInputHandler : MonoBehaviour, IDisposable
     {
-        inputSystem = input;
-        inputSystem.InGame.PlayerMove.performed += InputMove;
-        inputSystem.InGame.PlayerMove.canceled += InputMove;
-        
-    }
-    public void Dispose()
-    {
-        inputSystem.InGame.PlayerMove.performed -= InputMove;
-        inputSystem.InGame.PlayerMove.canceled -= InputMove;
-    }
-    private void InputMove(InputAction.CallbackContext context)
-    {
-        var inputValue = context.ReadValue<Vector2>();
-        xInput = inputValue.x;
-        zInput = inputValue.y;
-    }
+        public float xInput { get; private set; }
+        public float zInput { get; private set; }
+        public bool jumpInput { get; private set; }
 
-    public void UseJumpInput() => jumpInput = false;
+        public @InputSystem inputSystem;
+
+        [Inject]
+        public void Construct(InputSystem input)
+        {
+            inputSystem = input;
+            inputSystem.InGame.PlayerMove.performed += InputMove;
+            inputSystem.InGame.PlayerMove.canceled += InputMove;
+
+        }
+        public void Dispose()
+        {
+            inputSystem.InGame.PlayerMove.performed -= InputMove;
+            inputSystem.InGame.PlayerMove.canceled -= InputMove;
+        }
+        private void InputMove(InputAction.CallbackContext context)
+        {
+            var inputValue = context.ReadValue<Vector2>();
+            xInput = inputValue.x;
+            zInput = inputValue.y;
+        }
+
+        public void UseJumpInput() => jumpInput = false;
+    }
 }

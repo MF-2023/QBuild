@@ -1,47 +1,52 @@
+using QBuild.Player.Controller;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditorInternal;
 using UnityEngine;
 
-public class PlayerJump : PlayerGroundState
+namespace QBuild.Player.State
 {
-    public PlayerJump(PlayerStateController player,PlayerStateMachine stateMachine,PlayerData playerData,string animBoolName):base(player,stateMachine,playerData,animBoolName)
-    { }
-
-    public override void DoCheck()
+    public class PlayerJump : PlayerGroundState
     {
-        base.DoCheck();
-    }
+        public PlayerJump(PlayerStateController player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
+        { }
 
-    public override void Enter()
-    {
-        base.Enter();
-        player.Movement?.SetVelocityZero();
-    }
-
-    public override void Exit()
-    {
-        base.Exit();
-    }
-
-    public override void LogicUpdate()
-    {
-        base.LogicUpdate();
-
-        if(animationFinishedTrigger)
+        public override void DoCheck()
         {
-            workspace = new Vector3(player.Movement.GetNowVelocity().x, playerData.jumpPower, player.Movement.GetNowVelocity().z);
-            player.Movement?.SetVelocity(workspace);
-            stateMachine.ChangeState(player.FallState);
+            base.DoCheck();
         }
-    }
 
-    public override void PhycsUpdate()
-    {
-        base.PhycsUpdate();
-    }
+        public override void Enter()
+        {
+            base.Enter();
+            player.Movement?.SetVelocityZero();
+        }
 
-    public override void AnimationTrigger()
-    {
-        base.AnimationTrigger();
+        public override void Exit()
+        {
+            base.Exit();
+        }
+
+        public override void LogicUpdate()
+        {
+            base.LogicUpdate();
+
+            if (animationFinishedTrigger)
+            {
+                workspace = new Vector3(player.Movement.GetNowVelocity().x, playerData.jumpPower, player.Movement.GetNowVelocity().z);
+                player.Movement?.SetVelocity(workspace);
+                stateMachine.ChangeState(player.FallState);
+            }
+        }
+
+        public override void PhycsUpdate()
+        {
+            base.PhycsUpdate();
+        }
+
+        public override void AnimationTrigger()
+        {
+            base.AnimationTrigger();
+        }
     }
 }

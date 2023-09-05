@@ -9,6 +9,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using VContainer;
 using VContainer.Unity;
+using QBuild.Player.Controller;
 
 namespace QBuild.Starter
 {

@@ -2,39 +2,42 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Rotation : CoreComponent
+namespace QBuild.Player.Core
 {
-    public bool canRotation { get; private set; }
-
-    private Transform rootTransform;
-    private Vector3 workspace;
-    private Vector3 currentDir;
-
-    protected override void Awake()
+    public class Rotation : CoreComponent
     {
-        base.Awake();
-        rootTransform = transform.root.GetComponent<Transform>();
-        workspace = Vector3.zero;
-        canRotation = true;
-    }
+        public bool canRotation { get; private set; }
 
-    public override void LogicUpdate()
-    {
-        base.LogicUpdate();
-        currentDir = rootTransform.forward;
-    }
+        private Transform rootTransform;
+        private Vector3 workspace;
+        private Vector3 currentDir;
 
-    #region Set Function
-    public void SetRotation(Vector3 direction)
-    {
-        workspace = direction;
-        SetFinalDirection();
-    }
+        protected override void Awake()
+        {
+            base.Awake();
+            rootTransform = transform.root.GetComponent<Transform>();
+            workspace = Vector3.zero;
+            canRotation = true;
+        }
 
-    private void SetFinalDirection()
-    {
-        if (!canRotation) return;
-        rootTransform.LookAt(workspace);
+        public override void LogicUpdate()
+        {
+            base.LogicUpdate();
+            currentDir = rootTransform.forward;
+        }
+
+        #region Set Function
+        public void SetRotation(Vector3 direction)
+        {
+            workspace = direction;
+            SetFinalDirection();
+        }
+
+        private void SetFinalDirection()
+        {
+            if (!canRotation) return;
+            rootTransform.LookAt(workspace);
+        }
+        #endregion
     }
-    #endregion
 }
