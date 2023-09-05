@@ -16,8 +16,5 @@ namespace QBuild.Player
 
         [Tooltip("プレイヤーのジャンプ")]
         public float jumpPower = 1.0f;
-
-        [Header("Player Debug"), Tooltip("プレイヤーのデバッグ用データ")]
-        public LayerMask GroundLayer;
     }
 }

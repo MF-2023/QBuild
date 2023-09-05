@@ -9,10 +9,6 @@ namespace QBuild.Player.Controller
         [SerializeField] private PlayerData playerData;
         [SerializeField] private PlayerInputHandler _inputHandler;
 
-        [Header("Player Debug Info"),Tooltip("プレイヤーのデバッグ用の変数")]
-        [SerializeField] private bool playerDebug;
-        [SerializeField] private Transform groundCheck;
-
         private PlayerStateController _StateController;
         private PlayerAnimationController _AnimationController;
         private Core.Core Core;
@@ -86,17 +82,7 @@ namespace QBuild.Player.Controller
             //?ｿｽv?ｿｽ?ｿｽ?ｿｽC?ｿｽ?ｿｽ?ｿｽ[?ｿｽﾌポ?ｿｽW?ｿｽV?ｿｽ?ｿｽ?ｿｽ?ｿｽ?ｿｽﾌ茨ｿｽﾂ会ｿｽ?ｿｽ?ｿｽ?ｿｽw?ｿｽ?ｿｽ
             Vector3Int check = new Vector3Int(currentPosition.x, currentPosition.y - 1, currentPosition.z);
             if (OnCheckBlock != null) ret = OnCheckBlock(check);
-            else if(playerDebug) ret = DebugCheckGround();
             return ret;
         }
-
-        #region DebugFunction
-        private bool DebugCheckGround()
-        {
-            bool ret = false;
-
-            return ret;
-        }
-        #endregion
     }
 }
