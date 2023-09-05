@@ -12,7 +12,18 @@ namespace QBuild.Camera
         public override void InternalUpdateCameraState(Vector3 worldUp, float deltaTime)
         {
             var best = _virtualCameraBase[_currentCameraIndex];
-            if (best == null) return;
+            if (best == null)
+            {
+                Debug.LogError("カメラが登録されていません。自動で登録します。", this);
+                _virtualCameraBase.Clear();
+                _virtualCameraBase.AddRange(GetComponentsInChildren<CinemachineVirtualCameraBase>());
+                best = _virtualCameraBase[_currentCameraIndex];
+                if (best == null)
+                {
+                    Debug.LogError("子要素にカメラが存在しません。", this);
+                    return;
+                }
+            }
 
             var sita = 360f / _virtualCameraBase.Count;
             var position = _lookAt != null ? _lookAt.position : new Vector3(0, 0, 0);
@@ -54,7 +65,6 @@ namespace QBuild.Camera
             }
 
             InvokePostPipelineStageCallback(this, CinemachineCore.Stage.Finalize, ref _state, deltaTime);
-
         }
 
         public override Transform Follow
@@ -83,25 +93,25 @@ namespace QBuild.Camera
         {
             _lookAt = lookAt;
         }
-        
+
         public void SetCameraHeight(float height)
         {
             Debug.Log("SetCameraHeight");
             transform.position = new Vector3(transform.position.x, height, transform.position.z);
         }
-        
+
         public void SetCameraRadius(float radius)
         {
             _radius = radius;
         }
-        
+
         public void SetCameraAngle(float angle)
         {
             _offsetRadian = angle;
         }
-        
+
         public int CurrentCameraIndex => _currentCameraIndex;
-        
+
         private CameraState _state = CameraState.Default;
         [SerializeField] private Transform _lookAt;
         [SerializeField] private int _currentCameraIndex = 0;
