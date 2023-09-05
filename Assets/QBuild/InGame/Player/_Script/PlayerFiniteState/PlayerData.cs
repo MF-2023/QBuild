@@ -14,7 +14,6 @@ namespace QBuild.Player
         [Tooltip("プレイヤーの空中移動速度")]
         public float inAirmoveSpeed = 2.5f;
 
-        [Tooltip("プレイヤーのジャンプ")]
-        public float jumpPower = 1.0f;
+        [Tooltip("登れるブロックを検知する長さ")] public float checkBlockDistance = 0.2f;
     }
 }

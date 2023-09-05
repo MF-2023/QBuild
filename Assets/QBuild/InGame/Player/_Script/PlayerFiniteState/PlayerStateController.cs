@@ -28,6 +28,7 @@ namespace QBuild.Player.Controller
         public event Action<string, bool> OnChangeAnimation;
         public event Func<Vector3> OnGetPlayerPos;
         public event Func<bool> OnCheckBlock;
+        public event Func<bool> OnCheckCanClimbBlock;
 
 
         public PlayerStateController(Core.Core core, PlayerInputHandler playerInputHandler, PlayerData data)
@@ -84,6 +85,12 @@ namespace QBuild.Player.Controller
         {
             bool ret = false;
             if (OnCheckBlock != null) ret = OnCheckBlock();
+            return ret;
+        }
+
+        public bool CheckCanCrimbBlock()
+        {
+            bool ret = OnCheckCanClimbBlock != null ? OnCheckCanClimbBlock() : false;            
             return ret;
         }
     }
