@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 2
   inAirMoveSpeed: 2.5
-  crimbTime: 0
+  crimbTime: 0.5
   checkBlockCollectX: 0.5
   checkBlockCollectZ: 0.9
