@@ -27,6 +27,19 @@ namespace QBuild
             block = contains ? _blockDictionary[pos] : null;
             return contains;
         }
+        
+        public BlockState GetBlockState(Vector3Int pos)
+        {
+            var contains = _blockDictionary.ContainsKey(pos);
+            var state = contains ? _blockDictionary[pos].GetBlockState() : BlockState.NullBlock;
+            return state;
+        }
+        
+        
+        public bool Contains(Vector3Int pos)
+        {
+            return _blockDictionary.ContainsKey(pos);
+        }
 
         public void Update(Block block,Vector3Int beforePos)
         {

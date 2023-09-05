@@ -1,7 +1,9 @@
-﻿using QBuild.Condition;
+﻿using System;
+using System.Collections.Generic;
 using QBuild.Stage;
 using UnityEngine;
 using VContainer;
+using Object = UnityEngine.Object;
 
 namespace QBuild
 {
@@ -18,10 +20,32 @@ namespace QBuild
             _conditionMap = conditionMap;
             _stageScriptableObject = stageScriptableObject;
         }
-
         public bool TryGetBlock(Vector3Int pos, out Block block)
         {
             return _blockStore.TryGetBlock(pos, out block);
+        }
+
+        public BoundBlockState GetBlockStates(Bounds bounds)
+        {
+            var min = new Vector3Int((int) Math.Floor(bounds.min.x), (int) Math.Floor(bounds.min.y),
+                (int) Math.Floor(bounds.min.z));
+            var max = new Vector3Int((int) Math.Floor(bounds.max.x), (int) Math.Floor(bounds.max.y),
+                (int) Math.Floor(bounds.max.z));
+
+            var blocks = new List<BlockState>();
+            for (var bz = min.z; bz <= max.z; bz++)
+            {
+                for (var by = min.y; by <= max.y; by++)
+                {
+                    for (var bx = min.x; bx <= max.x; bx++)
+                    {
+                        var state = _blockStore.GetBlockState(new Vector3Int(bx, by, bx));
+                        blocks.Add(state);
+                    }
+                }
+            }
+
+            return new BoundBlockState(min, max, blocks.ToArray());
         }
 
         public void UpdateBlock(Block block, Vector3Int beforePosition)
@@ -31,6 +55,7 @@ namespace QBuild
             {
                 _blockStore.RemoveBlock(pos);
             }
+
             _blockStore.Update(block, beforePosition);
         }
 

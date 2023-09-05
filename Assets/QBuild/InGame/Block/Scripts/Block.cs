@@ -20,6 +20,36 @@ namespace QBuild
     }
 
 
+    public struct BlockState : IEquatable<BlockState>
+    {
+        public bool isValidate;
+        public Vector3Int position;
+
+        public BlockState(Vector3Int position, bool isValidate = true)
+        {
+            this.position = position;
+            this.isValidate = isValidate;
+        }
+
+        public static BlockState NullBlock => new(Vector3Int.zero, false);
+
+        public bool Equals(BlockState other)
+        {
+            return (isValidate == false && other.isValidate == false) ||
+                   (isValidate == other.isValidate && position.Equals(other.position));
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is BlockState other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(isValidate, position);
+        }
+    }
+
     public class Block : MonoBehaviour
     {
         [SerializeField] private BlockType blockScriptableObjects;
@@ -28,10 +58,11 @@ namespace QBuild
 
 
         [SerializeField] private Vector3Int _gridPosition;
-        
+
         [SerializeField] private float _stabilityGlue = 0;
         [SerializeField] private float _stability = 0;
         [SerializeField] private float _mass = 1;
+        private BlockState _blockState = BlockState.NullBlock;
 
         [Inject]
         private void Inject(BlockService blockService)
@@ -42,10 +73,11 @@ namespace QBuild
 
         public void GenerateBlock(BlockType type, Vector3Int pos)
         {
-            _ownerMinoKey = MinoKey.NullMino; 
-            
+            _ownerMinoKey = MinoKey.NullMino;
+
             blockScriptableObjects = type;
             _gridPosition = pos;
+            _blockState = new BlockState(pos);
             GenerateBlock();
         }
 
@@ -68,6 +100,7 @@ namespace QBuild
         {
             var before = _gridPosition;
             _gridPosition += move;
+            _blockState.position = _gridPosition;
             transform.localPosition = _gridPosition;
             _blockService.UpdateBlock(this, before);
 
@@ -77,6 +110,11 @@ namespace QBuild
         public Vector3Int GetGridPosition()
         {
             return _gridPosition;
+        }
+
+        public BlockState GetBlockState()
+        {
+            return _blockState;
         }
 
         public void OnFall()
@@ -208,7 +246,7 @@ namespace QBuild
         }
 
         private BlockService _blockService;
-        
+
         private bool _isFalling = false;
         private MinoKey _ownerMinoKey = MinoKey.NullMino;
     }
