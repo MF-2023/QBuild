@@ -18,13 +18,11 @@ namespace QBuild.Player.Controller
         public PlayerJump JumpState { get { return _JumpState; } }
         public PlayerFall FallState { get { return _FallState; } }
 
-        private Transform _GroundCheck;
         private Core.Core _Core;
         private Movement movement;
         private Rotation rotation;
         public PlayerInputHandler inputHandler { get; private set; }
 
-        public Transform GroundCheck { get { return _GroundCheck; } }
         public Core.Core Core { get { return _Core; } }
         public Movement Movement { get => movement ?? Core.GetCoreComponent(ref movement); }
         public Rotation Rotation { get => rotation ?? Core.GetCoreComponent(ref rotation); }
@@ -34,11 +32,10 @@ namespace QBuild.Player.Controller
         public event Func<bool> OnCheckBlock;
 
 
-        public PlayerStateController(Core.Core core, PlayerInputHandler playerInputHandler, Transform groundCheck, PlayerData data)
+        public PlayerStateController(Core.Core core, PlayerInputHandler playerInputHandler, PlayerData data)
         {
             _Core = core;
             this.inputHandler = playerInputHandler;
-            _GroundCheck = groundCheck;
             stateMachine = new PlayerStateMachine();
 
             //各種ステータスの生成
