@@ -113,12 +113,16 @@ namespace QBuild.Player.Controller
                 check.y += 1;
                 if(!(OnCheckBlock != null ? OnCheckBlock(check) : false))
                 {
-                    //存在しない場合Trueを返す
-                    ret = true;
-                    check.y -= 1;
-                    retPos = check;
-                    //ブロックの半径分プラスしておく
-                    retPos.y += 0.5f;
+                    check.y += 1;
+                    if (!(OnCheckBlock != null ? OnCheckBlock(check) : false))
+                    {
+                        //存在しない場合Trueを返す
+                        ret = true;
+                        check.y -= 2;
+                        retPos = check;
+                        //ブロックの半径分プラスしておく
+                        retPos.y += 0.5f;
+                    }
                 }
             }
             return ret;
