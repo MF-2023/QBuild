@@ -43,7 +43,7 @@ namespace QBuild.Player.State
             Vector3 cameraForward = Vector3.Scale(UnityEngine.Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
             Vector3 moveForward = cameraForward * zInput + UnityEngine.Camera.main.transform.right * xInput;
 
-            player.Movement?.SetVelocityXZ(moveForward, playerData.inAirmoveSpeed);
+            player.Movement?.SetVelocityXZ(moveForward, playerData.inAirMoveSpeed);
 
             Vector3 pos = player.GetPlayerPos();
             workspace = new Vector3(moveForward.x + pos.x, moveForward.y + pos.y, moveForward.z + pos.z);

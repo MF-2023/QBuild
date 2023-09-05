@@ -54,11 +54,16 @@ namespace QBuild.Player.State
                     startCollBlock = Time.time;
                 }
             }
+            else
+            {
+                collBlock = false;
+            }
 
             //‰¼‚ÌƒuƒƒbƒNã‚éˆ—
-            if(collBlock)
+            if(collBlock && startCollBlock + playerData.crimbTime < Time.time)
             {
-
+                player.SetPosition(player.ClimbBlockPosition);
+                stateMachine.ChangeState(player.IdleState);
             }
             if (xInput == 0 && zInput == 0)
                 stateMachine.ChangeState(player.IdleState);

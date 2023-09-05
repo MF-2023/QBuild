@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace QBuild.Player.Controller
 {
@@ -27,7 +28,9 @@ namespace QBuild.Player.Controller
             _StateController = new PlayerStateController(Core, _inputHandler, playerData);
             _StateController.OnChangeAnimation += _AnimationController.ChangeAnimation;
             _StateController.OnGetPlayerPos += () => transform.position;
+            _StateController.OnSetPosition += (Vector3 pos) => transform.position = pos;
             _StateController.OnCheckBlock += CheckGround;
+            _StateController.OnCheckCanClimbBlock += CheckCanClimbBlock;
             currentPosition = GetPlayerGridPosition();
         }
 
@@ -35,24 +38,6 @@ namespace QBuild.Player.Controller
         {
             _StateController.LogicUpdate();
             CheckGridPosition();
-
-            //テスト
-            //前方のポジションにブロックが存在するか？
-            bool flg = true;
-            Vector3Int check = new Vector3Int((int)(transform.position.x + playerData.checkBlockDistance), (int)transform.position.y - 1, (int)(transform.position.z + playerData.checkBlockDistance));
-            if (OnCheckBlock != null ? OnCheckBlock(check) : false)
-            {
-                //その上にブロックは存在するか？
-                check.y += 1;
-                if (!(OnCheckBlock != null ? OnCheckBlock(check) : false))
-                {
-                    //存在しない場合Trueを返す
-                    UnityEngine.Debug.LogWarning("登れる！！");
-                    flg = false;
-                }
-            }
-
-            if (flg) UnityEngine.Debug.LogWarning("登れない");
         }
 
         private void FixedUpdate()
@@ -62,9 +47,14 @@ namespace QBuild.Player.Controller
 
         private void OnDrawGizmosSelected()
         {
-            Vector3Int check = new Vector3Int((int)(transform.position.x + playerData.checkBlockDistance),
-                                              (int)transform.position.y,
-                                              (int)(transform.position.z + playerData.checkBlockDistance));
+            Gizmos.color = Color.green;
+            float collectX = 0.0f;
+            float collectZ = 0.0f;
+            GetFrontBlockPos(ref collectX, ref collectZ);
+
+            Vector3Int check = new Vector3Int((int)(transform.position.x + collectX),
+                                              (int)transform.position.y + 1,
+                                              (int)(transform.position.z + collectZ));
             Gizmos.DrawLine(transform.position, check);
         }
         #endregion
@@ -107,12 +97,17 @@ namespace QBuild.Player.Controller
             return ret;
         }
 
-        private bool CheckCanClimbBlock()
+        private bool CheckCanClimbBlock(ref Vector3 retPos)
         {
             bool ret = false;
-            //前方のポジションにブロックが存在するか？
-            Vector3Int check = new Vector3Int((int)(transform.position.x + playerData.checkBlockDistance), (int)transform.position.y, (int)(transform.position.z + playerData.checkBlockDistance));
-            if(OnCheckBlock != null ? OnCheckBlock(check) : false)
+            float collectX = 0.0f;
+            float collectZ = 0.0f;
+            GetFrontBlockPos(ref collectX, ref collectZ);
+
+            Vector3Int check = new Vector3Int((int)(transform.position.x + collectX),
+                                              (int)transform.position.y + 1,
+                                              (int)(transform.position.z + collectZ));
+            if (OnCheckBlock != null ? OnCheckBlock(check) : false)
             {
                 //その上にブロックは存在するか？
                 check.y += 1;
@@ -120,9 +115,54 @@ namespace QBuild.Player.Controller
                 {
                     //存在しない場合Trueを返す
                     ret = true;
+                    check.y -= 1;
+                    retPos = check;
+                    //ブロックの半径分プラスしておく
+                    retPos.y += 0.5f;
                 }
             }
             return ret;
+        }
+
+        private void GetFrontBlockPos(ref float collectX, ref float collectZ)
+        {
+            //もっといいやり方あるかも
+            float rot = transform.eulerAngles.y;
+            rot = rot - (int)(rot / 360) * 360;
+            rot = Mathf.Repeat(rot + 180f, 360f) - 180f;
+
+            //正面を向いている場合
+            if (rot >= -45.0f && rot <= 45.0f)
+            {
+                if (transform.position.x >= 0) collectX = playerData.checkBlockCollectX;
+                else collectX = playerData.checkBlockCollectX * -1.0f;
+                if (transform.position.z >= 0) collectZ = playerData.checkBlockCollectZ;
+                else collectZ = playerData.checkBlockCollectZ - 1.0f;
+            }
+            //右を向いている場合
+            else if(rot >= 45.0f && rot <= 135.0f)
+            {
+                if (transform.position.x >= 0) collectX = playerData.checkBlockCollectZ;
+                else collectX = playerData.checkBlockCollectZ - 1.0f;
+                if (transform.position.z >= 0) collectZ = playerData.checkBlockCollectX;
+                else collectZ = playerData.checkBlockCollectX * 1.0f;
+            }
+            //左を向いている場合
+            else if(rot <= -45.0f && rot >= -135.0f)
+            {
+                if (transform.position.x >= 0) collectX = (1.0f - playerData.checkBlockCollectZ);
+                else collectX = playerData.checkBlockCollectZ * -1.0f;
+                if (transform.position.z >= 0) collectZ = playerData.checkBlockCollectX;
+                else collectZ = playerData.checkBlockCollectX * 1.0f;
+            }
+            //後ろを向いている場合
+            else
+            {
+                if (transform.position.x >= 0) collectX = playerData.checkBlockCollectX;
+                else collectX = playerData.checkBlockCollectX * -1.0f;
+                if (transform.position.z >= 0) collectZ = (1.0f - playerData.checkBlockCollectZ);
+                else collectZ = playerData.checkBlockCollectZ * -1.0f;
+            }
         }
     }
 }
