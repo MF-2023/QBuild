@@ -90,11 +90,24 @@ namespace QBuild.Player.Controller
 
         private bool CheckGround()
         {
-            bool ret = false;
-            //?ｿｽv?ｿｽ?ｿｽ?ｿｽC?ｿｽ?ｿｽ?ｿｽ[?ｿｽﾌポ?ｿｽW?ｿｽV?ｿｽ?ｿｽ?ｿｽ?ｿｽ?ｿｽﾌ茨ｿｽﾂ会ｿｽ?ｿｽ?ｿｽ?ｿｽw?ｿｽ?ｿｽ
-            Vector3Int check = new Vector3Int(currentPosition.x, currentPosition.y - 1, currentPosition.z);
-            if (OnCheckBlock != null) ret = OnCheckBlock(check);
-            return ret;
+            //TODO::プレイヤーの座標のx,zを切り捨て、切り上げでで計4つブロックがあるかの確認
+            //ブロックが存在する場合trueを返す
+            Vector3Int check;
+            Vector3 pos = transform.position;
+            //x切り捨て、z切り捨て
+            check = new Vector3Int((int)pos.x, currentPosition.y - 1, (int)pos.z);
+            if (OnCheckBlock != null ? OnCheckBlock(check) : false) return true;
+            //x切り捨て、z切り上げ
+            check = new Vector3Int((int)pos.x, currentPosition.y - 1, Mathf.CeilToInt(pos.z));
+            if (OnCheckBlock != null ? OnCheckBlock(check) : false) return true;
+            //x切り上げ、z切り捨て
+            check = new Vector3Int(Mathf.CeilToInt(pos.x), currentPosition.y - 1, (int)pos.z);
+            if (OnCheckBlock != null ? OnCheckBlock(check) : false) return true;
+            //x切り上げ、z切り上げ
+            check = new Vector3Int(Mathf.CeilToInt(pos.x), currentPosition.y - 1, Mathf.CeilToInt(pos.z));
+            if (OnCheckBlock != null ? OnCheckBlock(check) : false) return true;
+
+            return false;
         }
 
         private bool CheckCanClimbBlock(ref Vector3 retPos)
