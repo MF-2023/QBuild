@@ -984,6 +984,8 @@ MonoBehaviour:
     type: 3}
   _centerScope: {fileID: 5104160117491178289, guid: 2b75b610d2c6ab34e90adae06ab79ecf,
     type: 3}
+  _debugSystemScope: {fileID: 5607663269312969838, guid: 143ab837cc6255844ba474e33ff23c6e,
+    type: 3}
 --- !u!1 &1338835297
 GameObject:
   m_ObjectHideFlags: 0

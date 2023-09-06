@@ -106,6 +106,17 @@ namespace QBuild
 
             name = $"Block_{_gridPosition}";
         }
+        
+        public void SetPosition(Vector3Int position)
+        {
+            var before = _gridPosition;
+            _gridPosition = position;
+            _blockState.position = _gridPosition;
+            transform.localPosition = _gridPosition;
+            _blockService.UpdateBlock(this, before);
+
+            name = $"Block_{_gridPosition}";
+        }
 
         public Vector3Int GetGridPosition()
         {
