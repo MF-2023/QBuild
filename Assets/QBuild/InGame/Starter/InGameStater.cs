@@ -46,8 +46,9 @@ namespace QBuild.Starter
             builder.Register<MinoFallTick>(Lifetime.Singleton);
             builder.Register<MinoDestroyTick>(Lifetime.Singleton);
             builder.Register<MinoSpawnTick>(Lifetime.Singleton);
-
-            builder.RegisterEntryPoint<BlockPresenter>(Lifetime.Singleton);
+            builder.RegisterInstance(_minoSpawnStop);
+            
+            builder.RegisterEntryPoint<BlockPresenter>();
             
             builder.Register<@InputSystem>(Lifetime.Singleton);
 
@@ -85,6 +86,7 @@ namespace QBuild.Starter
         [SerializeField] private ProvisionalMinoSetting _provisionalMinoSetting;
         [SerializeField] private GameObject _blockParentObject;
 
+        [SerializeField] private MinoSpawnStop _minoSpawnStop;
         [SerializeField] private PlayerController _playerPrefab;
     }
 }
