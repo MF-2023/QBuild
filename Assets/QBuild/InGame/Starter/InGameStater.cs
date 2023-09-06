@@ -67,10 +67,9 @@ namespace QBuild.Starter
             builder.Register<CameraModel>(Lifetime.Singleton);
             
             
-            //builder.RegisterComponentInNewPrefab(_playerPrefab, Lifetime.Singleton);
             builder.Register(container =>
             {
-                var playerController = container.Instantiate(_playerPrefab,new Vector3(5,0.5f,5),Quaternion.identity,null);
+                var playerController = container.Instantiate(_playerPrefab,new Vector3(5,1.1f,5),Quaternion.identity,null);
                 return playerController;
             }, Lifetime.Singleton);
             builder.RegisterEntryPoint<PlayerPresenter>();
