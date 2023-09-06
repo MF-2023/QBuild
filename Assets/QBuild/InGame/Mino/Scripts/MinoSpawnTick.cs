@@ -6,10 +6,11 @@ namespace QBuild.Mino
     public class MinoSpawnTick
     {
         [Inject]
-        public MinoSpawnTick(MinoService minoService)
+        public MinoSpawnTick(MinoService minoService,MinoSpawnStop minoSpawnStop)
         {
             _minoService = minoService;
             _minoService.OnMinoPlaced += _ => NextFrameSpawnMino();
+            minoSpawnStop.OnStop += stop => _isSpawned = stop;
         }
         
         public void Tick()
@@ -19,6 +20,10 @@ namespace QBuild.Mino
                 return;
             }
 
+            if (_isSpawned)
+            {
+                return;
+            }
             _minoService.SpawnMino();
             _isSpawn = false;
         }
@@ -29,6 +34,7 @@ namespace QBuild.Mino
         }
 
         private bool _isSpawn = false;
+        private bool _isSpawned = false;
         private readonly MinoService _minoService;
     }
 }

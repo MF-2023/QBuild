@@ -46,8 +46,9 @@ namespace QBuild.Starter
             builder.Register<MinoFallTick>(Lifetime.Singleton);
             builder.Register<MinoDestroyTick>(Lifetime.Singleton);
             builder.Register<MinoSpawnTick>(Lifetime.Singleton);
-
-            builder.RegisterEntryPoint<BlockPresenter>(Lifetime.Singleton);
+            builder.RegisterInstance(_minoSpawnStop);
+            
+            builder.RegisterEntryPoint<BlockPresenter>();
             
             builder.Register<@InputSystem>(Lifetime.Singleton);
 
@@ -67,10 +68,9 @@ namespace QBuild.Starter
             builder.Register<CameraModel>(Lifetime.Singleton);
             
             
-            //builder.RegisterComponentInNewPrefab(_playerPrefab, Lifetime.Singleton);
             builder.Register(container =>
             {
-                var playerController = container.Instantiate(_playerPrefab,new Vector3(5,0.5f,5),Quaternion.identity,null);
+                var playerController = container.Instantiate(_playerPrefab,new Vector3(5,1.1f,5),Quaternion.identity,null);
                 return playerController;
             }, Lifetime.Singleton);
             builder.RegisterEntryPoint<PlayerPresenter>();
@@ -86,6 +86,7 @@ namespace QBuild.Starter
         [SerializeField] private ProvisionalMinoSetting _provisionalMinoSetting;
         [SerializeField] private GameObject _blockParentObject;
 
+        [SerializeField] private MinoSpawnStop _minoSpawnStop;
         [SerializeField] private PlayerController _playerPrefab;
     }
 }
