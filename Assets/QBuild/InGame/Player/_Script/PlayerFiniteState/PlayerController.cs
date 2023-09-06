@@ -89,26 +89,10 @@ namespace QBuild.Player.Controller
         }
 
         private bool CheckGround()
-        {
-            //TODO::プレイヤーの座標のx,zを切り捨て、切り上げでで計4つブロックがあるかの確認
+        {          
             //ブロックが存在する場合trueを返す
-            Vector3Int check;
             Vector3 pos = transform.position;
-            /*
-            //x切り捨て、z切り捨て
-            check = new Vector3Int((int)pos.x, currentPosition.y - 1, (int)pos.z);
-            if (OnCheckBlock != null ? OnCheckBlock(check) : false) return true;
-            //x切り捨て、z切り上げ
-            check = new Vector3Int((int)pos.x, currentPosition.y - 1, Mathf.CeilToInt(pos.z));
-            if (OnCheckBlock != null ? OnCheckBlock(check) : false) return true;
-            //x切り上げ、z切り捨て
-            check = new Vector3Int(Mathf.CeilToInt(pos.x), currentPosition.y - 1, (int)pos.z);
-            if (OnCheckBlock != null ? OnCheckBlock(check) : false) return true;
-            //x切り上げ、z切り上げ
-            check = new Vector3Int(Mathf.CeilToInt(pos.x), currentPosition.y - 1, Mathf.CeilToInt(pos.z));
-            if (OnCheckBlock != null ? OnCheckBlock(check) : false) return true;
-            */
-            check = new Vector3Int((int)(pos.x + 0.5f), currentPosition.y - 1, (int)(pos.z + 0.5f));
+            Vector3Int check = new Vector3Int((int)(pos.x + 0.5f), currentPosition.y - 1, (int)(pos.z + 0.5f));
             if (OnCheckBlock != null ? OnCheckBlock(check) : false) return true;
             return false;
         }
@@ -123,25 +107,28 @@ namespace QBuild.Player.Controller
             Vector3Int check = new Vector3Int((int)(transform.position.x + collectX),
                                               (int)transform.position.y + 1,
                                               (int)(transform.position.z + collectZ));
+            Vector3Int savePos = check;
             if (OnCheckBlock != null ? OnCheckBlock(check) : false)
             {
-                //その上にブロックは存在するか？
-                check.y += 1;
-                if(!(OnCheckBlock != null ? OnCheckBlock(check) : false))
+                //プレイヤーの高さ分ブロックの確認をする
+                bool checkHeight = false;
+                for(int i = 1;i <= playerData.playerHeight;i++)
                 {
                     check.y += 1;
-                    if (!(OnCheckBlock != null ? OnCheckBlock(check) : false))
+                    if((OnCheckBlock != null ? OnCheckBlock(check) : false))
                     {
-                        //存在しない場合Trueを返す
-                        ret = true;
-                        check.y -= 2;
-                        retPos = check;
-                        //ブロックの半径分プラスしておく
-                        retPos.y += 0.5f;
+                        checkHeight = true;
                     }
                 }
+
+                //ブロックが存在（登れない場合）
+                if (checkHeight) return false;
+
+                retPos = savePos;
+                retPos.y += 0.5f;
+                return true;
             }
-            return ret;
+            return false;
         }
 
         private void GetFrontBlockPos(ref float collectX, ref float collectZ)
