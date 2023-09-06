@@ -94,6 +94,7 @@ namespace QBuild.Player.Controller
             //ブロックが存在する場合trueを返す
             Vector3Int check;
             Vector3 pos = transform.position;
+            /*
             //x切り捨て、z切り捨て
             check = new Vector3Int((int)pos.x, currentPosition.y - 1, (int)pos.z);
             if (OnCheckBlock != null ? OnCheckBlock(check) : false) return true;
@@ -106,7 +107,9 @@ namespace QBuild.Player.Controller
             //x切り上げ、z切り上げ
             check = new Vector3Int(Mathf.CeilToInt(pos.x), currentPosition.y - 1, Mathf.CeilToInt(pos.z));
             if (OnCheckBlock != null ? OnCheckBlock(check) : false) return true;
-
+            */
+            check = new Vector3Int((int)(pos.x + 0.5f), currentPosition.y - 1, (int)(pos.z + 0.5f));
+            if (OnCheckBlock != null ? OnCheckBlock(check) : false) return true;
             return false;
         }
 
