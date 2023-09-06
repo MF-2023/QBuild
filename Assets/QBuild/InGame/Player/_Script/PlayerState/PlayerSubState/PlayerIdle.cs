@@ -1,4 +1,6 @@
+using Codice.CM.Client.Differences;
 using QBuild.Player.Controller;
+using QBuild.Player.Core;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditorInternal;
@@ -22,7 +24,9 @@ namespace QBuild.Player.State
         {
             base.Enter();
 
-            player.Movement?.SetVelocityZero();
+            //player.Movement?.SetVelocityZero();
+            Vector3 set = new Vector3(0, player.Movement.GetNowVelocity().y, 0);
+            player.Movement.SetVelocity(set);
         }
 
         public override void Exit()

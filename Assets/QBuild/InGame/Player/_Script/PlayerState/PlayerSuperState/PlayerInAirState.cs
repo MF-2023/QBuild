@@ -47,7 +47,7 @@ namespace QBuild.Player.State
 
             Vector3 pos = player.GetPlayerPos();
             workspace = new Vector3(moveForward.x + pos.x, moveForward.y + pos.y, moveForward.z + pos.z);
-            player.Rotation?.SetRotation(workspace);
+            //player.Rotation?.SetRotation(workspace);
         }
 
         public override void AnimationTrigger()

@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e7f824d076ea18428fca317893ba050, type: 3}
   m_Name: PlayerTestData
   m_EditorClassIdentifier: 
+  playerHeight: 2
   moveSpeed: 2
-  inAirMoveSpeed: 2.5
+  inAirMoveSpeed: 1
   crimbTime: 0.5
   checkBlockCollectX: 0.5
   checkBlockCollectZ: 0.9
