@@ -12,4 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e85734d04cc42a2b127c2d64f5ead81, type: 3}
   m_Name: StageTemplate
   m_EditorClassIdentifier: 
-  _placedMinoInfos: []
+  _placedMinoInfos:
+  - _position: {x: 7, y: 1, z: 5}
+    _minoType: {fileID: 11400000, guid: 220b253b508dffa45ba32b2bf1f9771c, type: 2}
+  - _position: {x: 5, y: 1, z: 5}
+    _minoType: {fileID: 11400000, guid: 220b253b508dffa45ba32b2bf1f9771c, type: 2}

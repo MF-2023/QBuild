@@ -8,19 +8,36 @@ namespace QBuild.DebugSystem
     public class StageTemplateGenerator : MonoBehaviour
     {
         [Inject]
-        public void Inject(MinoFactory minoFactory)
+        public void Inject(IMinoFactory minoFactory,MinoService minoService)
         {
             _minoFactory = minoFactory;
+            _minoService = minoService;
+            
         }
         
         [Button]
         private void GenerateTemplate()
         {
-            if (_isGenerated) return;
+            if (_isGenerated)
+            {
+                Debug.Log("既に生成済みです");
+                return;
+            }
+            if(_minoFactory == null)
+            {
+                Debug.Log("MinoFactoryがInjectされていません");
+                return;
+            }
             var minoInfos = _template.GetPlacedMinoInfos();
             foreach (var minoInfo in minoInfos)
             {
-                _minoFactory.CreateMino(minoInfo.MinoType, minoInfo.Position, null);
+                var mino = _minoFactory.CreateMinoEventSkip(minoInfo.MinoType, minoInfo.Position, null);
+                if (_minoService.JointMino(mino))
+                {
+                    continue;
+                }
+
+                mino.Place();
             }
             
             _isGenerated = true;
@@ -28,6 +45,7 @@ namespace QBuild.DebugSystem
         
         [SerializeField] private MinoStageTemplate _template;
         private IMinoFactory _minoFactory;
+        private MinoService _minoService;
         private bool _isGenerated = false;
     }
 }

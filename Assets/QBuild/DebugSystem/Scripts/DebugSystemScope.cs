@@ -9,9 +9,8 @@ namespace QBuild.DebugSystem
     {
         protected override void Configure(IContainerBuilder builder)
         {
-            builder.RegisterComponentInNewPrefab(_stageTemplateGenerator, Lifetime.Singleton);
         }
-        
+
         [SerializeField] private StageTemplateGenerator _stageTemplateGenerator;
     }
 }

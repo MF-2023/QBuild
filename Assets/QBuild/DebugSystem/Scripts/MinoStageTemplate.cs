@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using QBuild.Const;
 using UnityEngine;
 
 namespace QBuild.DebugSystem
 {
     
-    public class PlacedMinoInfo : MonoBehaviour
+    [Serializable]
+    public class PlacedMinoInfo
     {
         [SerializeField] private Vector3Int _position;
         [SerializeField] private MinoType _minoType;

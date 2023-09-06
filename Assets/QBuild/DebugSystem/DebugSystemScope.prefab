@@ -48,7 +48,8 @@ MonoBehaviour:
   parentReference:
     TypeName: QBuild.Starter.InGameStater
   autoRun: 0
-  autoInjectGameObjects: []
+  autoInjectGameObjects:
+  - {fileID: 6652854319391486570}
   _stageTemplateGenerator: {fileID: 1184902770662151720}
 --- !u!114 &1184902770662151720
 MonoBehaviour:
