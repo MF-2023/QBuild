@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <ui:Vector3IntField label="Position" style="flex-direction: row; flex-wrap: nowrap;" />
+    <uie:ObjectField label="BlockType" type="QBuild.BlockType, QBuild" allow-scene-objects="false" binding-path="blockScriptableObjects" />
+    <ui:FloatField label="Stability" value="0" readonly="false" binding-path="_stability" />
+    <ui:FloatField label="Mass" value="0" binding-path="_mass" />
+</ui:UXML>

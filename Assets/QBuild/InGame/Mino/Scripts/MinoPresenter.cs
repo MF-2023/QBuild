@@ -61,9 +61,7 @@ namespace QBuild.Mino
         {
             UniTask.Create(async () =>
             {
-                Debug.Log("Down Source");
                 await _minoService.TranslateFallMino(mino, new Vector3Int(0, -moveY, 0));
-                Debug.Log("Down Source Finish");
                 source.TrySetResult();
             });
         }

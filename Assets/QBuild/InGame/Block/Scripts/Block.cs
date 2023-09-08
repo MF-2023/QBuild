@@ -22,21 +22,23 @@ namespace QBuild
 
     public struct BlockState : IEquatable<BlockState>
     {
-        public bool isValidate;
-        public Vector3Int position;
+        public readonly bool IsValidate;
+        public Vector3Int Position;
+        public float Stability;
 
-        public BlockState(Vector3Int position, bool isValidate = true)
+        public BlockState(Vector3Int position, float stability, bool isValidate = true)
         {
-            this.position = position;
-            this.isValidate = isValidate;
+            this.Position = position;
+            this.IsValidate = isValidate;
+            this.Stability = stability;
         }
 
-        public static BlockState NullBlock => new(Vector3Int.zero, false);
+        public static BlockState NullBlock => new(Vector3Int.zero, 0, false);
 
         public bool Equals(BlockState other)
         {
-            return (isValidate == false && other.isValidate == false) ||
-                   (isValidate == other.isValidate && position.Equals(other.position));
+            return (IsValidate == false && other.IsValidate == false) ||
+                   (IsValidate == other.IsValidate && Position.Equals(other.Position) && Stability == other.Stability);
         }
 
         public override bool Equals(object obj)
@@ -46,7 +48,7 @@ namespace QBuild
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(isValidate, position);
+            return HashCode.Combine(IsValidate, Position);
         }
     }
 
@@ -74,11 +76,15 @@ namespace QBuild
         public void GenerateBlock(BlockType type, Vector3Int pos)
         {
             _ownerMinoKey = MinoKey.NullMino;
-
-            blockScriptableObjects = type;
             _gridPosition = pos;
-            _blockState = new BlockState(pos);
-            GenerateBlock();
+            _blockState = new BlockState(pos, _stability);
+            GenerateFaces(type);
+            InitStability();
+        }
+
+        public BlockType GetBlockType()
+        {
+            return blockScriptableObjects;
         }
 
         public MinoKey GetMinoKey()
@@ -100,18 +106,18 @@ namespace QBuild
         {
             var before = _gridPosition;
             _gridPosition += move;
-            _blockState.position = _gridPosition;
+            _blockState.Position = _gridPosition;
             transform.localPosition = _gridPosition;
             _blockService.UpdateBlock(this, before);
 
             name = $"Block_{_gridPosition}";
         }
-        
+
         public void SetPosition(Vector3Int position)
         {
             var before = _gridPosition;
             _gridPosition = position;
-            _blockState.position = _gridPosition;
+            _blockState.Position = _gridPosition;
             transform.localPosition = _gridPosition;
             _blockService.UpdateBlock(this, before);
 
@@ -140,6 +146,7 @@ namespace QBuild
             if (stabilityNext < 0) stabilityNext = CalcStability();
 
             _stability = stabilityNext;
+            _blockState.Stability = stabilityNext;
             Debug.Log("Place");
         }
 
@@ -218,24 +225,21 @@ namespace QBuild
             return _stability;
         }
 
-        [Button]
-        private void GenerateBlock()
+        private void InitStability()
         {
+            _stabilityGlue = 9;
+            _stability = 10;
+        }
+
+        public void GenerateFaces(BlockType blockType)
+        {
+            if (blockType == blockScriptableObjects) return;
             foreach (var child in transform.OfType<Transform>().ToArray())
             {
                 DestroyImmediate(child.gameObject);
             }
 
-            Face FaceGenerate(FaceScriptableObject face, Vector3 position, Quaternion quaternion)
-            {
-                var obj = PrefabUtility.InstantiatePrefab(face.GetFace(), this.transform) as GameObject;
-                obj.transform.localPosition = position;
-                obj.transform.localRotation = quaternion;
-                return face.MakeFace();
-            }
-
-            _stabilityGlue = 9;
-            _stability = 10;
+            blockScriptableObjects = blockType;
             faces.top = FaceGenerate(blockScriptableObjects.top, Vector3.up / 2, Quaternion.identity);
             faces.bottom = FaceGenerate(blockScriptableObjects.bottom, Vector3.down / 2, Quaternion.Euler(180, 0, 0));
 
@@ -244,6 +248,15 @@ namespace QBuild
 
             faces.center = FaceGenerate(blockScriptableObjects.center, Vector3.forward / 2, Quaternion.Euler(90, 0, 0));
             faces.back = FaceGenerate(blockScriptableObjects.back, Vector3.back / 2, Quaternion.Euler(-90, 0, 0));
+            return;
+
+            Face FaceGenerate(FaceScriptableObject face, Vector3 position, Quaternion quaternion)
+            {
+                var obj = PrefabUtility.InstantiatePrefab(face.GetFace(), this.transform) as GameObject;
+                obj.transform.localPosition = position;
+                obj.transform.localRotation = quaternion;
+                return face.MakeFace();
+            }
         }
 
         public float GetMass()
