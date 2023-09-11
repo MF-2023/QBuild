@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityEditor.PlayerSettings;
 
 namespace QBuild.Player.Controller
 {
@@ -61,14 +62,8 @@ namespace QBuild.Player.Controller
 
         private Vector3Int GetPlayerGridPosition()
         {
-            //êÿÇËéÃÇƒ
-            //Vector3Int ret = new Vector3Int((int)transform.position.x, (int)transform.position.y, (int)transform.position.z);
-
-            //êÿÇËè„Ç∞ÇÃÇŸÇ§Ç™ÇÊÇ≥Ç∞ÅH
-            Vector3Int ret = new Vector3Int(Mathf.CeilToInt(transform.position.x),
-                                            Mathf.CeilToInt(transform.position.y),
-                                            Mathf.CeilToInt(transform.position.z));
-
+            Vector3 pos = transform.position;
+            Vector3Int ret = new Vector3Int((int)(pos.x + 0.5f), Mathf.CeilToInt(transform.position.y), (int)(pos.z + 0.5f));
             return ret;
         }
 
