@@ -11,7 +11,6 @@ namespace QBuild
     /// </summary>
     public class StabilityCalculator
     {
-        
         [Inject]
         public StabilityCalculator(BlockService blockService)
         {
@@ -69,6 +68,7 @@ namespace QBuild
                     }
 
                     mass += block.GetMass() * scale;
+                    block.SetSumMass(mass);
                     foreach (var direction in Vector3IntDirs.AllDirections)
                     {
                         var targetPosition = checkPosition + direction;
@@ -96,7 +96,7 @@ namespace QBuild
                             Debug.Log(
                                 $"unstable {force},{block.GetForceToOtherBlock(other)},{block.GetStabilityGlue()}, {other.GetStabilityGlue()}");
                             force += block.GetForceToOtherBlock(other);
-
+                            other.SetForce(force);
                             if (mass > force && equalMino) this._positionsToCheck.Enqueue(targetPosition);
                         }
                     }
@@ -137,9 +137,51 @@ namespace QBuild
             return list;
         }
 
-        private readonly BlockService _blockService;
+        public void CalcStabilityMino(Polyomino mino)
+        {
+            var blocks = mino.GetBlocks();
 
-        private Dictionary<Vector3Int, int> _posPlaced = new(20 * 20 * 20);
+            HashSet<Block> unstableBlock = new();
+
+            Queue<Block> blockToCheck = new();
+
+            Dictionary<Vector3Int, float> stabilityMap = new();
+            // 他のミノと接触しているブロックを検索する
+            foreach (var minoBlock in blocks)
+            {
+                foreach (var direction in Vector3IntDirs.AllDirections)
+                {
+                    var targetPosition = minoBlock.GetGridPosition() + direction;
+                    if (!_blockService.TryGetBlock(targetPosition, out var targetBlock)) continue;
+                    if (targetBlock.GetMinoKey() == minoBlock.GetMinoKey()) continue;
+                    unstableBlock.Add(minoBlock);
+                    blockToCheck.Enqueue(minoBlock);
+                    var stability = minoBlock.CalcStability();
+                    stabilityMap.Add(minoBlock.GetGridPosition(), stability);
+                    minoBlock.SetStability(stability);
+                    break;
+                }
+            }
+
+            while (blockToCheck.Count > 0)
+            {
+                var block = blockToCheck.Dequeue();
+                foreach (var direction in Vector3IntDirs.AllDirections)
+                {
+                    var targetPosition = block.GetGridPosition() + direction;
+                    if (!_blockService.TryGetBlock(targetPosition, out var targetBlock)) continue;
+                    if (targetBlock.GetMinoKey() != block.GetMinoKey()) continue;
+                    if (unstableBlock.Contains(targetBlock)) continue;
+                    unstableBlock.Add(targetBlock);
+                    blockToCheck.Enqueue(targetBlock);
+                    var stability = targetBlock.CalcStability();
+                    stabilityMap.Add(targetBlock.GetGridPosition(), stability);
+                    targetBlock.SetStability(stability);
+                }
+            }
+        }
+
+        private readonly BlockService _blockService;
 
         private readonly HashSet<Vector3Int> _unstablePositions = new();
 

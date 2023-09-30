@@ -133,7 +133,6 @@ namespace QBuild.Mino
                     if (dirBlock.IsFalling()) continue;
                     if (!_blockService.ContactCondition(block, dirBlock)) continue;
                     cancellation = new CancellationTokenSource();
-                    Debug.Log("MinoService Contact");
                     if (block.GetGridPosition().y >= 9)
                     {
                         Debug.LogError($"ミノの位置が異常です:{dirBlock.GetGridPosition()}");
@@ -201,7 +200,6 @@ namespace QBuild.Mino
         }
         public void Place(Polyomino mino)
         {
-            Debug.Log($"MinoService.Place {mino.GetBlocks()[0].name}");
             if (!mino.IsFalling) return;
             if (JointMino(mino))
             {
@@ -209,8 +207,15 @@ namespace QBuild.Mino
                 return;
             }
 
+            
+            CalcStability(mino);
             mino.Place();
             OnMinoPlaced?.Invoke(mino);
+        }
+        
+        public void CalcStability(Polyomino mino)
+        {
+            _stabilityCalculator.CalcStabilityMino(mino);
         }
 
         public bool JointMino(Polyomino mino)

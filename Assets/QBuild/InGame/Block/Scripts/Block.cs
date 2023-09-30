@@ -64,6 +64,8 @@ namespace QBuild
         [SerializeField] private float _stabilityGlue = 0;
         [SerializeField] private float _stability = 0;
         [SerializeField] private float _mass = 1;
+        [SerializeField] private float _sumMass = 0;
+        [SerializeField] private float _force = 0;
         private BlockState _blockState = BlockState.NullBlock;
 
         [Inject]
@@ -124,6 +126,28 @@ namespace QBuild
             name = $"Block_{_gridPosition}";
         }
 
+        public void SetSumMass(float mass)
+        {
+            Debug.Log($"position:{_gridPosition} SetSumMass {mass}");
+            _sumMass = mass;
+        }
+
+        public float GetSumMass()
+        {
+            return _sumMass;
+        }
+
+        public void SetForce(float force)
+        {
+            _force = force;
+        }
+
+        public float GetForce()
+        {
+            return _force;
+        }
+
+
         public Vector3Int GetGridPosition()
         {
             return _gridPosition;
@@ -150,7 +174,13 @@ namespace QBuild
             Debug.Log("Place");
         }
 
-        private float CalcStability()
+        public void SetStability(float stability)
+        {
+            _stability = stability;
+            _blockState.Stability = stability;
+        }
+
+        public float CalcStability()
         {
             float supportHorizontalStability = 0;
 
@@ -228,7 +258,7 @@ namespace QBuild
         private void InitStability()
         {
             _stabilityGlue = 9;
-            _stability = 10;
+            _stability = -1;
         }
 
         public void GenerateFaces(BlockType blockType)

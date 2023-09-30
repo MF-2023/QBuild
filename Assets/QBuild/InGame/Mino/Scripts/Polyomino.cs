@@ -41,11 +41,11 @@ namespace QBuild.Mino
         
         public void Place()
         {
-            float stability = -1;
+            var stability = _blocks.Select(x => x.GetStability()).Min();
+            Debug.Log($"stability {stability}");
             foreach (var block in _blocks)
             {
                 block.OnBlockPlaced(stability);
-                stability = block.GetStability();
             }
 
             IsFalling = false;
