@@ -9,10 +9,9 @@ namespace QBuild.Player
     public class PlayerPresenter : IInitializable,IDisposable
     {
         [Inject]
-        public PlayerPresenter(PlayerController playerController, BlockStore blockStore)
+        public PlayerPresenter(PlayerController playerController)
         {
             _playerController = playerController;
-            _blockStore = blockStore;
         }
 
         public void Initialize()
@@ -24,12 +23,19 @@ namespace QBuild.Player
             _playerController.OnCheckBlock -= CheckBlock;
         }
         
-        private bool CheckBlock(Vector3Int position)
+        private bool CheckBlock(Vector3Int targetPosition)
         {
-            return _blockStore.TryGetBlock(position, out _);
+            var playerPosition = _playerController.transform.position;
+            var direction = targetPosition - playerPosition;
+            var results = new RaycastHit[1];
+            var size = Physics.RaycastNonAlloc(playerPosition, direction, results, 1.0f, LayerMask.GetMask("Block"));
+            if (size == 0)
+            {
+                return false;
+            }
+            return true;
         }
 
         private readonly PlayerController _playerController;
-        private readonly BlockStore _blockStore;
     }
 }

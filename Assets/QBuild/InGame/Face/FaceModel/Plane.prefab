@@ -16,7 +16,7 @@ PrefabInstance:
     - target: {fileID: 1751717674151201135, guid: 095e700e6eb7d054ba508207125ad3e1,
         type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 1751717674151201135, guid: 095e700e6eb7d054ba508207125ad3e1,
         type: 3}
@@ -999,6 +999,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Plane
+      objectReference: {fileID: 0}
+    - target: {fileID: 8891423426649485117, guid: 095e700e6eb7d054ba508207125ad3e1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 0}
