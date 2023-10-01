@@ -6,7 +6,7 @@ using QBuild.Starter;
 using UnityEngine;
 using VContainer.Unity;
 
-namespace QBuild.Scripts.Starter
+namespace QBuild.Starter
 {
     public class GameEntryPoint : MonoBehaviour
     {

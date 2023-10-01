@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2191067077832505775}
   - component: {fileID: -419653685647528807}
   - component: {fileID: -6163632465731438287}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: CrossroadsPartPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}

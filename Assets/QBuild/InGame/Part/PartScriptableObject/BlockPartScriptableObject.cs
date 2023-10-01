@@ -1,4 +1,5 @@
-﻿using QBuild.Const;
+﻿using System.Collections.Generic;
+using QBuild.Const;
 using UnityEngine;
 
 namespace QBuild.Part
@@ -6,7 +7,8 @@ namespace QBuild.Part
     [CreateAssetMenu(fileName = "BlockPart", menuName = EditorConst.ScriptablePrePath + "Part", order = 0)]
     public class BlockPartScriptableObject : ScriptableObject
     {
-        [SerializeField] private PartView _partPrefab;
+        public PartView PartPrefab => _partPrefab;
         
+        [SerializeField] private PartView _partPrefab;
     }
 }
