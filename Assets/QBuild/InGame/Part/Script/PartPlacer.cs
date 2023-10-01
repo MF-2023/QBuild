@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 using VContainer;
 
 namespace QBuild.Part
@@ -21,22 +23,57 @@ namespace QBuild.Part
 
         private void ForwardPlacePart()
         {
+            // 次の設置するパーツを取得
             var partScriptableObject = _nextPartHolder.NextPart();
-            PartView currentOnThePart = null;
 
+            // 乗ってるブロックを取得
+            PartView currentOnThePart = null;
             var hit = new RaycastHit[1];
             var size = Physics.RaycastNonAlloc(transform.position, Vector3.down, hit, 1f, LayerMask.GetMask("Block"));
-
             if (size <= 0) return;
-
             currentOnThePart = hit[0].collider.GetComponent<PartView>();
+            
             var onThePartPosition = currentOnThePart.transform.position;
-            var connectPoint = FindClosestPointByAngle(currentOnThePart.OnGetConnectPoints().Select(x => x + onThePartPosition),
+            var connectPoint = FindClosestPointByAngle(
+                currentOnThePart.OnGetConnectPoints().Select(x => x + onThePartPosition),
                 CalculateAngleXZ(transform.position, transform.position + transform.forward));
 
             var newPartConnectPoint = partScriptableObject.PartPrefab.OnGetConnectPoints().ToArray();
-            
-            Instantiate(partScriptableObject.PartPrefab, connectPoint - newPartConnectPoint[2], Quaternion.identity);
+
+            foreach (var point in newPartConnectPoint)
+            {
+                var overlap = false;
+
+                var newPartPosition = connectPoint - point;
+                var mesh = partScriptableObject.PartPrefab.GetComponent<MeshFilter>().sharedMesh;
+                foreach (var meshVertex in mesh.vertices)
+                {
+                    if (!Physics.Raycast(newPartPosition + mesh.bounds.center, meshVertex.normalized, out var hitInfo,
+                            meshVertex.magnitude - 0.1f,
+                            LayerMask.GetMask("Block"))) continue;
+                    Debug.Log($"重なっている {hitInfo.collider.gameObject.name}, {hitInfo.point}");
+                    overlap = true;
+                    break;
+                }
+
+                if (overlap) continue;
+                Instantiate(partScriptableObject.PartPrefab, newPartPosition, Quaternion.identity);
+                break;
+            }
+        }
+
+        private void OnThePartUpdate()
+        {
+            var hit = new RaycastHit[1];
+            var size = Physics.RaycastNonAlloc(transform.position, Vector3.down, hit, 1f, LayerMask.GetMask("Block"));
+            if (size > 0)
+            {
+                CurrentOnThePart = hit[0].collider.GetComponent<PartView>();
+            }
+            else
+            {
+                CurrentOnThePart = null;
+            }
         }
 
         private bool CanPlacePart()
@@ -78,5 +115,13 @@ namespace QBuild.Part
 
         [SerializeField] private PartListScriptableObject _partListScriptableObject;
         [SerializeField] private NextPartHolder _nextPartHolder;
+        [SerializeField] private PartView _currentOnThePart;
+
+        private PartView CurrentOnThePart
+        {
+            get => _currentOnThePart;
+            set =>
+                _currentOnThePart = value;
+        }
     }
 }
