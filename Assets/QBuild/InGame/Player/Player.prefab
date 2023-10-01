@@ -299,6 +299,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _partListScriptableObject: {fileID: 11400000, guid: 5096b154eb7eb744084d8faec58508ed,
     type: 2}
+  _nextPartScriptableObject: {fileID: 0}
+  _partPlaceAreaPrefab: {fileID: -1250023624360540874, guid: 9399c999cc0cfce47a73b1b0425234b3,
+    type: 3}
+  _currentOnThePart: {fileID: 0}
 --- !u!1 &8909902501561420032
 GameObject:
   m_ObjectHideFlags: 0

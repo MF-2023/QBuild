@@ -18,47 +18,36 @@ namespace QBuild.Part
         private void Start()
         {
             _nextPartHolder = new NextPartHolder(_partListScriptableObject);
+            _nextPartScriptableObject = _nextPartHolder.NextPart();
+            _partPlaceArea = Instantiate(_partPlaceAreaPrefab);
         }
 
+        private void Update()
+        {
+            OnThePartUpdate();
+        }
 
         private void ForwardPlacePart()
         {
             // 次の設置するパーツを取得
-            var partScriptableObject = _nextPartHolder.NextPart();
+            var partScriptableObject = _nextPartScriptableObject;
+            _nextPartScriptableObject = _nextPartHolder.NextPart();
 
             // 乗ってるブロックを取得
             PartView currentOnThePart = null;
             var hit = new RaycastHit[1];
             var size = Physics.RaycastNonAlloc(transform.position, Vector3.down, hit, 1f, LayerMask.GetMask("Block"));
             if (size <= 0) return;
-            currentOnThePart = hit[0].collider.GetComponent<PartView>();
+            currentOnThePart = hit[0].collider.GetComponentInParent<PartView>();
             
             var onThePartPosition = currentOnThePart.transform.position;
             var connectPoint = FindClosestPointByAngle(
                 currentOnThePart.OnGetConnectPoints().Select(x => x + onThePartPosition),
                 CalculateAngleXZ(transform.position, transform.position + transform.forward));
 
-            var newPartConnectPoint = partScriptableObject.PartPrefab.OnGetConnectPoints().ToArray();
-
-            foreach (var point in newPartConnectPoint)
+            if (PlacePartService.TryPlacePartPosition(partScriptableObject, connectPoint, out var outPartPosition))
             {
-                var overlap = false;
-
-                var newPartPosition = connectPoint - point;
-                var mesh = partScriptableObject.PartPrefab.GetComponent<MeshFilter>().sharedMesh;
-                foreach (var meshVertex in mesh.vertices)
-                {
-                    if (!Physics.Raycast(newPartPosition + mesh.bounds.center, meshVertex.normalized, out var hitInfo,
-                            meshVertex.magnitude - 0.1f,
-                            LayerMask.GetMask("Block"))) continue;
-                    Debug.Log($"重なっている {hitInfo.collider.gameObject.name}, {hitInfo.point}");
-                    overlap = true;
-                    break;
-                }
-
-                if (overlap) continue;
-                Instantiate(partScriptableObject.PartPrefab, newPartPosition, Quaternion.identity);
-                break;
+                Instantiate(partScriptableObject.PartPrefab, outPartPosition, Quaternion.identity);
             }
         }
 
@@ -68,12 +57,23 @@ namespace QBuild.Part
             var size = Physics.RaycastNonAlloc(transform.position, Vector3.down, hit, 1f, LayerMask.GetMask("Block"));
             if (size > 0)
             {
-                CurrentOnThePart = hit[0].collider.GetComponent<PartView>();
+                CurrentOnThePart = hit[0].collider.GetComponentInParent<PartView>();
             }
             else
             {
                 CurrentOnThePart = null;
             }
+        }
+
+        private void OnThePartChanged()
+        {
+            
+            var onThePartPosition = _currentOnThePart.transform.position;
+            var connectPoint = FindClosestPointByAngle(
+                _currentOnThePart.OnGetConnectPoints().Select(x => x + onThePartPosition),
+                CalculateAngleXZ(transform.position, transform.position + transform.forward));
+
+            _partPlaceArea.SetPart(_nextPartScriptableObject, connectPoint);
         }
 
         private bool CanPlacePart()
@@ -115,13 +115,20 @@ namespace QBuild.Part
 
         [SerializeField] private PartListScriptableObject _partListScriptableObject;
         [SerializeField] private NextPartHolder _nextPartHolder;
+        [SerializeField] private BlockPartScriptableObject _nextPartScriptableObject;
+        [SerializeField] private PartPlaceArea _partPlaceAreaPrefab;
+        private PartPlaceArea _partPlaceArea;
         [SerializeField] private PartView _currentOnThePart;
 
         private PartView CurrentOnThePart
         {
             get => _currentOnThePart;
-            set =>
+            set
+            {
+                if(_currentOnThePart == value) return;
                 _currentOnThePart = value;
+                OnThePartChanged();
+            }
         }
     }
 }
