@@ -1,6 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace QBuild.Const
+﻿namespace QBuild.Const
 {
     public static class EditorConst
     {

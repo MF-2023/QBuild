@@ -1,0 +1,20 @@
+{
+    "name": "PartRuntime",
+    "rootNamespace": "",
+    "references": [
+        "Input",
+        "Utilities",
+        "Unity.InputSystem",
+        "VContainer",
+        "QBuild.Const"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
