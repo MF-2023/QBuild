@@ -151,6 +151,7 @@ GameObject:
   - component: {fileID: 1591012237064922931}
   - component: {fileID: 433836682527640447}
   - component: {fileID: 8307311972818797159}
+  - component: {fileID: 3243370785166662203}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -300,9 +301,22 @@ MonoBehaviour:
   _partListScriptableObject: {fileID: 11400000, guid: 5096b154eb7eb744084d8faec58508ed,
     type: 2}
   _nextPartScriptableObject: {fileID: 0}
+  _currentOnThePart: {fileID: 0}
+  _multiplePartArea: {fileID: 3243370785166662203}
+--- !u!114 &3243370785166662203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8486108683713987989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e1434807d524a7ea3e03ebe192bfafc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   _partPlaceAreaPrefab: {fileID: -1250023624360540874, guid: 9399c999cc0cfce47a73b1b0425234b3,
     type: 3}
-  _currentOnThePart: {fileID: 0}
 --- !u!1 &8909902501561420032
 GameObject:
   m_ObjectHideFlags: 0

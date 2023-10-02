@@ -10,7 +10,7 @@ namespace QBuild.Utilities
         West = 3,
         South = 0,
     }
-
+    
     public static class DirectionExtension
     {
         public static Direction TurnLeft(this Direction dir)
@@ -37,4 +37,12 @@ namespace QBuild.Utilities
             };
         }
     }
+    public enum DirectionFRBL
+    {
+        Forward = 0,
+        Right = 1,
+        Back = 2,
+        Left = 3,
+    }
+    
 }

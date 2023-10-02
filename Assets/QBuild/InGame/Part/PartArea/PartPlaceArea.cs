@@ -1,4 +1,6 @@
 ﻿using System;
+using QBuild.Behavior;
+using QBuild.Utilities;
 using UnityEngine;
 
 namespace QBuild.Part
@@ -13,7 +15,6 @@ namespace QBuild.Part
     }
     public class PartPlaceArea : MonoBehaviour
     {
-        
         public void SetPart(BlockPartScriptableObject part, Vector3 connectPosition)
         {
             _part = part;
@@ -30,13 +31,22 @@ namespace QBuild.Part
             }
         }
 
+        private void SetKeyIcon(DirectionFRBL dir)
+        {
+            _keyIconSpriteRenderer.sprite = _icons.GetIcon(dir);
+        }
+        
         private void Start()
         {
             _meshFilter = GetComponent<MeshFilter>();
+            _keyIconSpriteRenderer = GetComponentInChildren<SpriteRenderer>();
         }
 
+        [SerializeField] private PartAreaIcons _icons;
+        
         private MeshFilter _meshFilter;
         private BlockPartScriptableObject _part;
         private PartPlaceAreaState _state = PartPlaceAreaState.None;
+        private SpriteRenderer _keyIconSpriteRenderer;
     }
 }

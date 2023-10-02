@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
+using UnityEngine.InputSystem;
 using VContainer;
 
 namespace QBuild.Part
@@ -22,18 +20,6 @@ namespace QBuild.Part
         {
             _nextPartHolder = new NextPartHolder(_partListScriptableObject);
             _nextPartScriptableObject = _nextPartHolder.NextPart();
-
-            _partPlaceAreaN = Instantiate(_partPlaceAreaPrefab);
-            _partPlaceAreaN.name += ":N";
-
-            _partPlaceAreaE = Instantiate(_partPlaceAreaPrefab);
-            _partPlaceAreaE.name += ":E";
-
-            _partPlaceAreaW = Instantiate(_partPlaceAreaPrefab);
-            _partPlaceAreaW.name += ":W";
-
-            _partPlaceAreaS = Instantiate(_partPlaceAreaPrefab);
-            _partPlaceAreaS.name += ":S";
         }
 
         private void Update()
@@ -43,7 +29,6 @@ namespace QBuild.Part
 
         private void ForwardPlacePart()
         {
-            Debug.Log(Vector3.Scale(UnityEngine.Camera.main.transform.forward, new Vector3(1, 0, 1)));
             DirPlacePart(Vector3.Scale(UnityEngine.Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized);
         }
 
@@ -100,35 +85,16 @@ namespace QBuild.Part
         private void OnThePartChanged()
         {
             var onThePartPosition = _currentOnThePart.transform.position;
-            var connectPoint = PlacePartService.FindClosestPointByAngleXZ(transform.position, new Vector3(0, 0, 1),
-                CurrentOnThePart.OnGetConnectPoints().Select(x => x + onThePartPosition));
-            _partPlaceAreaN.SetPart(_nextPartScriptableObject, connectPoint);
 
-            connectPoint = PlacePartService.FindClosestPointByAngleXZ(transform.position, new Vector3(1, 0, 0),
-                CurrentOnThePart.OnGetConnectPoints().Select(x => x + onThePartPosition));
-            _partPlaceAreaE.SetPart(_nextPartScriptableObject, connectPoint);
-
-            connectPoint = PlacePartService.FindClosestPointByAngleXZ(transform.position, new Vector3(0, 0, -1),
-                CurrentOnThePart.OnGetConnectPoints().Select(x => x + onThePartPosition));
-            _partPlaceAreaW.SetPart(_nextPartScriptableObject, connectPoint);
-
-            connectPoint = PlacePartService.FindClosestPointByAngleXZ(transform.position, new Vector3(-1, 0, 0),
-                CurrentOnThePart.OnGetConnectPoints().Select(x => x + onThePartPosition));
-            _partPlaceAreaS.SetPart(_nextPartScriptableObject, connectPoint);
+            _multiplePartArea.UpdatePart(onThePartPosition, _currentOnThePart, _nextPartScriptableObject);
         }
 
         [SerializeField] private PartListScriptableObject _partListScriptableObject;
         [SerializeField] private NextPartHolder _nextPartHolder;
         [SerializeField] private BlockPartScriptableObject _nextPartScriptableObject;
-        [SerializeField] private PartPlaceArea _partPlaceAreaPrefab;
-
-        private PartPlaceArea _partPlaceAreaN;
-        private PartPlaceArea _partPlaceAreaE;
-        private PartPlaceArea _partPlaceAreaW;
-        private PartPlaceArea _partPlaceAreaS;
 
         [SerializeField] private PartView _currentOnThePart;
-
+        [SerializeField] private MultiplePartArea _multiplePartArea;
         private PartView CurrentOnThePart
         {
             get => _currentOnThePart;
