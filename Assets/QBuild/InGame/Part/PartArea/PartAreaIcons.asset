@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: PartAreaIcons
   m_EditorClassIdentifier: 
   _forwardAreaIcon: {fileID: 1164446985, guid: e2ce9d9cba8b3544fbb4a1460090dc09, type: 3}
-  _leftAreaIcon: {fileID: 242893656, guid: e2ce9d9cba8b3544fbb4a1460090dc09, type: 3}
-  _rightAreaIcon: {fileID: 1096272314, guid: e2ce9d9cba8b3544fbb4a1460090dc09, type: 3}
-  _backAreaIcon: {fileID: 1217555689, guid: e2ce9d9cba8b3544fbb4a1460090dc09, type: 3}
+  _leftAreaIcon: {fileID: 1217555689, guid: e2ce9d9cba8b3544fbb4a1460090dc09, type: 3}
+  _rightAreaIcon: {fileID: 242893656, guid: e2ce9d9cba8b3544fbb4a1460090dc09, type: 3}
+  _backAreaIcon: {fileID: 1096272314, guid: e2ce9d9cba8b3544fbb4a1460090dc09, type: 3}

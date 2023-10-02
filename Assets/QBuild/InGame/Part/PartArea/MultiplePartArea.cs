@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using QBuild.Utilities;
 using UnityEngine;
@@ -15,24 +16,21 @@ namespace QBuild.Part
 
             var globalPointEnumerable = onThePart.OnGetConnectPoints().Select(x => x + onThePartPosition);
             var globalPoints = globalPointEnumerable as Vector3[] ?? globalPointEnumerable.ToArray();
-            var connectPoint =
-                PlacePartService.FindClosestPointByAngleXZ(_referencePosition, new Vector3(0, 0, 1), globalPoints);
-            _partPlaceAreaN.SetPart(partScriptableObject, connectPoint);
 
-            connectPoint =
-                PlacePartService.FindClosestPointByAngleXZ(_referencePosition, new Vector3(1, 0, 0), globalPoints);
-            _partPlaceAreaE.SetPart(partScriptableObject, connectPoint);
-
-            connectPoint =
-                PlacePartService.FindClosestPointByAngleXZ(_referencePosition, new Vector3(0, 0, -1), globalPoints);
-            _partPlaceAreaW.SetPart(partScriptableObject, connectPoint);
-
-            connectPoint =
-                PlacePartService.FindClosestPointByAngleXZ(_referencePosition, new Vector3(-1, 0, 0), globalPoints);
-            _partPlaceAreaS.SetPart(partScriptableObject, connectPoint);
+            SetPart(_partPlaceAreaN, new Vector3(0, 0, 1), globalPoints, partScriptableObject);
+            SetPart(_partPlaceAreaE, new Vector3(1, 0, 0), globalPoints, partScriptableObject);
+            SetPart(_partPlaceAreaW, new Vector3(0, 0, -1), globalPoints, partScriptableObject);
+            SetPart(_partPlaceAreaS, new Vector3(-1, 0, 0), globalPoints, partScriptableObject);
         }
 
-        
+        private void SetPart(PartPlaceArea part, Vector3 dir, IEnumerable<Vector3> globalPoints,
+            BlockPartScriptableObject partScriptableObject)
+        {
+            var connectPoint =
+                PlacePartService.FindClosestPointByAngleXZ(_referencePosition, dir, globalPoints);
+            part.SetPart(partScriptableObject, dir, connectPoint);
+        }
+
         private void Start()
         {
             _partPlaceAreaN = Instantiate(_partPlaceAreaPrefab);
@@ -46,7 +44,7 @@ namespace QBuild.Part
 
             _partPlaceAreaS = Instantiate(_partPlaceAreaPrefab);
             _partPlaceAreaS.name += ":S";
-            
+
             _camera = UnityEngine.Camera.main;
         }
 
@@ -58,7 +56,7 @@ namespace QBuild.Part
         private void OnDirChanged()
         {
             var dir = DirectionFRBLExtension.VectorToDirectionFRBL(Forward);
-            if(dir == DirectionFRBL.None) return;
+            if (dir == DirectionFRBL.None) return;
             _partPlaceAreaN.SetKeyIcon(dir.TurnRight().TurnRight());
             _partPlaceAreaE.SetKeyIcon(dir.TurnLeft());
             _partPlaceAreaW.SetKeyIcon(dir);
@@ -71,12 +69,12 @@ namespace QBuild.Part
         private PartPlaceArea _partPlaceAreaE;
         private PartPlaceArea _partPlaceAreaW;
         private PartPlaceArea _partPlaceAreaS;
-        
+
         /// <summary>
         /// 向きを出すための基準位置
         /// </summary>
         private Vector3 _referencePosition;
-        
+
         private UnityEngine.Camera _camera;
         private Vector3 _forward;
 
@@ -85,7 +83,7 @@ namespace QBuild.Part
             get => _forward;
             set
             {
-                if(_forward == value) return;
+                if (_forward == value) return;
                 _forward = value;
                 OnDirChanged();
             }
