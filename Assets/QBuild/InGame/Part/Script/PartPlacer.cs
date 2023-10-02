@@ -8,17 +8,17 @@ namespace QBuild.Part
     public class PartPlacer : MonoBehaviour
     {
         [Inject]
-        void Inject(@InputSystem inputSystem)
+        void Inject(@InputSystem inputSystem,NextPartHolder nextPartHolder)
         {
             inputSystem.InGame.BlockPlaceF.performed += _ => ForwardPlacePart();
             inputSystem.InGame.BlockPlaceR.performed += _ => RightPlacePart();
             inputSystem.InGame.BlockPlaceB.performed += _ => BackPlacePart();
             inputSystem.InGame.BlockPlaceL.performed += _ => LeftPlacePart();
+            _nextPartHolder = nextPartHolder;
         }
 
         private void Start()
         {
-            _nextPartHolder = new NextPartHolder(_partListScriptableObject);
             _nextPartScriptableObject = _nextPartHolder.NextPart();
         }
 

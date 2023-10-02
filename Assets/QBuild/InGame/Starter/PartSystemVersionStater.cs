@@ -3,6 +3,8 @@ using QBuild.Camera;
 using QBuild.Condition;
 using QBuild.Mino;
 using QBuild.Mino.ProvisionalMino;
+using QBuild.Part;
+using QBuild.Part.HolderView;
 using QBuild.Player;
 using QBuild.Stage;
 using UnityEngine;
@@ -36,10 +38,18 @@ namespace QBuild.Starter
                 return playerController;
             }, Lifetime.Singleton);
             builder.RegisterEntryPoint<PlayerPresenter>();
+
             
+            builder.Register<NextPartHolder>(Lifetime.Singleton);
+            builder.RegisterInstance(_partHolderView);
+            builder.RegisterInstance(_partListScriptableObject);
+            builder.RegisterEntryPoint<HolderPresenter>();
         }
         [SerializeField] private PlayerController _playerPrefab;
         [SerializeField] private CurrentStageVariable _currentStageVariable;
+        [SerializeField] private PartHolderView _partHolderView;
+        [SerializeField] private PartListScriptableObject _partListScriptableObject;
+        
 
     }
 }

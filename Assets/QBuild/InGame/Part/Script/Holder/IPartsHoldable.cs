@@ -4,6 +4,7 @@ namespace QBuild.Part
 {
     public interface IPartsHoldable
     {
+        event System.Action<IEnumerable<BlockPartScriptableObject>> OnChangeParts;
         IEnumerable<BlockPartScriptableObject> GetParts();
     }
 }

@@ -1,0 +1,21 @@
+{
+    "name": "QBuild.Starter",
+    "rootNamespace": "",
+    "references": [
+        "GUID:b0214a6008ed146ff8f122a6a9c2f6cc",
+        "GUID:e48ef7a797a63cd4e8b3dbcc222e39be",
+        "GUID:9462997a5f67918469ee3e8081291f56",
+        "GUID:3ae44fd79bed42048c111a1e9b83b0f8",
+        "GUID:b85c118b499d439597508d1ac9dde038",
+        "GUID:6b15728fd99741d4385eea625d7b049e"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

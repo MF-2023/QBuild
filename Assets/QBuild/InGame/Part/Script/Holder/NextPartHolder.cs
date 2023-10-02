@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace QBuild.Part
 {
@@ -10,7 +11,12 @@ namespace QBuild.Part
         public NextPartHolder(PartListScriptableObject partListScriptableObject)
         {
             _partList = partListScriptableObject;
+            _holdParts.Enqueue(_partList.GetRandomPart());
+            _holdParts.Enqueue(_partList.GetRandomPart());
+
         }
+
+        public event Action<IEnumerable<BlockPartScriptableObject>> OnChangeParts;
 
         public IEnumerable<BlockPartScriptableObject> GetParts()
         {
@@ -19,10 +25,8 @@ namespace QBuild.Part
 
         public BlockPartScriptableObject NextPart()
         {
-            if (_holdParts.Count == 0)
-            {
-                _holdParts.Enqueue(_partList.GetRandomPart());
-            }
+            _holdParts.Enqueue(_partList.GetRandomPart());
+            OnChangeParts?.Invoke(_holdParts);
 
             _holdParts.TryDequeue(out var part);
             return part;

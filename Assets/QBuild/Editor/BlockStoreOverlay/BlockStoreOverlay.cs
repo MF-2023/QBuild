@@ -1,5 +1,4 @@
-﻿using QBuild.Starter;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEditor.Overlays;
 using UnityEditor.Toolbars;
 using UnityEditor.UIElements;
@@ -26,10 +25,6 @@ namespace QBuild.BlockStoreOverlay
             {
                 var scopeObject = GameObject.Find("Installer");
                 if (scopeObject == null) return;
-                if (scopeObject.TryGetComponent(out InGameStater stater))
-                {
-                    stater.Container.Resolve<BlockStore>();
-                }
 
                 _existBlockStore = GameObject.Find("BlockManager").TryGetComponent(out _blockManager);
                 OnSelectionChanged();
