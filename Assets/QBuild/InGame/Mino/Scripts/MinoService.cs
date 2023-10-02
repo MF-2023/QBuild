@@ -45,6 +45,33 @@ namespace QBuild.Mino
             return _minoStore.TryGetMino(key, out polyomino);
         }
 
+        /// <summary>
+        /// 即座にミノを指定ブロック座標に配置する。
+        /// 指定座標に既にブロックが存在する場合失敗する。
+        /// </summary>
+        /// <param name="mino">対象のミノ</param>
+        /// <param name="position">指定座標</param>
+        /// <returns>移動成功 true・移動失敗の場合 false</returns>
+        public bool SetPositionMino(Polyomino mino, Vector3Int position)
+        {
+            var blocks = mino.GetBlocks();
+            var origin = blocks[0].GetGridPosition();
+            foreach (var block in blocks)
+            {
+                var targetPosition = block.GetGridPosition() - origin + position;
+                if (_blockService.CanPlace(targetPosition)) continue;
+                _blockService.TryGetBlock(targetPosition, out var otherBlock);
+                if (block.GetMinoKey() == otherBlock.GetMinoKey()) continue;
+                return false;
+            }
+            foreach (var block in blocks)
+            {
+                var targetPosition = block.GetGridPosition() - origin + position;
+                block.SetPosition(targetPosition);
+            }
+            return true;
+        }
+        
         private bool MinoMove(Polyomino mino, Vector3Int move)
         {
             var blocks = mino.GetBlocks();
@@ -106,7 +133,6 @@ namespace QBuild.Mino
                     if (dirBlock.IsFalling()) continue;
                     if (!_blockService.ContactCondition(block, dirBlock)) continue;
                     cancellation = new CancellationTokenSource();
-                    Debug.Log("MinoService Contact");
                     if (block.GetGridPosition().y >= 9)
                     {
                         Debug.LogError($"ミノの位置が異常です:{dirBlock.GetGridPosition()}");
@@ -174,7 +200,6 @@ namespace QBuild.Mino
         }
         public void Place(Polyomino mino)
         {
-            Debug.Log($"MinoService.Place {mino.GetBlocks()[0].name}");
             if (!mino.IsFalling) return;
             if (JointMino(mino))
             {
@@ -182,8 +207,15 @@ namespace QBuild.Mino
                 return;
             }
 
+            
+            CalcStability(mino);
             mino.Place();
             OnMinoPlaced?.Invoke(mino);
+        }
+        
+        public void CalcStability(Polyomino mino)
+        {
+            _stabilityCalculator.CalcStabilityMino(mino);
         }
 
         public bool JointMino(Polyomino mino)

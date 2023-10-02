@@ -7,5 +7,6 @@ namespace QBuild.Mino
     {
         public event Action<Polyomino> OnMinoCreated;
         public Polyomino CreateMino(MinoType minoType, Vector3Int origin, Transform parent);
+        public Polyomino CreateMinoEventSkip(MinoType minoType, Vector3Int origin, Transform parent);
     }
 }

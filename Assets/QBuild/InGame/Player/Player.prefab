@@ -150,6 +150,7 @@ GameObject:
   - component: {fileID: 7288135099793665904}
   - component: {fileID: 1591012237064922931}
   - component: {fileID: 433836682527640447}
+  - component: {fileID: 8307311972818797159}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -173,7 +174,7 @@ Transform:
   - {fileID: 1265509219719613}
   - {fileID: 8646255894096852836}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &2735871239395897968
 Rigidbody:
@@ -259,7 +260,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerData: {fileID: 11400000, guid: c1291a2a3872f2644a4adbf764acf367, type: 2}
-  groundCheck: {fileID: 8646255894096852836}
   _inputHandler: {fileID: 1591012237064922931}
 --- !u!114 &1591012237064922931
 MonoBehaviour:
@@ -285,6 +285,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1afe16303c7bac64d9b0492b0a3851d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8307311972818797159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8486108683713987989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69622661ed104a67ad124e3a96c28b6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _partListScriptableObject: {fileID: 11400000, guid: 5096b154eb7eb744084d8faec58508ed,
+    type: 2}
+  _nextPartScriptableObject: {fileID: 0}
+  _partPlaceAreaPrefab: {fileID: -1250023624360540874, guid: 9399c999cc0cfce47a73b1b0425234b3,
+    type: 3}
+  _currentOnThePart: {fileID: 0}
 --- !u!1 &8909902501561420032
 GameObject:
   m_ObjectHideFlags: 0

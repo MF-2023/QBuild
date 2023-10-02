@@ -36,7 +36,6 @@ namespace QBuild.Mino
         public async UniTask Down(int moveY)
         {
             if (_fallingMino == null) return;
-            Debug.Log("Mino Down");
 
             var source = new UniTaskCompletionSource();
             OnMinoDown?.Invoke(_fallingMino, moveY, source);

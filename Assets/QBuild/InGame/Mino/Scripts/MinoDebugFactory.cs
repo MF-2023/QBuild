@@ -19,6 +19,13 @@ namespace QBuild.Mino
         
         public Polyomino CreateMino(MinoType minoType, Vector3Int origin, Transform parent)
         {
+            var mino = CreateMinoEventSkip(minoType, origin, parent);
+            OnMinoCreated?.Invoke(mino);
+            return mino;
+        }
+
+        public Polyomino CreateMinoEventSkip(MinoType minoType, Vector3Int origin, Transform parent)
+        {
             var mino = new Polyomino();
 
             
@@ -52,8 +59,6 @@ namespace QBuild.Mino
             _minoStore.AddMino(key, mino);
             
             Debug.Log("Created Mino");
-            
-            OnMinoCreated?.Invoke(mino);
             return mino;
         }
 
