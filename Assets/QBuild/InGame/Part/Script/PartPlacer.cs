@@ -59,10 +59,10 @@ namespace QBuild.Part
         {
             // 次の設置するパーツを取得
             var partScriptableObject = _nextPartScriptableObject;
-            _nextPartScriptableObject = _nextPartHolder.NextPart();
 
             if (PlacePartService.TryPlacePartPosition(partScriptableObject, connectPoint, out var outPartPosition))
             {
+                _nextPartScriptableObject = _nextPartHolder.NextPart();
                 Instantiate(partScriptableObject.PartPrefab, outPartPosition, Quaternion.identity);
                 OnThePartChanged();
             }
