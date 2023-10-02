@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 6581498301429285927}
   - component: {fileID: -419653685647528807}
   - component: {fileID: -6163632465731438287}
-  - component: {fileID: 1733229875738493712}
   m_Layer: 16
   m_Name: CrossroadsPartPrefab
   m_TagString: Untagged
@@ -116,60 +115,6 @@ MonoBehaviour:
   - {x: 0, y: 0.09928875, z: 1.5}
   - {x: 0, y: 0.09928875, z: -1.5}
   - {x: -1.5, y: 0.09928875, z: 0}
---- !u!114 &1733229875738493712
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4629298481421373260}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 923a2ee84c9e97d429c65882efb4f252, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  meshColliderBuilderProperty:
-    splitProperty:
-      splitMaterialEnabled: 0
-      splitPrimitiveEnabled: 1
-      splitPolygonNormalEnabled: 0
-      splitPolygonNormalAngle: 45
-    reducerProperty:
-      shapeType: 2
-      fitType: 1
-      meshType: 0
-      maxTriangles: 255
-      sliceMode: 0
-      scale: {x: 1, y: 1, z: 1}
-      scaleElementType: 0
-      minThickness: {x: 0.0001, y: 0.0001, z: 0.0001}
-      minThicknessElementType: 0
-      optimizeRotation:
-        x: 0
-        y: 0
-        z: 0
-      optimizeRotationElementType: 1
-      colliderToChild: 0
-      offset: {x: 0, y: 0, z: 0}
-      thicknessA: {x: 0, y: 0, z: 0}
-      thicknessB: {x: 0, y: 0, z: 0}
-      viewAdvanced: 0
-    colliderProperty:
-      convex: 0
-      isTrigger: 0
-      material: {fileID: 0}
-      isCreateAsset: 0
-    rigidbodyProperty:
-      mass: 1
-      drag: 0
-      angularDrag: 0.05
-      isKinematic: 1
-      useGravity: 0
-      interpolation: 0
-      collisionDetectionMode: 0
-      isCreate: 0
-      viewAdvanced: 0
-    modifyNameEnabled: 1
 --- !u!1 &5536483855400818933
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,8 +3,17 @@ using UnityEngine;
 
 namespace QBuild.Part
 {
+    public enum PartPlaceAreaState
+    {
+        None,
+        CanPlace,
+        
+        NotEnoughSpace,
+        CannotConnect,
+    }
     public class PartPlaceArea : MonoBehaviour
     {
+        
         public void SetPart(BlockPartScriptableObject part, Vector3 connectPosition)
         {
             _part = part;
@@ -13,6 +22,11 @@ namespace QBuild.Part
             if (PlacePartService.TryPlacePartPosition(part, connectPosition, out var outPartPosition))
             {
                 transform.position = outPartPosition;
+            }
+            else
+            {
+                _state = PartPlaceAreaState.NotEnoughSpace;
+                _meshFilter.sharedMesh = null;
             }
         }
 
@@ -23,5 +37,6 @@ namespace QBuild.Part
 
         private MeshFilter _meshFilter;
         private BlockPartScriptableObject _part;
+        private PartPlaceAreaState _state = PartPlaceAreaState.None;
     }
 }

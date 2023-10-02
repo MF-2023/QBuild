@@ -19,7 +19,11 @@ namespace QBuild.Part
         {
             _nextPartHolder = new NextPartHolder(_partListScriptableObject);
             _nextPartScriptableObject = _nextPartHolder.NextPart();
-            _partPlaceArea = Instantiate(_partPlaceAreaPrefab);
+
+            _partPlaceAreaN = Instantiate(_partPlaceAreaPrefab);
+            _partPlaceAreaE = Instantiate(_partPlaceAreaPrefab);
+            _partPlaceAreaW = Instantiate(_partPlaceAreaPrefab);
+            _partPlaceAreaS = Instantiate(_partPlaceAreaPrefab);
         }
 
         private void Update()
@@ -33,21 +37,15 @@ namespace QBuild.Part
             var partScriptableObject = _nextPartScriptableObject;
             _nextPartScriptableObject = _nextPartHolder.NextPart();
 
-            // 乗ってるブロックを取得
-            PartView currentOnThePart = null;
-            var hit = new RaycastHit[1];
-            var size = Physics.RaycastNonAlloc(transform.position, Vector3.down, hit, 1f, LayerMask.GetMask("Block"));
-            if (size <= 0) return;
-            currentOnThePart = hit[0].collider.GetComponentInParent<PartView>();
-            
-            var onThePartPosition = currentOnThePart.transform.position;
-            var connectPoint = FindClosestPointByAngle(
-                currentOnThePart.OnGetConnectPoints().Select(x => x + onThePartPosition),
-                CalculateAngleXZ(transform.position, transform.position + transform.forward));
+
+            var onThePartPosition = CurrentOnThePart.transform.position;
+            var connectPoint = PlacePartService.FindClosestPointByAngleXZ(transform.position, transform.forward,
+                CurrentOnThePart.OnGetConnectPoints().Select(x => x + onThePartPosition));
 
             if (PlacePartService.TryPlacePartPosition(partScriptableObject, connectPoint, out var outPartPosition))
             {
                 Instantiate(partScriptableObject.PartPrefab, outPartPosition, Quaternion.identity);
+                OnThePartChanged();
             }
         }
 
@@ -67,57 +65,34 @@ namespace QBuild.Part
 
         private void OnThePartChanged()
         {
-            
             var onThePartPosition = _currentOnThePart.transform.position;
-            var connectPoint = FindClosestPointByAngle(
-                _currentOnThePart.OnGetConnectPoints().Select(x => x + onThePartPosition),
-                CalculateAngleXZ(transform.position, transform.position + transform.forward));
+            var connectPoint = PlacePartService.FindClosestPointByAngleXZ(transform.position, new Vector3(0,0,1),
+                CurrentOnThePart.OnGetConnectPoints().Select(x => x + onThePartPosition));
+            _partPlaceAreaN.SetPart(_nextPartScriptableObject, connectPoint);
+            
+            connectPoint = PlacePartService.FindClosestPointByAngleXZ(transform.position, new Vector3(1,0,0),
+                CurrentOnThePart.OnGetConnectPoints().Select(x => x + onThePartPosition));
+            _partPlaceAreaE.SetPart(_nextPartScriptableObject, connectPoint);
 
-            _partPlaceArea.SetPart(_nextPartScriptableObject, connectPoint);
-        }
+            connectPoint = PlacePartService.FindClosestPointByAngleXZ(transform.position, new Vector3(0,0,-1),
+                CurrentOnThePart.OnGetConnectPoints().Select(x => x + onThePartPosition));
+            _partPlaceAreaW.SetPart(_nextPartScriptableObject, connectPoint);
 
-        private bool CanPlacePart()
-        {
-            return true;
-        }
-
-        private Vector3 FindClosestPointByAngle(IEnumerable<Vector3> points, float targetAngle)
-        {
-            var closestPoint = Vector3.zero;
-            var smallestAngleDifference = float.MaxValue;
-
-            var playerPos = transform.position;
-
-            foreach (var point in points)
-            {
-                var angle = CalculateAngleXZ(playerPos, point);
-
-                var angleDifference = Mathf.Abs(Mathf.DeltaAngle(targetAngle, angle));
-
-                if (!(angleDifference < smallestAngleDifference)) continue;
-                smallestAngleDifference = angleDifference;
-                closestPoint = point;
-            }
-
-            return closestPoint;
-        }
-
-        /// <summary>
-        /// 2つの点の角度をXZ面上で計算する
-        /// </summary>
-        /// <param name="from"></param>
-        /// <param name="to"></param>
-        /// <returns></returns>
-        private float CalculateAngleXZ(Vector3 from, Vector3 to)
-        {
-            return Mathf.Atan2(to.z - from.z, to.x - from.x) * Mathf.Rad2Deg;
+            connectPoint = PlacePartService.FindClosestPointByAngleXZ(transform.position, new Vector3(-1,0,0),
+                CurrentOnThePart.OnGetConnectPoints().Select(x => x + onThePartPosition));
+            _partPlaceAreaS.SetPart(_nextPartScriptableObject, connectPoint);
         }
 
         [SerializeField] private PartListScriptableObject _partListScriptableObject;
         [SerializeField] private NextPartHolder _nextPartHolder;
         [SerializeField] private BlockPartScriptableObject _nextPartScriptableObject;
         [SerializeField] private PartPlaceArea _partPlaceAreaPrefab;
-        private PartPlaceArea _partPlaceArea;
+
+        private PartPlaceArea _partPlaceAreaN;
+        private PartPlaceArea _partPlaceAreaE;
+        private PartPlaceArea _partPlaceAreaW;
+        private PartPlaceArea _partPlaceAreaS;
+
         [SerializeField] private PartView _currentOnThePart;
 
         private PartView CurrentOnThePart
@@ -125,7 +100,7 @@ namespace QBuild.Part
             get => _currentOnThePart;
             set
             {
-                if(_currentOnThePart == value) return;
+                if (_currentOnThePart == value) return;
                 _currentOnThePart = value;
                 OnThePartChanged();
             }
