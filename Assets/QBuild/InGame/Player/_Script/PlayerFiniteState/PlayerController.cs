@@ -8,8 +8,11 @@ namespace QBuild.Player.Controller
     public class PlayerController : MonoBehaviour
     {
         #region Variables        
-        [SerializeField] private PlayerData playerData;
+        [SerializeField] private PlayerData         _playerData;
         [SerializeField] private PlayerInputHandler _inputHandler;
+        [SerializeField] private Transform          _GroundCheckPosition;
+        [SerializeField] private float              _GroundCheckRadius = 0.5f;
+        [SerializeField] private LayerMask          _GroundLayer;
 
         private PlayerStateController _StateController;
         private PlayerAnimationController _AnimationController;
@@ -26,7 +29,7 @@ namespace QBuild.Player.Controller
         {
             Core = GetComponentInChildren<Core.Core>();
             _AnimationController = new PlayerAnimationController(GetComponent<Animator>());
-            _StateController = new PlayerStateController(Core, _inputHandler, playerData);
+            _StateController = new PlayerStateController(Core, _inputHandler, _playerData);
             _StateController.OnChangeAnimation += _AnimationController.ChangeAnimation;
             _StateController.OnGetPlayerPos += () => transform.position;
             _StateController.OnSetPosition += (Vector3 pos) => transform.position = pos;
@@ -57,6 +60,9 @@ namespace QBuild.Player.Controller
                                               (int)transform.position.y + 1,
                                               (int)(transform.position.z + collectZ));
             Gizmos.DrawLine(transform.position, check);
+
+            //地面判定の描画
+            Gizmos.DrawSphere(_GroundCheckPosition.position, _GroundCheckRadius);
         }
         #endregion
 
@@ -67,9 +73,6 @@ namespace QBuild.Player.Controller
             return ret;
         }
 
-        public void AnimationTrigger() => _StateController.AnimationTrigger();
-
-        public void AnimationFinishedTrigger() => _StateController.AnimationFinishedTrigger();
 
         private void CheckGridPosition()
         {
@@ -84,12 +87,15 @@ namespace QBuild.Player.Controller
         }
 
         private bool CheckGround()
-        {          
+        {
             //ブロックが存在する場合trueを返す
+            /*
             Vector3 pos = transform.position;
             Vector3Int check = new Vector3Int((int)(pos.x + 0.5f), currentPosition.y - 1, (int)(pos.z + 0.5f));
             if (OnCheckBlock != null ? OnCheckBlock(check) : false) return true;
             return false;
+            */
+            return Physics.CheckSphere(_GroundCheckPosition.position, _GroundCheckRadius, _GroundLayer);
         }
 
         private bool CheckCanClimbBlock(ref Vector3 retPos)
@@ -107,7 +113,7 @@ namespace QBuild.Player.Controller
             {
                 //プレイヤーの高さ分ブロックの確認をする
                 bool checkHeight = false;
-                for(int i = 1;i <= playerData.playerHeight;i++)
+                for(int i = 1;i <= _playerData.playerHeight;i++)
                 {
                     check.y += 1;
                     if((OnCheckBlock != null ? OnCheckBlock(check) : false))
@@ -136,35 +142,43 @@ namespace QBuild.Player.Controller
             //正面を向いている場合
             if (rot >= -45.0f && rot <= 45.0f)
             {
-                if (transform.position.x >= 0) collectX = playerData.checkBlockCollectX;
-                else collectX = playerData.checkBlockCollectX * -1.0f;
-                if (transform.position.z >= 0) collectZ = playerData.checkBlockCollectZ;
-                else collectZ = playerData.checkBlockCollectZ - 1.0f;
+                if (transform.position.x >= 0) collectX = _playerData.checkBlockCollectX;
+                else collectX = _playerData.checkBlockCollectX * -1.0f;
+                if (transform.position.z >= 0) collectZ = _playerData.checkBlockCollectZ;
+                else collectZ = _playerData.checkBlockCollectZ - 1.0f;
             }
             //右を向いている場合
             else if(rot >= 45.0f && rot <= 135.0f)
             {
-                if (transform.position.x >= 0) collectX = playerData.checkBlockCollectZ;
-                else collectX = playerData.checkBlockCollectZ - 1.0f;
-                if (transform.position.z >= 0) collectZ = playerData.checkBlockCollectX;
-                else collectZ = playerData.checkBlockCollectX * 1.0f;
+                if (transform.position.x >= 0) collectX = _playerData.checkBlockCollectZ;
+                else collectX = _playerData.checkBlockCollectZ - 1.0f;
+                if (transform.position.z >= 0) collectZ = _playerData.checkBlockCollectX;
+                else collectZ = _playerData.checkBlockCollectX * 1.0f;
             }
             //左を向いている場合
             else if(rot <= -45.0f && rot >= -135.0f)
             {
-                if (transform.position.x >= 0) collectX = (1.0f - playerData.checkBlockCollectZ);
-                else collectX = playerData.checkBlockCollectZ * -1.0f;
-                if (transform.position.z >= 0) collectZ = playerData.checkBlockCollectX;
-                else collectZ = playerData.checkBlockCollectX * 1.0f;
+                if (transform.position.x >= 0) collectX = (1.0f - _playerData.checkBlockCollectZ);
+                else collectX = _playerData.checkBlockCollectZ * -1.0f;
+                if (transform.position.z >= 0) collectZ = _playerData.checkBlockCollectX;
+                else collectZ = _playerData.checkBlockCollectX * 1.0f;
             }
             //後ろを向いている場合
             else
             {
-                if (transform.position.x >= 0) collectX = playerData.checkBlockCollectX;
-                else collectX = playerData.checkBlockCollectX * -1.0f;
-                if (transform.position.z >= 0) collectZ = (1.0f - playerData.checkBlockCollectZ);
-                else collectZ = playerData.checkBlockCollectZ * -1.0f;
+                if (transform.position.x >= 0) collectX = _playerData.checkBlockCollectX;
+                else collectX = _playerData.checkBlockCollectX * -1.0f;
+                if (transform.position.z >= 0) collectZ = (1.0f - _playerData.checkBlockCollectZ);
+                else collectZ = _playerData.checkBlockCollectZ * -1.0f;
             }
+        }
+        public void AnimationTrigger() => _StateController.AnimationTrigger();
+
+        public void AnimationFinishedTrigger() => _StateController.AnimationFinishedTrigger();
+
+        public void SetIcon(Sprite icon) 
+        {
+
         }
     }
 }
