@@ -64,6 +64,42 @@ namespace QBuild
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""BlockPlaceF"",
+                    ""type"": ""Button"",
+                    ""id"": ""e6d2c6de-2cfb-4dc6-b64b-2c39e0044e4d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""BlockPlaceR"",
+                    ""type"": ""Button"",
+                    ""id"": ""db426631-5dfe-40f3-b02f-f30ae7958793"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""BlockPlaceB"",
+                    ""type"": ""Button"",
+                    ""id"": ""40501032-3505-482a-af39-b22300af129e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""BlockPlaceL"",
+                    ""type"": ""Button"",
+                    ""id"": ""99f28559-d7ec-4672-864a-1f465d031617"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -220,6 +256,50 @@ namespace QBuild
                     ""action"": ""BlockDone"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4d1fe3f5-e7f9-4495-8666-8dc05116fb03"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""BlockPlaceF"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7c14ae3b-66cc-4b73-b60d-8f2f50a66bbd"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""BlockPlaceR"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7a1f5b69-13a5-4d70-b36c-e769a7c2d3bf"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""BlockPlaceB"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9c96d52e-e78d-4077-8097-62ba17cc669c"",
+                    ""path"": ""<Keyboard>/v"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""BlockPlaceL"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -232,6 +312,10 @@ namespace QBuild
             m_InGame_BlockDone = m_InGame.FindAction("BlockDone", throwIfNotFound: true);
             m_InGame_PlayerMove = m_InGame.FindAction("PlayerMove", throwIfNotFound: true);
             m_InGame_CameraMove = m_InGame.FindAction("CameraMove", throwIfNotFound: true);
+            m_InGame_BlockPlaceF = m_InGame.FindAction("BlockPlaceF", throwIfNotFound: true);
+            m_InGame_BlockPlaceR = m_InGame.FindAction("BlockPlaceR", throwIfNotFound: true);
+            m_InGame_BlockPlaceB = m_InGame.FindAction("BlockPlaceB", throwIfNotFound: true);
+            m_InGame_BlockPlaceL = m_InGame.FindAction("BlockPlaceL", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -297,6 +381,10 @@ namespace QBuild
         private readonly InputAction m_InGame_BlockDone;
         private readonly InputAction m_InGame_PlayerMove;
         private readonly InputAction m_InGame_CameraMove;
+        private readonly InputAction m_InGame_BlockPlaceF;
+        private readonly InputAction m_InGame_BlockPlaceR;
+        private readonly InputAction m_InGame_BlockPlaceB;
+        private readonly InputAction m_InGame_BlockPlaceL;
         public struct InGameActions
         {
             private @InputSystem m_Wrapper;
@@ -305,6 +393,10 @@ namespace QBuild
             public InputAction @BlockDone => m_Wrapper.m_InGame_BlockDone;
             public InputAction @PlayerMove => m_Wrapper.m_InGame_PlayerMove;
             public InputAction @CameraMove => m_Wrapper.m_InGame_CameraMove;
+            public InputAction @BlockPlaceF => m_Wrapper.m_InGame_BlockPlaceF;
+            public InputAction @BlockPlaceR => m_Wrapper.m_InGame_BlockPlaceR;
+            public InputAction @BlockPlaceB => m_Wrapper.m_InGame_BlockPlaceB;
+            public InputAction @BlockPlaceL => m_Wrapper.m_InGame_BlockPlaceL;
             public InputActionMap Get() { return m_Wrapper.m_InGame; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -326,6 +418,18 @@ namespace QBuild
                 @CameraMove.started += instance.OnCameraMove;
                 @CameraMove.performed += instance.OnCameraMove;
                 @CameraMove.canceled += instance.OnCameraMove;
+                @BlockPlaceF.started += instance.OnBlockPlaceF;
+                @BlockPlaceF.performed += instance.OnBlockPlaceF;
+                @BlockPlaceF.canceled += instance.OnBlockPlaceF;
+                @BlockPlaceR.started += instance.OnBlockPlaceR;
+                @BlockPlaceR.performed += instance.OnBlockPlaceR;
+                @BlockPlaceR.canceled += instance.OnBlockPlaceR;
+                @BlockPlaceB.started += instance.OnBlockPlaceB;
+                @BlockPlaceB.performed += instance.OnBlockPlaceB;
+                @BlockPlaceB.canceled += instance.OnBlockPlaceB;
+                @BlockPlaceL.started += instance.OnBlockPlaceL;
+                @BlockPlaceL.performed += instance.OnBlockPlaceL;
+                @BlockPlaceL.canceled += instance.OnBlockPlaceL;
             }
 
             private void UnregisterCallbacks(IInGameActions instance)
@@ -342,6 +446,18 @@ namespace QBuild
                 @CameraMove.started -= instance.OnCameraMove;
                 @CameraMove.performed -= instance.OnCameraMove;
                 @CameraMove.canceled -= instance.OnCameraMove;
+                @BlockPlaceF.started -= instance.OnBlockPlaceF;
+                @BlockPlaceF.performed -= instance.OnBlockPlaceF;
+                @BlockPlaceF.canceled -= instance.OnBlockPlaceF;
+                @BlockPlaceR.started -= instance.OnBlockPlaceR;
+                @BlockPlaceR.performed -= instance.OnBlockPlaceR;
+                @BlockPlaceR.canceled -= instance.OnBlockPlaceR;
+                @BlockPlaceB.started -= instance.OnBlockPlaceB;
+                @BlockPlaceB.performed -= instance.OnBlockPlaceB;
+                @BlockPlaceB.canceled -= instance.OnBlockPlaceB;
+                @BlockPlaceL.started -= instance.OnBlockPlaceL;
+                @BlockPlaceL.performed -= instance.OnBlockPlaceL;
+                @BlockPlaceL.canceled -= instance.OnBlockPlaceL;
             }
 
             public void RemoveCallbacks(IInGameActions instance)
@@ -365,6 +481,10 @@ namespace QBuild
             void OnBlockDone(InputAction.CallbackContext context);
             void OnPlayerMove(InputAction.CallbackContext context);
             void OnCameraMove(InputAction.CallbackContext context);
+            void OnBlockPlaceF(InputAction.CallbackContext context);
+            void OnBlockPlaceR(InputAction.CallbackContext context);
+            void OnBlockPlaceB(InputAction.CallbackContext context);
+            void OnBlockPlaceL(InputAction.CallbackContext context);
         }
     }
 }

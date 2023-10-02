@@ -12,7 +12,10 @@ namespace QBuild.Part
         [Inject]
         void Inject(@InputSystem inputSystem)
         {
-            inputSystem.InGame.BlockDone.performed += _ => ForwardPlacePart();
+            inputSystem.InGame.BlockPlaceF.performed += _ => ForwardPlacePart();
+            inputSystem.InGame.BlockPlaceR.performed += _ => RightPlacePart();
+            inputSystem.InGame.BlockPlaceB.performed += _ => BackPlacePart();
+            inputSystem.InGame.BlockPlaceL.performed += _ => LeftPlacePart();
         }
 
         private void Start()
@@ -21,9 +24,16 @@ namespace QBuild.Part
             _nextPartScriptableObject = _nextPartHolder.NextPart();
 
             _partPlaceAreaN = Instantiate(_partPlaceAreaPrefab);
+            _partPlaceAreaN.name += ":N";
+
             _partPlaceAreaE = Instantiate(_partPlaceAreaPrefab);
+            _partPlaceAreaE.name += ":E";
+
             _partPlaceAreaW = Instantiate(_partPlaceAreaPrefab);
+            _partPlaceAreaW.name += ":W";
+
             _partPlaceAreaS = Instantiate(_partPlaceAreaPrefab);
+            _partPlaceAreaS.name += ":S";
         }
 
         private void Update()
@@ -33,14 +43,38 @@ namespace QBuild.Part
 
         private void ForwardPlacePart()
         {
+            Debug.Log(Vector3.Scale(UnityEngine.Camera.main.transform.forward, new Vector3(1, 0, 1)));
+            DirPlacePart(Vector3.Scale(UnityEngine.Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized);
+        }
+
+        private void RightPlacePart()
+        {
+            DirPlacePart(UnityEngine.Camera.main.transform.right);
+        }
+
+        private void BackPlacePart()
+        {
+            DirPlacePart(UnityEngine.Camera.main.transform.forward * -1);
+        }
+
+        private void LeftPlacePart()
+        {
+            DirPlacePart(UnityEngine.Camera.main.transform.right * -1);
+        }
+
+        private void DirPlacePart(Vector3 dir)
+        {
+            var onThePartPosition = CurrentOnThePart.transform.position;
+            var connectPoint = PlacePartService.FindClosestPointByAngleXZ(transform.position, dir,
+                CurrentOnThePart.OnGetConnectPoints().Select(x => x + onThePartPosition));
+            Place(connectPoint);
+        }
+
+        private void Place(Vector3 connectPoint)
+        {
             // 次の設置するパーツを取得
             var partScriptableObject = _nextPartScriptableObject;
             _nextPartScriptableObject = _nextPartHolder.NextPart();
-
-
-            var onThePartPosition = CurrentOnThePart.transform.position;
-            var connectPoint = PlacePartService.FindClosestPointByAngleXZ(transform.position, transform.forward,
-                CurrentOnThePart.OnGetConnectPoints().Select(x => x + onThePartPosition));
 
             if (PlacePartService.TryPlacePartPosition(partScriptableObject, connectPoint, out var outPartPosition))
             {
@@ -66,19 +100,19 @@ namespace QBuild.Part
         private void OnThePartChanged()
         {
             var onThePartPosition = _currentOnThePart.transform.position;
-            var connectPoint = PlacePartService.FindClosestPointByAngleXZ(transform.position, new Vector3(0,0,1),
+            var connectPoint = PlacePartService.FindClosestPointByAngleXZ(transform.position, new Vector3(0, 0, 1),
                 CurrentOnThePart.OnGetConnectPoints().Select(x => x + onThePartPosition));
             _partPlaceAreaN.SetPart(_nextPartScriptableObject, connectPoint);
-            
-            connectPoint = PlacePartService.FindClosestPointByAngleXZ(transform.position, new Vector3(1,0,0),
+
+            connectPoint = PlacePartService.FindClosestPointByAngleXZ(transform.position, new Vector3(1, 0, 0),
                 CurrentOnThePart.OnGetConnectPoints().Select(x => x + onThePartPosition));
             _partPlaceAreaE.SetPart(_nextPartScriptableObject, connectPoint);
 
-            connectPoint = PlacePartService.FindClosestPointByAngleXZ(transform.position, new Vector3(0,0,-1),
+            connectPoint = PlacePartService.FindClosestPointByAngleXZ(transform.position, new Vector3(0, 0, -1),
                 CurrentOnThePart.OnGetConnectPoints().Select(x => x + onThePartPosition));
             _partPlaceAreaW.SetPart(_nextPartScriptableObject, connectPoint);
 
-            connectPoint = PlacePartService.FindClosestPointByAngleXZ(transform.position, new Vector3(-1,0,0),
+            connectPoint = PlacePartService.FindClosestPointByAngleXZ(transform.position, new Vector3(-1, 0, 0),
                 CurrentOnThePart.OnGetConnectPoints().Select(x => x + onThePartPosition));
             _partPlaceAreaS.SetPart(_nextPartScriptableObject, connectPoint);
         }

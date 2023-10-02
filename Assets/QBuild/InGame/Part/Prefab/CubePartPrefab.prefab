@@ -164,7 +164,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _connectPoints:
-  - {x: 0.5, y: 1, z: 0}
-  - {x: 0.5, y: 1, z: 1}
-  - {x: 1, y: 1, z: 0.5}
-  - {x: 0, y: 1, z: 0.5}
+  - _position: {x: 0.5, y: 1, z: 0}
+  - _position: {x: 0, y: 1, z: 0.5}
+  - _position: {x: 1, y: 1, z: 0.5}
+  - _position: {x: 0.5, y: 1, z: 1}

@@ -111,10 +111,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _connectPoints:
-  - {x: 1.5, y: 0.09928875, z: 0}
-  - {x: 0, y: 0.09928875, z: 1.5}
-  - {x: 0, y: 0.09928875, z: -1.5}
-  - {x: -1.5, y: 0.09928875, z: 0}
+  - _position: {x: 1.5, y: 0.0993, z: 0}
+  - _position: {x: 0, y: 0.0993, z: 1.5}
+  - _position: {x: 0, y: 0.0993, z: -1.5}
+  - _position: {x: -1.5, y: 0.0993, z: 0}
 --- !u!1 &5536483855400818933
 GameObject:
   m_ObjectHideFlags: 0
