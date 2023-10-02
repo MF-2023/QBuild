@@ -84,9 +84,7 @@ namespace QBuild.Part
 
         private void OnThePartChanged()
         {
-            var onThePartPosition = _currentOnThePart.transform.position;
-
-            _multiplePartArea.UpdatePart(onThePartPosition, _currentOnThePart, _nextPartScriptableObject);
+            _multiplePartArea.UpdatePart(transform.position, _currentOnThePart, _nextPartScriptableObject);
         }
 
         [SerializeField] private PartListScriptableObject _partListScriptableObject;

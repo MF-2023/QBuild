@@ -21,7 +21,7 @@ namespace QBuild.Behavior
                     transform.position, new Vector3(1, 0, 0));
             cameraDirectionOnGround.Normalize();
 
-            var targetRotation = Quaternion.LookRotation(cameraDirectionOnGround) * Quaternion.Euler(90f, 0f, 0f);
+            var targetRotation = Quaternion.LookRotation(-cameraDirectionOnGround) * Quaternion.Euler(90f, 0f, 0f);
             transform.rotation = targetRotation;
         }
 

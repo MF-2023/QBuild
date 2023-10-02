@@ -23,15 +23,17 @@ namespace QBuild.Part
             if (PlacePartService.TryPlacePartPosition(part, connectPosition, out var outPartPosition))
             {
                 transform.position = outPartPosition;
+                _keyIconSpriteRenderer.gameObject.SetActive(true);
             }
             else
             {
                 _state = PartPlaceAreaState.NotEnoughSpace;
                 _meshFilter.sharedMesh = null;
+                _keyIconSpriteRenderer.gameObject.SetActive(false);
             }
         }
 
-        private void SetKeyIcon(DirectionFRBL dir)
+        public void SetKeyIcon(DirectionFRBL dir)
         {
             _keyIconSpriteRenderer.sprite = _icons.GetIcon(dir);
         }
