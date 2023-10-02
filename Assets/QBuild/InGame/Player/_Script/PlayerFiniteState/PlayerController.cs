@@ -10,7 +10,8 @@ namespace QBuild.Player.Controller
         #region Variables        
         [SerializeField] private PlayerData         _playerData;
         [SerializeField] private PlayerInputHandler _inputHandler;
-        [SerializeField] private Transform          _GroundCheckPosition;
+        [SerializeField] private Transform          _GroundCheckStartPosition;
+        [SerializeField] private Transform          _GroundCheckEndPosition;
         [SerializeField] private float              _GroundCheckRadius = 0.5f;
         [SerializeField] private LayerMask          _GroundLayer;
 
@@ -61,8 +62,12 @@ namespace QBuild.Player.Controller
                                               (int)(transform.position.z + collectZ));
             Gizmos.DrawLine(transform.position, check);
 
+            Color setColor = Color.green;
+            setColor.a = 0.5f;
+            Gizmos.color = setColor;
             //’n–Ê”»’è‚Ì•`‰æ
-            Gizmos.DrawSphere(_GroundCheckPosition.position, _GroundCheckRadius);
+            Gizmos.DrawSphere(_GroundCheckStartPosition.position, _GroundCheckRadius);
+            Gizmos.DrawSphere(_GroundCheckEndPosition.position, _GroundCheckRadius);
         }
         #endregion
 
@@ -94,8 +99,8 @@ namespace QBuild.Player.Controller
             Vector3Int check = new Vector3Int((int)(pos.x + 0.5f), currentPosition.y - 1, (int)(pos.z + 0.5f));
             if (OnCheckBlock != null ? OnCheckBlock(check) : false) return true;
             return false;
-            */
-            return Physics.CheckSphere(_GroundCheckPosition.position, _GroundCheckRadius, _GroundLayer);
+            */            
+            return Physics.CheckCapsule(_GroundCheckStartPosition.position, _GroundCheckEndPosition.position, _GroundCheckRadius, _GroundLayer);
         }
 
         private bool CheckCanClimbBlock(ref Vector3 retPos)

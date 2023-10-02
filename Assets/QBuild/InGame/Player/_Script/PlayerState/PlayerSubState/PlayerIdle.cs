@@ -27,11 +27,13 @@ namespace QBuild.Player.State
             //player.Movement?.SetVelocityZero();
             Vector3 set = new Vector3(0, player.Movement.GetNowVelocity().y, 0);
             player.Movement.SetVelocity(set);
+            player.Movement.SetLockVelocity(true);
         }
 
         public override void Exit()
         {
             base.Exit();
+            player.Movement.SetLockVelocity(false);
         }
 
         public override void LogicUpdate()
