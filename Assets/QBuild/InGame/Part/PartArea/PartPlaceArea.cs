@@ -35,6 +35,12 @@ namespace QBuild.Part
             }
         }
 
+        public void Hide()
+        {
+            _meshFilter.sharedMesh = null;
+            _keyIconSpriteRenderer.gameObject.SetActive(false);
+        }
+
         public void SetKeyIcon(DirectionFRBL dir)
         {
             _keyIconSpriteRenderer.sprite = _icons.GetIcon(dir);

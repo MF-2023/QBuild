@@ -213,6 +213,7 @@ GameObject:
   - component: {fileID: 1591012237064922931}
   - component: {fileID: 433836682527640447}
   - component: {fileID: 8307311972818797159}
+  - component: {fileID: 2465973120959939970}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -237,7 +238,7 @@ Transform:
   - {fileID: 6380585137688521619}
   - {fileID: 2384158828286826104}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &2735871239395897968
 Rigidbody:
@@ -369,9 +370,22 @@ MonoBehaviour:
   _partListScriptableObject: {fileID: 11400000, guid: 5096b154eb7eb744084d8faec58508ed,
     type: 2}
   _nextPartScriptableObject: {fileID: 0}
+  _currentOnThePart: {fileID: 0}
+  _multiplePartArea: {fileID: 2465973120959939970}
+--- !u!114 &2465973120959939970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8486108683713987989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e1434807d524a7ea3e03ebe192bfafc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   _partPlaceAreaPrefab: {fileID: -1250023624360540874, guid: 9399c999cc0cfce47a73b1b0425234b3,
     type: 3}
-  _currentOnThePart: {fileID: 0}
 --- !u!1001 &3703938257643180662
 PrefabInstance:
   m_ObjectHideFlags: 0

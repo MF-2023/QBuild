@@ -9,6 +9,10 @@ namespace QBuild.Part
     {
         public PartView PartPrefab => _partPrefab;
         
+        public void SetPartPrefab(PartView partPrefab)
+        {
+            _partPrefab = partPrefab;
+        }
         [SerializeField] private PartView _partPrefab;
     }
 }

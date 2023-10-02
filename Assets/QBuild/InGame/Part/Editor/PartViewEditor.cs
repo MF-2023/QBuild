@@ -1,4 +1,6 @@
-﻿using UnityEditor;
+﻿using System.IO;
+using UnityEditor;
+using UnityEngine;
 
 namespace QBuild.Part.Editor
 {
@@ -7,12 +9,22 @@ namespace QBuild.Part.Editor
     {
         private void OnEnable()
         {
-            PartView myComponent = (PartView)target;
-            if (myComponent == null)
+            var partView = (PartView)target;
+            if (partView == null)
             {
-
-                EditorUtility.SetDirty(myComponent);
+                EditorUtility.SetDirty(partView);
             }
+        }
+        [MenuItem("CONTEXT/PartView/CreateScriptableObject")]
+        static void CreateScriptableObject(MenuCommand command)
+        {
+            var obj = CreateInstance<BlockPartScriptableObject>();
+            obj.SetPartPrefab(command.context as PartView);
+            var fileName = $"{command.context.name}.asset";
+            var path = "Assets/QBuild/InGame/Part/PartScriptableObject";
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+            AssetDatabase.CreateAsset(obj, Path.Combine(path, fileName));
         }
     }
 }

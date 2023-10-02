@@ -11,6 +11,14 @@ namespace QBuild.Part
         public void UpdatePart(Vector3 referencePosition, PartView onThePart,
             BlockPartScriptableObject partScriptableObject)
         {
+            if (onThePart == null)
+            {
+                _partPlaceAreaN.Hide();
+                _partPlaceAreaE.Hide();
+                _partPlaceAreaW.Hide();
+                _partPlaceAreaS.Hide();
+                return;
+            }
             _referencePosition = referencePosition;
             var onThePartPosition = onThePart.transform.position;
 
