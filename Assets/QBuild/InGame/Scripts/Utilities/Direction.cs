@@ -52,7 +52,7 @@ namespace QBuild.Utilities
     {
         public static DirectionFRBL VectorToDirectionFRBL(Vector3 vector)
         {
-            var angle = Vector3.SignedAngle(Vector3.forward, vector, Vector3.up);
+            var angle = Vector3.SignedAngle(vector,Vector3.forward, Vector3.up);
             if (angle < 0)
             {
                 angle += 360;

@@ -18,7 +18,7 @@ namespace QBuild.Behavior
             var cameraDirectionOnGround =
                 Vector3.Scale(
                     new Vector3(_cameraTransform.position.x, transform.position.y, _cameraTransform.position.z) -
-                    transform.position, new Vector3(1, 0, 0));
+                    transform.position, new Vector3(1, 0, 1));
             cameraDirectionOnGround.Normalize();
 
             var targetRotation = Quaternion.LookRotation(-cameraDirectionOnGround) * Quaternion.Euler(90f, 0f, 0f);

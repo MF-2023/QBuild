@@ -11,18 +11,19 @@ namespace QBuild.Part
         {
             _partList = partListScriptableObject;
         }
-        
+
         public IEnumerable<BlockPartScriptableObject> GetParts()
         {
             return _holdParts;
         }
-        
+
         public BlockPartScriptableObject NextPart()
         {
             if (_holdParts.Count == 0)
             {
-                _holdParts = new Queue<BlockPartScriptableObject>(_partList.GetParts());
+                _holdParts.Enqueue(_partList.GetRandomPart());
             }
+
             _holdParts.TryDequeue(out var part);
             return part;
         }

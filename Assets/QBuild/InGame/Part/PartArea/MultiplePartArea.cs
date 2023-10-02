@@ -65,10 +65,11 @@ namespace QBuild.Part
         {
             var dir = DirectionFRBLExtension.VectorToDirectionFRBL(Forward);
             if (dir == DirectionFRBL.None) return;
-            _partPlaceAreaN.SetKeyIcon(dir.TurnRight().TurnRight());
-            _partPlaceAreaE.SetKeyIcon(dir.TurnLeft());
-            _partPlaceAreaW.SetKeyIcon(dir);
-            _partPlaceAreaS.SetKeyIcon(dir.TurnRight());
+            Debug.Log(dir);
+            _partPlaceAreaN.SetKeyIcon(dir);
+            _partPlaceAreaE.SetKeyIcon(dir.TurnRight());
+            _partPlaceAreaW.SetKeyIcon(dir.TurnRight().TurnRight());
+            _partPlaceAreaS.SetKeyIcon(dir.TurnLeft());
         }
 
         [SerializeField] private PartPlaceArea _partPlaceAreaPrefab;

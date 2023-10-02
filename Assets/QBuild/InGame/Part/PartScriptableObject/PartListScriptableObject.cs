@@ -17,5 +17,10 @@ namespace QBuild.Part
         {
             return _parts;
         }
+        
+        public BlockPartScriptableObject GetRandomPart()
+        {
+            return _parts[Random.Range(0, _parts.Count)];
+        }
     }
 }
