@@ -1,14 +1,19 @@
 using System;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityEditor.PlayerSettings;
 
 namespace QBuild.Player.Controller
 {
     public class PlayerController : MonoBehaviour
     {
         #region Variables        
-        [SerializeField] private PlayerData playerData;
+        [SerializeField] private PlayerData         _playerData;
         [SerializeField] private PlayerInputHandler _inputHandler;
+        [SerializeField] private Transform          _GroundCheckStartPosition;
+        [SerializeField] private Transform          _GroundCheckEndPosition;
+        [SerializeField] private float              _GroundCheckRadius = 0.5f;
+        [SerializeField] private LayerMask          _GroundLayer;
 
         private PlayerStateController _StateController;
         private PlayerAnimationController _AnimationController;
@@ -25,7 +30,7 @@ namespace QBuild.Player.Controller
         {
             Core = GetComponentInChildren<Core.Core>();
             _AnimationController = new PlayerAnimationController(GetComponent<Animator>());
-            _StateController = new PlayerStateController(Core, _inputHandler, playerData);
+            _StateController = new PlayerStateController(Core, _inputHandler, _playerData);
             _StateController.OnChangeAnimation += _AnimationController.ChangeAnimation;
             _StateController.OnGetPlayerPos += () => transform.position;
             _StateController.OnSetPosition += (Vector3 pos) => transform.position = pos;
@@ -56,25 +61,23 @@ namespace QBuild.Player.Controller
                                               (int)transform.position.y + 1,
                                               (int)(transform.position.z + collectZ));
             Gizmos.DrawLine(transform.position, check);
+
+            Color setColor = Color.green;
+            setColor.a = 0.5f;
+            Gizmos.color = setColor;
+            //地面判定の描画
+            Gizmos.DrawSphere(_GroundCheckStartPosition.position, _GroundCheckRadius);
+            Gizmos.DrawSphere(_GroundCheckEndPosition.position, _GroundCheckRadius);
         }
         #endregion
 
         private Vector3Int GetPlayerGridPosition()
         {
-            //切り捨て
-            //Vector3Int ret = new Vector3Int((int)transform.position.x, (int)transform.position.y, (int)transform.position.z);
-
-            //切り上げのほうがよさげ？
-            Vector3Int ret = new Vector3Int(Mathf.CeilToInt(transform.position.x),
-                                            Mathf.CeilToInt(transform.position.y),
-                                            Mathf.CeilToInt(transform.position.z));
-
+            Vector3 pos = transform.position;
+            Vector3Int ret = new Vector3Int((int)(pos.x + 0.5f), Mathf.CeilToInt(transform.position.y), (int)(pos.z + 0.5f));
             return ret;
         }
 
-        public void AnimationTrigger() => _StateController.AnimationTrigger();
-
-        public void AnimationFinishedTrigger() => _StateController.AnimationFinishedTrigger();
 
         private void CheckGridPosition()
         {
@@ -90,27 +93,14 @@ namespace QBuild.Player.Controller
 
         private bool CheckGround()
         {
-            //TODO::プレイヤーの座標のx,zを切り捨て、切り上げでで計4つブロックがあるかの確認
             //ブロックが存在する場合trueを返す
-            Vector3Int check;
-            Vector3 pos = transform.position;
             /*
-            //x切り捨て、z切り捨て
-            check = new Vector3Int((int)pos.x, currentPosition.y - 1, (int)pos.z);
-            if (OnCheckBlock != null ? OnCheckBlock(check) : false) return true;
-            //x切り捨て、z切り上げ
-            check = new Vector3Int((int)pos.x, currentPosition.y - 1, Mathf.CeilToInt(pos.z));
-            if (OnCheckBlock != null ? OnCheckBlock(check) : false) return true;
-            //x切り上げ、z切り捨て
-            check = new Vector3Int(Mathf.CeilToInt(pos.x), currentPosition.y - 1, (int)pos.z);
-            if (OnCheckBlock != null ? OnCheckBlock(check) : false) return true;
-            //x切り上げ、z切り上げ
-            check = new Vector3Int(Mathf.CeilToInt(pos.x), currentPosition.y - 1, Mathf.CeilToInt(pos.z));
-            if (OnCheckBlock != null ? OnCheckBlock(check) : false) return true;
-            */
-            check = new Vector3Int((int)(pos.x + 0.5f), currentPosition.y - 1, (int)(pos.z + 0.5f));
+            Vector3 pos = transform.position;
+            Vector3Int check = new Vector3Int((int)(pos.x + 0.5f), currentPosition.y - 1, (int)(pos.z + 0.5f));
             if (OnCheckBlock != null ? OnCheckBlock(check) : false) return true;
             return false;
+            */            
+            return Physics.CheckCapsule(_GroundCheckStartPosition.position, _GroundCheckEndPosition.position, _GroundCheckRadius, _GroundLayer);
         }
 
         private bool CheckCanClimbBlock(ref Vector3 retPos)
@@ -123,25 +113,28 @@ namespace QBuild.Player.Controller
             Vector3Int check = new Vector3Int((int)(transform.position.x + collectX),
                                               (int)transform.position.y + 1,
                                               (int)(transform.position.z + collectZ));
+            Vector3Int savePos = check;
             if (OnCheckBlock != null ? OnCheckBlock(check) : false)
             {
-                //その上にブロックは存在するか？
-                check.y += 1;
-                if(!(OnCheckBlock != null ? OnCheckBlock(check) : false))
+                //プレイヤーの高さ分ブロックの確認をする
+                bool checkHeight = false;
+                for(int i = 1;i <= _playerData.playerHeight;i++)
                 {
                     check.y += 1;
-                    if (!(OnCheckBlock != null ? OnCheckBlock(check) : false))
+                    if((OnCheckBlock != null ? OnCheckBlock(check) : false))
                     {
-                        //存在しない場合Trueを返す
-                        ret = true;
-                        check.y -= 2;
-                        retPos = check;
-                        //ブロックの半径分プラスしておく
-                        retPos.y += 0.5f;
+                        checkHeight = true;
                     }
                 }
+
+                //ブロックが存在（登れない場合）
+                if (checkHeight) return false;
+
+                retPos = savePos;
+                retPos.y += 0.5f;
+                return true;
             }
-            return ret;
+            return false;
         }
 
         private void GetFrontBlockPos(ref float collectX, ref float collectZ)
@@ -154,35 +147,43 @@ namespace QBuild.Player.Controller
             //正面を向いている場合
             if (rot >= -45.0f && rot <= 45.0f)
             {
-                if (transform.position.x >= 0) collectX = playerData.checkBlockCollectX;
-                else collectX = playerData.checkBlockCollectX * -1.0f;
-                if (transform.position.z >= 0) collectZ = playerData.checkBlockCollectZ;
-                else collectZ = playerData.checkBlockCollectZ - 1.0f;
+                if (transform.position.x >= 0) collectX = _playerData.checkBlockCollectX;
+                else collectX = _playerData.checkBlockCollectX * -1.0f;
+                if (transform.position.z >= 0) collectZ = _playerData.checkBlockCollectZ;
+                else collectZ = _playerData.checkBlockCollectZ - 1.0f;
             }
             //右を向いている場合
             else if(rot >= 45.0f && rot <= 135.0f)
             {
-                if (transform.position.x >= 0) collectX = playerData.checkBlockCollectZ;
-                else collectX = playerData.checkBlockCollectZ - 1.0f;
-                if (transform.position.z >= 0) collectZ = playerData.checkBlockCollectX;
-                else collectZ = playerData.checkBlockCollectX * 1.0f;
+                if (transform.position.x >= 0) collectX = _playerData.checkBlockCollectZ;
+                else collectX = _playerData.checkBlockCollectZ - 1.0f;
+                if (transform.position.z >= 0) collectZ = _playerData.checkBlockCollectX;
+                else collectZ = _playerData.checkBlockCollectX * 1.0f;
             }
             //左を向いている場合
             else if(rot <= -45.0f && rot >= -135.0f)
             {
-                if (transform.position.x >= 0) collectX = (1.0f - playerData.checkBlockCollectZ);
-                else collectX = playerData.checkBlockCollectZ * -1.0f;
-                if (transform.position.z >= 0) collectZ = playerData.checkBlockCollectX;
-                else collectZ = playerData.checkBlockCollectX * 1.0f;
+                if (transform.position.x >= 0) collectX = (1.0f - _playerData.checkBlockCollectZ);
+                else collectX = _playerData.checkBlockCollectZ * -1.0f;
+                if (transform.position.z >= 0) collectZ = _playerData.checkBlockCollectX;
+                else collectZ = _playerData.checkBlockCollectX * 1.0f;
             }
             //後ろを向いている場合
             else
             {
-                if (transform.position.x >= 0) collectX = playerData.checkBlockCollectX;
-                else collectX = playerData.checkBlockCollectX * -1.0f;
-                if (transform.position.z >= 0) collectZ = (1.0f - playerData.checkBlockCollectZ);
-                else collectZ = playerData.checkBlockCollectZ * -1.0f;
+                if (transform.position.x >= 0) collectX = _playerData.checkBlockCollectX;
+                else collectX = _playerData.checkBlockCollectX * -1.0f;
+                if (transform.position.z >= 0) collectZ = (1.0f - _playerData.checkBlockCollectZ);
+                else collectZ = _playerData.checkBlockCollectZ * -1.0f;
             }
+        }
+        public void AnimationTrigger() => _StateController.AnimationTrigger();
+
+        public void AnimationFinishedTrigger() => _StateController.AnimationFinishedTrigger();
+
+        public void SetIcon(Sprite icon) 
+        {
+
         }
     }
 }

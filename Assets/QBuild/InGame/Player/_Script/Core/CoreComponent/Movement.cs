@@ -7,78 +7,91 @@ namespace QBuild.Player.Core
     public class Movement : CoreComponent
     {
         public Vector3 currentVelocity { get; private set; }
-
-        private Vector3 workspace;
         public bool canSetVelocity;
-        private Rigidbody myRB;
+
+        private Vector3         _workspace;
+        private Rigidbody       _myRB;
 
         protected override void Awake()
         {
             base.Awake();
-            myRB = GetComponentInParent<Rigidbody>();
-            if (myRB == null) UnityEngine.Debug.LogError(transform.root.name + "Ç…RigidBodyÇ™ë∂ç›ÇµÇ‹ÇπÇÒÅB");
-            workspace = Vector3.zero;
+            _myRB = GetComponentInParent<Rigidbody>();
+            if (_myRB == null) UnityEngine.Debug.LogError(transform.root.name + "Ç…RigidBodyÇ™ë∂ç›ÇµÇ‹ÇπÇÒÅB");
+            _workspace = Vector3.zero;
             canSetVelocity = true;
         }
 
         public override void LogicUpdate()
         {
-            currentVelocity = myRB.velocity;
+            currentVelocity = _myRB.velocity;
         }
 
         #region SetFunction
         public void SetVelocityZero()
         {
-            workspace = Vector3.zero;
+            _workspace = Vector3.zero;
             SetFinalVelocity();
         }
 
         public void SetVelocity(Vector3 velocity, float speed)
         {
-            workspace = velocity.normalized * speed;
-            //workspace = new Vector3(velocity.x, 0, velocity.z).normalized * speed;
+            _workspace = velocity.normalized * speed;
+            //_workspace = new Vector3(velocity.x, 0, velocity.z).normalized * speed;
             SetFinalVelocity();
         }
 
         public void SetVelocity(Vector3 velocity)
         {
-            workspace = velocity;
+            _workspace = velocity;
             SetFinalVelocity();
         }
 
         public void SetVelocityXZ(Vector3 velocity, float speed)
         {
-            workspace = velocity.normalized * speed;
-            workspace.y = myRB.velocity.y;
+            _workspace = velocity.normalized * speed;
+            _workspace.y = _myRB.velocity.y;
             SetFinalVelocity();
         }
 
         public void AddForce(Vector3 force, ForceMode mode)
         {
-            workspace = force;
+            _workspace = force;
             AddForceFinalVelocity(mode);
         }
 
         public Vector3 GetNowVelocity()
         {
-            return myRB.velocity;
+            return _myRB.velocity;
         }
 
         private void SetFinalVelocity()
         {
             if (!canSetVelocity) return;
-            myRB.velocity = workspace;
-            currentVelocity = workspace;
+            _myRB.velocity = _workspace;
+            currentVelocity = _workspace;
         }
 
         private void AddForceFinalVelocity(ForceMode mode)
         {
             if (!canSetVelocity) return;
-            myRB.AddForce(workspace, mode);
-            currentVelocity = myRB.velocity;
+            _myRB.AddForce(_workspace, mode);
+            currentVelocity = _myRB.velocity;
         }
 
         public void SetCanVelocity(bool can) => canSetVelocity = can;
+
+        public void SetLockVelocity(bool isLock)
+        {
+            if(isLock)
+            {
+                _myRB.constraints = RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotation;
+            }
+            else
+            {
+                _myRB.constraints = RigidbodyConstraints.FreezeRotation;
+            }
+
+        }
         #endregion
     }
 }
