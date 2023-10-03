@@ -33,7 +33,7 @@ namespace QBuild.Part
             var index = 0;
             foreach (var part in parts)
             {
-                if (index > 0) _partHolderView.SetPartIcon(index - 1, part.PartIcon);
+                _partHolderView.SetPartIcon(index, part.PartIcon);
                 index++;
             }
         }

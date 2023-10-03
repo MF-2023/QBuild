@@ -8,7 +8,7 @@ namespace QBuild.Part
     public class PartPlacer : MonoBehaviour
     {
         [Inject]
-        void Inject(@InputSystem inputSystem,NextPartHolder nextPartHolder)
+        void Inject(@InputSystem inputSystem, NextPartHolder nextPartHolder)
         {
             inputSystem.InGame.BlockPlaceF.performed += _ => ForwardPlacePart();
             inputSystem.InGame.BlockPlaceR.performed += _ => RightPlacePart();
@@ -49,6 +49,7 @@ namespace QBuild.Part
 
         private void DirPlacePart(Vector3 dir)
         {
+            if (CurrentOnThePart == null) return;
             var onThePartPosition = CurrentOnThePart.transform.position;
             var connectPoint = PlacePartService.FindClosestPointByAngleXZ(transform.position, dir,
                 CurrentOnThePart.OnGetConnectPoints().Select(x => x + onThePartPosition));
@@ -93,6 +94,7 @@ namespace QBuild.Part
 
         [SerializeField] private PartView _currentOnThePart;
         [SerializeField] private MultiplePartArea _multiplePartArea;
+
         private PartView CurrentOnThePart
         {
             get => _currentOnThePart;
