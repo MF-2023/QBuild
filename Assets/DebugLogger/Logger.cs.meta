@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: 2b9fd5c1159f66240957978549a52011
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - logViewer: {fileID: 8594907463060014658, guid: ba65480bbbcf5074ab874bcc0af291f9,
+      type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
