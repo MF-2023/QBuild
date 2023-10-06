@@ -1,44 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using QBuild.Part.HolderView;
-using UnityEngine;
 using VContainer;
-using VContainer.Unity;
 
-namespace QBuild.Part
+namespace QBuild.Part.Presenter
 {
-    public class HolderPresenter : IInitializable
+    public class HolderPresenter
     {
         [Inject]
-        public HolderPresenter(NextPartHolder playerController, PartHolderView partHolderView)
+        public HolderPresenter(PartHolderView partHolderView)
         {
-            _nextPartHolder = playerController;
             _partHolderView = partHolderView;
         }
 
+
         public void Initialize()
         {
-            Bind();
         }
 
-        private void Bind()
+        public void Bind(PartPlacer partPlacer)
         {
-            _nextPartHolder.OnChangeParts += OnChangeParts;
-        }
+            _nextPartHolder.AddRange(partPlacer.NextPartHolders);
 
-
-        private void OnChangeParts(IEnumerable<BlockPartScriptableObject> parts)
-        {
-            Debug.Log("OnChangeParts");
-            var index = 0;
-            foreach (var part in parts)
+            for (var i = 0; i < _nextPartHolder.Count; i++)
             {
-                _partHolderView.SetPartIcon(index, part.PartIcon);
-                index++;
+                _nextPartHolder[i].OnChangeParts += OnChangeParts(i);
+                OnChangeParts(i, _nextPartHolder[i].GetParts());
             }
+
+            partPlacer.OnSelectChangedEvent += OnSelectChanged;
+            _partHolderView.SetScaleUp(partPlacer.CurrentSelectHolderIndex);
         }
 
-        private NextPartHolder _nextPartHolder;
+        private Action<IEnumerable<BlockPartScriptableObject>> OnChangeParts(int holdersIndex)
+        {
+            return (blocks) => OnChangeParts(holdersIndex, blocks);
+        }
+
+        private void OnChangeParts(int holdersIndex, IEnumerable<BlockPartScriptableObject> parts)
+        {
+            _partHolderView.SetPartIcon(holdersIndex, _nextPartHolder[holdersIndex].GetParts().First().PartIcon);
+        }
+
+        private void OnSelectChanged(ChangeSelectEvent changeSelectEvent)
+        {
+            _partHolderView.SetScaleUp(changeSelectEvent.Index);
+            _partHolderView.SetScaleDown(changeSelectEvent.PrevIndex);
+        }
+
+        private List<NextPartHolder> _nextPartHolder = new();
         private PartHolderView _partHolderView;
     }
 }

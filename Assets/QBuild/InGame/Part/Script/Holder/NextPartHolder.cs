@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using VContainer;
 
 namespace QBuild.Part
 {
@@ -12,8 +13,6 @@ namespace QBuild.Part
         {
             _partList = partListScriptableObject;
             _holdParts.Enqueue(_partList.GetRandomPart());
-            _holdParts.Enqueue(_partList.GetRandomPart());
-
         }
 
         public event Action<IEnumerable<BlockPartScriptableObject>> OnChangeParts;
@@ -25,11 +24,16 @@ namespace QBuild.Part
 
         public BlockPartScriptableObject NextPart()
         {
-            _holdParts.Enqueue(_partList.GetRandomPart());
-            OnChangeParts?.Invoke(_holdParts);
-
             _holdParts.TryDequeue(out var part);
+            _holdParts.Enqueue(_partList.GetRandomPart());
+
+            OnChangeParts?.Invoke(_holdParts);
             return part;
+        }
+        
+        public BlockPartScriptableObject CurrentPart()
+        {
+            return _holdParts.Peek();
         }
 
         private PartListScriptableObject _partList;

@@ -100,6 +100,15 @@ namespace QBuild
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SelectChange"",
+                    ""type"": ""Button"",
+                    ""id"": ""e844b964-93a1-49e5-b120-3eea3672184e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -300,6 +309,39 @@ namespace QBuild
                     ""action"": ""BlockPlaceL"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""HolderMove"",
+                    ""id"": ""d5894c89-eaae-4306-927d-fd4ec3ff32b7"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectChange"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Negative"",
+                    ""id"": ""750655bc-8aac-44e3-946b-e516f6ae244c"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectChange"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Positive"",
+                    ""id"": ""0af973f6-b633-4e0d-abe2-4caec30b4897"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectChange"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -316,6 +358,7 @@ namespace QBuild
             m_InGame_BlockPlaceR = m_InGame.FindAction("BlockPlaceR", throwIfNotFound: true);
             m_InGame_BlockPlaceB = m_InGame.FindAction("BlockPlaceB", throwIfNotFound: true);
             m_InGame_BlockPlaceL = m_InGame.FindAction("BlockPlaceL", throwIfNotFound: true);
+            m_InGame_SelectChange = m_InGame.FindAction("SelectChange", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -385,6 +428,7 @@ namespace QBuild
         private readonly InputAction m_InGame_BlockPlaceR;
         private readonly InputAction m_InGame_BlockPlaceB;
         private readonly InputAction m_InGame_BlockPlaceL;
+        private readonly InputAction m_InGame_SelectChange;
         public struct InGameActions
         {
             private @InputSystem m_Wrapper;
@@ -397,6 +441,7 @@ namespace QBuild
             public InputAction @BlockPlaceR => m_Wrapper.m_InGame_BlockPlaceR;
             public InputAction @BlockPlaceB => m_Wrapper.m_InGame_BlockPlaceB;
             public InputAction @BlockPlaceL => m_Wrapper.m_InGame_BlockPlaceL;
+            public InputAction @SelectChange => m_Wrapper.m_InGame_SelectChange;
             public InputActionMap Get() { return m_Wrapper.m_InGame; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -430,6 +475,9 @@ namespace QBuild
                 @BlockPlaceL.started += instance.OnBlockPlaceL;
                 @BlockPlaceL.performed += instance.OnBlockPlaceL;
                 @BlockPlaceL.canceled += instance.OnBlockPlaceL;
+                @SelectChange.started += instance.OnSelectChange;
+                @SelectChange.performed += instance.OnSelectChange;
+                @SelectChange.canceled += instance.OnSelectChange;
             }
 
             private void UnregisterCallbacks(IInGameActions instance)
@@ -458,6 +506,9 @@ namespace QBuild
                 @BlockPlaceL.started -= instance.OnBlockPlaceL;
                 @BlockPlaceL.performed -= instance.OnBlockPlaceL;
                 @BlockPlaceL.canceled -= instance.OnBlockPlaceL;
+                @SelectChange.started -= instance.OnSelectChange;
+                @SelectChange.performed -= instance.OnSelectChange;
+                @SelectChange.canceled -= instance.OnSelectChange;
             }
 
             public void RemoveCallbacks(IInGameActions instance)
@@ -485,6 +536,7 @@ namespace QBuild
             void OnBlockPlaceR(InputAction.CallbackContext context);
             void OnBlockPlaceB(InputAction.CallbackContext context);
             void OnBlockPlaceL(InputAction.CallbackContext context);
+            void OnSelectChange(InputAction.CallbackContext context);
         }
     }
 }

@@ -5,6 +5,7 @@ using QBuild.Mino;
 using QBuild.Mino.ProvisionalMino;
 using QBuild.Part;
 using QBuild.Part.HolderView;
+using QBuild.Part.Presenter;
 using QBuild.Player;
 using QBuild.Stage;
 using UnityEngine;
@@ -40,10 +41,9 @@ namespace QBuild.Starter
             builder.RegisterEntryPoint<PlayerPresenter>();
 
             
-            builder.Register<NextPartHolder>(Lifetime.Singleton);
             builder.RegisterInstance(_partHolderView);
             builder.RegisterInstance(_partListScriptableObject);
-            builder.RegisterEntryPoint<HolderPresenter>();
+            builder.Register<HolderPresenter>(Lifetime.Singleton);
         }
         [SerializeField] private PlayerController _playerPrefab;
         [SerializeField] private CurrentStageVariable _currentStageVariable;

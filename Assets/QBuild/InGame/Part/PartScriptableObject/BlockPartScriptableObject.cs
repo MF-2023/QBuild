@@ -5,12 +5,6 @@ using UnityEngine;
 
 namespace QBuild.Part
 {
-    [Serializable]
-    public class PartIcon
-    {
-        public Sprite Sprite => _sprite;
-        [SerializeField] private Sprite _sprite;
-    }
     
     [CreateAssetMenu(fileName = "BlockPart", menuName = EditorConst.ScriptablePrePath + "Part", order = 0)]
     public class BlockPartScriptableObject : ScriptableObject

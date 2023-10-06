@@ -10,6 +10,17 @@ namespace QBuild.Part.HolderView
         {
             _images[index].sprite = partIcon.Sprite;
         }
+
+        public void SetScaleUp(int index)
+        {
+            _images[index].transform.parent.parent.localScale = Vector3.one * 1.2f;
+        }
+        
+        public void SetScaleDown(int index)
+        {
+            _images[index].transform.parent.parent.localScale = Vector3.one;
+        }
+        
         [SerializeField] private List<Image> _images;
     }
 }

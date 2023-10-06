@@ -76,6 +76,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "SelectChange",
+                    "type": "Button",
+                    "id": "e844b964-93a1-49e5-b120-3eea3672184e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -276,6 +285,39 @@
                     "action": "BlockPlaceL",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "HolderMove",
+                    "id": "d5894c89-eaae-4306-927d-fd4ec3ff32b7",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SelectChange",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "Negative",
+                    "id": "750655bc-8aac-44e3-946b-e516f6ae244c",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SelectChange",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Positive",
+                    "id": "0af973f6-b633-4e0d-abe2-4caec30b4897",
+                    "path": "<Keyboard>/g",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SelectChange",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }
