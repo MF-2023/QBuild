@@ -6,7 +6,8 @@
         "Utilities",
         "Unity.InputSystem",
         "VContainer",
-        "QBuild.Const"
+        "QBuild.Const",
+        "SherbetInspector"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
