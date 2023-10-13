@@ -11,7 +11,10 @@ namespace QBuild.Part.Editor
             Gizmos.color = Color.red;
             foreach (var connectPoint in connector.ConnectPoints())
             {
-                Gizmos.DrawSphere(connector.transform.position + connectPoint, 0.025f);
+                var position = connectPoint;
+                var matrix = connector.transform.localToWorldMatrix;
+                var localPosition = matrix.MultiplyPoint(position);
+                Gizmos.DrawSphere(localPosition, 0.025f);
             }
         }
     }

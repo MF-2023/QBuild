@@ -5,41 +5,85 @@ using UnityEngine;
 
 namespace QBuild.Part
 {
+    public struct TryPlaceInfo
+    {
+        public BlockPartScriptableObject partScriptableObject;
+        public Vector3 connectPoint;
+        public Matrix4x4 multipleMatrix;
+
+        public TryPlaceInfo(BlockPartScriptableObject partScriptableObject, Vector3 connectPoint,
+            Matrix4x4 multipleMatrix)
+        {
+            this.partScriptableObject = partScriptableObject;
+            this.connectPoint = connectPoint;
+            this.multipleMatrix = multipleMatrix;
+        }
+    }
+
+
     public static class PlacePartService
     {
-        public static bool TryPlacePartPosition(BlockPartScriptableObject partScriptableObject, Vector3 connectPoint,
-            out Vector3 outPartPosition)
+        public static bool TryPlacePartPosition(TryPlaceInfo info,
+            out Matrix4x4 outPartMatrix)
         {
-            var func = new Func<Vector3, bool>((pos) =>
+            var func = new Func<Matrix4x4, bool>((matrix) =>
             {
-                var colliders = partScriptableObject.PartPrefab.GetComponentsInChildren<BoxCollider>();
+                var colliders = info.partScriptableObject.PartPrefab.GetComponentsInChildren<BoxCollider>();
                 foreach (var boxCollider in colliders)
                 {
-                    if (!Physics.CheckBox(pos + boxCollider.center, (boxCollider.size / 2) * 0.9f,
-                            boxCollider.transform.rotation, LayerMask.GetMask("Block"))) continue;
+                    var pos = matrix.MultiplyPoint(boxCollider.center);
+                    var rot = matrix.rotation * boxCollider.transform.rotation;
+                    if (!Physics.CheckBox(pos, (boxCollider.size / 2) * 0.9f,
+                            rot, LayerMask.GetMask("Block"))) continue;
                     return false;
                 }
 
                 return true;
             });
 
-            return TryPlacePartPosition(partScriptableObject, connectPoint, func, out outPartPosition);
+            return TryPlacePartPosition(info, func, out outPartMatrix);
         }
 
-        public static bool TryPlacePartPosition(BlockPartScriptableObject partScriptableObject, Vector3 connectPoint,
-            Func<Vector3, bool> checkCanPlaceFunc,
-            out Vector3 outPartPosition)
+        public static bool TryPlacePartPosition(TryPlaceInfo info,
+            Func<Matrix4x4, bool> checkCanPlaceFunc,
+            out Matrix4x4 outPartMatrix)
         {
-            outPartPosition = Vector3.zero;
-            var newPartConnectPoint = partScriptableObject.PartPrefab.OnGetConnectPoints().ToArray();
+            outPartMatrix = Matrix4x4.zero;
+            var newPartConnectPoint = info.partScriptableObject.PartPrefab.OnGetConnectPoints().ToArray();
 
             foreach (var point in newPartConnectPoint)
             {
-                var newPartPosition = connectPoint - point;
-                if (!checkCanPlaceFunc(newPartPosition)) continue;
-                outPartPosition = newPartPosition;
-                return true;
+                // 現在の接続点から目的の接続点へのオフセットを計算します。
+                var offset = info.connectPoint - point;
+
+                // 最初の変換を作成してオフセットを適用します。
+                var matrix = Matrix4x4.TRS(offset, Quaternion.identity, Vector3.one);
+
+                // 既存のパーツの回転を適用します。
+                matrix *= Matrix4x4.Rotate(info.multipleMatrix.rotation);
+
+                // この変換で新しいパーツの接続点がどこに移動するかを計算します。
+                var transformedPoint = matrix.MultiplyPoint(point);
+
+                // 目的の接続点から変換後の接続点までのオフセットを計算します。
+                var rotateOffset = -info.connectPoint + transformedPoint;
+
+                Debug.Log($"rotateOffset {rotateOffset}");
+                Debug.Log($"matPoint {matrix.GetPosition()}");
+                // このオフセットを適用して正確な位置に調整します。
+                matrix = Matrix4x4.TRS(matrix.GetPosition() - rotateOffset, matrix.rotation, Vector3.one);
+                Debug.Log($"matPoint {matrix.GetPosition()}");
+
+                // 新しい変換で新しいパーツが配置できるかどうかをチェックします。
+                if (checkCanPlaceFunc(matrix))
+                {
+                    Debug.Log("Place");
+                    outPartMatrix = matrix;
+                    return true;
+                }
             }
+
+            return false;
 
             return false;
         }
@@ -65,10 +109,10 @@ namespace QBuild.Part
 
                 // 最も小さい角度を更新しているか
                 if (!(angleDifference < smallestAngleDifference)) continue;
-                
+
                 // 閾値以上の距離と離れているか (パーツを跨ぐ移動の際に接続点として選ばれないようにする)
-                if(Vector3.Distance(origin, point) < 0.5f) continue;
-                
+                if (Vector3.Distance(origin, point) < 0.5f) continue;
+
                 smallestAngleDifference = angleDifference;
                 closestPoint = point;
             }

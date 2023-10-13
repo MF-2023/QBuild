@@ -19,9 +19,11 @@ namespace QBuild.Part
             PrevIndex = prevIndex;
         }
     }
+
     public class PartPlacer : MonoBehaviour
     {
         public event Action<ChangeSelectEvent> OnSelectChangedEvent = delegate { };
+
         [Inject]
         private void Inject(@InputSystem inputSystem, HolderPresenter holderPresenter)
         {
@@ -42,7 +44,7 @@ namespace QBuild.Part
 
         private void ChangeSelect(InputAction.CallbackContext context)
         {
-            var value = (int)context.ReadValue<float>();
+            var value = (int) context.ReadValue<float>();
             if (value == 0) return;
             var nextIndex = _currentSelectHolderIndex + value;
             if (nextIndex < 0) nextIndex = _nextPartHolders.Count - 1;
@@ -57,6 +59,12 @@ namespace QBuild.Part
         private void Update()
         {
             OnThePartUpdate();
+
+
+            if(Keyboard.current[Key.R].wasPressedThisFrame)
+                CurrentRotateIndex = (CurrentRotateIndex + 1) % rotateMap.Count;
+            if(Keyboard.current[Key.T].wasPressedThisFrame)
+                CurrentRotateIndex = (CurrentRotateIndex - 1 + rotateMap.Count) % rotateMap.Count;
         }
 
         private void ForwardPlacePart()
@@ -84,19 +92,20 @@ namespace QBuild.Part
             if (CurrentOnThePart == null) return;
             var onThePartPosition = CurrentOnThePart.transform.position;
             var connectPoint = PlacePartService.FindClosestPointByAngleXZ(transform.position, dir,
-                CurrentOnThePart.OnGetConnectPoints().Select(x => x + onThePartPosition));
-            Place(connectPoint);
+                CurrentOnThePart.OnGetConnectPoints().Select(x => CurrentOnThePart.transform.TransformPoint(x)));
+            Place(connectPoint, CurrentRotateMatrix());
         }
 
-        private void Place(Vector3 connectPoint)
+        private void Place(Vector3 connectPoint, Matrix4x4 multiplePartAreaMatrix)
         {
             // 次の設置するパーツを取得
             var partScriptableObject = CurrentPart();
 
-            if (PlacePartService.TryPlacePartPosition(partScriptableObject, connectPoint, out var outPartPosition))
+            var tryPlaceInfo = new TryPlaceInfo(partScriptableObject, connectPoint, multiplePartAreaMatrix);
+            if (PlacePartService.TryPlacePartPosition(tryPlaceInfo, out var outMatrix))
             {
                 _nextPartHolders[_currentSelectHolderIndex].NextPart();
-                Instantiate(partScriptableObject.PartPrefab, outPartPosition, Quaternion.identity);
+                Instantiate(partScriptableObject.PartPrefab, outMatrix.GetPosition(), outMatrix.rotation);
                 OnThePartChanged();
             }
         }
@@ -117,7 +126,7 @@ namespace QBuild.Part
 
         private void OnThePartChanged()
         {
-            _multiplePartArea.UpdatePart(transform.position, _currentOnThePart, CurrentPart());
+            _multiplePartArea.UpdatePart(transform.position, _currentOnThePart, CurrentPart(), CurrentRotateMatrix());
         }
 
         private void OnSelectChanged(ChangeSelectEvent e)
@@ -131,7 +140,7 @@ namespace QBuild.Part
         }
 
         [SerializeField] private PartListScriptableObject _partListScriptableObject;
-        
+
 
         private List<NextPartHolder> _nextPartHolders = new();
         public IEnumerable<NextPartHolder> NextPartHolders => _nextPartHolders;
@@ -162,5 +171,31 @@ namespace QBuild.Part
                 OnThePartChanged();
             }
         }
+
+        private int _currentRotateIndex = 0;
+
+        public int CurrentRotateIndex
+        {
+            get { return _currentRotateIndex; }
+            set
+            {
+                _currentRotateIndex = value;
+                //TODO 回転時用のメソッドを別途準備する
+                OnThePartChanged();
+            }
+        }
+
+        private Matrix4x4 CurrentRotateMatrix()
+        {
+            return Matrix4x4.Rotate(rotateMap[_currentRotateIndex]);
+        }
+
+        private static List<Quaternion> rotateMap = new List<Quaternion>()
+        {
+            Quaternion.Euler(0, 0, 0),
+            Quaternion.Euler(0, 90, 0),
+            Quaternion.Euler(0, 180, 0),
+            Quaternion.Euler(0, -90, 0),
+        };
     }
 }

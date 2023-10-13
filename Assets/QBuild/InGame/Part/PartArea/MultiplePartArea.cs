@@ -9,7 +9,7 @@ namespace QBuild.Part
     public class MultiplePartArea : MonoBehaviour
     {
         public void UpdatePart(Vector3 referencePosition, PartView onThePart,
-            BlockPartScriptableObject partScriptableObject)
+            BlockPartScriptableObject partScriptableObject,Matrix4x4 multiplePartAreaMatrix)
         {
             if (onThePart == null)
             {
@@ -19,24 +19,25 @@ namespace QBuild.Part
                 _partPlaceAreaS.Hide();
                 return;
             }
+
             _referencePosition = referencePosition;
             var onThePartPosition = onThePart.transform.position;
 
-            var globalPointEnumerable = onThePart.OnGetConnectPoints().Select(x => x + onThePartPosition);
+            var globalPointEnumerable = onThePart.OnGetConnectPoints().Select(x => onThePart.transform.TransformPoint(x));
             var globalPoints = globalPointEnumerable as Vector3[] ?? globalPointEnumerable.ToArray();
 
-            SetPart(_partPlaceAreaN, new Vector3(0, 0, 1), globalPoints, partScriptableObject);
-            SetPart(_partPlaceAreaE, new Vector3(1, 0, 0), globalPoints, partScriptableObject);
-            SetPart(_partPlaceAreaW, new Vector3(0, 0, -1), globalPoints, partScriptableObject);
-            SetPart(_partPlaceAreaS, new Vector3(-1, 0, 0), globalPoints, partScriptableObject);
+            SetPart(_partPlaceAreaN, new Vector3(0, 0, 1), globalPoints, partScriptableObject, multiplePartAreaMatrix);
+            SetPart(_partPlaceAreaE, new Vector3(1, 0, 0), globalPoints, partScriptableObject, multiplePartAreaMatrix);
+            SetPart(_partPlaceAreaW, new Vector3(0, 0, -1), globalPoints, partScriptableObject, multiplePartAreaMatrix);
+            SetPart(_partPlaceAreaS, new Vector3(-1, 0, 0), globalPoints, partScriptableObject, multiplePartAreaMatrix);
         }
 
         private void SetPart(PartPlaceArea part, Vector3 dir, IEnumerable<Vector3> globalPoints,
-            BlockPartScriptableObject partScriptableObject)
+            BlockPartScriptableObject partScriptableObject, Matrix4x4 multiplePartAreaMatrix)
         {
             var connectPoint =
                 PlacePartService.FindClosestPointByAngleXZ(_referencePosition, dir, globalPoints);
-            part.SetPart(partScriptableObject, dir, connectPoint);
+            part.SetPart(partScriptableObject, dir, connectPoint, multiplePartAreaMatrix);
         }
 
         private void Start()
