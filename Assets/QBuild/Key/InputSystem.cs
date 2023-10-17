@@ -181,7 +181,7 @@ namespace QBuild
                 {
                     ""name"": ""up"",
                     ""id"": ""297da6d3-15dc-4ae2-9fd0-48366c4e3d4b"",
-                    ""path"": ""<Keyboard>/upArrow"",
+                    ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -192,7 +192,7 @@ namespace QBuild
                 {
                     ""name"": ""down"",
                     ""id"": ""d857a8af-46af-43ec-ba22-7c4c22180d24"",
-                    ""path"": ""<Keyboard>/downArrow"",
+                    ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -203,7 +203,7 @@ namespace QBuild
                 {
                     ""name"": ""left"",
                     ""id"": ""c54a8a0e-eecf-4012-8eae-0aa16ae36c7e"",
-                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -214,7 +214,7 @@ namespace QBuild
                 {
                     ""name"": ""right"",
                     ""id"": ""4b364bd3-5240-47f4-a5de-0471625c05ab"",
-                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -269,7 +269,7 @@ namespace QBuild
                 {
                     ""name"": """",
                     ""id"": ""4d1fe3f5-e7f9-4495-8666-8dc05116fb03"",
-                    ""path"": ""<Keyboard>/z"",
+                    ""path"": ""<Keyboard>/i"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -280,7 +280,7 @@ namespace QBuild
                 {
                     ""name"": """",
                     ""id"": ""7c14ae3b-66cc-4b73-b60d-8f2f50a66bbd"",
-                    ""path"": ""<Keyboard>/x"",
+                    ""path"": ""<Keyboard>/l"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -291,7 +291,7 @@ namespace QBuild
                 {
                     ""name"": """",
                     ""id"": ""7a1f5b69-13a5-4d70-b36c-e769a7c2d3bf"",
-                    ""path"": ""<Keyboard>/c"",
+                    ""path"": ""<Keyboard>/k"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -302,7 +302,7 @@ namespace QBuild
                 {
                     ""name"": """",
                     ""id"": ""9c96d52e-e78d-4077-8097-62ba17cc669c"",
-                    ""path"": ""<Keyboard>/v"",
+                    ""path"": ""<Keyboard>/j"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -324,7 +324,7 @@ namespace QBuild
                 {
                     ""name"": ""Negative"",
                     ""id"": ""750655bc-8aac-44e3-946b-e516f6ae244c"",
-                    ""path"": ""<Keyboard>/f"",
+                    ""path"": ""<Keyboard>/u"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -335,7 +335,7 @@ namespace QBuild
                 {
                     ""name"": ""Positive"",
                     ""id"": ""0af973f6-b633-4e0d-abe2-4caec30b4897"",
-                    ""path"": ""<Keyboard>/g"",
+                    ""path"": ""<Keyboard>/o"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
