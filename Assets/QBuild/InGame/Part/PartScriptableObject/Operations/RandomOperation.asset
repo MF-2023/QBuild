@@ -21,6 +21,10 @@ MonoBehaviour:
     _equalOperationType: 1
     _operation:
       rid: 6451516690125291553
+  - _target: {fileID: 11400000, guid: 15a488299967d18448c61c8d394207dd, type: 2}
+    _equalOperationType: 0
+    _operation:
+      rid: 6451516807703429125
   references:
     version: 2
     RefIds:
@@ -38,3 +42,12 @@ MonoBehaviour:
           rid: 6451516690125291557
     - rid: 6451516690125291557
       type: {class: DetermineEvent, ns: QBuild.Part.Event, asm: PartRuntime}
+    - rid: 6451516807703429125
+      type: {class: ComparisonProbabilityOperation, ns: QBuild.Part.Operations, asm: PartRuntime}
+      data:
+        _comparisonOperator: 1
+        _probability: 0
+        _event:
+          rid: 6451516807703429126
+    - rid: 6451516807703429126
+      type: {class: ResetEvent, ns: QBuild.Part.Event, asm: PartRuntime}

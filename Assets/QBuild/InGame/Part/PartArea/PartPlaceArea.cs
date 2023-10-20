@@ -26,8 +26,6 @@ namespace QBuild.Part
             if (PlacePartService.TryPlacePartPosition(tryPlaceInfo, out var outPartPosition))
             {
                 transform.position = outPartPosition.GetPosition();
-                Debug.Log($"Place {outPartPosition.GetPosition()}");
-                Debug.Log($"Place transform {transform.position}");
                 transform.rotation = outPartPosition.rotation;
                 _keyIconSpriteRenderer.gameObject.SetActive(true);
                 _keyIconSpriteRenderer.gameObject.transform.position = connectPosition + dir * 0.5f + Vector3.up * 0.25f;

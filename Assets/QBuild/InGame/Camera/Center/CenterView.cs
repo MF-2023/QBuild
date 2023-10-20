@@ -16,7 +16,7 @@ namespace QBuild.Camera.Center
             _stageScriptableObject = stageScriptableObject;
             
             gameObject.AddComponent<GridMove>();
-            _centerPosition = new Vector3(_stageScriptableObject.Width / 2, 0, _stageScriptableObject.Depth / 2);
+            _centerPosition = new Vector3(0, 0, _stageScriptableObject.Depth / 2);
             _centerPosition -= BlockConst.BlockSizeHalf;
             _centerPosition += _cameraScriptableObject.CenterOffset.Value;
             transform.position = _centerPosition;

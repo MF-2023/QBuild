@@ -35,21 +35,27 @@ namespace QBuild.Starter
             // Player
             builder.Register(container =>
             {
-                var playerController = container.Instantiate(_playerPrefab,new Vector3(0.5f,2f,0.5f),Quaternion.identity,null);
+                var playerController = container.Instantiate(_playerPrefab, _playerSpawnPoint.GetSpawnPoint(),
+                    Quaternion.identity, null);
                 return playerController;
             }, Lifetime.Singleton);
             builder.RegisterEntryPoint<PlayerPresenter>();
-
             
             builder.RegisterInstance(_partHolderView);
             builder.RegisterInstance(_partListScriptableObject);
             builder.Register<HolderPresenter>(Lifetime.Singleton);
+
+            builder.RegisterInstance(_partRepository);
+            builder.RegisterEntryPoint<PlacePresenter>();
         }
+
         [SerializeField] private PlayerController _playerPrefab;
         [SerializeField] private CurrentStageVariable _currentStageVariable;
         [SerializeField] private PartHolderView _partHolderView;
         [SerializeField] private PartListScriptableObject _partListScriptableObject;
         
-
+        [SerializeField] private PartRepository _partRepository;
+        
+        [SerializeField] private PlayerSpawnPoint _playerSpawnPoint;
     }
 }

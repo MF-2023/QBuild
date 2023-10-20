@@ -23,9 +23,10 @@ namespace QBuild.Part
     public class PartPlacer : MonoBehaviour
     {
         public event Action<ChangeSelectEvent> OnSelectChangedEvent = delegate { };
+        public event Action<PartView> OnPlaceEvent = delegate { };
 
         [Inject]
-        private void Inject(@InputSystem inputSystem, HolderPresenter holderPresenter)
+        private void Inject(@InputSystem inputSystem, HolderPresenter holderPresenter,PartRepository repository)
         {
             inputSystem.InGame.BlockPlaceF.performed += _ => ForwardPlacePart();
             inputSystem.InGame.BlockPlaceR.performed += _ => RightPlacePart();
@@ -40,6 +41,7 @@ namespace QBuild.Part
 
             _currentSelectHolderIndex = 1;
             holderPresenter.Bind(this);
+            OnPlaceEvent += repository.AddPart;
         }
 
         private void ChangeSelect(InputAction.CallbackContext context)
@@ -105,7 +107,8 @@ namespace QBuild.Part
             if (PlacePartService.TryPlacePartPosition(tryPlaceInfo, out var outMatrix))
             {
                 _nextPartHolders[_currentSelectHolderIndex].NextPart();
-                Instantiate(partScriptableObject.PartPrefab, outMatrix.GetPosition(), outMatrix.rotation);
+                var view = Instantiate(partScriptableObject.PartPrefab, outMatrix.GetPosition(), outMatrix.rotation);
+                OnPlaceEvent?.Invoke(view);
                 OnThePartChanged();
             }
         }
@@ -134,11 +137,16 @@ namespace QBuild.Part
             OnSelectChangedEvent?.Invoke(e);
         }
 
-        public BlockPartScriptableObject CurrentPart()
+        private BlockPartScriptableObject CurrentPart()
         {
             return _nextPartHolders[_currentSelectHolderIndex].CurrentPart();
         }
 
+        public void OnReset()
+        {
+            OnThePartUpdate();
+        }
+        
         [SerializeField] private PartListScriptableObject _partListScriptableObject;
 
 

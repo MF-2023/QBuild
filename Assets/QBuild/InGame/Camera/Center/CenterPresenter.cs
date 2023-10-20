@@ -41,7 +41,7 @@ namespace QBuild.Camera.Center
                 offset => _centerView.transform.position = _centerView.GetCenterPosition() + offset
             );
 
-            _playerController.OnChangeGridPosition += CameraMove;
+            //_playerController.OnChangeGridPosition += CameraMove;
         }
         
         private void CameraMove(Vector3 position)

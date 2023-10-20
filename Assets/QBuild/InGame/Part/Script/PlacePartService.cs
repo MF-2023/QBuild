@@ -68,16 +68,12 @@ namespace QBuild.Part
                 // 目的の接続点から変換後の接続点までのオフセットを計算します。
                 var rotateOffset = -info.connectPoint + transformedPoint;
 
-                Debug.Log($"rotateOffset {rotateOffset}");
-                Debug.Log($"matPoint {matrix.GetPosition()}");
                 // このオフセットを適用して正確な位置に調整します。
                 matrix = Matrix4x4.TRS(matrix.GetPosition() - rotateOffset, matrix.rotation, Vector3.one);
-                Debug.Log($"matPoint {matrix.GetPosition()}");
 
                 // 新しい変換で新しいパーツが配置できるかどうかをチェックします。
                 if (checkCanPlaceFunc(matrix))
                 {
-                    Debug.Log("Place");
                     outPartMatrix = matrix;
                     return true;
                 }

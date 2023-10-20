@@ -80,6 +80,7 @@ namespace QBuild.Part.Operations
             _times++;
             if (Comparison(calcParameter, target))
             {
+                Debug.Log("連続回数条件イベント発火");
                 _event.Execute(calcParameter, target);
             }
 
