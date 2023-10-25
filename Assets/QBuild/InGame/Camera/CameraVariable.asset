@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: CameraVariable
   m_EditorClassIdentifier: 
   _heightOffset:
-    value: 13.4
+    value: 23
   _distance:
-    value: 15
+    value: 22
   _angleOffset:
     value: 0
   _centerOffset:
