@@ -65,7 +65,7 @@ namespace QBuild.Player.Controller
             Color setColor = Color.green;
             setColor.a = 0.5f;
             Gizmos.color = setColor;
-            //’n–Ê”»’è‚Ì•`‰æ
+            //ï¿½nï¿½Ê”ï¿½ï¿½ï¿½Ì•`ï¿½ï¿½
             Gizmos.DrawSphere(_GroundCheckStartPosition.position, _GroundCheckRadius);
             Gizmos.DrawSphere(_GroundCheckEndPosition.position, _GroundCheckRadius);
         }
@@ -74,7 +74,7 @@ namespace QBuild.Player.Controller
         private Vector3Int GetPlayerGridPosition()
         {
             Vector3 pos = transform.position;
-            Vector3Int ret = new Vector3Int((int)(pos.x + 0.5f), Mathf.CeilToInt(transform.position.y), (int)(pos.z + 0.5f));
+            Vector3Int ret = new Vector3Int((int)(pos.x), Mathf.RoundToInt(transform.position.y), (int)(pos.z));
             return ret;
         }
 
@@ -85,7 +85,7 @@ namespace QBuild.Player.Controller
 
             if (nowPos != currentPosition)
             {
-                //?¿½O?¿½?¿½?¿½b?¿½h?¿½ÏX?¿½ÌƒC?¿½x?¿½?¿½?¿½g?¿½Ä‚Ño?¿½?¿½
+                //?ï¿½ï¿½O?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½b?ï¿½ï¿½h?ï¿½ï¿½ÏX?ï¿½ï¿½ÌƒC?ï¿½ï¿½x?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½g?ï¿½ï¿½Ä‚Ño?ï¿½ï¿½?ï¿½ï¿½
                 OnChangeGridPosition?.Invoke(nowPos);
                 currentPosition = nowPos;
             }
@@ -93,7 +93,7 @@ namespace QBuild.Player.Controller
 
         private bool CheckGround()
         {
-            //ƒuƒƒbƒN‚ª‘¶İ‚·‚éê‡true‚ğ•Ô‚·
+            //ï¿½uï¿½ï¿½ï¿½bï¿½Nï¿½ï¿½ï¿½ï¿½ï¿½İ‚ï¿½ï¿½ï¿½ê‡trueï¿½ï¿½Ô‚ï¿½
             /*
             Vector3 pos = transform.position;
             Vector3Int check = new Vector3Int((int)(pos.x + 0.5f), currentPosition.y - 1, (int)(pos.z + 0.5f));
@@ -116,7 +116,7 @@ namespace QBuild.Player.Controller
             Vector3Int savePos = check;
             if (OnCheckBlock != null ? OnCheckBlock(check) : false)
             {
-                //ƒvƒŒƒCƒ„[‚Ì‚‚³•ªƒuƒƒbƒN‚ÌŠm”F‚ğ‚·‚é
+                //ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½uï¿½ï¿½ï¿½bï¿½Nï¿½ÌŠmï¿½Fï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 bool checkHeight = false;
                 for(int i = 1;i <= _playerData.playerHeight;i++)
                 {
@@ -127,7 +127,7 @@ namespace QBuild.Player.Controller
                     }
                 }
 
-                //ƒuƒƒbƒN‚ª‘¶İi“o‚ê‚È‚¢ê‡j
+                //ï¿½uï¿½ï¿½ï¿½bï¿½Nï¿½ï¿½ï¿½ï¿½ï¿½İiï¿½oï¿½ï¿½È‚ï¿½ï¿½ê‡ï¿½j
                 if (checkHeight) return false;
 
                 retPos = savePos;
@@ -139,12 +139,12 @@ namespace QBuild.Player.Controller
 
         private void GetFrontBlockPos(ref float collectX, ref float collectZ)
         {
-            //‚à‚Á‚Æ‚¢‚¢‚â‚è•û‚ ‚é‚©‚à
+            //ï¿½ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½é‚©ï¿½ï¿½
             float rot = transform.eulerAngles.y;
             rot = rot - (int)(rot / 360) * 360;
             rot = Mathf.Repeat(rot + 180f, 360f) - 180f;
 
-            //³–Ê‚ğŒü‚¢‚Ä‚¢‚éê‡
+            //ï¿½ï¿½ï¿½Ê‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ê‡
             if (rot >= -45.0f && rot <= 45.0f)
             {
                 if (transform.position.x >= 0) collectX = _playerData.checkBlockCollectX;
@@ -152,7 +152,7 @@ namespace QBuild.Player.Controller
                 if (transform.position.z >= 0) collectZ = _playerData.checkBlockCollectZ;
                 else collectZ = _playerData.checkBlockCollectZ - 1.0f;
             }
-            //‰E‚ğŒü‚¢‚Ä‚¢‚éê‡
+            //ï¿½Eï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ê‡
             else if(rot >= 45.0f && rot <= 135.0f)
             {
                 if (transform.position.x >= 0) collectX = _playerData.checkBlockCollectZ;
@@ -160,7 +160,7 @@ namespace QBuild.Player.Controller
                 if (transform.position.z >= 0) collectZ = _playerData.checkBlockCollectX;
                 else collectZ = _playerData.checkBlockCollectX * 1.0f;
             }
-            //¶‚ğŒü‚¢‚Ä‚¢‚éê‡
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ê‡
             else if(rot <= -45.0f && rot >= -135.0f)
             {
                 if (transform.position.x >= 0) collectX = (1.0f - _playerData.checkBlockCollectZ);
@@ -168,7 +168,7 @@ namespace QBuild.Player.Controller
                 if (transform.position.z >= 0) collectZ = _playerData.checkBlockCollectX;
                 else collectZ = _playerData.checkBlockCollectX * 1.0f;
             }
-            //Œã‚ë‚ğŒü‚¢‚Ä‚¢‚éê‡
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ê‡
             else
             {
                 if (transform.position.x >= 0) collectX = _playerData.checkBlockCollectX;

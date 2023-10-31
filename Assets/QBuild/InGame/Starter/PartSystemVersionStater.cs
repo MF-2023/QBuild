@@ -37,6 +37,7 @@ namespace QBuild.Starter
             {
                 var playerController = container.Instantiate(_playerPrefab, _playerSpawnPoint.GetSpawnPoint(),
                     Quaternion.identity, null);
+                playerController.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
                 return playerController;
             }, Lifetime.Singleton);
             builder.RegisterEntryPoint<PlayerPresenter>();

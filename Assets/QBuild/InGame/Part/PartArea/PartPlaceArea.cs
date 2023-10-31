@@ -16,26 +16,30 @@ namespace QBuild.Part
 
     public class PartPlaceArea : MonoBehaviour
     {
-        public void SetPart(BlockPartScriptableObject part, Vector3 dir, Vector3 connectPosition,Matrix4x4 multiplePartAreaMatrix)
+        public void SetPart(BlockPartScriptableObject part, Vector3 dir, Vector3 connectPosition,
+            Matrix4x4 multiplePartAreaMatrix)
         {
             _part = part;
             var mesh = part.PartPrefab.GetComponent<MeshFilter>().sharedMesh;
             _meshFilter.sharedMesh = mesh;
-            var tryPlaceInfo = new TryPlaceInfo(part, connectPosition, multiplePartAreaMatrix);
+            var tryPlaceInfo = new TryPlaceInfo(part, dir, connectPosition, multiplePartAreaMatrix);
+
 
             if (PlacePartService.TryPlacePartPosition(tryPlaceInfo, out var outPartPosition))
             {
-                transform.position = outPartPosition.GetPosition();
-                transform.rotation = outPartPosition.rotation;
-                _keyIconSpriteRenderer.gameObject.SetActive(true);
-                _keyIconSpriteRenderer.gameObject.transform.position = connectPosition + dir * 0.5f + Vector3.up * 0.25f;
+                
+                GetComponent<Renderer>().material.SetColor("_WireframeColor", Color.blue);
             }
             else
             {
                 _state = PartPlaceAreaState.NotEnoughSpace;
-                _meshFilter.sharedMesh = null;
-                _keyIconSpriteRenderer.gameObject.SetActive(false);
+                GetComponent<Renderer>().material.SetColor("_WireframeColor", Color.red);
             }
+            transform.position = outPartPosition.GetPosition();
+            transform.rotation = outPartPosition.rotation;
+            _keyIconSpriteRenderer.gameObject.SetActive(true);
+            _keyIconSpriteRenderer.gameObject.transform.position =
+                connectPosition + dir * 0.5f + Vector3.up * 0.25f;
         }
 
         public void Hide()

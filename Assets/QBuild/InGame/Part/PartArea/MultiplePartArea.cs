@@ -9,7 +9,7 @@ namespace QBuild.Part
     public class MultiplePartArea : MonoBehaviour
     {
         public void UpdatePart(Vector3 referencePosition, PartView onThePart,
-            BlockPartScriptableObject partScriptableObject,Matrix4x4 multiplePartAreaMatrix)
+            BlockPartScriptableObject partScriptableObject, Matrix4x4 multiplePartAreaMatrix)
         {
             if (onThePart == null)
             {
@@ -21,15 +21,40 @@ namespace QBuild.Part
             }
 
             _referencePosition = referencePosition;
-            var onThePartPosition = onThePart.transform.position;
 
-            var globalPointEnumerable = onThePart.OnGetConnectPoints().Select(x => onThePart.transform.TransformPoint(x));
+            var globalPointEnumerable =
+                onThePart.OnGetConnectPoints().Select(x => onThePart.transform.TransformPoint(x));
             var globalPoints = globalPointEnumerable as Vector3[] ?? globalPointEnumerable.ToArray();
 
-            SetPart(_partPlaceAreaN, new Vector3(0, 0, 1), globalPoints, partScriptableObject, multiplePartAreaMatrix);
-            SetPart(_partPlaceAreaE, new Vector3(1, 0, 0), globalPoints, partScriptableObject, multiplePartAreaMatrix);
-            SetPart(_partPlaceAreaW, new Vector3(0, 0, -1), globalPoints, partScriptableObject, multiplePartAreaMatrix);
-            SetPart(_partPlaceAreaS, new Vector3(-1, 0, 0), globalPoints, partScriptableObject, multiplePartAreaMatrix);
+
+            var connectPointMatrix = Matrix4x4.Rotate(onThePart.transform.rotation);
+            var connectPointDirectionV = connectPointMatrix.MultiplyVector(Vector3.forward);
+
+            var dir = DirectionFRBLExtension.VectorToDirectionFRBL(connectPointDirectionV);
+
+            var centerDiff = DirectionFRBL.Forward;
+            while (dir != DirectionFRBL.Forward)
+            {
+                dir = dir.TurnRight();
+                centerDiff = centerDiff.TurnRight();
+            }
+
+
+            SetPart(_partPlaceAreaN, Vector3.forward, centerDiff, onThePart, partScriptableObject,
+                multiplePartAreaMatrix);
+            SetPart(_partPlaceAreaN, Vector3.forward, globalPoints, partScriptableObject, multiplePartAreaMatrix);
+
+            SetPart(_partPlaceAreaE, Vector3.right, centerDiff.TurnRight(), onThePart, partScriptableObject,
+                multiplePartAreaMatrix);
+            SetPart(_partPlaceAreaE, Vector3.right, globalPoints, partScriptableObject, multiplePartAreaMatrix);
+
+            SetPart(_partPlaceAreaW, Vector3.left, centerDiff.TurnLeft(), onThePart, partScriptableObject,
+                multiplePartAreaMatrix);
+            SetPart(_partPlaceAreaW, Vector3.left, globalPoints, partScriptableObject, multiplePartAreaMatrix);
+
+            SetPart(_partPlaceAreaS, Vector3.back, centerDiff.TurnRight().TurnRight(), onThePart, partScriptableObject,
+                multiplePartAreaMatrix);
+            SetPart(_partPlaceAreaS, Vector3.back, globalPoints, partScriptableObject, multiplePartAreaMatrix);
         }
 
         private void SetPart(PartPlaceArea part, Vector3 dir, IEnumerable<Vector3> globalPoints,
@@ -37,7 +62,26 @@ namespace QBuild.Part
         {
             var connectPoint =
                 PlacePartService.FindClosestPointByAngleXZ(_referencePosition, dir, globalPoints);
-            part.SetPart(partScriptableObject, dir, connectPoint, multiplePartAreaMatrix);
+        }
+
+        private void SetPart(PartPlaceArea part, Vector3 dir, DirectionFRBL dirOnPart, PartView onThePart,
+            BlockPartScriptableObject partScriptableObject, Matrix4x4 multiplePartAreaMatrix)
+        {
+            var targetRotateMatrix = Matrix4x4.Rotate(multiplePartAreaMatrix.rotation).inverse;
+            var targetDirectionV = targetRotateMatrix.MultiplyVector(-dir);
+
+            var targetDirection = DirectionFRBLExtension.VectorToDirectionFRBL(targetDirectionV);
+
+           if (partScriptableObject.PartPrefab.HasDirection(targetDirection) &&
+                onThePart.TryGetConnectPoint(dirOnPart, out var point))
+            {
+                part.SetPart(partScriptableObject, dir, onThePart.transform.TransformPoint(point),
+                    multiplePartAreaMatrix);
+            }
+            else
+            {
+                part.Hide();
+            }
         }
 
         private void Start()
@@ -66,10 +110,17 @@ namespace QBuild.Part
         {
             var dir = DirectionFRBLExtension.VectorToDirectionFRBL(Forward);
             if (dir == DirectionFRBL.None) return;
-            _partPlaceAreaN.SetKeyIcon(dir);
-            _partPlaceAreaE.SetKeyIcon(dir.TurnRight());
-            _partPlaceAreaW.SetKeyIcon(dir.TurnRight().TurnRight());
-            _partPlaceAreaS.SetKeyIcon(dir.TurnLeft());
+            var cameraDiff = DirectionFRBL.Forward;
+            while (dir != DirectionFRBL.Forward)
+            {
+                dir = dir.TurnRight();
+                cameraDiff = cameraDiff.TurnRight();
+            }
+
+            _partPlaceAreaN.SetKeyIcon(cameraDiff);
+            _partPlaceAreaE.SetKeyIcon(cameraDiff.TurnRight());
+            _partPlaceAreaW.SetKeyIcon(cameraDiff.TurnLeft());
+            _partPlaceAreaS.SetKeyIcon(cameraDiff.TurnRight().TurnRight());
         }
 
         [SerializeField] private PartPlaceArea _partPlaceAreaPrefab;

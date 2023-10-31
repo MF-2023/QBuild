@@ -115,6 +115,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8324032287801331179, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
+      propertyPath: _connectPoints.Array.data[1]._direction
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8324032287801331179, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
+        type: 3}
       propertyPath: _connectPoints.Array.data[0]._position.x
       value: 0
       objectReference: {fileID: 0}

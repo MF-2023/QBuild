@@ -25,11 +25,13 @@ namespace QBuild.Stage.Grid
             {
                 _gridView.SetActive(!_gridView.activeSelf);
             }
+
+            //_gridView.transform.position = Convert2(_playerController.transform.position) + _offset;
         }
 
         private void ChangeGridPosition(Vector3 position)
         {
-            position = Convert2(position);
+            position = Convert1(position);
             _gridView.transform.position = position + _offset;
         }
 
@@ -40,7 +42,7 @@ namespace QBuild.Stage.Grid
 
         private Vector3 Convert2(Vector3 position)
         {
-            return new Vector3(0, position.y - 1, 0);
+            return new Vector3(0, Mathf.RoundToInt(position.y), 0);
         }
     }
 }

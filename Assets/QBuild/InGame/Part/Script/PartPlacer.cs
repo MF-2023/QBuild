@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using QBuild.Part.Presenter;
+using QBuild.Utilities;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using VContainer;
@@ -26,7 +27,7 @@ namespace QBuild.Part
         public event Action<PartView> OnPlaceEvent = delegate { };
 
         [Inject]
-        private void Inject(@InputSystem inputSystem, HolderPresenter holderPresenter,PartRepository repository)
+        private void Inject(@InputSystem inputSystem, HolderPresenter holderPresenter, PartRepository repository)
         {
             inputSystem.InGame.BlockPlaceF.performed += _ => ForwardPlacePart();
             inputSystem.InGame.BlockPlaceR.performed += _ => RightPlacePart();
@@ -63,9 +64,9 @@ namespace QBuild.Part
             OnThePartUpdate();
 
 
-            if(Keyboard.current[Key.R].wasPressedThisFrame)
+            if (Keyboard.current[Key.R].wasPressedThisFrame)
                 CurrentRotateIndex = (CurrentRotateIndex + 1) % rotateMap.Count;
-            if(Keyboard.current[Key.T].wasPressedThisFrame)
+            if (Keyboard.current[Key.T].wasPressedThisFrame)
                 CurrentRotateIndex = (CurrentRotateIndex - 1 + rotateMap.Count) % rotateMap.Count;
         }
 
@@ -92,22 +93,29 @@ namespace QBuild.Part
         private void DirPlacePart(Vector3 dir)
         {
             if (CurrentOnThePart == null) return;
-            var onThePartPosition = CurrentOnThePart.transform.position;
             var connectPoint = PlacePartService.FindClosestPointByAngleXZ(transform.position, dir,
                 CurrentOnThePart.OnGetConnectPoints().Select(x => CurrentOnThePart.transform.TransformPoint(x)));
-            Place(connectPoint, CurrentRotateMatrix());
+            Place(dir, connectPoint, CurrentRotateMatrix());
         }
 
-        private void Place(Vector3 connectPoint, Matrix4x4 multiplePartAreaMatrix)
+        private void Place(Vector3 dir, Vector3 connectPoint, Matrix4x4 multiplePartAreaMatrix)
         {
             // 次の設置するパーツを取得
             var partScriptableObject = CurrentPart();
 
-            var tryPlaceInfo = new TryPlaceInfo(partScriptableObject, connectPoint, multiplePartAreaMatrix);
+            var tryPlaceInfo = new TryPlaceInfo(partScriptableObject, dir, connectPoint, multiplePartAreaMatrix);
             if (PlacePartService.TryPlacePartPosition(tryPlaceInfo, out var outMatrix))
             {
                 _nextPartHolders[_currentSelectHolderIndex].NextPart();
                 var view = Instantiate(partScriptableObject.PartPrefab, outMatrix.GetPosition(), outMatrix.rotation);
+                view.Direction =
+                    DirectionFRBLExtension.VectorToDirectionFRBL(
+                        multiplePartAreaMatrix.MultiplyVector(Vector3.forward));
+
+
+                PartConnectService.ConnectPart(CurrentOnThePart, DirectionFRBLExtension.VectorToDirectionFRBL(dir),
+                    view);
+
                 OnPlaceEvent?.Invoke(view);
                 OnThePartChanged();
             }
@@ -146,7 +154,7 @@ namespace QBuild.Part
         {
             OnThePartUpdate();
         }
-        
+
         [SerializeField] private PartListScriptableObject _partListScriptableObject;
 
 

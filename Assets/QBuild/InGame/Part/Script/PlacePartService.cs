@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using QBuild.Utilities;
 using UnityEngine;
 
 namespace QBuild.Part
@@ -8,13 +9,15 @@ namespace QBuild.Part
     public struct TryPlaceInfo
     {
         public BlockPartScriptableObject partScriptableObject;
+        public Vector3 direction;
         public Vector3 connectPoint;
         public Matrix4x4 multipleMatrix;
 
-        public TryPlaceInfo(BlockPartScriptableObject partScriptableObject, Vector3 connectPoint,
+        public TryPlaceInfo(BlockPartScriptableObject partScriptableObject, Vector3 direction, Vector3 connectPoint,
             Matrix4x4 multipleMatrix)
         {
             this.partScriptableObject = partScriptableObject;
+            this.direction = direction;
             this.connectPoint = connectPoint;
             this.multipleMatrix = multipleMatrix;
         }
@@ -49,37 +52,61 @@ namespace QBuild.Part
             out Matrix4x4 outPartMatrix)
         {
             outPartMatrix = Matrix4x4.zero;
-            var newPartConnectPoint = info.partScriptableObject.PartPrefab.OnGetConnectPoints().ToArray();
+            var direction = DirectionFRBLExtension.VectorToDirectionFRBL(-info.direction);
+            info.partScriptableObject.PartPrefab.TryGetConnectPoint(direction, out var connectPoint);
+            var newPartMagnet = info.partScriptableObject.PartPrefab.OnGetMagnets().ToArray();
 
-            foreach (var point in newPartConnectPoint)
+            foreach (var magnet in newPartMagnet)
             {
-                // 現在の接続点から目的の接続点へのオフセットを計算します。
+                var point = magnet.Position;
+                var connectPointMatrix = Matrix4x4.Rotate(info.multipleMatrix.rotation);
+                var connectPointDirectionV = connectPointMatrix.MultiplyVector(magnet.Direction.ToVector3());
+
+                var connectPointDirection = DirectionFRBLExtension.VectorToDirectionFRBL(connectPointDirectionV);
+                if (connectPointDirection != direction) continue;
+                // 現在の接続点から目的の接続点へのオフセットを計算
                 var offset = info.connectPoint - point;
 
-                // 最初の変換を作成してオフセットを適用します。
+                // 最初の変換を作成してオフセットを適用
                 var matrix = Matrix4x4.TRS(offset, Quaternion.identity, Vector3.one);
 
-                // 既存のパーツの回転を適用します。
+                // 既存のパーツの回転を適用
                 matrix *= Matrix4x4.Rotate(info.multipleMatrix.rotation);
 
-                // この変換で新しいパーツの接続点がどこに移動するかを計算します。
+                // この変換で新しいパーツの接続点がどこに移動するかを計算
                 var transformedPoint = matrix.MultiplyPoint(point);
 
-                // 目的の接続点から変換後の接続点までのオフセットを計算します。
+                // 目的の接続点から変換後の接続点までのオフセットを計算
                 var rotateOffset = -info.connectPoint + transformedPoint;
 
-                // このオフセットを適用して正確な位置に調整します。
+                // このオフセットを適用して正確な位置に調整
                 matrix = Matrix4x4.TRS(matrix.GetPosition() - rotateOffset, matrix.rotation, Vector3.one);
 
-                // 新しい変換で新しいパーツが配置できるかどうかをチェックします。
+                outPartMatrix = matrix;
+                Debug.Log(
+                    $"{connectPointDirection == direction} newdir:{connectPointDirection} mg:{magnet.Direction} dir:{direction} new:{point}, DirPoint:{connectPoint}");
+                // 新しい変換で新しいパーツが配置できるかどうかをチェック
                 if (checkCanPlaceFunc(matrix))
                 {
-                    outPartMatrix = matrix;
+                    if (connectPointDirection == DirectionFRBL.None)
+                    {
+                        Debug.Log(connectPointDirectionV);
+                    }
+
                     return true;
                 }
             }
+            var directions = info.partScriptableObject.PartPrefab.OnGetMagnets().Select(x => x.Direction);
+            //一覧を表示
+            foreach (var directionT in directions)
+            {
+                var connectPointMatrix = Matrix4x4.Rotate(info.multipleMatrix.rotation);
+                var connectPointDirectionV = connectPointMatrix.MultiplyVector(directionT.ToVector3());
 
-            return false;
+                var connectPointDirection = DirectionFRBLExtension.VectorToDirectionFRBL(connectPointDirectionV);
+                Debug.Log($"direction:{connectPointDirection}");
+            }
+            Debug.Log($"dir:{direction}");
 
             return false;
         }

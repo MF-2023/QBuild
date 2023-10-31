@@ -91,12 +91,22 @@ PrefabInstance:
     - target: {fileID: 8254369280360393330, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
       propertyPath: m_Name
-      value: LCurvePartPrefab Variant
+      value: BRCurvePartPrefab
       objectReference: {fileID: 0}
     - target: {fileID: 8324032287801331179, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
       propertyPath: _connectPoints.Array.size
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8324032287801331179, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
+        type: 3}
+      propertyPath: _connectPoints.Array.data[0]._direction
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8324032287801331179, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
+        type: 3}
+      propertyPath: _connectPoints.Array.data[1]._direction
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8324032287801331179, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}

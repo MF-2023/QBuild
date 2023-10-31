@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using QBuild.Utilities;
+using UnityEditor;
 using UnityEngine;
 
 namespace QBuild.Part.Editor
@@ -9,12 +10,13 @@ namespace QBuild.Part.Editor
         private static void DrawGizmo(Connector connector, GizmoType gizmoType)
         {
             Gizmos.color = Color.red;
-            foreach (var connectPoint in connector.ConnectPoints())
+            foreach (var connectPoint in connector.ConnectMagnet())
             {
-                var position = connectPoint;
                 var matrix = connector.transform.localToWorldMatrix;
-                var localPosition = matrix.MultiplyPoint(position);
+                var localPosition = matrix.MultiplyPoint(connectPoint.Position);
                 Gizmos.DrawSphere(localPosition, 0.025f);
+
+                Gizmos.DrawRay(localPosition, matrix.MultiplyVector(connectPoint.Direction.ToVector3()));
             }
         }
     }

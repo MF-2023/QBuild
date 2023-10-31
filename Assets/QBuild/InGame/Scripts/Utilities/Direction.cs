@@ -52,22 +52,56 @@ namespace QBuild.Utilities
     {
         public static DirectionFRBL VectorToDirectionFRBL(Vector3 vector)
         {
-            var angle = Vector3.SignedAngle(vector,Vector3.forward, Vector3.up);
+            var angle = Vector3.SignedAngle(vector, Vector3.forward, Vector3.up);
             if (angle < 0)
             {
                 angle += 360;
             }
-
             var angleInt = (int) angle;
-            return angleInt switch
+            var dir = angleInt switch
             {
                 0 => DirectionFRBL.Forward,
-                90 => DirectionFRBL.Right,
+                90 => DirectionFRBL.Left,
                 180 => DirectionFRBL.Back,
-                270 => DirectionFRBL.Left,
+                270 => DirectionFRBL.Right,
                 _ => DirectionFRBL.None
             };
+            
+            
+            //前後45度以内なら方向を返す
+            angle -= 45;
+            if (angle < 0)
+            {
+                angle += 360;
+            }
+            var index = Mathf.CeilToInt(angle / 90.0f);
+            
+            var dir2 = index switch
+            {
+                0 => DirectionFRBL.Forward,
+                1 => DirectionFRBL.Left,
+                2 => DirectionFRBL.Back,
+                3 => DirectionFRBL.Right,
+                4 => DirectionFRBL.Forward,
+                _ => DirectionFRBL.None
+            };
+            
+            if (dir2 == DirectionFRBL.None) Debug.Log($"angle:{angle} angleInt:{angleInt} dir:{dir} vector:{vector}");
+            return dir2;
         }
+
+        public static Vector3 ToVector3(this DirectionFRBL dir)
+        {
+            return dir switch
+            {
+                DirectionFRBL.Forward => Vector3.forward,
+                DirectionFRBL.Right => Vector3.right,
+                DirectionFRBL.Back => Vector3.back,
+                DirectionFRBL.Left => Vector3.left,
+                _ => throw new ArgumentOutOfRangeException(nameof(dir), dir, null)
+            };
+        }
+
         public static DirectionFRBL TurnLeft(this DirectionFRBL dir)
         {
             return dir switch
@@ -79,7 +113,7 @@ namespace QBuild.Utilities
                 _ => throw new ArgumentOutOfRangeException(nameof(dir), dir, null)
             };
         }
-        
+
         public static DirectionFRBL TurnRight(this DirectionFRBL dir)
         {
             return dir switch
@@ -88,6 +122,18 @@ namespace QBuild.Utilities
                 DirectionFRBL.Right => DirectionFRBL.Back,
                 DirectionFRBL.Back => DirectionFRBL.Left,
                 DirectionFRBL.Left => DirectionFRBL.Forward,
+                _ => throw new ArgumentOutOfRangeException(nameof(dir), dir, null)
+            };
+        }
+        
+        public static DirectionFRBL Turn180(this DirectionFRBL dir)
+        {
+            return dir switch
+            {
+                DirectionFRBL.Forward => DirectionFRBL.Back,
+                DirectionFRBL.Right => DirectionFRBL.Left,
+                DirectionFRBL.Back => DirectionFRBL.Forward,
+                DirectionFRBL.Left => DirectionFRBL.Right,
                 _ => throw new ArgumentOutOfRangeException(nameof(dir), dir, null)
             };
         }
