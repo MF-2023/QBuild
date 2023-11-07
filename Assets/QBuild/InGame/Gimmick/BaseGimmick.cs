@@ -6,5 +6,12 @@ namespace QBuild.Gimmick
     {
         public abstract void Active();
         public abstract void Disable();
+        
+        public bool CanInteractive => canInteractive;
+
+        /// <summary>
+        /// Activeの呼び出しを制御する。
+        /// </summary>
+        protected bool canInteractive = true;
     }
 }
