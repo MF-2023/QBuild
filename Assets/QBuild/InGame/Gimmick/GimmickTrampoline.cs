@@ -1,4 +1,5 @@
 using UnityEngine;
+using DG.Tweening;
 
 namespace QBuild.Gimmick
 {
@@ -21,7 +22,15 @@ namespace QBuild.Gimmick
             if (_centerPoint != null) centerPosition = _centerPoint.position;
             else centerPosition = GetCenterPoint(startPosition, endPosition, _jumpHeight);
 
-
+            HogePlayer.DOLocalPath(
+                new[]
+                {
+                    startPosition,
+                    centerPosition,
+                    endPosition,
+                },
+                _time, PathType.CubicBezier, gizmoColor: Color.red)
+                .SetOptions(false);
         }
 
         public override void Disable()
