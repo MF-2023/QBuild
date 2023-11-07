@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using QBuild.Const;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace QBuild.Part
@@ -60,7 +61,7 @@ namespace QBuild.Part
         {
             _owner = owner;
         }
-        
+
         public void AddReservationPart(BlockPartScriptableObject part)
         {
             _reservationParts.Enqueue(part);
@@ -73,28 +74,15 @@ namespace QBuild.Part
             return _parts.Select(x => x.Part);
         }
 
-        public BlockPartScriptableObject GetRandomPart(PartRandomPickObject randomPickObject)
+        public BlockPartScriptableObject GetRandomPart(PartPickObject pickObject)
         {
             if (_reservationParts.Count != 0)
             {
                 // 予約パーツがある場合は予約パーツを返す
                 return _reservationParts.Dequeue();
             }
-            var total = _parts.Sum(x => x.Probability);
-            var random = Random.Range(0, total);
-            var current = 0f;
-            foreach (var part in _parts)
-            {
-                current += part.Probability;
-                if (random < current)
-                {
-                    randomPickObject.Processing(new ProcessCalcParameter(_owner, _parts, part));
-                    return part.Part;
-                }
-            }
 
-            Debug.LogError("GetRandomPart() failed.");
-            return _parts[0].Part;
+            return pickObject.Processing(_parts, new PickCalcParameter(_owner, _parts));
         }
     }
 
@@ -107,9 +95,9 @@ namespace QBuild.Part
     public class PartListScriptableObject : ScriptableObject, ISerializationCallbackReceiver
     {
         [SerializeField] private PartList _parts;
-        [SerializeField] private PartRandomPickObject _partRandomPickObject;
+        [SerializeField] private PartPickObject _partPickObject;
         [SerializeField] private PartList _runtimeParts;
-        
+
         public IEnumerable<BlockPartScriptableObject> GetParts()
         {
             return _parts.GetParts();
@@ -117,10 +105,10 @@ namespace QBuild.Part
 
         public BlockPartScriptableObject GetRandomPart()
         {
-            var result = _runtimeParts.GetRandomPart(_partRandomPickObject);
+            var result = _runtimeParts.GetRandomPart(_partPickObject);
             return result;
         }
-        
+
         public void ResetProbability(BlockPartScriptableObject so)
         {
             var runtimeInfo = _runtimeParts.GeneratePartInfos.SingleOrDefault(x => x.Part == so);
@@ -130,6 +118,7 @@ namespace QBuild.Part
                 runtimeInfo.Probability = info.Probability;
             }
         }
+
         public void AddReservationPart(BlockPartScriptableObject part)
         {
             _runtimeParts.AddReservationPart(part);

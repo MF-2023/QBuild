@@ -83,8 +83,7 @@ namespace QBuild.Part
                 matrix = Matrix4x4.TRS(matrix.GetPosition() - rotateOffset, matrix.rotation, Vector3.one);
 
                 outPartMatrix = matrix;
-                Debug.Log(
-                    $"{connectPointDirection == direction} newdir:{connectPointDirection} mg:{magnet.Direction} dir:{direction} new:{point}, DirPoint:{connectPoint}");
+
                 // 新しい変換で新しいパーツが配置できるかどうかをチェック
                 if (checkCanPlaceFunc(matrix))
                 {
@@ -96,17 +95,6 @@ namespace QBuild.Part
                     return true;
                 }
             }
-            var directions = info.partScriptableObject.PartPrefab.OnGetMagnets().Select(x => x.Direction);
-            //一覧を表示
-            foreach (var directionT in directions)
-            {
-                var connectPointMatrix = Matrix4x4.Rotate(info.multipleMatrix.rotation);
-                var connectPointDirectionV = connectPointMatrix.MultiplyVector(directionT.ToVector3());
-
-                var connectPointDirection = DirectionFRBLExtension.VectorToDirectionFRBL(connectPointDirectionV);
-                Debug.Log($"direction:{connectPointDirection}");
-            }
-            Debug.Log($"dir:{direction}");
 
             return false;
         }

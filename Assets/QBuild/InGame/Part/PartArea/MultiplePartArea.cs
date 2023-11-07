@@ -32,13 +32,7 @@ namespace QBuild.Part
 
             var dir = DirectionFRBLExtension.VectorToDirectionFRBL(connectPointDirectionV);
 
-            var centerDiff = DirectionFRBL.Forward;
-            while (dir != DirectionFRBL.Forward)
-            {
-                dir = dir.TurnRight();
-                centerDiff = centerDiff.TurnRight();
-            }
-
+            var centerDiff = DirectionUtilities.CalcDirectionFRBL(dir, DirectionFRBL.Forward);
 
             SetPart(_partPlaceAreaN, Vector3.forward, centerDiff, onThePart, partScriptableObject,
                 multiplePartAreaMatrix);
@@ -72,7 +66,7 @@ namespace QBuild.Part
 
             var targetDirection = DirectionFRBLExtension.VectorToDirectionFRBL(targetDirectionV);
 
-           if (partScriptableObject.PartPrefab.HasDirection(targetDirection) &&
+            if (partScriptableObject.PartPrefab.HasDirection(targetDirection) &&
                 onThePart.TryGetConnectPoint(dirOnPart, out var point))
             {
                 part.SetPart(partScriptableObject, dir, onThePart.transform.TransformPoint(point),
@@ -110,13 +104,16 @@ namespace QBuild.Part
         {
             var dir = DirectionFRBLExtension.VectorToDirectionFRBL(Forward);
             if (dir == DirectionFRBL.None) return;
-            var cameraDiff = DirectionFRBL.Forward;
+
+            var cameraDiff = DirectionUtilities.CalcDirectionFRBL(dir, DirectionFRBL.Forward);
+            var cameraDiff2 = DirectionFRBL.Forward;
             while (dir != DirectionFRBL.Forward)
             {
                 dir = dir.TurnRight();
-                cameraDiff = cameraDiff.TurnRight();
+                cameraDiff2 = cameraDiff2.TurnRight();
             }
-
+            
+            Debug.Log($"${cameraDiff} ${cameraDiff2}");
             _partPlaceAreaN.SetKeyIcon(cameraDiff);
             _partPlaceAreaE.SetKeyIcon(cameraDiff.TurnRight());
             _partPlaceAreaW.SetKeyIcon(cameraDiff.TurnLeft());

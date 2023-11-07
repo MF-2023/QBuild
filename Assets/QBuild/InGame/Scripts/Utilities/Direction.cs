@@ -48,6 +48,19 @@ namespace QBuild.Utilities
         Left = 4,
     }
 
+    /// <summary>
+    /// DirectionFRBLの回転回数を表す値オブジェクト
+    /// </summary>
+    public struct ShiftDirectionTimes
+    {
+        public int times;
+
+        public ShiftDirectionTimes(int times)
+        {
+            this.times = times;
+        }
+    }
+
     public static class DirectionFRBLExtension
     {
         public static DirectionFRBL VectorToDirectionFRBL(Vector3 vector)
@@ -57,6 +70,7 @@ namespace QBuild.Utilities
             {
                 angle += 360;
             }
+
             var angleInt = (int) angle;
             var dir = angleInt switch
             {
@@ -66,16 +80,17 @@ namespace QBuild.Utilities
                 270 => DirectionFRBL.Right,
                 _ => DirectionFRBL.None
             };
-            
-            
+
+
             //前後45度以内なら方向を返す
             angle -= 45;
             if (angle < 0)
             {
                 angle += 360;
             }
+
             var index = Mathf.CeilToInt(angle / 90.0f);
-            
+
             var dir2 = index switch
             {
                 0 => DirectionFRBL.Forward,
@@ -85,9 +100,20 @@ namespace QBuild.Utilities
                 4 => DirectionFRBL.Forward,
                 _ => DirectionFRBL.None
             };
-            
+
             if (dir2 == DirectionFRBL.None) Debug.Log($"angle:{angle} angleInt:{angleInt} dir:{dir} vector:{vector}");
             return dir2;
+        }
+
+        public static DirectionFRBL Shift(this DirectionFRBL dir, ShiftDirectionTimes shift)
+        {
+            var result = dir;
+            for (var i = 0; i < shift.times; i++)
+            {
+                result = result.TurnRight();
+            }
+
+            return result;
         }
 
         public static Vector3 ToVector3(this DirectionFRBL dir)
@@ -125,7 +151,7 @@ namespace QBuild.Utilities
                 _ => throw new ArgumentOutOfRangeException(nameof(dir), dir, null)
             };
         }
-        
+
         public static DirectionFRBL Turn180(this DirectionFRBL dir)
         {
             return dir switch
@@ -136,6 +162,40 @@ namespace QBuild.Utilities
                 DirectionFRBL.Left => DirectionFRBL.Right,
                 _ => throw new ArgumentOutOfRangeException(nameof(dir), dir, null)
             };
+        }
+    }
+
+    public static class DirectionUtilities
+    {
+        public static ShiftDirectionTimes CalcShiftTimesDirectionFRBL(DirectionFRBL from, DirectionFRBL to)
+        {
+            var result = new ShiftDirectionTimes(0);
+            if (from == DirectionFRBL.None || to == DirectionFRBL.None)
+                throw new ArgumentException("DirectionFRBL.None is not allowed");
+
+            if (from == to) return result;
+            var dir = from;
+            while (dir != to)
+            {
+                dir = dir.TurnRight();
+                result.times++;
+            }
+
+            Debug.Log($"${from} ${to} times:${result.times}");
+            return result;
+        }
+
+        public static DirectionFRBL CalcDirectionFRBL(DirectionFRBL from, DirectionFRBL to)
+        {
+            if (from == DirectionFRBL.None || to == DirectionFRBL.None)
+                throw new ArgumentException("DirectionFRBL.None is not allowed");
+
+            var times = CalcShiftTimesDirectionFRBL(from, to);
+            var offsetTimes = CalcShiftTimesDirectionFRBL(to, DirectionFRBL.Forward);
+            times.times += offsetTimes.times;
+            var dir = to.Shift(times);
+
+            return dir;
         }
     }
 }

@@ -24,17 +24,35 @@ namespace QBuild.Part
             _meshFilter.sharedMesh = mesh;
             var tryPlaceInfo = new TryPlaceInfo(part, dir, connectPosition, multiplePartAreaMatrix);
 
-
             if (PlacePartService.TryPlacePartPosition(tryPlaceInfo, out var outPartPosition))
             {
-                
-                GetComponent<Renderer>().material.SetColor("_WireframeColor", Color.blue);
+                Debug.Log(connectPosition);
+                var contact = false;
+                foreach (var magnet in part.PartPrefab.OnGetMagnets())
+                {
+                    var position = outPartPosition.MultiplyPoint(magnet.Position);
+                    if (connectPosition != position)
+                    {
+                        var dirRay = magnet.Direction.ToVector3();
+                        dirRay = outPartPosition.rotation * dirRay;
+                        //positionをdirRayの向きに0.5だけずらした位置にRayを飛ばす
+                        var ray = new Ray(position + dirRay * 0.5f, dirRay.normalized * 0.2f);
+                        if (!Physics.Raycast(ray, out var hit, 1f, LayerMask.GetMask("Block"))) continue;
+                        var hitPart = hit.collider.GetComponentInParent<PartView>();
+                        if (hitPart == null) continue;
+                        contact = true;
+                        break;
+                    }
+                }
+
+                GetComponent<Renderer>().material.SetColor("_WireframeColor", contact ? Color.green : Color.blue);
             }
             else
             {
                 _state = PartPlaceAreaState.NotEnoughSpace;
                 GetComponent<Renderer>().material.SetColor("_WireframeColor", Color.red);
             }
+
             transform.position = outPartPosition.GetPosition();
             transform.rotation = outPartPosition.rotation;
             _keyIconSpriteRenderer.gameObject.SetActive(true);

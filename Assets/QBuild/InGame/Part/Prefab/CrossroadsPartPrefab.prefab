@@ -113,12 +113,16 @@ MonoBehaviour:
   _connectPoints:
   - _position: {x: 1.5, y: 0.0993, z: 0}
     _direction: 2
+    _canConnect: 1
   - _position: {x: 0, y: 0.0993, z: 1.5}
     _direction: 1
+    _canConnect: 1
   - _position: {x: 0, y: 0.0993, z: -1.5}
     _direction: 3
+    _canConnect: 1
   - _position: {x: -1.5, y: 0.0993, z: 0}
     _direction: 4
+    _canConnect: 1
 --- !u!1 &5536483855400818933
 GameObject:
   m_ObjectHideFlags: 0

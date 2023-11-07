@@ -61,12 +61,18 @@ namespace QBuild.Part
                 _connector = GetComponent<Connector>();
             }
             var partDir = Direction;
+            Debug.Log($"calc ${Direction} ${dir}");
+            var shiftedDir = DirectionUtilities.CalcDirectionFRBL(Direction, dir);
+
             while (partDir != DirectionFRBL.Forward)
             {
                 dir = dir.TurnRight();
                 partDir = partDir.TurnRight();
             }
-            _connector.SetCanConnect(dir, canConnect);
+            
+            Debug.Log($"${dir} ${shiftedDir}");
+
+            _connector.SetCanConnect(shiftedDir, canConnect);
         }
     }
 }

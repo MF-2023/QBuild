@@ -15,8 +15,8 @@ MonoBehaviour:
   _heightOffset:
     value: 6
   _distance:
-    value: 12
+    value: 15
   _angleOffset:
     value: 0
   _centerOffset:
-    value: {x: 0, y: 2, z: 0}
+    value: {x: 0.5, y: 2, z: 0}

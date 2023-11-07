@@ -28,5 +28,20 @@ MonoBehaviour:
       _probability: 1
     - _part: {fileID: 11400000, guid: 15a488299967d18448c61c8d394207dd, type: 2}
       _probability: 1
-  _partRandomPickObject: {fileID: 11400000, guid: 8ab0aef7a01fe5d489dabe2112944a93,
-    type: 2}
+  _partPickObject: {fileID: 11400000, guid: b2fa507fd65c58d44b8dc974e1396cdc, type: 2}
+  _runtimeParts:
+    _parts:
+    - _part: {fileID: 11400000, guid: cc954ed71113de548a5a55b654c272c9, type: 2}
+      _probability: 1
+    - _part: {fileID: 11400000, guid: 1b26cc72782671b459badba6e6b7b8da, type: 2}
+      _probability: 1
+    - _part: {fileID: 11400000, guid: 3db2b36416085204f84ebc82319c17ff, type: 2}
+      _probability: 1
+    - _part: {fileID: 11400000, guid: 03921000f50b29e4cb9f32132392d986, type: 2}
+      _probability: 1
+    - _part: {fileID: 11400000, guid: 739494dc193d9c1418b05ee5059665f8, type: 2}
+      _probability: 1
+    - _part: {fileID: 11400000, guid: 4dc884b2a148e734591234df877c7c29, type: 2}
+      _probability: 1
+    - _part: {fileID: 11400000, guid: 15a488299967d18448c61c8d394207dd, type: 2}
+      _probability: 1
