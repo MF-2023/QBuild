@@ -11,11 +11,12 @@ namespace QBuild.Gimmick
         [Tooltip("動かすギミック")] [SerializeField] private BaseGimmick _gimmick;
 
         [SerializeReference, SubclassSelector] private ITrigger _baseTrigger;
-        
-        
-        
-        public event Action<Collider> OnEnter;
-        public event Action<Collider> OnExit;
+
+
+        public event Action<BaseGimmick, Collider> OnEnter;
+        public event Action<BaseGimmick, Collider> OnExit;
+
+
         private void Awake()
         {
             if (_baseTrigger == null)
@@ -32,19 +33,18 @@ namespace QBuild.Gimmick
 
             _baseTrigger.OnActive += _gimmick.Active;
             _baseTrigger.OnDisable += _gimmick.Disable;
-            
+
             _baseTrigger.TriggerBind(this);
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            
-            OnEnter?.Invoke(other);
+            OnEnter?.Invoke(_gimmick, other);
         }
-        
+
         private void OnTriggerExit(Collider other)
         {
-            OnExit?.Invoke(other);
+            OnExit?.Invoke(_gimmick, other);
         }
     }
 }
