@@ -12,7 +12,8 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 4300000, guid: dd35072ee4ec23647a72883b3899a048, type: 2}
+      objectReference: {fileID: -2447776121362496397, guid: b48b9a215c687ba4d8d2f6cc80d7773b,
+        type: 3}
     - target: {fileID: 1684781335289003814, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
       propertyPath: m_Size.y
@@ -21,7 +22,7 @@ PrefabInstance:
     - target: {fileID: 1684781335289003814, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
       propertyPath: m_Size.z
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1684781335289003814, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
@@ -36,12 +37,12 @@ PrefabInstance:
     - target: {fileID: 1684781335289003814, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
       propertyPath: m_Center.y
-      value: -0.92
+      value: -1.9
       objectReference: {fileID: 0}
     - target: {fileID: 1684781335289003814, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
       propertyPath: m_Center.z
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1684781335289003814, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
@@ -126,17 +127,17 @@ PrefabInstance:
     - target: {fileID: 8324032287801331179, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
       propertyPath: _connectPoints.Array.data[0]._position.y
-      value: -0.825
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8324032287801331179, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
       propertyPath: _connectPoints.Array.data[0]._position.z
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8324032287801331179, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
       propertyPath: _connectPoints.Array.data[1]._position.y
-      value: 1
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 8324032287801331179, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
@@ -181,8 +182,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 2, z: 0.165}
-  m_Center: {x: 0, y: 0, z: 0.917}
+  m_Size: {x: 1, y: 2, z: 0.2}
+  m_Center: {x: 0, y: -1, z: 0.1}
 --- !u!64 &9223247452396803406
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -204,4 +205,4 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: dd35072ee4ec23647a72883b3899a048, type: 2}
+  m_Mesh: {fileID: -2447776121362496397, guid: b48b9a215c687ba4d8d2f6cc80d7773b, type: 3}
