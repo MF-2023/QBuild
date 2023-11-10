@@ -1,5 +1,9 @@
 using UnityEngine;
 using DG.Tweening;
+using System;
+using QBuild.Gimmick.Effector;
+using QBuild.Gimmick.TriggerPattern;
+using QBuild.Player.Controller;
 
 namespace QBuild.Gimmick
 {
@@ -10,19 +14,30 @@ namespace QBuild.Gimmick
         [SerializeField,Tooltip("中央ポイントが設定しない場合の中央の高さ")]      private float     _jumpHeight = 0;
         [SerializeField,Tooltip("目標ポイントに到着するまでの時間")]              private float     _time;
 
+        private PlayerController _playerController;
+
+        private void Start()
+        {
+            this.OnContacted(x =>
+            {
+                Debug.Log(("OnContacted"));
+                _playerController = x.Target.GetComponent<PlayerController>();
+            });
+        }
+
         public override void Active()
         {
             //プレイヤーを何かしらの方法で取得する
-            Transform HogePlayer = null;
+            Transform contactTran = _playerController.transform;
 
             //TODO::西田::プレイヤーのSimulationを切る
-            Vector3 startPosition = HogePlayer.position;
+            Vector3 startPosition = contactTran.position;
             Vector3 endPosition = _targetPoint.position;
             Vector3 centerPosition;
             if (_centerPoint != null) centerPosition = _centerPoint.position;
             else centerPosition = GetCenterPoint(startPosition, endPosition, _jumpHeight);
 
-            HogePlayer.DOLocalPath(
+            contactTran.DOLocalPath(
                 new[]
                 {
                     startPosition,
