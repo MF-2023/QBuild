@@ -28,7 +28,7 @@ MonoBehaviour:
       _probability: 1
     - _part: {fileID: 11400000, guid: 15a488299967d18448c61c8d394207dd, type: 2}
       _probability: 1
-  _partPickObject: {fileID: 11400000, guid: b2fa507fd65c58d44b8dc974e1396cdc, type: 2}
+  _partPickObject: {fileID: 11400000, guid: 6212166683363f841b20fa95a7f2b0e6, type: 2}
   _runtimeParts:
     _parts:
     - _part: {fileID: 11400000, guid: cc954ed71113de548a5a55b654c272c9, type: 2}

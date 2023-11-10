@@ -52,7 +52,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0.5, y: 0.5, z: 0.5}
+  m_Center: {x: 0, y: -0.5, z: 0}
 --- !u!1 &8254369280360393330
 GameObject:
   m_ObjectHideFlags: 0
@@ -109,7 +109,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: f0750590dd1901a469e43a5067d82ee7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -138,7 +138,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8254369280360393330}
-  m_Mesh: {fileID: 4300000, guid: 9d3a6514080f30040be46860ec732868, type: 2}
+  m_Mesh: {fileID: 4068373912626513877, guid: 0fbc0c9fd13967d44b103a19ceaa8f3a, type: 3}
 --- !u!114 &5575930999254659062
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -164,11 +164,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _connectPoints:
-  - _position: {x: 0.5, y: 1, z: 0}
+  - _position: {x: 0, y: 0, z: -0.5}
     _direction: 3
-  - _position: {x: 0, y: 1, z: 0.5}
+    _canConnect: 1
+  - _position: {x: -0.5, y: 0, z: 0}
     _direction: 4
-  - _position: {x: 1, y: 1, z: 0.5}
+    _canConnect: 1
+  - _position: {x: 0.5, y: 0, z: 0}
     _direction: 2
-  - _position: {x: 0.5, y: 1, z: 1}
+    _canConnect: 1
+  - _position: {x: 0, y: 0, z: 0.5}
     _direction: 1
+    _canConnect: 1
