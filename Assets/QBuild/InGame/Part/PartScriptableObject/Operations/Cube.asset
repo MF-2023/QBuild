@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Cube
   m_EditorClassIdentifier: 
   _parts:
+  - {fileID: 11400000, guid: 3db2b36416085204f84ebc82319c17ff, type: 2}
   - {fileID: 11400000, guid: 03921000f50b29e4cb9f32132392d986, type: 2}
   - {fileID: 11400000, guid: 03921000f50b29e4cb9f32132392d986, type: 2}
-  - {fileID: 11400000, guid: 03921000f50b29e4cb9f32132392d986, type: 2}
-  - {fileID: 11400000, guid: 03921000f50b29e4cb9f32132392d986, type: 2}
+  - {fileID: 11400000, guid: 3db2b36416085204f84ebc82319c17ff, type: 2}
   - {fileID: 11400000, guid: 03921000f50b29e4cb9f32132392d986, type: 2}
   _currentPartIndex: 2
