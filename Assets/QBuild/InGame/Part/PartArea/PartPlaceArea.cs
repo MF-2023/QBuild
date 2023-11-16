@@ -1,6 +1,4 @@
-﻿using System;
-using QBuild.Behavior;
-using QBuild.Utilities;
+﻿using QBuild.Utilities;
 using UnityEngine;
 
 namespace QBuild.Part
@@ -26,7 +24,6 @@ namespace QBuild.Part
 
             if (PlacePartService.TryPlacePartPosition(tryPlaceInfo, out var outPartPosition))
             {
-                Debug.Log(connectPosition);
                 var contact = false;
                 foreach (var magnet in part.PartPrefab.OnGetMagnets())
                 {
