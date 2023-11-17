@@ -473,6 +473,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: chatacter_walk
       objectReference: {fileID: 0}
+    - target: {fileID: 1244383871746854028, guid: 0c1d0d53ba008c246a5fadacd9145c5a,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 9500000, guid: 317a56890b5c8e74ab1d492a2c7fb608, type: 3}
     - {fileID: 5866666021909216657, guid: 0c1d0d53ba008c246a5fadacd9145c5a, type: 3}
