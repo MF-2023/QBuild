@@ -11,7 +11,10 @@ namespace QBuild.LevelEditor
 {
     public class LevelEditorWindow : EditorWindow
     {
+        private List<EditorPage> _pages;
+        private int _tabIndex = -1;
         private Toolbar _toolbar;
+
 
         [MenuItem("Window/LevelEditorWindow")]
         private static void Init()
@@ -22,25 +25,74 @@ namespace QBuild.LevelEditor
 
         private void OnEnable()
         {
-            _toolbar = new Toolbar();
+            _pages = new List<EditorPage>()
+            {
+                new AddGimmick()
+            };
+            _toolbar = new Toolbar(_pages.ConvertAll(p => p.Title).ToArray());
             _toolbar.OnTabChanged += OnTabChanged;
         }
 
         private void OnGUI()
         {
             _toolbar.OnGUI();
+            if (_tabIndex < 0) _pages[_tabIndex].OnGUI();
         }
-        
+
         private void OnTabChanged(int tabIndex)
         {
         }
 
+        private abstract class EditorPage
+        {
+            public virtual string Title { get; }
+
+            
+            public abstract void Init();
+            public abstract void OnGUI();
+        }
+
+        private class AddGimmick : EditorPage
+        {
+            public override string Title => "ギミック追加";
+
+            public override void Init()
+            {
+            }
+
+            public override void OnGUI()
+            {
+                GUILayout.Label(Title);
+            }
+        }
+
+        private class AddPart : EditorPage
+        {
+            public override string Title => "パーツ追加";
+
+            public override void Init()
+            {
+                
+            }
+
+            public override void OnGUI()
+            {
+                GUILayout.Label(Title);
+            }
+        }
+
         private class Toolbar
         {
-            private readonly string[] _tabToggles = {"ギミック追加", "パーツ追加"};
+            private readonly string[] _tabToggles;
             private int _tabIndex;
 
             public event Action<int> OnTabChanged;
+
+
+            public Toolbar(string[] tabToggles)
+            {
+                _tabToggles = tabToggles;
+            }
 
             public void OnGUI()
             {
