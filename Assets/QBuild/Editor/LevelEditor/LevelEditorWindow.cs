@@ -120,6 +120,12 @@ namespace QBuild.LevelEditor
                 e.Q<Button>().style.display = DisplayStyle.Flex;
                 e.Q<Button>().clickable = new Clickable(() =>
                 {
+                    var stage = PrefabStageUtility.GetCurrentPrefabStage();
+                    if(stage == null)
+                    {
+                        Debug.LogError("StageのPrefabが開かれていません");
+                        return;
+                    }
                     var stageObject = FindObjectOfType<StageBehavior>();
                     var p = PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(stageObject);
                     var parent = PrefabUtility.LoadPrefabContents(p);
