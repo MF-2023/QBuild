@@ -6,13 +6,7 @@ namespace QBuild.Stage
     {
         private void Awake()
         {
-            if (transform.position.x % 1 != 0 || transform.position.y % 1 != 0 || transform.position.z % 1 != 0)
-            {
-                {
-                    transform.position = new Vector3(Mathf.Round(transform.position.x), Mathf.Round(transform.position.y),
-                        Mathf.Round(transform.position.z));
-                }
-            }
+
         }
 
         public Vector3 GetSpawnPoint()

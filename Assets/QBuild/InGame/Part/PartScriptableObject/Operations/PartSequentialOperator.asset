@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: PartSequentialOperator
   m_EditorClassIdentifier: 
   _parts:
-  - {fileID: 11400000, guid: cc954ed71113de548a5a55b654c272c9, type: 2}
+  - {fileID: 11400000, guid: 15a488299967d18448c61c8d394207dd, type: 2}
   - {fileID: 11400000, guid: 739494dc193d9c1418b05ee5059665f8, type: 2}
   - {fileID: 11400000, guid: 3db2b36416085204f84ebc82319c17ff, type: 2}
   - {fileID: 11400000, guid: 1b26cc72782671b459badba6e6b7b8da, type: 2}
+  - {fileID: 11400000, guid: 15a488299967d18448c61c8d394207dd, type: 2}
   _currentPartIndex: 0

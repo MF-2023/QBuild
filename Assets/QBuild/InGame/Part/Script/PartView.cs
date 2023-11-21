@@ -14,6 +14,14 @@ namespace QBuild.Part
         public DirectionFRBL Direction { get; set; } = DirectionFRBL.Forward;
 
 
+        public void Awake()
+        {
+            var r = transform.localRotation;
+            var e = r.eulerAngles;
+            Direction = DirectionFRBLExtension.VectorToDirectionFRBL(e);
+            Debug.Log(Direction);
+        }
+
         public IEnumerable<Vector3> OnGetConnectPoints()
         {
             if (_connector == null)
@@ -24,7 +32,7 @@ namespace QBuild.Part
             return _connector.ConnectPoints();
         }
 
-        public IEnumerable<ConnectPoint.Magnet> OnGetMagnets()
+        public IEnumerable<PartConnectPoint.Magnet> OnGetMagnets()
         {
             if (_connector == null)
             {
@@ -60,19 +68,16 @@ namespace QBuild.Part
             {
                 _connector = GetComponent<Connector>();
             }
-            var partDir = Direction;
-            Debug.Log($"calc ${Direction} ${dir}");
+
             var shiftedDir = DirectionUtilities.CalcDirectionFRBL(Direction, dir);
-
-            while (partDir != DirectionFRBL.Forward)
-            {
-                dir = dir.TurnRight();
-                partDir = partDir.TurnRight();
-            }
-            
-            Debug.Log($"${dir} ${shiftedDir}");
-
             _connector.SetCanConnect(shiftedDir, canConnect);
+        }
+
+        public void Turn(ShiftDirectionTimes times)
+        {
+            var turnDirection = Direction.Shift(times);
+            Direction = turnDirection;
+            transform.Rotate(Vector3.up, times.times * 90);
         }
     }
 }
