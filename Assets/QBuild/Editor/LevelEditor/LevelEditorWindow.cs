@@ -37,7 +37,7 @@ namespace QBuild.LevelEditor
             public GameObject prefab;
         }
 
-        [MenuItem("Window/LevelEditorWindow")]
+        [MenuItem("Tools/QBuild/LevelEditorWindow")]
         private static void Init()
         {
             var window = (LevelEditorWindow)EditorWindow.GetWindow(typeof(LevelEditorWindow));
