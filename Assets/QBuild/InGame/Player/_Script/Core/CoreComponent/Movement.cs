@@ -1,19 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine.Utility;
 using UnityEngine;
 
 namespace QBuild.Player.Core
 {
-    public class Movement : CoreComponent , IMover
+    public class Movement : CoreComponent
     {
         public Vector3 currentVelocity { get; private set; }
+        public Vector3 CurrentMoverVelocity { get; set; }
+        public bool OnMover;
         public bool canSetVelocity;
 
         private Vector3         _workspace;
         private Rigidbody       _myRB;
-
-        public Vector3 CurrentMoverVelo { get; set; }
-        public bool OnMover { get; set; }
         
         protected override void Awake()
         {
@@ -22,15 +22,22 @@ namespace QBuild.Player.Core
             if (_myRB == null) UnityEngine.Debug.LogError(transform.root.name + "Ç…RigidBodyÇ™ë∂ç›ÇµÇ‹ÇπÇÒÅB");
             _workspace = Vector3.zero;
             canSetVelocity = true;
+            OnMover = false;
         }
 
-        public override void LogicUpdate()
+        public override void CompLogicUpdate()
         {
+            UnityEngine.Debug.Log(_myRB.velocity);
+
             currentVelocity = _myRB.velocity;
-            
+        }
+
+        public override void CompFixedUpdate()
+        {
+            //currentVelocity = _myRB.velocity;
             if (OnMover)
             {
-                _myRB.velocity += CurrentMoverVelo;
+                _myRB.velocity = CurrentMoverVelocity;
             }
         }
 
@@ -79,7 +86,7 @@ namespace QBuild.Player.Core
             
             if (OnMover)
             {
-                _myRB.velocity += CurrentMoverVelo;
+                _myRB.velocity += CurrentMoverVelocity;
             }
         }
 

@@ -7,7 +7,10 @@ namespace  QBuild.Player
 {
     public interface IMover
     {
-        public Vector3 CurrentMoverVelo { get; set; }
-        public bool OnMover { get; set; }
+        
+        public void OnMoverEnter() {}
+
+        public void OnMoverExit() {}
+        public void SetMoverVelocity(Vector3 velocity){}
     }
 }
