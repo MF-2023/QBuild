@@ -28,7 +28,7 @@ MonoBehaviour:
       _probability: 1
     - _part: {fileID: 11400000, guid: 15a488299967d18448c61c8d394207dd, type: 2}
       _probability: 1
-  _partPickObject: {fileID: 11400000, guid: 6212166683363f841b20fa95a7f2b0e6, type: 2}
+  _partPickObject: {fileID: 11400000, guid: 8ab0aef7a01fe5d489dabe2112944a93, type: 2}
   _runtimeParts:
     _parts:
     - _part: {fileID: 11400000, guid: cc954ed71113de548a5a55b654c272c9, type: 2}
@@ -44,4 +44,4 @@ MonoBehaviour:
     - _part: {fileID: 11400000, guid: 4dc884b2a148e734591234df877c7c29, type: 2}
       _probability: 1
     - _part: {fileID: 11400000, guid: 15a488299967d18448c61c8d394207dd, type: 2}
-      _probability: 1
+      _probability: 2

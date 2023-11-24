@@ -32,7 +32,7 @@ namespace QBuild.Part
             return _connector.ConnectPoints();
         }
 
-        public IEnumerable<ConnectPoint.Magnet> OnGetMagnets()
+        public IEnumerable<PartConnectPoint.Magnet> OnGetMagnets()
         {
             if (_connector == null)
             {

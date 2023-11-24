@@ -124,7 +124,7 @@ namespace QBuild.Part
         private void OnThePartUpdate()
         {
             var hit = new RaycastHit[1];
-            var size = Physics.RaycastNonAlloc(transform.position, Vector3.down, hit, 1f, LayerMask.GetMask("Block"));
+            var size = Physics.RaycastNonAlloc(transform.position + Vector3.up * 0.5f, Vector3.down, hit, 1.5f, LayerMask.GetMask("Block"));
             if (size > 0)
             {
                 CurrentOnThePart = hit[0].collider.GetComponentInParent<PartView>();

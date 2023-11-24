@@ -7,7 +7,7 @@ using UnityEngine;
 namespace QBuild.Part
 {
     [Serializable]
-    public class ConnectPoint
+    public class PartConnectPoint
     {
         [SerializeField] private Vector3 _position;
         [SerializeField] private DirectionFRBL _direction;
@@ -31,13 +31,13 @@ namespace QBuild.Part
 
     public class Connector : MonoBehaviour
     {
-        [SerializeField] private List<ConnectPoint> _connectPoints;
+        [SerializeField] private List<PartConnectPoint> _connectPoints;
 
         public IEnumerable<Vector3> ConnectPoints() => _connectPoints.Select(p => p.Position);
 
-        public IEnumerable<ConnectPoint.Magnet> ConnectMagnet()
+        public IEnumerable<PartConnectPoint.Magnet> ConnectMagnet()
         {
-            return _connectPoints.Select(p => new ConnectPoint.Magnet
+            return _connectPoints.Select(p => new PartConnectPoint.Magnet
             {
                 Position = p.Position,
                 Direction = p.Direction,
