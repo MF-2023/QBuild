@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace QBuild.Player.Core
 {
-    public class Movement : CoreComponent
+    public class Movement : CoreComponent , IMover
     {
         public Vector3 currentVelocity { get; private set; }
         public bool canSetVelocity;
@@ -12,6 +12,9 @@ namespace QBuild.Player.Core
         private Vector3         _workspace;
         private Rigidbody       _myRB;
 
+        public Vector3 CurrentMoverVelo { get; set; }
+        public bool OnMover { get; set; }
+        
         protected override void Awake()
         {
             base.Awake();
@@ -24,6 +27,11 @@ namespace QBuild.Player.Core
         public override void LogicUpdate()
         {
             currentVelocity = _myRB.velocity;
+            
+            if (OnMover)
+            {
+                _myRB.velocity += CurrentMoverVelo;
+            }
         }
 
         #region SetFunction
@@ -66,9 +74,13 @@ namespace QBuild.Player.Core
 
         private void SetFinalVelocity()
         {
-            if (!canSetVelocity) return;
             _myRB.velocity = _workspace;
             currentVelocity = _workspace;
+            
+            if (OnMover)
+            {
+                _myRB.velocity += CurrentMoverVelo;
+            }
         }
 
         private void AddForceFinalVelocity(ForceMode mode)
@@ -84,14 +96,15 @@ namespace QBuild.Player.Core
         {
             if(isLock)
             {
-                _myRB.constraints = RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotation;
+                //_myRB.constraints = RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotation;
             }
             else
             {
-                _myRB.constraints = RigidbodyConstraints.FreezeRotation;
+                //_myRB.constraints = RigidbodyConstraints.FreezeRotation;
             }
 
         }
         #endregion
+
     }
 }
