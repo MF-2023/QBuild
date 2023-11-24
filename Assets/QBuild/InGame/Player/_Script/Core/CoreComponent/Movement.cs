@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine.Utility;
 using UnityEngine;
 
 namespace QBuild.Player.Core
@@ -7,11 +8,13 @@ namespace QBuild.Player.Core
     public class Movement : CoreComponent
     {
         public Vector3 currentVelocity { get; private set; }
+        public Vector3 CurrentMoverVelocity { get; set; }
+        public bool OnMover;
         public bool canSetVelocity;
 
         private Vector3         _workspace;
         private Rigidbody       _myRB;
-
+        
         protected override void Awake()
         {
             base.Awake();
@@ -19,11 +22,23 @@ namespace QBuild.Player.Core
             if (_myRB == null) UnityEngine.Debug.LogError(transform.root.name + "Ç…RigidBodyÇ™ë∂ç›ÇµÇ‹ÇπÇÒÅB");
             _workspace = Vector3.zero;
             canSetVelocity = true;
+            OnMover = false;
         }
 
-        public override void LogicUpdate()
+        public override void CompLogicUpdate()
         {
+            UnityEngine.Debug.Log(_myRB.velocity);
+
             currentVelocity = _myRB.velocity;
+        }
+
+        public override void CompFixedUpdate()
+        {
+            //currentVelocity = _myRB.velocity;
+            if (OnMover)
+            {
+                _myRB.velocity = CurrentMoverVelocity;
+            }
         }
 
         #region SetFunction
@@ -66,9 +81,13 @@ namespace QBuild.Player.Core
 
         private void SetFinalVelocity()
         {
-            if (!canSetVelocity) return;
             _myRB.velocity = _workspace;
             currentVelocity = _workspace;
+            
+            if (OnMover)
+            {
+                _myRB.velocity += CurrentMoverVelocity;
+            }
         }
 
         private void AddForceFinalVelocity(ForceMode mode)
@@ -84,14 +103,15 @@ namespace QBuild.Player.Core
         {
             if(isLock)
             {
-                _myRB.constraints = RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotation;
+                //_myRB.constraints = RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotation;
             }
             else
             {
-                _myRB.constraints = RigidbodyConstraints.FreezeRotation;
+                //_myRB.constraints = RigidbodyConstraints.FreezeRotation;
             }
 
         }
         #endregion
+
     }
 }

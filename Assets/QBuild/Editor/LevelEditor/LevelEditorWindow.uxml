@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/QBuild/Editor/LevelEditor/LevelEditorWindow.uss?fileID=7433441132597879392&amp;guid=099b1eaf2ebf4360a0006bf06a3d2954&amp;type=3#LevelEditorWindow" />
+    <Style src="project://database/Assets/QBuild/Editor/LevelEditor/ElementSelect.uss?fileID=7433441132597879392&amp;guid=0fbbb27129eac284d9d63bf027fb2823&amp;type=3#ElementSelect" />
+    <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row;">
+        <ui:TreeView view-data-key="unity-tree-view" focusable="true" name="LeftContainer" style="border-left-color: rgb(89, 89, 89); border-right-color: rgb(89, 89, 89); border-top-color: rgb(89, 89, 89); border-bottom-color: rgb(89, 89, 89); border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 1px;" />
+    </ui:VisualElement>
+</ui:UXML>
