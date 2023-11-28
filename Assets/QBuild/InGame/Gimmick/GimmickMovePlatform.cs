@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using QBuild.Player;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 namespace QBuild.Gimmick
@@ -12,15 +13,30 @@ namespace QBuild.Gimmick
         [SerializeField, Tooltip("動く距離")] private float _moveTransitionPeriod = 10.0f;
         [SerializeField, Tooltip("動く速度")] private float _moveTransitionSpeed = 5.0f;
         [SerializeField] private bool _isMove = true;
-
+        private GimmickMovePlatformHelper _helper;
+        
         private Vector3 _initPosition;
         private Vector3 _lastPosition;
         private bool _reverse;
 
         private List<IMover> _movers = new List<IMover>();
 
+        private void OnEnable()
+        {
+            _helper.AddMoverEvent += AddMover;
+            _helper.RemoveMoverEvent += RemoveMover;
+        }
+
+        private void OnDisable()
+        {
+            _helper.AddMoverEvent -= AddMover;
+            _helper.RemoveMoverEvent -= RemoveMover;
+        }
+
         private void Awake()
         {
+            _helper = GetComponentInChildren<GimmickMovePlatformHelper>();
+            if (_helper == null) Debug.LogError($"{transform.name} : MovePlatformHelperが子オブジェクトに存在しません。");
             _reverse = false;
             _initPosition = transform.position;
             _lastPosition = _initPosition;
@@ -65,32 +81,28 @@ namespace QBuild.Gimmick
 
         private void OnDrawGizmosSelected()
         {
-            /*
+            var reset = false;
+            Vector3 _targetPosition = _moveTransitionAxis.normalized * _moveTransitionPeriod * 2.0f;
+            if (_initPosition == Vector3.zero)
+            {
+                _initPosition = transform.position;
+                reset = true;
+            }
+
             Gizmos.color = new Color(0, 255, 0, 0.5f);
             Gizmos.DrawSphere(_initPosition, 0.2f);
             Gizmos.DrawSphere(_targetPosition, 0.2f);
             Gizmos.DrawLine(_initPosition, _targetPosition);
-            */
-        }
 
-        private void OnCollisionEnter(Collision other)
-        {
-            if (other.transform.TryGetComponent<PlayerAdapter>(out PlayerAdapter adapter))
+            if (reset)
             {
-                adapter.OnMoverEnter();
-                _movers.Add(adapter);
+                _initPosition = Vector3.zero;
             }
         }
-
-        private void OnCollisionExit(Collision other)
-        {
-            if (other.transform.TryGetComponent<PlayerAdapter>(out PlayerAdapter adapter))
-            {
-                adapter.OnMoverExit();
-                _movers.Remove(adapter);
-            }
-        }
-
+        
+        public void AddMover(IMover mover){_movers.Add(mover);}
+        public void RemoveMover(IMover mover){_movers.Remove(mover);}
+        
         public override void Active()
         {
             //_isMove = true;
