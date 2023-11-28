@@ -17,7 +17,7 @@ namespace QBuild.Gimmick
         
         private Vector3 _initPosition;
         private Vector3 _lastPosition;
-        private bool _reverse;
+        private float _time;
 
         private List<IMover> _movers = new List<IMover>();
 
@@ -37,9 +37,9 @@ namespace QBuild.Gimmick
         {
             _helper = GetComponentInChildren<GimmickMovePlatformHelper>();
             if (_helper == null) Debug.LogError($"{transform.name} : MovePlatformHelperが子オブジェクトに存在しません。");
-            _reverse = false;
             _initPosition = transform.position;
             _lastPosition = _initPosition;
+            _time = 0.0f;
         }
 
 
@@ -61,7 +61,7 @@ namespace QBuild.Gimmick
             }
             Vector3 moveAxis = _moveTransitionAxis.normalized * _moveTransitionPeriod;
             Vector3 goalPosition = (_initPosition + moveAxis +
-                                   (moveAxis * Mathf.Sin(Time.time * _moveTransitionSpeed)));
+                                   (moveAxis * Mathf.Sin(_time * _moveTransitionSpeed)));
             transform.position = goalPosition;
             
             Vector3 moveAmount = goalPosition - _lastPosition;
@@ -71,6 +71,8 @@ namespace QBuild.Gimmick
             {
                 mover.AddMoverPosition(moveAmount);
             }
+            
+            _time += Time.deltaTime;
         }
 
         private void OnValidate()
@@ -105,12 +107,12 @@ namespace QBuild.Gimmick
         
         public override void Active()
         {
-            //_isMove = true;
+            _isMove = true;
         }
 
         public override void Disable()
         {
-            //_isMove = false;
+            _isMove = false;
         }
     }
 }
