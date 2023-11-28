@@ -12,7 +12,7 @@ namespace  QBuild.Gimmick
         public Action<IMover> RemoveMoverEvent;
         private void OnTriggerEnter(Collider other)
         {
-            if (other.transform.TryGetComponent<PlayerAdapter>(out PlayerAdapter adapter))
+            if (other.transform.TryGetComponent<IMover>(out IMover adapter))
             {
                 adapter.OnMoverEnter();
                 AddMoverEvent?.Invoke(adapter);
@@ -21,7 +21,7 @@ namespace  QBuild.Gimmick
 
         private void OnTriggerExit(Collider other)
         {
-            if (other.transform.TryGetComponent<PlayerAdapter>(out PlayerAdapter adapter))
+            if (other.transform.TryGetComponent<IMover>(out IMover adapter))
             {
                 adapter.OnMoverExit();
                 RemoveMoverEvent?.Invoke(adapter);
