@@ -37,5 +37,10 @@ namespace QBuild.Player
             _currentMoverVelo = velocity;
             _movement.CurrentMoverVelocity = _currentMoverVelo;
         }
+
+        public void AddMoverPosition(Vector3 addPos)
+        {
+            transform.position += addPos;
+        }
     }
 }

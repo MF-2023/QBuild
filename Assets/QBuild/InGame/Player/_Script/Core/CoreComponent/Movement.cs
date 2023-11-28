@@ -27,8 +27,6 @@ namespace QBuild.Player.Core
 
         public override void CompLogicUpdate()
         {
-            UnityEngine.Debug.Log(_myRB.velocity);
-
             currentVelocity = _myRB.velocity;
         }
 
