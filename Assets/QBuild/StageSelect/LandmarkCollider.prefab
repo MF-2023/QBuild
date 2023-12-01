@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5008206492256216076
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8749393653794203665}
+  - component: {fileID: 7079183517945660785}
+  - component: {fileID: 5621023322972211745}
+  - component: {fileID: 1521600148028196081}
+  m_Layer: 0
+  m_Name: LandmarkCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8749393653794203665
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5008206492256216076}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7079183517945660785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5008206492256216076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 048b7591792da1c49b03eb1f621b24b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _landmarkInformationScriptable: {fileID: 11400000, guid: d0ab9f7f398b1524d8e13fcf640f8c57,
+    type: 2}
+--- !u!114 &5621023322972211745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5008206492256216076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f584ec461698c349ad44d7c40108df9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _colliderSize: 2
+--- !u!114 &1521600148028196081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5008206492256216076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e8559bdacc78474db8a834887a497cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _landmarkImageHeight: 3
+  _landmarkImagePrefab: {fileID: 1312761718508966886, guid: 588e1c95662c8d54ca5a389420f49581,
+    type: 3}
+  _popUpPower: 0.05
+  _popUpTime: 0.5
