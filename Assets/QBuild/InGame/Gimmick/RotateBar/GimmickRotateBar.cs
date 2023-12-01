@@ -20,6 +20,15 @@ namespace QBuild.Gimmick
         [Tooltip("オン：右回転、オフ：左回転")]
         [SerializeField] private bool _isReverse;
         
+        enum Direction
+        {
+            YAxis,
+            XAxis,
+            ZAxis,
+        }
+        [Tooltip("回転軸")]
+        [SerializeField] private Direction _direction;
+        
         public override void Active()
         {
             switch (_actionType)
@@ -31,8 +40,6 @@ namespace QBuild.Gimmick
                     break;
                 case BarActionType.ReverseSwitch:
                     SwitchedReverse();
-                    break;
-                default:
                     break;
             }
         }

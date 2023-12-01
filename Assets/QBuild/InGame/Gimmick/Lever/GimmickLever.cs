@@ -7,9 +7,10 @@ namespace QBuild.Gimmick
     {
         
         [SerializeField,Tooltip("レバーがアクティブになったときのイベント")]   private UnityEvent _ActiveLever;
-        
+        [SerializeField] private SimpleAnimator _animation;
         public override void Active()
         {
+            _animation.graph.Play();
             _ActiveLever?.Invoke();
         }
 

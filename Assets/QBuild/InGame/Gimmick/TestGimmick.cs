@@ -29,5 +29,10 @@ namespace QBuild.Gimmick
         {
             Debug.Log("Disable");
         }
+
+        public void Test()
+        {
+            Debug.Log("Test");
+        }
     }
 }
