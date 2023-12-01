@@ -11,11 +11,13 @@ namespace QBuild.GameCycle.Title
         [SerializeField] private GameObject _pressPushButtonText = null;
         [SerializeField] private GameObject _buttons = null;
         [SerializeField] private Popup _optionPopup = null;
+        [SerializeField] private FadeInOut _fadeInOut = null;
         
         private void Start()
         {
             ShowPressPushButtonText();
             _optionPopup.gameObject.SetActive(false);
+            FadeIn();
         }
         
         public void ShowButtons()
@@ -39,6 +41,18 @@ namespace QBuild.GameCycle.Title
         public void HideOptionPopup()
         {
             _optionPopup.HidePopup(() => _optionPopup.gameObject.SetActive(false));
+        }
+
+        public void FadeIn()
+        {
+            _fadeInOut.gameObject.SetActive(true);
+            _fadeInOut.FadeIn(() => _fadeInOut.gameObject.SetActive(false));
+        }
+
+        public void FadeOut()
+        {
+            _fadeInOut.gameObject.SetActive(true);
+            _fadeInOut.FadeOut();
         }
     }
 }
