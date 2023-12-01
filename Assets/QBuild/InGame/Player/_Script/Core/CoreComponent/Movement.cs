@@ -14,6 +14,7 @@ namespace QBuild.Player.Core
 
         private Vector3         _workspace;
         private Rigidbody       _myRB;
+        private PhysicMaterial _myPM;
         
         protected override void Awake()
         {
@@ -108,6 +109,28 @@ namespace QBuild.Player.Core
                 //_myRB.constraints = RigidbodyConstraints.FreezeRotation;
             }
 
+            SetPhysicMaterial(isLock);
+        }
+
+        public void SetPhysicMaterial(PhysicMaterial pm) { _myPM = pm;}
+
+        /// <summary>
+        /// ääÇËÇ‚Ç∑Ç≥ÇïœçXÇ∑ÇÈ
+        /// </summary>
+        /// <param name="flg">TRUE : ääÇÁÇ»Ç¢ FALSE : ääÇÈ</param>
+        private void SetPhysicMaterial(bool flg)
+        {
+            if (_myPM == null) return;
+            if (flg)
+            {
+                _myPM.dynamicFriction = 1.0f;
+                _myPM.frictionCombine = PhysicMaterialCombine.Maximum;
+            }
+            else
+            {
+                _myPM.dynamicFriction = 0.0f;
+                _myPM.frictionCombine = PhysicMaterialCombine.Minimum;
+            }
         }
         #endregion
 

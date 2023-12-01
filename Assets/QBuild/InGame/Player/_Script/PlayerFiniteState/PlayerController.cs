@@ -1,4 +1,5 @@
 using System;
+using QBuild.Player.Core;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static UnityEditor.PlayerSettings;
@@ -18,13 +19,13 @@ namespace QBuild.Player.Controller
         private PlayerStateController _StateController;
         private PlayerAnimationController _AnimationController;
         private Core.Core _core;
+        private Movement _movement;
         public Core.Core Core
         {
             get { return _core; }
         }
 
         private Vector3Int currentPosition;
-
         public event Action<Vector3> OnChangeGridPosition;
         public event Func<Vector3Int, bool> OnCheckBlock;
         #endregion
@@ -46,6 +47,13 @@ namespace QBuild.Player.Controller
             _StateController.OnCheckBlock += CheckGround;
             _StateController.OnCheckCanClimbBlock += CheckCanClimbBlock;
             currentPosition = GetPlayerGridPosition();
+
+            TryGetComponent<Collider>(out Collider coll);
+            _movement = _core.GetCoreComponent<Movement>();
+            if(_movement != null && coll != null)
+            {
+                _movement.SetPhysicMaterial(coll.material);
+            }
         }
 
         private void Update()
