@@ -12,12 +12,14 @@ namespace  QBuild.GameCycle
         
         public void ShowPopup()
         {
+            _popupWindow.localScale = Vector3.zero;
             _popupWindow.DOScale(1.0f,_popupShowTime).SetEase(Ease.Linear);
         }
 
-        public void HidePopup(TweenCallback endEvent)
+        public void HidePopup()
         {
-            _popupWindow.DOScale(0.0f,_popupShowTime).SetEase(Ease.Linear).OnComplete(endEvent);
+            _popupWindow.DOScale(0.0f, _popupShowTime).SetEase(Ease.Linear)
+                .OnComplete(() => this.gameObject.SetActive(false));
         }
     }
 }

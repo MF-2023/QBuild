@@ -38,11 +38,6 @@ namespace QBuild.GameCycle.Title
             _optionPopup.ShowPopup();
         }
 
-        public void HideOptionPopup()
-        {
-            _optionPopup.HidePopup(() => _optionPopup.gameObject.SetActive(false));
-        }
-
         public void FadeIn()
         {
             _fadeInOut.gameObject.SetActive(true);
