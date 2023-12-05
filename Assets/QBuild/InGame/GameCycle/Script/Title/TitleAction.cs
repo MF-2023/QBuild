@@ -1,13 +1,16 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
+using QBuild.Scene;
+using UnityEngine.Serialization;
 
 namespace QBuild.GameCycle.Title
 {
     public class TitleAction : MonoBehaviour
     {
+        [Header("シーン管理")]
+        [SerializeField] private SceneManagerSO _sceneManagerSO = null;
+        [FormerlySerializedAs("nextScene")] [SerializeField] private SelectScene _nextScene = SelectScene.StageSelect;
+        
+        [Header("タイトルシーン管理")]
         [SerializeField] private GameObject _pressPushButtonText = null;
         [SerializeField] private GameObject _buttons = null;
         [SerializeField] private Popup _optionPopup = null;
@@ -48,6 +51,12 @@ namespace QBuild.GameCycle.Title
         {
             _fadeInOut.gameObject.SetActive(true);
             _fadeInOut.FadeOut();
+        }
+
+        public void SceneChangeFadeOut()
+        {
+            _fadeInOut.gameObject.SetActive(true);
+            _fadeInOut.FadeOut(() => _sceneManagerSO.ChangeScene(_nextScene));
         }
     }
 }
