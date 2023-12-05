@@ -8,6 +8,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/QBuild/InGame/QBuildTestScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/QBuild/InGame/GameCycle/Scene/StageSelect.unity
+    guid: fd567185199038d49a52fe29e7f0c6da
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 9dee5788fa0cfe240bf3c29e605fc8f4,
       type: 2}
