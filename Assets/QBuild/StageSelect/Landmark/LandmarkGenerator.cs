@@ -27,7 +27,7 @@ namespace QBuild.StageSelect.Landmark
             pos.y += _landmarkImageHeight;
             _landmarkImage = Instantiate(_landmarkImagePrefab, pos, Quaternion.identity, tran);
             _landmarkImage.SetActive(false);
-            FadeAnimations(0.0f,0.0f);
+            FadeAnimations(0.0f, 0.0f);
 
             if (!TryGetComponent(out LandmarkInformation landmarkInformation))
             {
@@ -41,40 +41,60 @@ namespace QBuild.StageSelect.Landmark
                 return;
             }
 
+            //Set SaveData Sample
+            /*
+            {
+                var landmarkInformationScriptable = landmarkInformation._landmarkInformationScriptable;
+                var saveData = new LandmarkInformationModel
+                {
+                    _isClear = true,
+                    _getCrystalNum = 2,
+                };
+                SaveDataController.SetSaveDataFromLandmark(landmarkInformationScriptable, saveData);
+            }
+            */
+
             //Set LandmarkInformation
-            var scriptableObject = landmarkInformation._landmarkInformationScriptable;
-            landmarkInformationBinder.SetStageName(scriptableObject._stageName);
-            landmarkInformationBinder.SetStageImage(scriptableObject._stageImage);
-            landmarkInformationBinder.SetDifficultyImages(scriptableObject._stageDifficult);
+            {
+                var scriptableObject = landmarkInformation._landmarkInformationScriptable;
+                landmarkInformationBinder.SetStageName(scriptableObject._stageName);
+                landmarkInformationBinder.SetStageImage(scriptableObject._stageImage);
+                landmarkInformationBinder.SetDifficultyImages(scriptableObject._stageDifficult);
+            }
 
             //Load SaveData
-            var landmarkInformationScriptable = landmarkInformation._landmarkInformationScriptable;
-            var saveData = SaveDataController.GetSaveDataFromLandmark(landmarkInformationScriptable);
-            landmarkInformationBinder.SetItemImages(saveData._getCrystalNum);
-            landmarkInformationBinder.SetIsClearedImage(saveData._isClear);
+            {
+                var landmarkInformationScriptable = landmarkInformation._landmarkInformationScriptable;
+                var saveData = SaveDataController.GetSaveDataFromLandmark(landmarkInformationScriptable);
+                landmarkInformationBinder.SetItemImages(saveData._getCrystalNum);
+                landmarkInformationBinder.SetIsClearedImage(saveData._isClear);
+            }
         }
 
         public void SetLandmarkEnable()
         {
             _popUpTween?.Complete();
             _popUpTween = DOTween.Sequence();
-            
+
             _landmarkImage.SetActive(true);
-            _popUpTween.Append(_landmarkImage.transform.DOPunchScale(new Vector3(_popUpPower, _popUpPower, _popUpPower), _popUpTime));
-            _popUpTween.Join(DOVirtual.DelayedCall(0, () => { FadeAnimations(1.0f,_popUpTime); }));
+            _popUpTween.Append(_landmarkImage.transform.DOPunchScale(new Vector3(_popUpPower, _popUpPower, _popUpPower),
+                _popUpTime));
+            _popUpTween.Join(DOVirtual.DelayedCall(0, () => { FadeAnimations(1.0f, _popUpTime); }));
         }
 
         public void SetLandmarkDisable()
         {
             _popUpTween?.Complete();
             _popUpTween = DOTween.Sequence();
-            
-            _popUpTween.Append(_landmarkImage.transform.DOPunchScale(new Vector3(-_popUpPower, -_popUpPower, -_popUpPower), _popUpTime));
-            _popUpTween.Join(DOVirtual.DelayedCall(0, () => { FadeAnimations(0.0f,_popUpTime); }));
+
+            _popUpTween.Append(
+                _landmarkImage.transform.DOPunchScale(new Vector3(-_popUpPower, -_popUpPower, -_popUpPower),
+                    _popUpTime));
+            _popUpTween.Join(DOVirtual.DelayedCall(0, () => { FadeAnimations(0.0f, _popUpTime); }));
             _popUpTween.OnComplete(() => { _landmarkImage.SetActive(false); });
         }
 
-        private void FadeAnimations(float fadeValue,float animationTime)
+        private void FadeAnimations(float fadeValue, float animationTime)
         {
             var images = _landmarkImage.GetComponentsInChildren<Image>();
             var textMeshPros = _landmarkImage.GetComponentsInChildren<TextMeshProUGUI>();
