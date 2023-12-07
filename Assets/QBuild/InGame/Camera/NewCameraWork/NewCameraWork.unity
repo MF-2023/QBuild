@@ -154,9 +154,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mouseSensitivity: 0.1
   mainCamera: {fileID: 363794787}
-  cameraDistance: 5
   origin: {fileID: 568528237}
-  yLimit: 80
+  cameraDistance: 5
+  cameraHorizontalLimit: 80
 --- !u!4 &59805203
 Transform:
   m_ObjectHideFlags: 0
