@@ -11,6 +11,8 @@ namespace  QBuild.Scene
         private bool _canChangeScene = true;
         private bool _loadedScene = false;
         
+        private ISceneChanger _sceneChanger = null;
+        
         public bool CanChangeScene
         {
             get { return _canChangeScene; }
@@ -40,9 +42,7 @@ namespace  QBuild.Scene
         /// <param name="index">シーン番号</param>
         public static void LoadScene(int index)
         {
-            CreateSceneManagerobject();
-
-            if (_instance.LoadedScene) return;
+            if (_instance.LoadedScene || !CheckInstance()) return;
             UnityEngine.SceneManagement.SceneManager.LoadScene(index);
         }
 
@@ -53,7 +53,7 @@ namespace  QBuild.Scene
         /// <param name="index">シーン番号</param>
         public static void ChangeSceneWait(float waitTime, int index)
         {
-            CreateSceneManagerobject();
+            if (!CheckInstance()) return;
             _instance.StartChangeSceneWait(waitTime,index);
         }
 
@@ -63,7 +63,7 @@ namespace  QBuild.Scene
         /// <param name="index">シーン番号</param>
         public static void LoadSceneWait(int index)
         {
-            CreateSceneManagerobject();
+            if (!CheckInstance()) return;
             _instance.StartLoadSceneWait(index);
         }
 
@@ -105,15 +105,16 @@ namespace  QBuild.Scene
             async.allowSceneActivation = _canChangeScene;
             _loadedScene = false;
         }
-
-        private static SceneManager CreateSceneManagerobject()
+        
+        private static bool CheckInstance()
         {
-            if (_instance != null) return _instance;
-            
-            GameObject createScecneManager = new GameObject();
-            createScecneManager.name = "SceneManager";
-            _instance = createScecneManager.AddComponent<SceneManager>();
-            return _instance;
+            if (_instance == null)
+            {
+                Debug.LogError("SceneManagerが存在しません。");
+                return false;
+            }
+
+            return true;
         }
     }
 }
