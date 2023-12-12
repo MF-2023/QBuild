@@ -5,15 +5,12 @@ namespace QBuild.Camera
     public class NewCameraWork : MonoBehaviour
     {
         private Vector2 _mouseAxis;
-        
-        [SerializeField, Tooltip("マウス感度")] 
-        private float mouseSensitivity;
-        
-        [SerializeField, Tooltip("操作したいカメラ")] 
-        private GameObject mainCamera;
-        
-        [SerializeField, Tooltip("原点（プレイヤー）")] 
-        private Transform origin;
+
+        [SerializeField, Tooltip("マウス感度")] private float mouseSensitivity;
+
+        [SerializeField, Tooltip("操作したいカメラ")] private GameObject mainCamera;
+
+        [SerializeField, Tooltip("原点（プレイヤー）")] private Transform origin;
 
         [SerializeField, Tooltip("原点からカメラの距離")]
         private float cameraDistance;
@@ -23,6 +20,13 @@ namespace QBuild.Camera
 
         private void Update()
         {
+            if (!Input.GetMouseButton(0)) return;
+            CameraPositionUpdate();
+        }
+
+        private void CameraPositionUpdate()
+        {
+            
             _mouseAxis.x += Input.GetAxis("Mouse X") * mouseSensitivity;
 
             _mouseAxis.y += Input.GetAxis("Mouse Y") * -mouseSensitivity;
@@ -37,6 +41,12 @@ namespace QBuild.Camera
                 );
 
             mainCamera.transform.LookAt(origin);
+        }
+        
+        public void SetTarget(Transform target)
+        {
+            origin = target;
+            CameraPositionUpdate();
         }
     }
 }

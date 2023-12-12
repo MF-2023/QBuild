@@ -18,6 +18,7 @@ namespace QBuild.Player.Controller
         public void Construct(InputSystem input)
         {
             inputSystem = input;
+            inputSystem.Enable();
             inputSystem.InGame.PlayerMove.performed += InputMove;
             inputSystem.InGame.PlayerMove.canceled += InputMove;
 

@@ -16,14 +16,6 @@ namespace QBuild.Starter
 
             using (LifetimeScope.EnqueueParent(_inGameStater))
             {
-                var scope = _inGameStater.CreateChildFromPrefab(_cameraScope);
-                scope.Build();
-                using (LifetimeScope.EnqueueParent(scope))
-                {
-                    var centerScope = scope.CreateChildFromPrefab(_centerScope);
-                    centerScope.Build();
-                }
-                
             }
         }
 
