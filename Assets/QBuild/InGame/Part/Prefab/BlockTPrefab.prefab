@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &2005651676049942357
+--- !u!1001 &2993567320430890432
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -12,31 +12,12 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 4300000, guid: 8aedb63fb03535143a7e284381fb620a, type: 2}
+      objectReference: {fileID: 4068373912626513877, guid: 7e7ce7d2cb1624648aa422a230480969,
+        type: 3}
     - target: {fileID: 1684781335289003814, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
       propertyPath: m_Size.x
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1684781335289003814, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
-        type: 3}
-      propertyPath: m_Size.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1684781335289003814, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
-        type: 3}
-      propertyPath: m_Center.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1684781335289003814, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
-        type: 3}
-      propertyPath: m_Center.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1684781335289003814, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
-        type: 3}
-      propertyPath: m_Center.z
-      value: -0.5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2904254382305281329, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
@@ -93,60 +74,40 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2904254382305281329, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
+    - target: {fileID: 8046926666759520617, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 1
-      objectReference: {fileID: 0}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 30e8639727b86604bacad5cda179e2b5, type: 2}
     - target: {fileID: 8254369280360393330, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
       propertyPath: m_Name
-      value: BLCurvePartPrefab
+      value: BlockTPrefab
       objectReference: {fileID: 0}
     - target: {fileID: 8324032287801331179, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
       propertyPath: _connectPoints.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8324032287801331179, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
-        type: 3}
-      propertyPath: _connectPoints.Array.data[0]._direction
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8324032287801331179, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
-        type: 3}
-      propertyPath: _connectPoints.Array.data[1]._direction
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8324032287801331179, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
-      propertyPath: _connectPoints.Array.data[0]._position.x
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8324032287801331179, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
-        type: 3}
-      propertyPath: _connectPoints.Array.data[0]._position.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8324032287801331179, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
-        type: 3}
       propertyPath: _connectPoints.Array.data[0]._position.z
-      value: -0.5
+      value: -1.5
       objectReference: {fileID: 0}
     - target: {fileID: 8324032287801331179, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
       propertyPath: _connectPoints.Array.data[1]._position.x
-      value: 0.5
+      value: -1.5
       objectReference: {fileID: 0}
     - target: {fileID: 8324032287801331179, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
-      propertyPath: _connectPoints.Array.data[1]._position.y
-      value: 0.5
+      propertyPath: _connectPoints.Array.data[2]._position.x
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 8324032287801331179, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
-      propertyPath: _connectPoints.Array.data[1]._position.z
-      value: -2
+      propertyPath: _connectPoints.Array.data[3]._position.z
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -155,21 +116,21 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6781172776695169843, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2524796041812757424}
+      addedObject: {fileID: 2319042662190238089}
   m_SourcePrefab: {fileID: 100100000, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7, type: 3}
---- !u!1 &5029976684387411046 stripped
+--- !u!1 &8615624854507835123 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6781172776695169843, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
     type: 3}
-  m_PrefabInstance: {fileID: 2005651676049942357}
+  m_PrefabInstance: {fileID: 2993567320430890432}
   m_PrefabAsset: {fileID: 0}
---- !u!65 &2524796041812757424
+--- !u!65 &2319042662190238089
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5029976684387411046}
+  m_GameObject: {fileID: 8615624854507835123}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -182,5 +143,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 2}
-  m_Center: {x: 0.5, y: 0, z: -1}
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: -0.5, z: -1}
