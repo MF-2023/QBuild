@@ -1160,6 +1160,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: StageLevel1
       objectReference: {fileID: 0}
+    - target: {fileID: 3612936571417513286, guid: 6b4711a148c9ad64691c7ba00a9fea4a,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3612936571417513286, guid: 6b4711a148c9ad64691c7ba00a9fea4a,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3799921607647369459, guid: 6b4711a148c9ad64691c7ba00a9fea4a,
         type: 3}
       propertyPath: m_Mesh
@@ -1218,6 +1228,11 @@ PrefabInstance:
     - target: {fileID: 5525386032489831621, guid: 6b4711a148c9ad64691c7ba00a9fea4a,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5959924535077749340, guid: 6b4711a148c9ad64691c7ba00a9fea4a,
+        type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7441027991047253265, guid: 6b4711a148c9ad64691c7ba00a9fea4a,
@@ -1849,6 +1864,29 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1924259575 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1049747601675952856, guid: a4904820323a46c4b9de5a7ea9fb65bd,
+    type: 3}
+  m_PrefabInstance: {fileID: 4972603098262945331}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1924259577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1924259575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2767e09b7f251248a2aa4337e64d78e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouseSensitivity: 0.1
+  mainCamera: {fileID: 1924259575}
+  origin: {fileID: 1689567168}
+  cameraDistance: 10
+  cameraHorizontalLimit: 80
 --- !u!850595691 &2079460344
 LightingSettings:
   m_ObjectHideFlags: 0
@@ -1926,6 +1964,11 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 729169742}
+    - target: {fileID: 1649285311992109567, guid: a2bfece868c84624393f29a79b0c08a6,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3022193554762734016, guid: a2bfece868c84624393f29a79b0c08a6,
         type: 3}
       propertyPath: m_Name
@@ -1939,17 +1982,17 @@ PrefabInstance:
     - target: {fileID: 6130043924820685769, guid: a2bfece868c84624393f29a79b0c08a6,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.01
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6130043924820685769, guid: a2bfece868c84624393f29a79b0c08a6,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.319
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6130043924820685769, guid: a2bfece868c84624393f29a79b0c08a6,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 7.755
+      value: 7.5
       objectReference: {fileID: 0}
     - target: {fileID: 6130043924820685769, guid: a2bfece868c84624393f29a79b0c08a6,
         type: 3}
@@ -2299,6 +2342,11 @@ PrefabInstance:
       objectReference: {fileID: 1794894771}
     - target: {fileID: 8298713436594459336, guid: a4904820323a46c4b9de5a7ea9fb65bd,
         type: 3}
+      propertyPath: _cameraView
+      value: 
+      objectReference: {fileID: 1924259577}
+    - target: {fileID: 8298713436594459336, guid: a4904820323a46c4b9de5a7ea9fb65bd,
+        type: 3}
       propertyPath: _playerSpawnPoint
       value: 
       objectReference: {fileID: 1680793673}
@@ -2321,7 +2369,11 @@ PrefabInstance:
         type: 3}
       insertIndex: 0
       addedObject: {fileID: 1689567168}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1049747601675952856, guid: a4904820323a46c4b9de5a7ea9fb65bd,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1924259577}
   m_SourcePrefab: {fileID: 100100000, guid: a4904820323a46c4b9de5a7ea9fb65bd, type: 3}
 --- !u!4 &4972603098262945332 stripped
 Transform:
