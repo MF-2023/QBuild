@@ -84,7 +84,7 @@ namespace QBuild.Gimmick
         private void OnDrawGizmosSelected()
         {
             var reset = false;
-            Vector3 _targetPosition = _moveTransitionAxis.normalized * _moveTransitionPeriod * 2.0f;
+            Vector3 _targetPosition = transform.TransformPoint(_moveTransitionAxis.normalized * _moveTransitionPeriod * 2.0f);
             if (_initPosition == Vector3.zero)
             {
                 _initPosition = transform.position;

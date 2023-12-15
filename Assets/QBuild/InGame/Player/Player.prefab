@@ -88,6 +88,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b66274fe70d1ac4c945d63bbd7ae22e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnMover: 0
   canSetVelocity: 0
 --- !u!1 &4227790839382729747
 GameObject:
@@ -214,6 +215,7 @@ GameObject:
   - component: {fileID: 433836682527640447}
   - component: {fileID: 8307311972818797159}
   - component: {fileID: 2465973120959939970}
+  - component: {fileID: 7069355530625616739}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -385,6 +387,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _partPlaceAreaPrefab: {fileID: -1250023624360540874, guid: 9399c999cc0cfce47a73b1b0425234b3,
     type: 3}
+--- !u!114 &7069355530625616739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8486108683713987989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ce634bac7a701d4494bc63199a44b41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3703938257643180662
 PrefabInstance:
   m_ObjectHideFlags: 0
