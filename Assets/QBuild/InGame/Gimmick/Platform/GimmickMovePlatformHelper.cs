@@ -10,6 +10,7 @@ namespace  QBuild.Gimmick
     {
         public Action<IMover> AddMoverEvent;
         public Action<IMover> RemoveMoverEvent;
+
         private void OnTriggerEnter(Collider other)
         {
             if (other.transform.TryGetComponent<IMover>(out IMover adapter))
