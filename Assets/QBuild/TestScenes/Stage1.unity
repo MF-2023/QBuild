@@ -818,6 +818,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: StageLevel1
       objectReference: {fileID: 0}
+    - target: {fileID: 3149315574087861473, guid: 6b4711a148c9ad64691c7ba00a9fea4a,
+        type: 3}
+      propertyPath: _ActiveLever.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1689567169}
+    - target: {fileID: 3149315574087861473, guid: 6b4711a148c9ad64691c7ba00a9fea4a,
+        type: 3}
+      propertyPath: _ActiveLever.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Open
+      objectReference: {fileID: 0}
     - target: {fileID: 3612936571417513286, guid: 6b4711a148c9ad64691c7ba00a9fea4a,
         type: 3}
       propertyPath: m_LocalPosition.z
@@ -899,6 +909,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1689567167}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1689567169 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7858913032069855779, guid: 6b4711a148c9ad64691c7ba00a9fea4a,
+    type: 3}
+  m_PrefabInstance: {fileID: 1689567167}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4a8c45b2cd244ceb83ef043b028d3a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!43 &1781374640
 Mesh:
   m_ObjectHideFlags: 0
