@@ -9,5 +9,8 @@ namespace QBuild.Stage
     {
         [SerializeField] private GameObject _stagePrefab;
         [SerializeField] private GameObject _playerPrefab;
+
+        public GameObject StagePrefab { get { return _stagePrefab; } }
+        public GameObject PlayerPrefab { get { return _playerPrefab; } }
     }
 }
