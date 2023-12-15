@@ -66,10 +66,13 @@ namespace QBuild.StageSelect.Landmark
             if ( _enabledDifficultyImage == null ) return;
             for (int i = 0; i < _difficultyImages.Length; i++)
             {
-                //_difficultyImages[i].gameObject.SetActive(i < difficulty);
                 if (i < difficulty)
                 {
                     _difficultyImages[i].sprite = _enabledDifficultyImage;
+                }
+                else
+                {
+                    _difficultyImages[i].gameObject.SetActive(i < difficulty);
                 }
             }
         }
