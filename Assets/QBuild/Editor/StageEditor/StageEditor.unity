@@ -38,11 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-<<<<<<< HEAD
   m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
-=======
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
->>>>>>> 4784a886748486a1919aa397345c26b9892984e3
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -138,10 +134,7 @@ GameObject:
   - component: {fileID: 730859332}
   - component: {fileID: 730859331}
   - component: {fileID: 730859330}
-<<<<<<< HEAD
   - component: {fileID: 730859333}
-=======
->>>>>>> 4784a886748486a1919aa397345c26b9892984e3
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -215,11 +208,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 730859329}
-<<<<<<< HEAD
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-=======
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
->>>>>>> 4784a886748486a1919aa397345c26b9892984e3
   m_LocalPosition: {x: 0, y: 1, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -227,7 +216,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-<<<<<<< HEAD
 --- !u!114 &730859333
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -421,8 +409,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-=======
->>>>>>> 4784a886748486a1919aa397345c26b9892984e3
 --- !u!1 &1535234655
 GameObject:
   m_ObjectHideFlags: 0
@@ -433,10 +419,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1535234657}
   - component: {fileID: 1535234656}
-<<<<<<< HEAD
   - component: {fileID: 1535234658}
-=======
->>>>>>> 4784a886748486a1919aa397345c26b9892984e3
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -521,7 +504,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
-<<<<<<< HEAD
 --- !u!114 &1535234658
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -755,5 +737,3 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-=======
->>>>>>> 4784a886748486a1919aa397345c26b9892984e3
