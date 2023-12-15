@@ -738,7 +738,7 @@ MonoBehaviour:
     TypeName: 
   autoRun: 0
   autoInjectGameObjects: []
-  _playerPrefab: {fileID: 2493660156148509332, guid: 96ae53abbfcde3e4f93bddb78bef659a,
+  _playerPrefab: {fileID: 3012069623486725741, guid: 10fb8878c31bd2e40a48f1e9969e69c9,
     type: 3}
   _currentStageVariable: {fileID: 11400000, guid: 113842f3a0ef9184da42da1f3e0ce60a,
     type: 2}
