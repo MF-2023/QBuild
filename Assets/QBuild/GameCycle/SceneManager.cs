@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
@@ -10,7 +11,7 @@ namespace  QBuild.Scene
         private static SceneManager _instance = null;
         private bool _loadedScene = false;
         
-        private ISceneChanger _sceneChanger = null;
+        private List<SceneChangerBase> _sceneChangers = new List<SceneChangerBase>(); 
         
         public bool LoadedScene
         {
@@ -40,7 +41,7 @@ namespace  QBuild.Scene
         }
 
         /// <summary>
-        /// 指定した時間後にシーンを変更
+        /// 指定した時間後にシーンを変更(フェードを使用)
         /// </summary>
         /// <param name="waitTime">待つ時間</param>
         /// <param name="index">シーン番号</param>
@@ -48,6 +49,18 @@ namespace  QBuild.Scene
         {
             if (!CheckInstance()) return;
             _instance.StartChangeSceneWait(waitTime,index);
+        }
+        
+        /// <summary>
+        /// 指定した時間後にシーンを変更
+        /// </summary>
+        /// <param name="waitTime">待つ時間</param>
+        /// <param name="index">シーン番号</param>
+        /// <param name="scEffect">使用するシーンチェンジエフェクト</param>
+        public static void ChangeSceneWait(float waitTime, int index, SceneChangeEffect scEffect)
+        {
+            if (!CheckInstance()) return;
+            _instance.StartChangeSceneWait(waitTime, index);
         }
 
         private void StartLoadScene(int index)
@@ -109,6 +122,18 @@ namespace  QBuild.Scene
             }
 
             return true;
+        }
+        
+        public static void AddSceneChanger(SceneChangerBase sceneChanger)
+        {
+            if (_instance == null) return;
+            if(!_instance._sceneChangers.Contains(sceneChanger)) _instance._sceneChangers.Add(sceneChanger);
+        }
+        
+        public static void RemoveSceneChanger(SceneChangerBase sceneChanger)
+        {
+            if (_instance == null) return;
+            if (_instance._sceneChangers.Contains(sceneChanger)) _instance._sceneChangers.Remove(sceneChanger);
         }
     }
 
