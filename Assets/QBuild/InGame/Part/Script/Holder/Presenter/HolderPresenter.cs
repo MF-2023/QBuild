@@ -19,37 +19,51 @@ namespace QBuild.Part.Presenter
         {
         }
 
-        public void Bind(PartPlacer partPlacer)
+        public void Bind(IPartsHoldable holder)
         {
-            _nextPartHolder.AddRange(partPlacer.NextPartHolders);
+            _holder = holder;
+            _holder.OnChangedSelect += OnSelectChanged;
 
-            for (var i = 0; i < _nextPartHolder.Count; i++)
+            _holder.OnUsePart += OnUsedPart;
+
+            for (var i = 0; i < _holder.Slots.Count(); i++)
             {
-                _nextPartHolder[i].OnChangeParts += OnChangeParts(i);
-                OnChangeParts(i, _nextPartHolder[i].GetParts());
+                var slot = _holder.Slots.ElementAt(i);
+                SetIcon(i, slot.GetPart());
+                if (slot is QuantitySlot quantitySlot)
+                {
+                    SetQuantity(i, quantitySlot.Quantity);
+                }
+                
             }
-
-            partPlacer.OnSelectChangedEvent += OnSelectChanged;
-            _partHolderView.SetScaleUp(partPlacer.CurrentSelectHolderIndex);
         }
 
-        private Action<IEnumerable<BlockPartScriptableObject>> OnChangeParts(int holdersIndex)
+        private void OnUsedPart(object sender, HolderUseEventArgs e)
         {
-            return (blocks) => OnChangeParts(holdersIndex, blocks);
+            SetIcon(e.CurrentIndex, e.Part);
+            if (e.Slot is QuantitySlot quantitySlot)
+            {
+                SetQuantity(e.CurrentIndex, quantitySlot.Quantity);
+            }
         }
 
-        private void OnChangeParts(int holdersIndex, IEnumerable<BlockPartScriptableObject> parts)
+        private void SetIcon(int holdersIndex, BlockPartScriptableObject part)
         {
-            _partHolderView.SetPartIcon(holdersIndex, _nextPartHolder[holdersIndex].GetParts().First().PartIcon);
+            _partHolderView.SetPartIcon(holdersIndex, part.PartIcon);
         }
 
-        private void OnSelectChanged(ChangeSelectEvent changeSelectEvent)
+        private void SetQuantity(int holdersIndex, int quantity)
         {
-            _partHolderView.SetScaleUp(changeSelectEvent.Index);
-            _partHolderView.SetScaleDown(changeSelectEvent.PrevIndex);
+            _partHolderView.SetQuantity(holdersIndex, quantity);
         }
 
-        private List<NextPartHolder> _nextPartHolder = new();
+        private void OnSelectChanged(object sender, HolderSelectChangeEventArgs e)
+        {
+            _partHolderView.SetScaleUp(e.CurrentIndex);
+            _partHolderView.SetScaleDown(e.PrevIndex);
+        }
+
+        private IPartsHoldable _holder;
         private PartHolderView _partHolderView;
     }
 }

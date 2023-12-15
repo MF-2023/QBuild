@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using QBuild.Part.PartScriptableObject;
 using QBuild.Part.Presenter;
 using QBuild.Utilities;
 using UnityEngine;
@@ -9,26 +10,15 @@ using VContainer;
 
 namespace QBuild.Part
 {
-    public class ChangeSelectEvent
-    {
-        public int Index { get; set; }
-        public int PrevIndex { get; set; }
-
-        public ChangeSelectEvent(int index, int prevIndex)
-        {
-            Index = index;
-            PrevIndex = prevIndex;
-        }
-    }
-
     public class PartPlacer : MonoBehaviour
     {
-        public event Action<ChangeSelectEvent> OnSelectChangedEvent = delegate { };
         public event Action<PartView> OnPlaceEvent = delegate { };
 
         [Inject]
         private void Inject(@InputSystem inputSystem, HolderPresenter holderPresenter, PartRepository repository)
         {
+            _camera = Camera.main;
+            
             inputSystem.InGame.BlockPlaceF.performed += _ => ForwardPlacePart();
             inputSystem.InGame.BlockPlaceR.performed += _ => RightPlacePart();
             inputSystem.InGame.BlockPlaceB.performed += _ => BackPlacePart();
@@ -36,12 +26,9 @@ namespace QBuild.Part
 
             inputSystem.InGame.SelectChange.performed += ChangeSelect;
 
-            _nextPartHolders.Add(new NextPartHolder(_partListScriptableObject));
-            _nextPartHolders.Add(new NextPartHolder(_partListScriptableObject));
-            _nextPartHolders.Add(new NextPartHolder(_partListScriptableObject));
-
-            _currentSelectHolderIndex = 1;
-            holderPresenter.Bind(this);
+            _nextPartHolder = new PlayerPartHolder(_partListScriptableObject, 3);
+            _nextPartHolder.OnChangedSelect += OnSelectChanged;
+            holderPresenter.Bind(_nextPartHolder);
             OnPlaceEvent += repository.AddPart;
         }
 
@@ -49,14 +36,14 @@ namespace QBuild.Part
         {
             var value = (int) context.ReadValue<float>();
             if (value == 0) return;
-            var nextIndex = _currentSelectHolderIndex + value;
-            if (nextIndex < 0) nextIndex = _nextPartHolders.Count - 1;
-            if (nextIndex >= _nextPartHolders.Count) nextIndex = 0;
-            CurrentSelectHolderIndex = nextIndex;
-        }
-
-        private void Start()
-        {
+            if (value > 0)
+            {
+                _nextPartHolder.Next();
+            }
+            else
+            {
+                _nextPartHolder.Prev();
+            }
         }
 
         private void Update()
@@ -65,29 +52,29 @@ namespace QBuild.Part
 
 
             if (Keyboard.current[Key.R].wasPressedThisFrame)
-                CurrentRotateIndex = (CurrentRotateIndex + 1) % rotateMap.Count;
+                CurrentRotateIndex = (CurrentRotateIndex + 1) % RotateMap.Count;
             if (Keyboard.current[Key.T].wasPressedThisFrame)
-                CurrentRotateIndex = (CurrentRotateIndex - 1 + rotateMap.Count) % rotateMap.Count;
+                CurrentRotateIndex = (CurrentRotateIndex - 1 + RotateMap.Count) % RotateMap.Count;
         }
 
         private void ForwardPlacePart()
         {
-            DirPlacePart(Vector3.Scale(UnityEngine.Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized);
+            DirPlacePart(Vector3.Scale(_camera.transform.forward, new Vector3(1, 0, 1)).normalized);
         }
 
         private void RightPlacePart()
         {
-            DirPlacePart(UnityEngine.Camera.main.transform.right);
+            DirPlacePart(_camera.transform.right);
         }
 
         private void BackPlacePart()
         {
-            DirPlacePart(UnityEngine.Camera.main.transform.forward * -1);
+            DirPlacePart(_camera.transform.forward * -1);
         }
 
         private void LeftPlacePart()
         {
-            DirPlacePart(UnityEngine.Camera.main.transform.right * -1);
+            DirPlacePart(_camera.transform.right * -1);
         }
 
         private void DirPlacePart(Vector3 dir)
@@ -106,7 +93,7 @@ namespace QBuild.Part
             var tryPlaceInfo = new TryPlaceInfo(partScriptableObject, dir, connectPoint, multiplePartAreaMatrix);
             if (PlacePartService.TryPlacePartPosition(tryPlaceInfo, out var outMatrix))
             {
-                _nextPartHolders[_currentSelectHolderIndex].NextPart();
+                _nextPartHolder.Use();
                 var view = Instantiate(partScriptableObject.PartPrefab, outMatrix.GetPosition(), outMatrix.rotation);
                 view.Direction =
                     DirectionFRBLExtension.VectorToDirectionFRBL(
@@ -124,7 +111,8 @@ namespace QBuild.Part
         private void OnThePartUpdate()
         {
             var hit = new RaycastHit[1];
-            var size = Physics.RaycastNonAlloc(transform.position + Vector3.up * 0.5f, Vector3.down, hit, 1.5f, LayerMask.GetMask("Block"));
+            var size = Physics.RaycastNonAlloc(transform.position + Vector3.up * 0.5f, Vector3.down, hit, 1.5f,
+                LayerMask.GetMask("Block"));
             if (size > 0)
             {
                 CurrentOnThePart = hit[0].collider.GetComponentInParent<PartView>();
@@ -140,14 +128,14 @@ namespace QBuild.Part
             _multiplePartArea.UpdatePart(transform.position, _currentOnThePart, CurrentPart(), CurrentRotateMatrix());
         }
 
-        private void OnSelectChanged(ChangeSelectEvent e)
+        private void OnSelectChanged(object o, HolderSelectChangeEventArgs e)
         {
-            OnSelectChangedEvent?.Invoke(e);
+            OnThePartChanged();
         }
 
         private BlockPartScriptableObject CurrentPart()
         {
-            return _nextPartHolders[_currentSelectHolderIndex].CurrentPart();
+            return _nextPartHolder.GetCurrentPart();
         }
 
         public void OnReset()
@@ -155,24 +143,10 @@ namespace QBuild.Part
             OnThePartUpdate();
         }
 
-        [SerializeField] private PartListScriptableObject _partListScriptableObject;
+        [SerializeField] private BasePartSpawnConfiguratorObject _partListScriptableObject;
 
 
-        private List<NextPartHolder> _nextPartHolders = new();
-        public IEnumerable<NextPartHolder> NextPartHolders => _nextPartHolders;
-        private int _currentSelectHolderIndex = 0;
-
-        public int CurrentSelectHolderIndex
-        {
-            get => _currentSelectHolderIndex;
-            private set
-            {
-                var e = new ChangeSelectEvent(value, _currentSelectHolderIndex);
-                _currentSelectHolderIndex = value;
-                OnThePartChanged();
-                OnSelectChanged(e);
-            }
-        }
+        private PlayerPartHolder _nextPartHolder;
 
         [SerializeField] private PartView _currentOnThePart;
         [SerializeField] private MultiplePartArea _multiplePartArea;
@@ -203,15 +177,17 @@ namespace QBuild.Part
 
         private Matrix4x4 CurrentRotateMatrix()
         {
-            return Matrix4x4.Rotate(rotateMap[_currentRotateIndex]);
+            return Matrix4x4.Rotate(RotateMap[_currentRotateIndex]);
         }
 
-        private static List<Quaternion> rotateMap = new List<Quaternion>()
+        private static readonly List<Quaternion> RotateMap = new List<Quaternion>()
         {
             Quaternion.Euler(0, 0, 0),
             Quaternion.Euler(0, 90, 0),
             Quaternion.Euler(0, 180, 0),
             Quaternion.Euler(0, -90, 0),
         };
+
+        private Camera _camera;
     }
 }

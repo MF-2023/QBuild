@@ -10,6 +10,9 @@ namespace QBuild.Part.HolderView
         {
             _images[index].sprite = partIcon.Sprite;
         }
+        public void SetQuantity(int index,int quantity)
+        {
+        }
 
         public void SetScaleUp(int index)
         {
