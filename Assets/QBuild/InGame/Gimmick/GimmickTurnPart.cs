@@ -11,7 +11,6 @@ namespace QBuild.Gimmick
 
         public override void Active()
         {
-            Debug.Log("Rotate");
             _partView.Turn(new ShiftDirectionTimes(1));
         }
 
