@@ -913,6 +913,11 @@ PrefabInstance:
       propertyPath: _ActiveLever.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: Open
       objectReference: {fileID: 0}
+    - target: {fileID: 3723495541468337923, guid: 77df6c33d009d8a43931486dd52ca6b2,
+        type: 3}
+      propertyPath: onAwakePlay
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5525386032489831621, guid: 77df6c33d009d8a43931486dd52ca6b2,
         type: 3}
       propertyPath: m_RootOrder
