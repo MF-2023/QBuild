@@ -19,7 +19,12 @@ namespace QBuild.Scene
             SceneManager.RemoveSceneChanger(this);
         }
 
-        public void StartSceneChangeEffect(float scTime, SceneChangeEffect effect)
+        public virtual void InSCEffect(float scTime, SceneChangeEffect effect)
+        {
+            if (_sceneChangeEffect != effect) return;
+        }
+        
+        public virtual void OutSCEffect(float scTime, SceneChangeEffect effect)
         {
             if (_sceneChangeEffect != effect) return;
         }

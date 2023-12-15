@@ -1,52 +1,84 @@
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using QBuild.Scene;
+using UnityEngine.Serialization;
 
 namespace QBuild.GameCycle
 {
-    public class FadeInOut : MonoBehaviour
+    public class FadeInOut : SceneChangerBase
     {
+        [FormerlySerializedAs("_fadeObject")] [SerializeField] private GameObject _fadeCanvas = null;
         [SerializeField] Image _fadePanel = null;
-        [SerializeField] float _fadeTime = 0.5f;
 
-        public void FadeIn(TweenCallback endEvent)
+        public override void InSCEffect(float scTime, SceneChangeEffect effect)
         {
+            base.InSCEffect(scTime, effect);
+            FadeIn(scTime);
+        }
+        
+        public override void OutSCEffect(float scTime, SceneChangeEffect effect)
+        {
+            base.OutSCEffect(scTime, effect);
+            FadeOut(scTime);
+        }
+        
+        private void FadeIn(TweenCallback endEvent, float time)
+        {
+            _fadeCanvas.SetActive(true);
             DOTween.ToAlpha(
                 () => _fadePanel.color,
                 color => _fadePanel.color = color,
                 0f, // 最終的なalpha値
-                _fadeTime
-            ).onComplete = endEvent;
+                time
+            ).onComplete += () =>
+            {
+                endEvent();
+                _fadeCanvas.SetActive(false);
+            };
         }
 
-        public void FadeOut(TweenCallback endEvent)
+        private void FadeOut(TweenCallback endEvent, float time)
         {
+            _fadeCanvas.SetActive(true);
             DOTween.ToAlpha(
                 () => _fadePanel.color,
                 color => _fadePanel.color = color,
                 1f, // 最終的なalpha値
-                _fadeTime
-            ).onComplete = endEvent;
+                time
+            ).onComplete += () =>
+            {
+                endEvent();
+                //_fadeCanvas.SetActive(false);
+            };
         }
         
-        public void FadeIn()
+        private void FadeIn(float time)
         {
+            _fadeCanvas.SetActive(true);
             DOTween.ToAlpha(
                 () => _fadePanel.color,
                 color => _fadePanel.color = color,
                 0f, // 最終的なalpha値
-                _fadeTime
-            );
+                time
+            ).onComplete += () =>
+            {
+                _fadeCanvas.SetActive(false);
+            };
         }
         
-        public void FadeOut()
+        private void FadeOut(float time)
         {
+            _fadeCanvas.SetActive(true);
             DOTween.ToAlpha(
                 () => _fadePanel.color,
                 color => _fadePanel.color = color,
                 1f, // 最終的なalpha値
-                _fadeTime
-            );
+                time
+            ).onComplete += () =>
+            {
+                //_fadeCanvas.SetActive(false);
+            };
         }
     }
 }

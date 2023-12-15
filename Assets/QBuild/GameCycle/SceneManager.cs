@@ -8,6 +8,9 @@ namespace  QBuild.Scene
 {
     public class SceneManager : MonoBehaviour
     {
+        [SerializeField] private SceneChangeEffect _startSceneChangeEffect = SceneChangeEffect.Fade;
+        [SerializeField] private float _startSceneChangeTime = 1.0f;
+        
         private static SceneManager _instance = null;
         private bool _loadedScene = false;
         
@@ -30,6 +33,11 @@ namespace  QBuild.Scene
             }
         }
 
+        private void Start()
+        {
+            InSCStart(_startSceneChangeTime, _startSceneChangeEffect);
+        }
+
         /// <summary>
         /// すぐにシーンの変更
         /// </summary>
@@ -48,7 +56,7 @@ namespace  QBuild.Scene
         public static void ChangeSceneWait(float waitTime, int index)
         {
             if (!CheckInstance()) return;
-            _instance.StartChangeSceneWait(waitTime,index);
+            _instance.StartChangeSceneWait(waitTime, index, SceneChangeEffect.Fade);
         }
         
         /// <summary>
@@ -60,7 +68,7 @@ namespace  QBuild.Scene
         public static void ChangeSceneWait(float waitTime, int index, SceneChangeEffect scEffect)
         {
             if (!CheckInstance()) return;
-            _instance.StartChangeSceneWait(waitTime, index);
+            _instance.StartChangeSceneWait(waitTime, index, scEffect);
         }
 
         private void StartLoadScene(int index)
@@ -81,17 +89,27 @@ namespace  QBuild.Scene
             };
         }
         
-        private void StartChangeSceneWait(float waitTime, int index)
+        private void StartChangeSceneWait(float waitTime, int index, SceneChangeEffect scEffect)
         {
-            StartCoroutine(changeSceneWait(waitTime,index));
+            StartCoroutine(changeSceneWait(waitTime,index, scEffect));
         }
 
-        private IEnumerator changeSceneWait(float waitTime , int index)
+        private IEnumerator changeSceneWait(float waitTime , int index, SceneChangeEffect scEffect)
         {
-            if (_loadedScene) yield break;
+                        if (_loadedScene) yield break;
 
+            //シーンの切り替えエフェクト
+            OutSCStart(waitTime, scEffect);
+            UnityEngine.SceneManagement.Scene delScene = UnitySceneManager.GetActiveScene();
+            
+            _loadedScene = true;
+            yield return new WaitForSeconds(waitTime);
+            
             //シーンの切り替え処理
-            UnitySceneManager.UnloadSceneAsync(UnitySceneManager.GetActiveScene());
+            //var unloadAsync = UnitySceneManager.UnloadSceneAsync(UnitySceneManager.GetActiveScene());
+            var unloadAsync = UnitySceneManager.UnloadSceneAsync(delScene);
+            yield return unloadAsync;
+            
             var async = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(index, LoadSceneMode.Additive);
             async.completed += (async) =>
             {
@@ -105,12 +123,12 @@ namespace  QBuild.Scene
                     }
                 }
             };
+
+            yield return async;
             
-            _loadedScene = true;
-            async.allowSceneActivation = false;
-            yield return new WaitForSeconds(waitTime);
+            //シーンの切り替えエフェクト
+            InSCStart(waitTime, scEffect);
             _loadedScene = false;
-            async.allowSceneActivation = true;
         }
         
         private static bool CheckInstance()
@@ -122,6 +140,22 @@ namespace  QBuild.Scene
             }
 
             return true;
+        }
+        
+        private void InSCStart(float scTime, SceneChangeEffect effect)
+        {
+            foreach (var sceneChanger in _sceneChangers)
+            {
+                sceneChanger.InSCEffect(scTime, effect);
+            }
+        }
+        
+        private void OutSCStart(float scTime, SceneChangeEffect effect)
+        {
+            foreach (var sceneChanger in _sceneChangers)
+            {
+                sceneChanger.OutSCEffect(scTime, effect);
+            }
         }
         
         public static void AddSceneChanger(SceneChangerBase sceneChanger)

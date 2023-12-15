@@ -15,14 +15,13 @@ namespace QBuild.GameCycle.Title
         [SerializeField] private GameObject _buttons = null;
         [SerializeField] private Popup _optionPopup = null;
         [SerializeField] private Popup _gameEndPopup = null;
-        [SerializeField] private FadeInOut _fadeInOut = null;
+        [SerializeField] private float _fadeTime = 0.5f;
         
         private void Start()
         {
             ShowPressPushButtonText();
             _optionPopup.gameObject.SetActive(false);
             _gameEndPopup.gameObject.SetActive(false);
-            FadeIn();
         }
         
         public void ShowButtons()
@@ -49,23 +48,9 @@ namespace QBuild.GameCycle.Title
             _gameEndPopup.ShowPopup();
         }
 
-        public void FadeIn()
-        {
-            _fadeInOut.gameObject.SetActive(true);
-            _fadeInOut.FadeIn(() => _fadeInOut.gameObject.SetActive(false));
-        }
-
-        public void FadeOut()
-        {
-            _fadeInOut.gameObject.SetActive(true);
-            _fadeInOut.FadeOut();
-        }
-
         public void SceneChangeFadeOut()
         {
-            _fadeInOut.gameObject.SetActive(true);
-            //_fadeInOut.FadeOut(() => SceneManager.LoadScene(_nextSceneIndex));
-            _fadeInOut.FadeOut(() => SceneManager.ChangeSceneWait(5.0f, _nextSceneIndex));
+            SceneManager.ChangeSceneWait(_fadeTime, _nextSceneIndex);
         }
     }
 }
