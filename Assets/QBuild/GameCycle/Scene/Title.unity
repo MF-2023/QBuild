@@ -3626,7 +3626,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07c70a69bda8cdb4396a28c5cfa0356b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextSceneIndex: 1
+  _nextSceneIndex: 3
   _pressPushButtonText: {fileID: 1146338116}
   _buttons: {fileID: 1101988118}
   _optionPopup: {fileID: 1103098395}

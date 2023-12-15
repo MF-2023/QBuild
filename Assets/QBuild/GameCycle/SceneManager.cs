@@ -2,22 +2,15 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
 namespace  QBuild.Scene
 {
     public class SceneManager : MonoBehaviour
     {
         private static SceneManager _instance = null;
-        private bool _canChangeScene = true;
         private bool _loadedScene = false;
         
         private ISceneChanger _sceneChanger = null;
-        
-        public bool CanChangeScene
-        {
-            get { return _canChangeScene; }
-            set { _canChangeScene = value; }
-        }
         
         public bool LoadedScene
         {
@@ -42,8 +35,8 @@ namespace  QBuild.Scene
         /// <param name="index">シーン番号</param>
         public static void LoadScene(int index)
         {
-            if (_instance.LoadedScene || !CheckInstance()) return;
-            UnityEngine.SceneManagement.SceneManager.LoadScene(index);
+            if (!CheckInstance() || _instance._loadedScene) return;
+            _instance.StartLoadScene(index);
         }
 
         /// <summary>
@@ -57,53 +50,54 @@ namespace  QBuild.Scene
             _instance.StartChangeSceneWait(waitTime,index);
         }
 
-        /// <summary>
-        /// シーンを読み込んでおく
-        /// </summary>
-        /// <param name="index">シーン番号</param>
-        public static void LoadSceneWait(int index)
+        private void StartLoadScene(int index)
         {
-            if (!CheckInstance()) return;
-            _instance.StartLoadSceneWait(index);
+            UnitySceneManager.LoadScene(index, LoadSceneMode.Additive);
+            var unloadAsync = UnitySceneManager.UnloadSceneAsync(UnitySceneManager.GetActiveScene());
+            unloadAsync.completed += (async) =>
+            {
+                for (int i = 0; i < UnitySceneManager.sceneCount; i++)
+                {
+                    UnityEngine.SceneManagement.Scene scene = UnitySceneManager.GetSceneAt(i);
+                    if (scene.buildIndex == index)
+                    {
+                        UnitySceneManager.SetActiveScene(scene);
+                        break;
+                    }
+                }
+            };
         }
-
+        
         private void StartChangeSceneWait(float waitTime, int index)
         {
             StartCoroutine(changeSceneWait(waitTime,index));
-        }
-
-        private void StartLoadSceneWait(int index)
-        {
-            StartCoroutine(loadSceneWait(index));
         }
 
         private IEnumerator changeSceneWait(float waitTime , int index)
         {
             if (_loadedScene) yield break;
 
-            var async = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(index);
+            //シーンの切り替え処理
+            UnitySceneManager.UnloadSceneAsync(UnitySceneManager.GetActiveScene());
+            var async = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(index, LoadSceneMode.Additive);
+            async.completed += (async) =>
+            {
+                for (int i = 0; i < UnitySceneManager.sceneCount; i++)
+                {
+                    UnityEngine.SceneManagement.Scene scene = UnitySceneManager.GetSceneAt(i);
+                    if (scene.buildIndex == index)
+                    {
+                        UnitySceneManager.SetActiveScene(scene);
+                        break;
+                    }
+                }
+            };
+            
             _loadedScene = true;
             async.allowSceneActivation = false;
             yield return new WaitForSeconds(waitTime);
             _loadedScene = false;
             async.allowSceneActivation = true;
-        }
-
-        private IEnumerator loadSceneWait(int index)
-        {
-            if (_loadedScene) yield break;
-            
-            var async = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(index);
-            async.allowSceneActivation = _canChangeScene;
-
-            _loadedScene = true;
-            while (!_canChangeScene)
-            {
-                yield return new WaitForEndOfFrame();
-            }
-
-            async.allowSceneActivation = _canChangeScene;
-            _loadedScene = false;
         }
         
         private static bool CheckInstance()
@@ -116,5 +110,10 @@ namespace  QBuild.Scene
 
             return true;
         }
+    }
+
+    public enum SceneChangeEffect
+    {
+        Fade
     }
 }

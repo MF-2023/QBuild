@@ -14,6 +14,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/QBuild/GameCycle/Scene/SetupScene.unity
     guid: 284cdbbedb1cd144190d8d225de7e4be
+  - enabled: 1
+    path: Assets/QBuild/GameCycle/Scene/Title.unity
+    guid: a9fe4cf5d0a2cad48bc84cccd5c9c799
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 9dee5788fa0cfe240bf3c29e605fc8f4,
       type: 2}

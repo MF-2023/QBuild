@@ -64,7 +64,8 @@ namespace QBuild.GameCycle.Title
         public void SceneChangeFadeOut()
         {
             _fadeInOut.gameObject.SetActive(true);
-            _fadeInOut.FadeOut(() => SceneManager.LoadScene(_nextSceneIndex));
+            //_fadeInOut.FadeOut(() => SceneManager.LoadScene(_nextSceneIndex));
+            _fadeInOut.FadeOut(() => SceneManager.ChangeSceneWait(5.0f, _nextSceneIndex));
         }
     }
 }
