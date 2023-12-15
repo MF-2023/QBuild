@@ -20,9 +20,9 @@ namespace QBuild.Player.Core
             canRotation = true;
         }
 
-        public override void LogicUpdate()
+        public override void CompLogicUpdate()
         {
-            base.LogicUpdate();
+            base.CompLogicUpdate();
             currentDir = rootTransform.forward;
         }
 

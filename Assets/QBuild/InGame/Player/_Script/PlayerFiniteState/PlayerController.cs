@@ -17,7 +17,11 @@ namespace QBuild.Player.Controller
 
         private PlayerStateController _StateController;
         private PlayerAnimationController _AnimationController;
-        private Core.Core Core;
+        private Core.Core _core;
+        public Core.Core Core
+        {
+            get { return _core; }
+        }
 
         private Vector3Int currentPosition;
 
@@ -26,11 +30,16 @@ namespace QBuild.Player.Controller
         #endregion
 
         #region UnityCallBack
+
+        private void Awake()
+        {
+            _core = GetComponentInChildren<Core.Core>();
+        }
+
         private void Start()
         {
-            Core = GetComponentInChildren<Core.Core>();
             _AnimationController = new PlayerAnimationController(GetComponent<Animator>());
-            _StateController = new PlayerStateController(Core, _inputHandler, _playerData);
+            _StateController = new PlayerStateController(_core, _inputHandler, _playerData);
             _StateController.OnChangeAnimation += _AnimationController.ChangeAnimation;
             _StateController.OnGetPlayerPos += () => transform.position;
             _StateController.OnSetPosition += (Vector3 pos) => transform.position = pos;
@@ -41,12 +50,14 @@ namespace QBuild.Player.Controller
 
         private void Update()
         {
+            _core.CoreLogicUpdate();
             _StateController.LogicUpdate();
             CheckGridPosition();
         }
 
         private void FixedUpdate()
         {
+            _core.CoreFixedUpdate();
             _StateController.FixedUpdate();
         }
 
