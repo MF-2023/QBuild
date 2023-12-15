@@ -738,7 +738,7 @@ MonoBehaviour:
     TypeName: 
   autoRun: 0
   autoInjectGameObjects: []
-  _playerPrefab: {fileID: 7288135099793665904, guid: 96ae53abbfcde3e4f93bddb78bef659a,
+  _playerPrefab: {fileID: 2493660156148509332, guid: 96ae53abbfcde3e4f93bddb78bef659a,
     type: 3}
   _currentStageVariable: {fileID: 11400000, guid: 113842f3a0ef9184da42da1f3e0ce60a,
     type: 2}
@@ -747,6 +747,7 @@ MonoBehaviour:
     type: 2}
   _partRepository: {fileID: 5127670146263857954}
   _playerSpawnPoint: {fileID: 0}
+  _cameraView: {fileID: 0}
 --- !u!114 &5780646593065498177
 MonoBehaviour:
   m_ObjectHideFlags: 0
