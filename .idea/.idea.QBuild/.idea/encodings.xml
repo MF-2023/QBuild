@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="Encoding" addBOMForNewFiles="with BOM under Windows, with no BOM otherwise">
-<<<<<<< Updated upstream
-    <file url="file://$PROJECT_DIR$/Assets/QBuild/InGame/NewCameraWork/NewCameraWork.cs" charset="windows-31j" />
-=======
+  <component name="Encoding">
     <file url="file://$PROJECT_DIR$/Assets/QBuild/Editor/StageEditor/StageEditorWindow.cs" charset="windows-31j" />
->>>>>>> Stashed changes
     <file url="PROJECT" charset="windows-31j" />
   </component>
 </project>

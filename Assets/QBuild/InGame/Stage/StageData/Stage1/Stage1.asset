@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 46927e83a00f3bd409c24f3a28365c70, type: 3}
-  m_Name: NewStageData1
+  m_Name: Stage1
   m_EditorClassIdentifier: 
-  stage: {fileID: 0}
-  fileName: NewStageData1
+  stage: {fileID: 199497168322217475, guid: 9d0b2ea11a5ac3d4daa53b2056b9a384, type: 3}
+  fileName: Stage1
   stageName: 
   crystalCount: 0
   stageImage: {fileID: 0}
+  stageArea: {x: 10, y: 10, z: 10}

@@ -1,22 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using QBuild.Const;
+using UnityEditor;
+using UnityEditor.SceneManagement;
+using UnityEditor.Toolbars;
 using UnityEngine;
 
-public class StageDataSceneTab : MonoBehaviour
+namespace QBuild.StageEditor
 {
-    
-    private const string StageDataSceneTabPath = EditorConst.WindowPrePath +"/Editor/StageEditor/StageDataSceneTab.cs";
-    
-    // Start is called before the first frame update
-    void Start()
+    public abstract class StageDataSceneTab : EditorToolbarButton
     {
-        
-    }
+        private const string FolderPath = "Assets/QBuild/Editor/StageEditor/";
+        private const string SceneName = "StageEditor.unity";
+        private const string ButtonName = "ステージエディタシーンを開く";
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        [MenuItem(EditorConst.WindowPrePath + "StageEditor/" + ButtonName)]
+        private static void OpenStageEditorScene()
+        {
+            if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+            {
+                EditorSceneManager.OpenScene(FolderPath + SceneName);
+            }
+        }
     }
 }
