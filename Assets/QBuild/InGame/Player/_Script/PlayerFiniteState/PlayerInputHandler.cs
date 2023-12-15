@@ -21,8 +21,13 @@ namespace QBuild.Player.Controller
             inputSystem.Enable();
             inputSystem.InGame.PlayerMove.performed += InputMove;
             inputSystem.InGame.PlayerMove.canceled += InputMove;
-
         }
+
+        public void Start()
+        {
+            
+        }
+
         public void Dispose()
         {
             inputSystem.InGame.PlayerMove.performed -= InputMove;

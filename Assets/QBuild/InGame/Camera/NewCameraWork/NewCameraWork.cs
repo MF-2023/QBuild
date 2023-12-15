@@ -20,16 +20,18 @@ namespace QBuild.Camera
 
         private void Update()
         {
-            if (!Input.GetMouseButton(0)) return;
             CameraPositionUpdate();
         }
 
         private void CameraPositionUpdate()
         {
-            
-            _mouseAxis.x += Input.GetAxis("Mouse X") * mouseSensitivity;
+            if (Input.GetMouseButton(0))
+            {
+                _mouseAxis.x += Input.GetAxis("Mouse X") * mouseSensitivity;
 
-            _mouseAxis.y += Input.GetAxis("Mouse Y") * -mouseSensitivity;
+                _mouseAxis.y += Input.GetAxis("Mouse Y") * -mouseSensitivity;
+            }
+
             var limit = cameraHorizontalLimit * Mathf.Deg2Rad;
             _mouseAxis.y = Mathf.Clamp(_mouseAxis.y, -limit, limit);
 
@@ -42,7 +44,7 @@ namespace QBuild.Camera
 
             mainCamera.transform.LookAt(origin);
         }
-        
+
         public void SetTarget(Transform target)
         {
             origin = target;
