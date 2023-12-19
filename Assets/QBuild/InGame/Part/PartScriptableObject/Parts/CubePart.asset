@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a36d291ba7b241e3a1623b670412f0f6, type: 3}
   m_Name: CubePart
   m_EditorClassIdentifier: 
-  _partPrefab: {fileID: 5575930999254659062, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
+  _partPrefab: {fileID: 4334848293608992523, guid: b2284dc85349d634f9f619a54116dbec,
     type: 3}
   _partIcon:
     _sprite: {fileID: 1632401399, guid: 27c1f9f5c3e019e4f9600613deb31373, type: 3}

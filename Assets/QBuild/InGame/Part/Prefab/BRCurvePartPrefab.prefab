@@ -12,7 +12,8 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 4300000, guid: 78077a70807cb574d8d9af7dfa48c9e9, type: 2}
+      objectReference: {fileID: 4068373912626513877, guid: 51b6bf58d146be74cb5a085dbf3f7453,
+        type: 3}
     - target: {fileID: 1684781335289003814, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
       propertyPath: m_Size.z
@@ -21,17 +22,17 @@ PrefabInstance:
     - target: {fileID: 1684781335289003814, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
       propertyPath: m_Center.x
-      value: -0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1684781335289003814, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
       propertyPath: m_Center.y
-      value: 0
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1684781335289003814, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
       propertyPath: m_Center.z
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2904254382305281329, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
@@ -88,6 +89,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8046926666759520617, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: ab385b4cfaa3abe4a86cf321e2fb1516, type: 2}
     - target: {fileID: 8254369280360393330, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
       propertyPath: m_Name
@@ -111,32 +117,32 @@ PrefabInstance:
     - target: {fileID: 8324032287801331179, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
       propertyPath: _connectPoints.Array.data[0]._position.x
-      value: 1
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 8324032287801331179, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
       propertyPath: _connectPoints.Array.data[0]._position.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8324032287801331179, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
       propertyPath: _connectPoints.Array.data[0]._position.z
-      value: -0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8324032287801331179, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
       propertyPath: _connectPoints.Array.data[1]._position.x
-      value: -0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8324032287801331179, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
       propertyPath: _connectPoints.Array.data[1]._position.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8324032287801331179, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
       propertyPath: _connectPoints.Array.data[1]._position.z
-      value: 1
+      value: 1.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -173,4 +179,4 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 2, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: -0.5}
+  m_Center: {x: 0.5, y: -0.5, z: 0}

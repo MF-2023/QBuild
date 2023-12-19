@@ -12,7 +12,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 3861478300804232965, guid: 55cec25f72ab368448975d0af9f9a79d,
+      objectReference: {fileID: -2447776121362496397, guid: d90bdcfe03a6add47b4a67c5ff52b7c4,
         type: 3}
     - target: {fileID: 1684781335289003814, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
@@ -42,7 +42,7 @@ PrefabInstance:
     - target: {fileID: 1684781335289003814, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
       propertyPath: m_Center.z
-      value: -0.5
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1684781335289003814, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
@@ -108,7 +108,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: b7352f1f1348adf4eaa21dedf6ff61e5, type: 2}
+      objectReference: {fileID: 2100000, guid: 7d9ad3125c1c64942bd0fa9a8ba7a2e1, type: 2}
     - target: {fileID: 8254369280360393330, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
       propertyPath: m_Name
@@ -122,12 +122,12 @@ PrefabInstance:
     - target: {fileID: 8324032287801331179, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
       propertyPath: _connectPoints.Array.data[0]._direction
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8324032287801331179, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
       propertyPath: _connectPoints.Array.data[1]._direction
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8324032287801331179, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
@@ -157,7 +157,7 @@ PrefabInstance:
     - target: {fileID: 8324032287801331179, guid: 3d4ddeb8d9c428a4d87ce141fc5be7a7,
         type: 3}
       propertyPath: _connectPoints.Array.data[1]._position.z
-      value: -1
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -198,7 +198,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1, y: 2, z: 0.2}
-  m_Center: {x: 0, y: -1, z: -0.1}
+  m_Center: {x: 0, y: -1, z: 0.1}
 --- !u!64 &9223247452396803406
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -220,4 +220,4 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: 3861478300804232965, guid: 55cec25f72ab368448975d0af9f9a79d, type: 3}
+  m_Mesh: {fileID: -2447776121362496397, guid: d90bdcfe03a6add47b4a67c5ff52b7c4, type: 3}

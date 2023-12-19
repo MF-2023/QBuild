@@ -37,7 +37,9 @@ namespace QBuild.Starter
             {
                 var playerController = container.Instantiate(_playerPrefab, _playerSpawnPoint.GetSpawnPoint(),
                     Quaternion.identity, null);
-                playerController.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                var playerTransform = playerController.transform;
+                playerTransform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                _cameraView.SetTarget(playerTransform);
                 return playerController;
             }, Lifetime.Singleton);
             builder.RegisterEntryPoint<PlayerPresenter>();
@@ -58,5 +60,7 @@ namespace QBuild.Starter
         [SerializeField] private PartRepository _partRepository;
         
         [SerializeField] private PlayerSpawnPoint _playerSpawnPoint;
+        
+        [SerializeField] private NewCameraWork _cameraView;
     }
 }

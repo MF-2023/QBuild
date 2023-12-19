@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
@@ -11,11 +12,22 @@ namespace QBuild.Player.Core
         /// <summary>
         /// コアのアップデート処理
         /// </summary>
-        public void Update()
+        public void CoreLogicUpdate()
         {
             foreach (CoreComponent component in CoreComponents)
             {
-                component.LogicUpdate();
+                component.CompLogicUpdate();
+            }
+        }
+
+        /// <summary>
+        /// コアのFixedUpdate処理
+        /// </summary>
+        public void CoreFixedUpdate()
+        {
+            foreach (CoreComponent component in CoreComponents)
+            {
+                component.CompFixedUpdate();
             }
         }
 

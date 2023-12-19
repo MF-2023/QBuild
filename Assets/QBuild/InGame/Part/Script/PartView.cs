@@ -77,7 +77,7 @@ namespace QBuild.Part
         {
             var turnDirection = Direction.Shift(times);
             Direction = turnDirection;
-            transform.Rotate(Vector3.up, times.times * 90);
+            transform.Rotate(Vector3.up, times.Value * 90);
         }
     }
 }

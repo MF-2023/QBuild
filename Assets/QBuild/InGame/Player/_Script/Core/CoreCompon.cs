@@ -22,6 +22,11 @@ namespace QBuild.Player.Core
         /// <summary>
         /// コンポーネントのアップデート処理
         /// </summary>
-        public virtual void LogicUpdate() { }
+        public virtual void CompLogicUpdate() { }
+        
+        /// <summary>
+        /// コンポーネントのFixedUpdate処理
+        /// </summary>
+        public virtual void CompFixedUpdate() {}
     }
 }

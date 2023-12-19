@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace QBuild.Utilities
 {
@@ -53,11 +54,11 @@ namespace QBuild.Utilities
     /// </summary>
     public struct ShiftDirectionTimes
     {
-        public int times;
+        public int Value;
 
-        public ShiftDirectionTimes(int times)
+        public ShiftDirectionTimes(int value)
         {
-            this.times = times;
+            Value = value;
         }
     }
 
@@ -108,7 +109,7 @@ namespace QBuild.Utilities
         public static DirectionFRBL Shift(this DirectionFRBL dir, ShiftDirectionTimes shift)
         {
             var result = dir;
-            for (var i = 0; i < shift.times; i++)
+            for (var i = 0; i < shift.Value; i++)
             {
                 result = result.TurnRight();
             }
@@ -178,10 +179,10 @@ namespace QBuild.Utilities
             while (dir != to)
             {
                 dir = dir.TurnRight();
-                result.times++;
+                result.Value++;
             }
 
-            Debug.Log($"${from} ${to} times:${result.times}");
+            Debug.Log($"${from} ${to} times:${result.Value}");
             return result;
         }
 
@@ -192,7 +193,7 @@ namespace QBuild.Utilities
 
             var times = CalcShiftTimesDirectionFRBL(from, to);
             var offsetTimes = CalcShiftTimesDirectionFRBL(to, DirectionFRBL.Forward);
-            times.times += offsetTimes.times;
+            times.Value += offsetTimes.Value;
             var dir = to.Shift(times);
 
             return dir;
