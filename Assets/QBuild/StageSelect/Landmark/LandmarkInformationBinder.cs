@@ -42,10 +42,11 @@ namespace QBuild.StageSelect.Landmark
             _stageName.text = stageName;
         }
 
-        public void SetStageImage(Sprite stageImage)
+        public void SetStageImage(Texture2D stageImage)
         {
             if ( _stageImage == null ) return;
-            _stageImage.sprite = stageImage;
+            _stageImage.sprite = Sprite.Create(stageImage, new Rect(0, 0, stageImage.width, stageImage.height),
+                Vector2.zero);
         }
 
         public void SetItemImages(int itemCount)

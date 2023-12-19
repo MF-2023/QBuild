@@ -1,3 +1,4 @@
+using QBuild.StageEditor;
 using UnityEngine;
 using QBuild.StageSelect.Landmark;
 
@@ -23,9 +24,9 @@ namespace QBuild.PlayerPrefsController
 {
     public static class SaveDataController
     {
-        public static LandmarkInformationModel GetSaveDataFromLandmark(LandmarkInformationScriptable scriptableObject)
+        public static LandmarkInformationModel GetSaveDataFromLandmark(StageData stageData)
         {
-            var key = scriptableObject._stageName;
+            var key = stageData._fileName;
             var data = GetSaveDataKey(key);
             return data;
         }
@@ -40,10 +41,10 @@ namespace QBuild.PlayerPrefsController
             return JsonUtility.FromJson<LandmarkInformationModel>(json);
         }
 
-        public static void SetSaveDataFromLandmark(LandmarkInformationScriptable scriptableObject,
+        public static void SetSaveDataFromLandmark(StageData stageData,
             LandmarkInformationModel saveData)
         {
-            var key = scriptableObject._stageName;
+            var key = stageData._fileName;
             SetSaveDataFromKey(key, saveData);
         }
 
