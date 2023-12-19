@@ -1,20 +1,45 @@
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
+using System.Collections.Generic;
 using System.Linq;
 using QBuild.Const;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace QBuild.StageEditor
 {
-    public class StageEditorWindow : EditorWindow
+     public class StageEditorWindow : EditorWindow
     {
         private StageData _editingStageData;
         private const string BlocksInventoryPath = "Assets/QBuild/Editor/StageEditor/Blocks/";
         private const string SaveStageDataFolderPath = "Assets/QBuild/InGame/Stage/StageData";
+        private const string StageEditorSceneName = "StageEditor";
+        private const string BlockLayerName = "Block";
+        private const string IconPath = "Assets/QBuild/Editor/StageEditor/Icons/";
+        private const string StageDataScriptableObjectName = "StageData";
 
-        [MenuItem(EditorConst.WindowPrePath + "StageEditor/StageEditorWindow")]
+        private readonly List<StageData> _stageDataList = new();
+
+        private struct BlockData
+        {
+            public GameObject prefab;
+            public Texture2D thumbnail;
+        }
+
+        private readonly List<BlockData> _blockList = new();
+
+        private List<CheckNormalStageData.WarningLog> _warningLogs = new();
+
+        private Texture2D _trashIcon, _saveIcon, _refreshIcon, _newIcon;
+
+        private const string TrashIconName = "Trash.png",
+            SaveIconName = "Save.png",
+            RefreshIconName = "Refresh.png",
+            NewIconName = "New.png";
+
+        [MenuItem(EditorConst.WindowPrePath + "ステージエディタ/ステージエディタウィンドウ")]
         private static void Open()
         {
             var window = GetWindow<StageEditorWindow>();
@@ -24,6 +49,12 @@ namespace QBuild.StageEditor
         private void OnEnable()
         {
             SceneView.duringSceneGui += OnSceneGUI;
+            EditorSceneManager.sceneClosing += (scene, mode) => Initialize();
+            Refresh();
+            _trashIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(IconPath + TrashIconName);
+            _saveIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(IconPath + SaveIconName);
+            _refreshIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(IconPath + RefreshIconName);
+            _newIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(IconPath + NewIconName);
         }
 
         private void OnDisable()
@@ -31,11 +62,35 @@ namespace QBuild.StageEditor
             SceneView.duringSceneGui -= OnSceneGUI;
         }
 
+        private void Initialize()
+        {
+            Scene scene = SceneManager.GetActiveScene();
+            
+            if ( scene.name != StageEditorSceneName) return;
+            
+            var obj = GetAllBlocksInScene();
+            foreach (var o in obj)
+            {
+                DestroyImmediate(o);
+            }
+            
+            _editingStageData = null;
+
+            EditorSceneManager.SaveScene(scene);
+        }
+
         private void OnGUI()
         {
             minSize = new Vector2(300, 300);
 
+            if (SceneManager.GetActiveScene().name != StageEditorSceneName)
+            {
+                OnDrawOtherSceneWarning();
+                return;
+            }
+
             OnDrawDataEdit();
+
             GUILayout.Box("", GUILayout.Height(2), GUILayout.ExpandWidth(true));
             using (new EditorGUILayout.HorizontalScope())
             {
@@ -56,7 +111,7 @@ namespace QBuild.StageEditor
             //Render the area of the stage
             if (_editingStageData == null) return;
 
-            var area = _editingStageData.stageArea;
+            var area = _editingStageData._stageArea;
             var center = new Vector3(0.0f, area.y / 2.0f, 0.0f);
 
             Handles.DrawWireCube(center, area);
@@ -67,7 +122,7 @@ namespace QBuild.StageEditor
 
             foreach (var obj in objPos)
             {
-                if (obj.layer != LayerMask.NameToLayer("Block")) continue;
+                if (obj.layer != LayerMask.NameToLayer(BlockLayerName)) continue;
 
                 for (int x = area.x / 2; x > -area.x / 2; x--)
                 {
@@ -83,22 +138,80 @@ namespace QBuild.StageEditor
             }
         }
 
+        //別のシーンが開かれているときに呼ばれる
+        private void OnDrawOtherSceneWarning()
+        {
+            EditorGUILayout.HelpBox("ステージエディタシーンを開いてください。", MessageType.Warning);
+            if (GUILayout.Button("ステージエディタシーンを開く"))
+                StageDataSceneTab.OpenStageEditorScene();
+        }
+
         private void OnDrawDataEdit()
         {
             using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox,
                        GUILayout.Height(40)))
             {
-                if (GUILayout.Button("New", GUILayout.Width(40), GUILayout.ExpandHeight(true)))
+                if (GUILayout.Button(_newIcon, GUILayout.Width(40), GUILayout.Height(40)))
                 {
                     CreateStageData("NewStageData");
                 }
 
-                if (GUILayout.Button("Save", GUILayout.ExpandHeight(true)))
+                bool grayOut = _editingStageData == null;
+                using (new EditorGUI.DisabledScope(grayOut))
                 {
-                    SaveStageData();
+                    if (GUILayout.Button(_saveIcon, GUILayout.Height(40)))
+                    {
+                        SaveStageData();
+                    }
+                }
+
+                if (GUILayout.Button(_refreshIcon, GUILayout.Width(80), GUILayout.Height(40)))
+                {
+                    Refresh();
                 }
             }
         }
+
+        private void Refresh()
+        {
+            AssetDatabase.Refresh();
+
+            RefreshStageDataList();
+            RefreshBlockList();
+            ObjectSnapper.stageArea = _editingStageData?._stageArea ?? Vector3Int.zero;
+            _warningLogs = new List<CheckNormalStageData.WarningLog>();
+            _warningLogs = CheckNormalStageData.CheckStageData(_editingStageData);
+        }
+
+        private void RefreshStageDataList()
+        {
+            _stageDataList.Clear();
+            var guids = AssetDatabase.FindAssets("t:" + StageDataScriptableObjectName);
+            foreach (var guid in guids)
+            {
+                var path = AssetDatabase.GUIDToAssetPath(guid);
+                var stageData = AssetDatabase.LoadAssetAtPath<StageData>(path);
+                if (stageData == null) continue;
+                _stageDataList.Add(stageData);
+            }
+        }
+
+        private void RefreshBlockList()
+        {
+            _blockList.Clear();
+            var guids = AssetDatabase.FindAssets("t:GameObject", new[] { BlocksInventoryPath });
+            foreach (var guid in guids)
+            {
+                BlockData blockData = new();
+                var path = AssetDatabase.GUIDToAssetPath(guid);
+                var block = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+                if (block == null) continue;
+                blockData.prefab = block;
+                blockData.thumbnail = AssetPreview.GetAssetPreview(block);
+                _blockList.Add(blockData);
+            }
+        }
+
 
         private Vector2 _dataScrollPosition;
 
@@ -110,29 +223,36 @@ namespace QBuild.StageEditor
             {
                 _dataScrollPosition = scroll.scrollPosition;
 
-                var guids = AssetDatabase.FindAssets("t:StageData");
-                foreach (var guid in guids)
-                {
-                    var path = AssetDatabase.GUIDToAssetPath(guid);
-                    var stageData = AssetDatabase.LoadAssetAtPath<StageData>(path);
-                    if (stageData == null) continue;
 
+                foreach (var stageData in _stageDataList)
+                {
                     using (new EditorGUILayout.HorizontalScope())
                     {
-                        if (GUILayout.Button("×", GUILayout.Width(20)))
+                        GUI.color = Color.white;
+                        if (GUILayout.Button(_trashIcon, GUILayout.Height(20), GUILayout.Width(20))) //Delete
                         {
-                            DeleteStageData(stageData);
-                            _editingStageData = null;
-                            return;
+                            var result = EditorUtility.DisplayDialog("消去", "本当に消去しますか？",
+                                "はい",
+                                "いいえ"
+                            );
+
+                            if (result)
+                            {
+                                DeleteStageData(stageData);
+                                return;
+                            }
                         }
 
-                        if (GUILayout.Button(stageData.name, GUILayout.Width(30), GUILayout.ExpandWidth(true)))
+                        if (stageData == _editingStageData) GUI.color = Color.green;
+                        if (GUILayout.Button(stageData._fileName, GUILayout.ExpandWidth(true))) //Load
                         {
                             LoadStageData(stageData);
-                            //EditorGUIUtility.PingObject(stageData);
+                            return;
                         }
                     }
                 }
+
+                GUI.color = Color.white;
             }
         }
 
@@ -146,26 +266,23 @@ namespace QBuild.StageEditor
                 {
                     EditorGUILayout.LabelField("File name", GUILayout.Width(100));
 
-                    var text = EditorGUILayout.DelayedTextField(_editingStageData.fileName);
-                    if (text != null && text != _editingStageData.fileName)
+                    var text = EditorGUILayout.DelayedTextField(_editingStageData._fileName);
+                    if (text != null && text != _editingStageData._fileName)
                     {
-                        var log = AssetDatabase.RenameAsset(SaveStageDataFolderPath + "/" + _editingStageData.fileName,
+                        var log = AssetDatabase.RenameAsset(SaveStageDataFolderPath + "/" + _editingStageData._fileName,
                             text);
                         if (log != "")
+                        {
                             EditorUtility.DisplayDialog("エラー", "ファイル名が重複しています。", "OK");
+                        }
                         else
                         {
-                            Debug.Log(text);
                             AssetDatabase.RenameAsset(AssetDatabase.GetAssetPath(_editingStageData), text);
-                            AssetDatabase.RenameAsset(AssetDatabase.GetAssetPath(_editingStageData.stage), text);
-                            _editingStageData.fileName = text;
-                            EditorUtility.SetDirty(_editingStageData);
+                            AssetDatabase.RenameAsset(AssetDatabase.GetAssetPath(_editingStageData._stage), text);
+                            _editingStageData._fileName = text;
                             AssetDatabase.SaveAssets();
                             AssetDatabase.Refresh();
-                            EditorSceneManager.SaveOpenScenes();
                         }
-
-                        GUI.FocusControl("");
                     }
                 }
 
@@ -174,39 +291,69 @@ namespace QBuild.StageEditor
                 {
                     EditorGUILayout.LabelField("Stage name", GUILayout.Width(100));
 
-                    var text = EditorGUILayout.DelayedTextField(_editingStageData.stageName);
-                    if (text != null && text != _editingStageData.stageName)
-                        _editingStageData.stageName = text;
+                    var text = EditorGUILayout.DelayedTextField(_editingStageData._stageName);
+                    if (text != null && text != _editingStageData._stageName)
+                    {
+                        _editingStageData._stageName = text;
+                        AssetDatabase.SaveAssets();
+                        AssetDatabase.Refresh();
+                    }
+                }
+
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    EditorGUILayout.LabelField("Stage difficult", GUILayout.Width(100));
+
+                    //1~5 slider
+                    var difficult = EditorGUILayout.IntSlider(_editingStageData._stageDifficult, 1, 5);
+                    if (difficult != _editingStageData._stageDifficult)
+                    {
+                        _editingStageData._stageDifficult = difficult;
+                        AssetDatabase.SaveAssets();
+                        AssetDatabase.Refresh();
+                    }
                 }
 
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     EditorGUILayout.LabelField("Stage area", GUILayout.Width(100));
 
-                    var area = EditorGUILayout.Vector3IntField("", _editingStageData.stageArea);
-                    if (_editingStageData.stageArea != area)
+                    EditorGUILayout.LabelField("x", GUILayout.Width(10));
+                    int x = EditorGUILayout.DelayedIntField(_editingStageData._stageArea.x);
+                    EditorGUILayout.LabelField("y", GUILayout.Width(10));
+                    int y = EditorGUILayout.DelayedIntField(_editingStageData._stageArea.y);
+                    EditorGUILayout.LabelField("z", GUILayout.Width(10));
+                    int z = EditorGUILayout.DelayedIntField(_editingStageData._stageArea.z);
+
+                    var area = new Vector3Int(x, y, z);
+
+                    if (_editingStageData._stageArea != area)
                     {
-                        _editingStageData.stageArea = area;
+                        _editingStageData._stageArea = area;
                         ObjectSnapper.stageArea = area;
-                        
-                        var objects = FindObjectsOfType<GameObject>();
-                        foreach (var obj in objects)
-                        {
-                            if (obj.layer == LayerMask.NameToLayer("Block"))
-                                ObjectSnapper.SnapToGrid(obj.transform);
-                        }
+
+                        var obj = GetAllBlocksInScene();
+                        foreach (var o in obj) ObjectSnapper.SnapToGrid(o.transform);
+
+
+                        AssetDatabase.SaveAssets();
+                        AssetDatabase.Refresh();
                     }
                 }
 
                 {
                     EditorGUILayout.LabelField("Stage image", GUILayout.Width(100));
 
-                    var texture = EditorGUILayout.ObjectField(_editingStageData.stageImage, typeof(Texture), false,
+                    var texture = EditorGUILayout.ObjectField(_editingStageData._stageImage, typeof(Texture), false,
                         GUILayout.ExpandWidth(true),
-                        GUILayout.ExpandHeight(true)) as Texture;
+                        GUILayout.ExpandHeight(true)) as Texture2D;
 
-                    if (_editingStageData.stageImage != texture)
-                        _editingStageData.stageImage = texture;
+                    if (_editingStageData._stageImage != texture)
+                    {
+                        _editingStageData._stageImage = texture;
+                        AssetDatabase.SaveAssets();
+                        AssetDatabase.Refresh();
+                    }
                 }
             }
         }
@@ -223,29 +370,23 @@ namespace QBuild.StageEditor
             {
                 _inventoryScrollPosition = scroll.scrollPosition;
 
-                string[] guids = AssetDatabase.FindAssets("t:GameObject", new[] { BlocksInventoryPath });
-                string[] paths = guids.Select(AssetDatabase.GUIDToAssetPath).ToArray();
-
                 float availableWidth = EditorGUIUtility.currentViewWidth - 35;
                 int buttonsPerRow = Mathf.FloorToInt(availableWidth / 100);
 
                 float buttonSize = (availableWidth - (buttonsPerRow - 1)) / buttonsPerRow;
 
-                for (int i = 0; i < paths.Length; i++)
+                for (int i = 0; i < _blockList.Count; i++)
                 {
                     if (i % buttonsPerRow == 0)
                         EditorGUILayout.BeginHorizontal();
 
-                    var path = paths[i];
-                    var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
-                    if (prefab == null) continue;
-
-                    Texture2D thumbnail = AssetPreview.GetAssetPreview(prefab);
+                    var prefab = _blockList[i].prefab;
+                    Texture2D thumbnail = _blockList[i].thumbnail;
 
                     if (GUILayout.Button(thumbnail, GUILayout.Width(buttonSize), GUILayout.Height(buttonSize)))
                         InstanceObject(prefab);
 
-                    if ((i + 1) % buttonsPerRow == 0 || i == paths.Length - 1)
+                    if ((i + 1) % buttonsPerRow == 0 || i == _blockList.Count - 1)
                         EditorGUILayout.EndHorizontal();
                 }
             }
@@ -255,9 +396,8 @@ namespace QBuild.StageEditor
 
         private void InstanceObject(GameObject prefab)
         {
-            
-            if ( _editingStageData == null) return;
-            
+            if (_editingStageData == null) return;
+
             var position = SceneView.lastActiveSceneView.camera.transform.position +
                            SceneView.lastActiveSceneView.camera.transform.forward * _InstanceDistance;
             var rotation = Quaternion.identity;
@@ -271,23 +411,32 @@ namespace QBuild.StageEditor
             }
         }
 
+        private Vector2 _stageStatusScrollPosition;
+
         private void OnDrawStageStatus()
         {
-            using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox, GUILayout.Height(100),
-                       GUILayout.ExpandWidth(true)))
+            if (_editingStageData == null) return;
+
+            using (var scroll = new EditorGUILayout.ScrollViewScope(
+                       _stageStatusScrollPosition,
+                       EditorStyles.helpBox,
+                       GUILayout.ExpandWidth(true),
+                       GUILayout.MaxHeight(100)))
             {
-                using (new EditorGUILayout.VerticalScope())
+                _stageStatusScrollPosition = scroll.scrollPosition;
+
+                foreach (var log in _warningLogs)
                 {
                     using (new EditorGUILayout.HorizontalScope())
                     {
-                        EditorGUILayout.LabelField("StartPoint", GUILayout.Width(100));
-                        EditorGUILayout.LabelField("false");
-                    }
-                 
-                    using (new EditorGUILayout.HorizontalScope())
-                    {
-                        EditorGUILayout.LabelField("GoalPoint", GUILayout.Width(100));
-                        EditorGUILayout.LabelField("false");
+                        EditorGUILayout.LabelField(log.text, GUILayout.ExpandWidth(true));
+                        if (log.targetObject.Count > 0)
+                        {
+                            if (GUILayout.Button("Focus", GUILayout.Width(50)))
+                            {
+                                Selection.objects = log.targetObject.ToArray();
+                            }
+                        }
                     }
                 }
             }
@@ -295,16 +444,14 @@ namespace QBuild.StageEditor
 
         private void DeleteStageData(StageData stageData)
         {
-            AssetDatabase.DeleteAsset(SaveStageDataFolderPath + "/" + stageData.fileName);
+            AssetDatabase.DeleteAsset(SaveStageDataFolderPath + "/" + stageData._fileName);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-            
-            var objects = FindObjectsOfType<GameObject>();
-            foreach (var obj in objects)
-            {
-                if (obj.layer == LayerMask.NameToLayer("Block"))
-                    DestroyImmediate(obj);
-            }
+
+            var obj = GetAllBlocksInScene();
+            foreach (var o in obj) DestroyImmediate(o);
+
+            Refresh();
         }
 
         private void SaveStageData()
@@ -313,9 +460,10 @@ namespace QBuild.StageEditor
 
             ShrinkStageData(_editingStageData);
 
-            EditorUtility.SetDirty(_editingStageData);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
+
+            Refresh();
         }
 
         private void LoadStageData(StageData stageData)
@@ -326,7 +474,7 @@ namespace QBuild.StageEditor
 
             if (_editingStageData != null)
             {
-                var num = EditorUtility.DisplayDialogComplex("エラー", "変更内容を保存しますか？",
+                var num = EditorUtility.DisplayDialogComplex("開く", "変更内容を保存しますか？",
                     "はい",
                     "キャンセル",
                     "保存せずに開く"
@@ -344,44 +492,58 @@ namespace QBuild.StageEditor
             }
 
             _editingStageData = stageData;
-            ObjectSnapper.stageArea = stageData.stageArea;
+            ObjectSnapper.stageArea = stageData._stageArea;
 
-            var objects = FindObjectsOfType<GameObject>();
-            foreach (var obj in objects)
-            {
-                if (obj.layer == LayerMask.NameToLayer("Block"))
-                    DestroyImmediate(obj);
-            }
+            DestroyAllBlocks();
 
             ExpandStageData(stageData);
+
+            EditorUtility.SetDirty(_editingStageData);
+
+            Refresh();
+        }
+        private static void DestroyAllBlocks()
+        {
+            var obj = GetAllBlocksInScene();
+            foreach (var o in obj)
+            {
+                DestroyImmediate(o);
+            }
         }
 
         private void ExpandStageData(StageData stageData)
         {
-            if (stageData.stage == null) return;
+            if (stageData._stage == null) return;
 
-            var obj = Instantiate(stageData.stage);
+            var obj = Instantiate(stageData._stage);
 
             int count = obj.transform.childCount;
             for (int i = 0; i < count; i++)
             {
-                obj.transform.GetChild(0).SetParent(null);
+                var child = obj.transform.GetChild(0);
+                child.SetParent(null);
             }
+
             DestroyImmediate(obj);
+        }
+
+        public static List<GameObject> GetAllBlocksInScene()
+        {
+            var objects = FindObjectsOfType<GameObject>();
+
+            return objects.Where(obj => obj.layer == LayerMask.NameToLayer(BlockLayerName)).ToList();
         }
 
         private void ShrinkStageData(StageData stageData)
         {
-            var objects = FindObjectsOfType<GameObject>();
             var parent = new GameObject("Stage");
             bool isExistSaveData = false;
-            foreach (var obj in objects)
+
+            var obj = GetAllBlocksInScene();
+            foreach (var o in obj)
             {
-                if (obj.layer == LayerMask.NameToLayer("Block"))
-                {
-                    isExistSaveData = true;
-                    obj.transform.SetParent(parent.transform);
-                }
+                isExistSaveData = true;
+                o.transform.SetParent(parent.transform);
             }
 
             if (!isExistSaveData)
@@ -392,11 +554,11 @@ namespace QBuild.StageEditor
 
             var prefab =
                 PrefabUtility.SaveAsPrefabAsset(parent,
-                    SaveStageDataFolderPath + "/" + stageData.fileName + "/" + stageData.fileName + ".prefab");
+                    SaveStageDataFolderPath + "/" + stageData._fileName + "/" + stageData._fileName + ".prefab");
 
-            stageData.stage = prefab;
+            stageData._stage = prefab;
 
-            foreach (var child in objects)
+            foreach (var child in obj)
                 child.transform.SetParent(null);
 
             DestroyImmediate(parent);
@@ -418,11 +580,13 @@ namespace QBuild.StageEditor
             var fullFileName = folderPath + "/" + numberingFileName + ".asset";
 
             var stageData = CreateInstance<StageData>();
-            stageData.fileName = fileName + i;
-            stageData.stageArea = new Vector3Int(10, 10, 10);
+            stageData._fileName = fileName + i;
+            stageData._stageName = "";
+            stageData._stageArea = new Vector3Int(10, 10, 10);
             AssetDatabase.CreateAsset(stageData, fullFileName);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
+            Refresh();
         }
     }
 }

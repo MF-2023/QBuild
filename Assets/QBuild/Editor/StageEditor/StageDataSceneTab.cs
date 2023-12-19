@@ -12,10 +12,10 @@ namespace QBuild.StageEditor
     {
         private const string FolderPath = "Assets/QBuild/Editor/StageEditor/";
         private const string SceneName = "StageEditor.unity";
-        private const string ButtonName = "ステージエディタシーンを開く";
+        private const string ButtonName = "ステージエディタシーン";
 
-        [MenuItem(EditorConst.WindowPrePath + "StageEditor/" + ButtonName)]
-        private static void OpenStageEditorScene()
+        [MenuItem(EditorConst.WindowPrePath + "ステージエディタ/" + ButtonName)]
+        public static void OpenStageEditorScene()
         {
             if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
             {
