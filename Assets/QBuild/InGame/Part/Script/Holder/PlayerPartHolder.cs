@@ -12,8 +12,10 @@ namespace QBuild.Part
 
 
         private BasePartSpawnConfiguratorObject _basePartSpawnConfiguratorObject;
+        private ISlotFactory _slotFactory;
         private List<BaseSlot> _slots = new();
         public IEnumerable<BaseSlot> Slots => _slots;
+        public int CurrentPartIndex => _currentPartIndex;
 
         private int _currentPartIndex = 0;
         private int _prevPartIndex = 0;
@@ -21,7 +23,12 @@ namespace QBuild.Part
         public PlayerPartHolder(BasePartSpawnConfiguratorObject basePartSpawnConfiguratorObject, int holderSize)
         {
             _basePartSpawnConfiguratorObject = basePartSpawnConfiguratorObject;
-            //TODO: partを設定する
+            _slotFactory = new QuantitySlotFactory();
+            for (var i = 0; i < holderSize; i++)
+            {
+                var slot = _slotFactory.CreateSlot(_basePartSpawnConfiguratorObject, i);
+                _slots.Add(slot);
+            }
         }
 
         public void Next()

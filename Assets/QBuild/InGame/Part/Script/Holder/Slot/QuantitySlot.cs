@@ -1,4 +1,6 @@
-﻿namespace QBuild.Part
+﻿using System;
+
+namespace QBuild.Part
 {
     public class QuantitySlot : BaseSlot
     {

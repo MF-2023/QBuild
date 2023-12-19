@@ -34,21 +34,25 @@ namespace QBuild.Part.Presenter
                 {
                     SetQuantity(i, quantitySlot.Quantity);
                 }
-                
             }
+            _partHolderView.Pick(_holder.CurrentPartIndex);
         }
 
         private void OnUsedPart(object sender, HolderUseEventArgs e)
         {
-            SetIcon(e.CurrentIndex, e.Part);
-            if (e.Slot is QuantitySlot quantitySlot)
-            {
-                SetQuantity(e.CurrentIndex, quantitySlot.Quantity);
-            }
+            if (e.Slot is not QuantitySlot quantitySlot) return;
+            SetIcon(e.CurrentIndex, quantitySlot.Quantity == 0 ? null : e.Part);
+            SetQuantity(e.CurrentIndex, quantitySlot.Quantity);
         }
 
         private void SetIcon(int holdersIndex, BlockPartScriptableObject part)
         {
+            if (part == null)
+            {
+                _partHolderView.SetEmpty(holdersIndex);
+                return;
+            }
+
             _partHolderView.SetPartIcon(holdersIndex, part.PartIcon);
         }
 
@@ -59,8 +63,7 @@ namespace QBuild.Part.Presenter
 
         private void OnSelectChanged(object sender, HolderSelectChangeEventArgs e)
         {
-            _partHolderView.SetScaleUp(e.CurrentIndex);
-            _partHolderView.SetScaleDown(e.PrevIndex);
+            _partHolderView.Pick(e.CurrentIndex);
         }
 
         private IPartsHoldable _holder;

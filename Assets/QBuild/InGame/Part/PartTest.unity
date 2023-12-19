@@ -2549,6 +2549,12 @@ PrefabInstance:
       propertyPath: _playerSpawnPoint
       value: 
       objectReference: {fileID: 1680793673}
+    - target: {fileID: 8298713436594459336, guid: a4904820323a46c4b9de5a7ea9fb65bd,
+        type: 3}
+      propertyPath: _partListScriptableObject
+      value: 
+      objectReference: {fileID: 11400000, guid: 2dcc1c17e3d762b4fa97af8f3bc28932,
+        type: 2}
     - target: {fileID: 8722727496272008458, guid: a4904820323a46c4b9de5a7ea9fb65bd,
         type: 3}
       propertyPath: m_Mesh

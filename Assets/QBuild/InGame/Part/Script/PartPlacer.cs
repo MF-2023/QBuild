@@ -15,18 +15,20 @@ namespace QBuild.Part
         public event Action<PartView> OnPlaceEvent = delegate { };
 
         [Inject]
-        private void Inject(@InputSystem inputSystem, HolderPresenter holderPresenter, PartRepository repository)
+        private void Inject(@InputSystem inputSystem, HolderPresenter holderPresenter, PartRepository repository,
+            BasePartSpawnConfiguratorObject partListScriptableObject)
         {
             _camera = Camera.main;
-            
+
             inputSystem.InGame.BlockPlaceF.performed += _ => ForwardPlacePart();
             inputSystem.InGame.BlockPlaceR.performed += _ => RightPlacePart();
             inputSystem.InGame.BlockPlaceB.performed += _ => BackPlacePart();
             inputSystem.InGame.BlockPlaceL.performed += _ => LeftPlacePart();
 
             inputSystem.InGame.SelectChange.performed += ChangeSelect;
-
-            _nextPartHolder = new PlayerPartHolder(_partListScriptableObject, 3);
+            _partListScriptableObject = partListScriptableObject;
+            _nextPartHolder =
+                new PlayerPartHolder(_partListScriptableObject, _partListScriptableObject.GetPartObjectCount);
             _nextPartHolder.OnChangedSelect += OnSelectChanged;
             holderPresenter.Bind(_nextPartHolder);
             OnPlaceEvent += repository.AddPart;
@@ -144,7 +146,6 @@ namespace QBuild.Part
         }
 
         [SerializeField] private BasePartSpawnConfiguratorObject _partListScriptableObject;
-
 
         private PlayerPartHolder _nextPartHolder;
 

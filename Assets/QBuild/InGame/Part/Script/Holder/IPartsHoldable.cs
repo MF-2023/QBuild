@@ -44,5 +44,7 @@ namespace QBuild.Part
         event HolderSelectChangedEventHandler OnChangedSelect;
 
         IEnumerable<BaseSlot> Slots { get; }
+        
+        int CurrentPartIndex { get; }
     }
 }
