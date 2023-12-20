@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks.Linq;
+using DG.Tweening;
 using QBuild.Utilities;
 using UnityEngine;
 
@@ -9,10 +14,10 @@ namespace QBuild.Part
     [RequireComponent(typeof(Connector))]
     public class PartView : MonoBehaviour
     {
-        private Connector _connector;
-
         public DirectionFRBL Direction { get; set; } = DirectionFRBL.Forward;
 
+        private Connector _connector;
+        private Channel<ShiftDirectionTimes> _channel;
 
         public void Awake()
         {
@@ -20,6 +25,16 @@ namespace QBuild.Part
             var e = r.eulerAngles;
             Direction = DirectionFRBLExtension.VectorToDirectionFRBL(e);
             Debug.Log(Direction);
+            
+            _channel = Channel.CreateSingleConsumerUnbounded<ShiftDirectionTimes>();
+
+            var reader = _channel.Reader;
+            WaitForChannelAsync(reader, this.GetCancellationTokenOnDestroy()).Forget();
+        }
+        
+        private void OnDestroy()
+        {
+            _channel.Writer.TryComplete();
         }
 
         public IEnumerable<Vector3> OnGetConnectPoints()
@@ -73,11 +88,35 @@ namespace QBuild.Part
             _connector.SetCanConnect(shiftedDir, canConnect);
         }
 
+        private async UniTaskVoid WaitForChannelAsync(ChannelReader<ShiftDirectionTimes> reader,
+            CancellationToken cancellationToken)
+        {
+            try
+            {
+                await reader.ReadAllAsync()
+                    .ForEachAwaitAsync(async x =>
+                    {
+                        await TurnAsync(x);
+                    }, cancellationToken);
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
+        }
+
         public void Turn(ShiftDirectionTimes times)
+        {
+            _channel.Writer.TryWrite(times);
+        }
+        
+        public async Task TurnAsync(ShiftDirectionTimes times)
         {
             var turnDirection = Direction.Shift(times);
             Direction = turnDirection;
-            transform.Rotate(Vector3.up, times.Value * 90);
+            var rot = transform.localRotation.eulerAngles;
+            rot.y += times.Value * 90;
+            await transform.DOLocalRotate(rot, 0.5f).AsyncWaitForCompletion();
         }
     }
 }

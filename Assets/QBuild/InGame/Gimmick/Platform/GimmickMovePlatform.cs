@@ -23,12 +23,14 @@ namespace QBuild.Gimmick
 
         private void OnEnable()
         {
+            if(_helper != null)return;
             _helper.AddMoverEvent += AddMover;
             _helper.RemoveMoverEvent += RemoveMover;
         }
 
         private void OnDisable()
         {
+            if(_helper != null)return;
             _helper.AddMoverEvent -= AddMover;
             _helper.RemoveMoverEvent -= RemoveMover;
         }
