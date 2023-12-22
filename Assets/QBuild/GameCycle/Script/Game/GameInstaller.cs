@@ -2,6 +2,7 @@ using QBuild.Stage;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace QBuild.GameCycle
 {
@@ -11,18 +12,8 @@ namespace QBuild.GameCycle
 
         private void Awake()
         {
-            /*
-            // �X�e�[�W�̐���
-            if (_selectStageSO.SelectStagePrefab == null)
-            {
-                //Instantiate(_initStagePrefab);
-            }
-            else
-            {
-                Instantiate(_selectStageSO.SelectStagePrefab);
-                //_selectStageSO.SelectStagePrefab = null;
-            }
-            */
+            //Addressables.LoadAssetAsync<GameObject>()
+            Instantiate(_selectStageSO.SelectStageData._stage);
         }
     }
 }

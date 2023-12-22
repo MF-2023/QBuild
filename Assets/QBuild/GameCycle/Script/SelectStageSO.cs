@@ -8,6 +8,7 @@ namespace QBuild.Stage
     [CreateAssetMenu(fileName = "newStageData", menuName = "Data/Stage Data")]
     public class SelectStageSO : ScriptableObject
     {
+        [SerializeField]
         private StageData _selectStageData;
         public StageData SelectStageData
         {
