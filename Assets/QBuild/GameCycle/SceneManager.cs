@@ -53,22 +53,23 @@ namespace  QBuild.Scene
         /// </summary>
         /// <param name="waitTime">待つ時間</param>
         /// <param name="index">シーン番号</param>
-        public static void ChangeSceneWait(float waitTime, int index)
+        public static void ChangeSceneWait(float scChangeTime, float waitTime, int index)
         {
             if (!CheckInstance()) return;
-            _instance.StartChangeSceneWait(waitTime, index, SceneChangeEffect.Fade);
+            _instance.StartChangeSceneWait(scChangeTime, waitTime, index, SceneChangeEffect.Fade);
         }
         
         /// <summary>
         /// 指定した時間後にシーンを変更
         /// </summary>
+        /// <param name="scChangeTime">シーンエフェクトの再生時間</param>
         /// <param name="waitTime">待つ時間</param>
         /// <param name="index">シーン番号</param>
         /// <param name="scEffect">使用するシーンチェンジエフェクト</param>
-        public static void ChangeSceneWait(float waitTime, int index, SceneChangeEffect scEffect)
+        public static void ChangeSceneWait(float scChangeTime, float waitTime, int index, SceneChangeEffect scEffect)
         {
             if (!CheckInstance()) return;
-            _instance.StartChangeSceneWait(waitTime, index, scEffect);
+            _instance.StartChangeSceneWait(scChangeTime, waitTime, index, scEffect);
         }
 
         private void StartLoadScene(int index)
@@ -89,17 +90,17 @@ namespace  QBuild.Scene
             };
         }
         
-        private void StartChangeSceneWait(float waitTime, int index, SceneChangeEffect scEffect)
+        private void StartChangeSceneWait(float scChangeTime, float waitTime, int index, SceneChangeEffect scEffect)
         {
-            StartCoroutine(changeSceneWait(waitTime,index, scEffect));
+            StartCoroutine(changeSceneWait(scChangeTime ,waitTime,index, scEffect));
         }
 
-        private IEnumerator changeSceneWait(float waitTime , int index, SceneChangeEffect scEffect)
+        private IEnumerator changeSceneWait(float scChangeTime, float waitTime , int index, SceneChangeEffect scEffect)
         {
-                        if (_loadedScene) yield break;
+            if (_loadedScene) yield break;
 
             //シーンの切り替えエフェクト
-            OutSCStart(waitTime, scEffect);
+            OutSCStart(scChangeTime, scEffect);
             UnityEngine.SceneManagement.Scene delScene = UnitySceneManager.GetActiveScene();
             
             _loadedScene = true;
@@ -127,7 +128,7 @@ namespace  QBuild.Scene
             yield return async;
             
             //シーンの切り替えエフェクト
-            InSCStart(waitTime, scEffect);
+            InSCStart(scChangeTime, scEffect);
             _loadedScene = false;
         }
         

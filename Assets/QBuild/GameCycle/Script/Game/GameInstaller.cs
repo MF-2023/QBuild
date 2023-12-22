@@ -1,6 +1,8 @@
+using System.Collections;
 using QBuild.Stage;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace QBuild.GameCycle
 {
@@ -10,12 +12,19 @@ namespace QBuild.GameCycle
 
         private void Awake()
         {
-            _selectStageSO.SelectStageData.GetReferenceStagePrefab().LoadAssetAsync<GameObject>().Completed += handle =>
-            {
-                Instantiate(handle.Result);
-            };
+            LoadStage();
             
             //Instantiate(_selectStageSO.SelectStageData._stage);
+        }
+
+        private void LoadStage()
+        {
+            _selectStageSO.SelectStageData.GetReferenceStagePrefab()
+                                          .LoadAssetAsync<GameObject>()
+                                          .Completed += handler =>
+                                            {
+                                                Instantiate((handler.Result));
+                                            };
         }
     }
 }
