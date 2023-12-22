@@ -1,4 +1,4 @@
-Shader "Neko/Dissolve"
+Shader "Unity/Dissolve"
 {
     Properties
     {
@@ -21,6 +21,105 @@ Shader "Neko/Dissolve"
             "RenderType"="Opaque"
         }
 
+        // This pass is used when drawing to a _CameraNormalsTexture texture
+        Pass
+        {
+            Name "DepthNormals"
+            Tags
+            {
+                "LightMode" = "DepthNormals"
+            }
+
+            // -------------------------------------
+            // Render State Commands
+            ZWrite On
+            Cull[_Cull]
+
+            HLSLPROGRAM
+            #pragma target 2.0
+
+            // -------------------------------------
+            // Shader Stages
+            #pragma vertex DepthNormalsVertex
+            #pragma fragment DepthNormalsFragment
+
+            // -------------------------------------
+            // Material Keywords
+            #pragma shader_feature_local _NORMALMAP
+            #pragma shader_feature_local _PARALLAXMAP
+            #pragma shader_feature_local _ _DETAIL_MULX2 _DETAIL_SCALED
+            #pragma shader_feature_local_fragment _ALPHATEST_ON
+            #pragma shader_feature_local_fragment _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+
+            // -------------------------------------
+            // Unity defined keywords
+            #pragma multi_compile_fragment _ LOD_FADE_CROSSFADE
+
+            // -------------------------------------
+            // Universal Pipeline keywords
+            #include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/RenderingLayers.hlsl"
+
+            //--------------------------------------
+            // GPU Instancing
+            #pragma multi_compile_instancing
+            #include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DOTS.hlsl"
+
+            // -------------------------------------
+            // Includes
+            #include "Packages/com.unity.render-pipelines.universal/Shaders/LitInput.hlsl"
+
+            struct Attributes {
+                float4 positionOS : POSITION;
+                float4 tangentOS : TANGENT;
+                float2 texcoord : TEXCOORD0;
+                float3 normal : NORMAL;
+                UNITY_VERTEX_INPUT_INSTANCE_ID
+            };
+
+            struct Varyings {
+                float4 positionCS : SV_POSITION;
+                float2 uv : TEXCOORD1;
+                half3 normalWS : TEXCOORD2;
+
+                half4 tangentWS : TEXCOORD4;    // xyz: tangent, w: sign
+
+                half3 viewDirWS : TEXCOORD5;
+
+                half3 viewDirTS : TEXCOORD8;
+
+                UNITY_VERTEX_INPUT_INSTANCE_ID
+                UNITY_VERTEX_OUTPUT_STEREO
+            };
+
+
+            Varyings DepthNormalsVertex(Attributes input) {
+                Varyings output = (Varyings)0;
+                UNITY_SETUP_INSTANCE_ID(input);
+                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
+
+                output.uv = TRANSFORM_TEX(input.texcoord, _BaseMap);
+                output.positionCS = TransformObjectToHClip(input.positionOS.xyz);
+
+                VertexPositionInputs vertexInput = GetVertexPositionInputs(input.positionOS.xyz);
+                VertexNormalInputs normalInput = GetVertexNormalInputs(input.normal, input.tangentOS);
+
+                half3 viewDirWS = GetWorldSpaceNormalizeViewDir(vertexInput.positionWS);
+                output.normalWS = half3(normalInput.normalWS);
+                float sign = input.tangentOS.w * float(GetOddNegativeScale());
+                half4 tangentWS = half4(normalInput.tangentWS.xyz, sign);
+
+                output.tangentWS = tangentWS;
+
+                half3 viewDirTS = GetViewDirectionTangentSpace(tangentWS, output.normalWS, viewDirWS);
+                output.viewDirTS = viewDirTS;
+                return output;
+            }
+
+            void DepthNormalsFragment(
+                    Varyings input
+                    ) { }
+            ENDHLSL
+        }
         Pass
         {
             CGPROGRAM

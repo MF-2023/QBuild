@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine.Utility;
 using UnityEngine;
 
 namespace QBuild.Player.Core
@@ -7,11 +8,14 @@ namespace QBuild.Player.Core
     public class Movement : CoreComponent
     {
         public Vector3 currentVelocity { get; private set; }
+        public Vector3 CurrentMoverVelocity { get; set; }
+        public bool OnMover;
         public bool canSetVelocity;
 
         private Vector3         _workspace;
         private Rigidbody       _myRB;
-
+        private PhysicMaterial _myPM;
+        
         protected override void Awake()
         {
             base.Awake();
@@ -19,11 +23,21 @@ namespace QBuild.Player.Core
             if (_myRB == null) UnityEngine.Debug.LogError(transform.root.name + "Ç…RigidBodyÇ™ë∂ç›ÇµÇ‹ÇπÇÒÅB");
             _workspace = Vector3.zero;
             canSetVelocity = true;
+            OnMover = false;
         }
 
-        public override void LogicUpdate()
+        public override void CompLogicUpdate()
         {
             currentVelocity = _myRB.velocity;
+        }
+
+        public override void CompFixedUpdate()
+        {
+            //currentVelocity = _myRB.velocity;
+            if (OnMover)
+            {
+                _myRB.velocity = CurrentMoverVelocity;
+            }
         }
 
         #region SetFunction
@@ -66,9 +80,13 @@ namespace QBuild.Player.Core
 
         private void SetFinalVelocity()
         {
-            if (!canSetVelocity) return;
             _myRB.velocity = _workspace;
             currentVelocity = _workspace;
+            
+            if (OnMover)
+            {
+                _myRB.velocity += CurrentMoverVelocity;
+            }
         }
 
         private void AddForceFinalVelocity(ForceMode mode)
@@ -84,14 +102,37 @@ namespace QBuild.Player.Core
         {
             if(isLock)
             {
-                _myRB.constraints = RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotation;
+                //_myRB.constraints = RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotation;
             }
             else
             {
-                _myRB.constraints = RigidbodyConstraints.FreezeRotation;
+                //_myRB.constraints = RigidbodyConstraints.FreezeRotation;
             }
 
+            SetPhysicMaterial(isLock);
+        }
+
+        public void SetPhysicMaterial(PhysicMaterial pm) { _myPM = pm;}
+
+        /// <summary>
+        /// ääÇËÇ‚Ç∑Ç≥ÇïœçXÇ∑ÇÈ
+        /// </summary>
+        /// <param name="flg">TRUE : ääÇÁÇ»Ç¢ FALSE : ääÇÈ</param>
+        private void SetPhysicMaterial(bool flg)
+        {
+            if (_myPM == null) return;
+            if (flg)
+            {
+                _myPM.dynamicFriction = 1.0f;
+                _myPM.frictionCombine = PhysicMaterialCombine.Maximum;
+            }
+            else
+            {
+                _myPM.dynamicFriction = 0.0f;
+                _myPM.frictionCombine = PhysicMaterialCombine.Minimum;
+            }
         }
         #endregion
+
     }
 }

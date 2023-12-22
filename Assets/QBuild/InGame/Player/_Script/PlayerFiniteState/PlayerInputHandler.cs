@@ -17,11 +17,18 @@ namespace QBuild.Player.Controller
         [Inject]
         public void Construct(InputSystem input)
         {
+            input.Enable();
             inputSystem = input;
+            inputSystem.Enable();
             inputSystem.InGame.PlayerMove.performed += InputMove;
             inputSystem.InGame.PlayerMove.canceled += InputMove;
-
         }
+
+        public void Start()
+        {
+            
+        }
+
         public void Dispose()
         {
             inputSystem.InGame.PlayerMove.performed -= InputMove;

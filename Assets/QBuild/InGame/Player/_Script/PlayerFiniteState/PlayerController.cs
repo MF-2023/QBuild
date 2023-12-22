@@ -1,4 +1,5 @@
 using System;
+using QBuild.Player.Core;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static UnityEditor.PlayerSettings;
@@ -10,47 +11,64 @@ namespace QBuild.Player.Controller
         #region Variables        
         [SerializeField] private PlayerData         _playerData;
         [SerializeField] private PlayerInputHandler _inputHandler;
-        [SerializeField] private Transform          _GroundCheckStartPosition;
-        [SerializeField] private Transform          _GroundCheckEndPosition;
+        [SerializeField] private Transform          _GroundCheckPosition;
         [SerializeField] private float              _GroundCheckRadius = 0.5f;
         [SerializeField] private LayerMask          _GroundLayer;
 
         private PlayerStateController _StateController;
         private PlayerAnimationController _AnimationController;
-        private Core.Core Core;
+        private Core.Core _core;
+        private Movement _movement;
+        public Core.Core Core
+        {
+            get { return _core; }
+        }
 
         private Vector3Int currentPosition;
-
         public event Action<Vector3> OnChangeGridPosition;
         public event Func<Vector3Int, bool> OnCheckBlock;
         #endregion
 
         #region UnityCallBack
+
+        private void Awake()
+        {
+            _core = GetComponentInChildren<Core.Core>();
+        }
+
         private void Start()
         {
-            Core = GetComponentInChildren<Core.Core>();
             _AnimationController = new PlayerAnimationController(GetComponent<Animator>());
-            _StateController = new PlayerStateController(Core, _inputHandler, _playerData);
+            _StateController = new PlayerStateController(_core, _inputHandler, _playerData);
             _StateController.OnChangeAnimation += _AnimationController.ChangeAnimation;
             _StateController.OnGetPlayerPos += () => transform.position;
             _StateController.OnSetPosition += (Vector3 pos) => transform.position = pos;
             _StateController.OnCheckBlock += CheckGround;
             _StateController.OnCheckCanClimbBlock += CheckCanClimbBlock;
             currentPosition = GetPlayerGridPosition();
+
+            TryGetComponent<Collider>(out Collider coll);
+            _movement = _core.GetCoreComponent<Movement>();
+            if(_movement != null && coll != null)
+            {
+                _movement.SetPhysicMaterial(coll.material);
+            }
         }
 
         private void Update()
         {
+            _core.CoreLogicUpdate();
             _StateController.LogicUpdate();
             CheckGridPosition();
         }
 
         private void FixedUpdate()
         {
+            _core.CoreFixedUpdate();
             _StateController.FixedUpdate();
         }
 
-        private void OnDrawGizmosSelected()
+        private void OnDrawGizmos()
         {
             Gizmos.color = Color.green;
             float collectX = 0.0f;
@@ -65,9 +83,8 @@ namespace QBuild.Player.Controller
             Color setColor = Color.green;
             setColor.a = 0.5f;
             Gizmos.color = setColor;
-            //�n�ʔ���̕`��
-            Gizmos.DrawSphere(_GroundCheckStartPosition.position, _GroundCheckRadius);
-            Gizmos.DrawSphere(_GroundCheckEndPosition.position, _GroundCheckRadius);
+            //ポジションチェック表示
+            Gizmos.DrawSphere(_GroundCheckPosition.position, _GroundCheckRadius);
         }
         #endregion
 
@@ -100,7 +117,7 @@ namespace QBuild.Player.Controller
             if (OnCheckBlock != null ? OnCheckBlock(check) : false) return true;
             return false;
             */            
-            return Physics.CheckCapsule(_GroundCheckStartPosition.position, _GroundCheckEndPosition.position, _GroundCheckRadius, _GroundLayer);
+            return Physics.CheckSphere(_GroundCheckPosition.position, _GroundCheckRadius, _GroundLayer);
         }
 
         private bool CheckCanClimbBlock(ref Vector3 retPos)
