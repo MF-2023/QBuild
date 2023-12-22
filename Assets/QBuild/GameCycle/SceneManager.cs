@@ -1,21 +1,25 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.SceneManagement;
 using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
-namespace  QBuild.Scene
+
+namespace QBuild.Scene
 {
     public class SceneManager : MonoBehaviour
     {
         [SerializeField] private SceneChangeEffect _startSceneChangeEffect = SceneChangeEffect.Fade;
         [SerializeField] private float _startSceneChangeTime = 1.0f;
-        
+
         private static SceneManager _instance = null;
         private bool _loadedScene = false;
-        
-        private List<SceneChangerBase> _sceneChangers = new List<SceneChangerBase>(); 
-        
+
+        private List<SceneChangerBase> _sceneChangers = new List<SceneChangerBase>();
+
         public bool LoadedScene
         {
             get { return _loadedScene; }
@@ -27,7 +31,7 @@ namespace  QBuild.Scene
             {
                 _instance = this;
             }
-            else if(_instance != this)
+            else if (_instance != this)
             {
                 Destroy(this.gameObject);
             }
@@ -47,17 +51,6 @@ namespace  QBuild.Scene
             if (!CheckInstance() || _instance._loadedScene) return;
             _instance.StartLoadScene(index);
         }
-
-        /// <summary>
-        /// 指定した時間後にシーンを変更(フェードを使用)
-        /// </summary>
-        /// <param name="index">シーン番号</param>
-        /// <param name="waitTime">暗転後に待つ時間(デフォルト　2秒)</param>
-        public static void ChangeSceneWait(float scChangeTime, int index, float waitTime = 2.0f)
-        {
-            if (!CheckInstance()) return;
-            _instance.StartChangeSceneWait(scChangeTime, waitTime, index, SceneChangeEffect.Fade);
-        }
         
         /// <summary>
         /// 指定した時間後にシーンを変更
@@ -66,7 +59,8 @@ namespace  QBuild.Scene
         /// <param name="index">シーン番号</param>
         /// <param name="scEffect">使用するシーンチェンジエフェクト</param>
         /// <param name="waitTime">暗転後に待つ時間(デフォルト　2秒)</param>
-        public static void ChangeSceneWait(float scChangeTime, int index, SceneChangeEffect scEffect, float waitTime = 2.0f)
+        public static void ChangeSceneWait(int index, SceneChangeEffect scEffect = SceneChangeEffect.Fade,
+            float scChangeTime = 2.0f, float waitTime = 2.0f)
         {
             if (!CheckInstance()) return;
             _instance.StartChangeSceneWait(scChangeTime, waitTime, index, scEffect);
@@ -89,28 +83,28 @@ namespace  QBuild.Scene
                 }
             };
         }
-        
+
         private void StartChangeSceneWait(float scChangeTime, float waitTime, int index, SceneChangeEffect scEffect)
         {
-            StartCoroutine(changeSceneWait(scChangeTime ,waitTime,index, scEffect));
+            StartCoroutine(changeSceneWait(scChangeTime, waitTime, index, scEffect));
         }
 
-        private IEnumerator changeSceneWait(float scChangeTime, float waitTime , int index, SceneChangeEffect scEffect)
+        private IEnumerator changeSceneWait(float scChangeTime, float waitTime, int index, SceneChangeEffect scEffect)
         {
             if (_loadedScene) yield break;
 
             //シーンの切り替えエフェクト
             OutSCStart(scChangeTime, scEffect);
             UnityEngine.SceneManagement.Scene delScene = UnitySceneManager.GetActiveScene();
-            
+
             _loadedScene = true;
-            yield return new WaitForSeconds(waitTime);
-            
+            yield return new WaitForSeconds(scChangeTime + waitTime);
+
             //シーンの切り替え処理
             //var unloadAsync = UnitySceneManager.UnloadSceneAsync(UnitySceneManager.GetActiveScene());
             var unloadAsync = UnitySceneManager.UnloadSceneAsync(delScene);
             yield return unloadAsync;
-            
+
             var async = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(index, LoadSceneMode.Additive);
             async.completed += (async) =>
             {
@@ -126,12 +120,12 @@ namespace  QBuild.Scene
             };
 
             yield return async;
-            
+
             //シーンの切り替えエフェクト
             InSCStart(scChangeTime, scEffect);
             _loadedScene = false;
         }
-        
+
         private static bool CheckInstance()
         {
             if (_instance == null)
@@ -142,7 +136,7 @@ namespace  QBuild.Scene
 
             return true;
         }
-        
+
         private void InSCStart(float scTime, SceneChangeEffect effect)
         {
             foreach (var sceneChanger in _sceneChangers)
@@ -150,7 +144,7 @@ namespace  QBuild.Scene
                 sceneChanger.InSCEffect(scTime, effect);
             }
         }
-        
+
         private void OutSCStart(float scTime, SceneChangeEffect effect)
         {
             foreach (var sceneChanger in _sceneChangers)
@@ -158,13 +152,13 @@ namespace  QBuild.Scene
                 sceneChanger.OutSCEffect(scTime, effect);
             }
         }
-        
+
         public static void AddSceneChanger(SceneChangerBase sceneChanger)
         {
             if (_instance == null) return;
-            if(!_instance._sceneChangers.Contains(sceneChanger)) _instance._sceneChangers.Add(sceneChanger);
+            if (!_instance._sceneChangers.Contains(sceneChanger)) _instance._sceneChangers.Add(sceneChanger);
         }
-        
+
         public static void RemoveSceneChanger(SceneChangerBase sceneChanger)
         {
             if (_instance == null) return;

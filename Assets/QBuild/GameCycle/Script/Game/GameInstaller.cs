@@ -1,30 +1,51 @@
 using System.Collections;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
+using QBuild.Scene;
 using QBuild.Stage;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.SceneManagement;
 
 namespace QBuild.GameCycle
 {
-    public class GameInstaller : MonoBehaviour
+    interface ILoadable
+    {
+        Task Load();
+    }
+    
+    public class GameInstaller : MonoBehaviour,ILoadable
     {
         [SerializeField] private SelectStageSO _selectStageSO;
+        private AsyncOperationHandle<GameObject> _handler;
 
-        private void Awake()
+        private async void Awake()
         {
-            LoadStage();
+            await LoadStage();
             
             //Instantiate(_selectStageSO.SelectStageData._stage);
         }
 
-        private void LoadStage()
+        private async Task LoadStage()
         {
-            _selectStageSO.SelectStageData.GetReferenceStagePrefab()
-                                          .LoadAssetAsync<GameObject>()
-                                          .Completed += handler =>
-                                            {
-                                                Instantiate((handler.Result));
-                                            };
+            _handler = _selectStageSO.SelectStageData.GetReferenceStagePrefab()
+                .LoadAssetAsync<GameObject>();
+
+            await _handler.Task;
+            
+            Instantiate(_handler.Result);
+        }
+        
+        private void OnDestroy()
+        {
+            Addressables.Release(_handler);
+        }
+
+        public async Task Load()
+        {
+             await LoadStage();
         }
     }
 }
