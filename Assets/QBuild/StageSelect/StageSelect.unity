@@ -563,7 +563,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _stageData
       value: 
-      objectReference: {fileID: 11400000, guid: a82e7439a1168eb47a48a0f6649241c7,
+      objectReference: {fileID: 11400000, guid: 7fb27b1de5434844fb6f69fb976d699d,
         type: 2}
     - target: {fileID: 8749393653794203665, guid: dadb1620659f9e547a422fa2dcf38687,
         type: 3}
