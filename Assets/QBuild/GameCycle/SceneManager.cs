@@ -51,9 +51,9 @@ namespace  QBuild.Scene
         /// <summary>
         /// 指定した時間後にシーンを変更(フェードを使用)
         /// </summary>
-        /// <param name="waitTime">待つ時間</param>
         /// <param name="index">シーン番号</param>
-        public static void ChangeSceneWait(float scChangeTime, float waitTime, int index)
+        /// <param name="waitTime">暗転後に待つ時間(デフォルト　2秒)</param>
+        public static void ChangeSceneWait(float scChangeTime, int index, float waitTime = 2.0f)
         {
             if (!CheckInstance()) return;
             _instance.StartChangeSceneWait(scChangeTime, waitTime, index, SceneChangeEffect.Fade);
@@ -63,10 +63,10 @@ namespace  QBuild.Scene
         /// 指定した時間後にシーンを変更
         /// </summary>
         /// <param name="scChangeTime">シーンエフェクトの再生時間</param>
-        /// <param name="waitTime">待つ時間</param>
         /// <param name="index">シーン番号</param>
         /// <param name="scEffect">使用するシーンチェンジエフェクト</param>
-        public static void ChangeSceneWait(float scChangeTime, float waitTime, int index, SceneChangeEffect scEffect)
+        /// <param name="waitTime">暗転後に待つ時間(デフォルト　2秒)</param>
+        public static void ChangeSceneWait(float scChangeTime, int index, SceneChangeEffect scEffect, float waitTime = 2.0f)
         {
             if (!CheckInstance()) return;
             _instance.StartChangeSceneWait(scChangeTime, waitTime, index, scEffect);
