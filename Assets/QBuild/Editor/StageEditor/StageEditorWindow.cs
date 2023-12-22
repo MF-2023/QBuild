@@ -6,6 +6,7 @@ using System.Linq;
 using QBuild.Const;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.SceneManagement;
 
 namespace QBuild.StageEditor
@@ -509,6 +510,19 @@ namespace QBuild.StageEditor
             {
                 DestroyImmediate(o);
             }
+        }
+        
+        private void ExpandStageDataFromAddressable(StageData stageData)
+        {
+            if (stageData._stage == null) return;
+
+            Addressables
+                .LoadAssetAsync<GameObject>("Example") // アドレスを文字列で指定
+                .Completed += op => {
+                // 結果を取得してインスタンス化
+                // 本来はエラーハンドリングなど必要
+                Instantiate(op.Result);
+            };
         }
 
         private void ExpandStageData(StageData stageData)
