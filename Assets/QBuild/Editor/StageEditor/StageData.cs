@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.Serialization;
 
 namespace QBuild.StageEditor
@@ -9,6 +10,10 @@ namespace QBuild.StageEditor
     public class StageData : ScriptableObject
     {
         public GameObject _stage;
+        public AssetReferenceGameObject GetReferenceStagePrefab()
+        {
+            return null;
+        }
         public string _fileName;
         public string _stageName;
         public int _stageDifficult;
