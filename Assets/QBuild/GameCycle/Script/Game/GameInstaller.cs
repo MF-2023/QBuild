@@ -11,11 +11,18 @@ namespace QBuild.GameCycle
 
         private void Awake()
         {
-            StageSO stageSO = _selectStageSO.GetStageData;
-            Instantiate(stageSO.StagePrefab).TryGetComponent<StageInfo>(out StageInfo stageInfo);
-            GameObject player = Instantiate(stageSO.PlayerPrefab);
-            player.transform.position = stageInfo.InitPlayerPosition.position;
-            player.transform.rotation = stageInfo.InitPlayerPosition.rotation;
+            /*
+            // �X�e�[�W�̐���
+            if (_selectStageSO.SelectStagePrefab == null)
+            {
+                //Instantiate(_initStagePrefab);
+            }
+            else
+            {
+                Instantiate(_selectStageSO.SelectStagePrefab);
+                //_selectStageSO.SelectStagePrefab = null;
+            }
+            */
         }
     }
 }
