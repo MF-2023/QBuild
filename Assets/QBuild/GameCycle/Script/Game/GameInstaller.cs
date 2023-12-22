@@ -10,14 +10,12 @@ namespace QBuild.GameCycle
 
         private void Awake()
         {
-            /*
-            _selectStageSO.SelectStageData.GetReferenceStagePrefab().LoadAssetAsync().Completed += handle =>
+            _selectStageSO.SelectStageData.GetReferenceStagePrefab().LoadAssetAsync<GameObject>().Completed += handle =>
             {
                 Instantiate(handle.Result);
             };
-            */
             
-            Instantiate(_selectStageSO.SelectStageData._stage);
+            //Instantiate(_selectStageSO.SelectStageData._stage);
         }
     }
 }
