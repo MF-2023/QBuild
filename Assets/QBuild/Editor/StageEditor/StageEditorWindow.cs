@@ -64,7 +64,7 @@ namespace QBuild.StageEditor
 
         private void Initialize()
         {
-            Scene scene = SceneManager.GetActiveScene();
+            var scene = SceneManager.GetActiveScene();
             
             if ( scene.name != StageEditorSceneName) return;
             
