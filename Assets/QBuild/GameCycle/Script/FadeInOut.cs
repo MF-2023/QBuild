@@ -11,6 +11,11 @@ namespace QBuild.GameCycle
         [FormerlySerializedAs("_fadeObject")] [SerializeField] private GameObject _fadeCanvas = null;
         [SerializeField] Image _fadePanel = null;
 
+        protected override void Initialize()
+        {
+            _sceneChangeEffect = SceneChangeEffect.Fade;
+        }
+
         public override void InSCEffect(float scTime, SceneChangeEffect effect)
         {
             base.InSCEffect(scTime, effect);

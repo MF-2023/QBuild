@@ -7,7 +7,15 @@ namespace QBuild.Scene
 {
     public abstract class SceneChangerBase : MonoBehaviour
     {
-        [SerializeField] private SceneChangeEffect _sceneChangeEffect;
+        //[SerializeField] private SceneChangeEffect _sceneChangeEffect;
+        protected SceneChangeEffect _sceneChangeEffect;
+
+        private void Awake()
+        {
+            Initialize();
+        }
+
+        protected abstract void Initialize();
 
         protected void OnEnable()
         {
