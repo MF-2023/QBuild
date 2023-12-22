@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using QBuild.StageEditor;
 using UnityEngine;
 
 namespace QBuild.Stage
@@ -7,7 +8,10 @@ namespace QBuild.Stage
     [CreateAssetMenu(fileName = "newStageData", menuName = "Data/Stage Data")]
     public class SelectStageSO : ScriptableObject
     {
-        //public GameObject InitStagePrefab;
-        //public GameObject SelectStagePrefab;
+        private StageData _selectStageData;
+        public StageData SelectStageData
+        {
+            get { return _selectStageData; }
+        }
     }
 }
