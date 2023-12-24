@@ -20,7 +20,6 @@ namespace QBuild.Part.HolderView
 
         public override void UpdatePosition(float position)
         {
-            Debug.Log("UpdatePosition:" + position);
             currentPosition = position;
             var rect = GetComponent<RectTransform>();
             rect.anchorMax = new Vector2(position, 0.5f);

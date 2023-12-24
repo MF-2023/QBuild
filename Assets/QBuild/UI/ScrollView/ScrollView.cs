@@ -66,8 +66,8 @@ namespace QBuild.UI
                 }
 
                 //cell.SetContext(Context);
-                //cell.Initialize();
-                //cell.SetVisible(false);
+                cell.Initialize();
+                cell.SetVisible(false);
                 _pool.Add(cell);
             }
         }
