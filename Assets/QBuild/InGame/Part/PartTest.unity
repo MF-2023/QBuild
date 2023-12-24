@@ -755,6 +755,61 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2033496874}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &697985843 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8369862604999575752, guid: a4904820323a46c4b9de5a7ea9fb65bd,
+    type: 3}
+  m_PrefabInstance: {fileID: 4972603098262945331}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &697985845 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 1318701862621983858, guid: a4904820323a46c4b9de5a7ea9fb65bd,
+    type: 3}
+  m_PrefabInstance: {fileID: 4972603098262945331}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &697985846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 697985843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8d78d5acc8b4f88af4a36fde0f7e392, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  viewport: {fileID: 0}
+  scrollDirection: 1
+  movementType: 1
+  elasticity: 0.1
+  scrollSensitivity: 1
+  inertia: 1
+  decelerationRate: 0.03
+  snap:
+    Enable: 1
+    VelocityThreshold: 0.5
+    Duration: 0.3
+    Easing: 24
+  draggable: 1
+  scrollbar: {fileID: 0}
+--- !u!114 &697985847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 697985843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 311172308d1148b393950910e3c31a22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interval: 0.5
+  _loop: 1
+  _cellContainer: {fileID: 697985845}
+  scroller: {fileID: 0}
+  cellPrefab: {fileID: 0}
 --- !u!1001 &896928980
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2575,6 +2630,14 @@ PrefabInstance:
       insertIndex: 0
       addedObject: {fileID: 1689567168}
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8369862604999575752, guid: a4904820323a46c4b9de5a7ea9fb65bd,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 697985847}
+    - targetCorrespondingSourceObject: {fileID: 8369862604999575752, guid: a4904820323a46c4b9de5a7ea9fb65bd,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 697985846}
     - targetCorrespondingSourceObject: {fileID: 1049747601675952856, guid: a4904820323a46c4b9de5a7ea9fb65bd,
         type: 3}
       insertIndex: -1
