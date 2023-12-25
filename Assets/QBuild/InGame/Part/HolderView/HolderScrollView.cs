@@ -4,7 +4,13 @@ using QBuild.UI;
 
 namespace QBuild.Part.HolderView
 {
-    class HolderScrollView : ScrollView
+    public class SlotData
+    {
+        public Sprite Sprite;
+        public int Quantity;
+    }
+    
+    class HolderScrollView : ScrollView<SlotData>
     {
         [SerializeField] Scroller scroller = default;
         [SerializeField] GameObject cellPrefab = default;
@@ -17,10 +23,15 @@ namespace QBuild.Part.HolderView
             scroller.OnValueChanged(UpdatePosition);
         }
 
-        public void UpdateData(IList<object> items)
+        public void UpdateData(IList<SlotData> items)
         {
             UpdateContents(items);
             scroller.SetTotalCount(items.Count);
+        }
+        
+        public void ScrollTo(int index)
+        {
+            scroller.ScrollTo(index, 0.35f);
         }
     }
 }

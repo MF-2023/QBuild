@@ -3,23 +3,24 @@ using UnityEngine;
 
 namespace QBuild.UI
 {
-    public abstract class ScrollView : MonoBehaviour
+    public abstract class ScrollView<TItemData> : MonoBehaviour
     {
-        [SerializeField] protected float _interval = 0.5f;
+        [SerializeField, Range(0.01f, 1f)] protected float _interval = 0.5f;
+        [SerializeField, Range(0f, 1f)] protected float _scrollOffset = 0.5f;
         [SerializeField] protected bool _loop = false;
         [SerializeField] protected Transform _cellContainer = default;
-        
-        protected readonly IList<Cell> _pool = new List<Cell>();
+
+        protected readonly IList<Cell<TItemData>> _pool = new List<Cell<TItemData>>();
         protected bool _initialized = false;
         protected float _currentPosition = 0f;
-        protected IList<object> ItemsSource { get; set; } = new List<object>();
+        protected IList<TItemData> ItemsSource { get; set; } = new List<TItemData>();
         protected abstract GameObject CellPrefab { get; }
 
         protected virtual void Initialize()
         {
         }
 
-        protected virtual void UpdateContents(IList<object> items)
+        protected virtual void UpdateContents(IList<TItemData> items)
         {
             ItemsSource = items;
             Refresh();
@@ -30,7 +31,7 @@ namespace QBuild.UI
         protected virtual void Refresh() => UpdatePosition(_currentPosition, true);
         protected virtual void UpdatePosition(float position) => UpdatePosition(position, false);
 
-        void UpdatePosition(float position, bool forceRefresh)
+        private void UpdatePosition(float position, bool forceRefresh)
         {
             if (!_initialized)
             {
@@ -39,7 +40,7 @@ namespace QBuild.UI
             }
 
             _currentPosition = position;
-            var p = position;
+            var p = position - _scrollOffset / _interval;
             var firstIndex = Mathf.CeilToInt(p);
             var firstPosition = (Mathf.Ceil(p) - p) * _interval;
 
@@ -48,16 +49,15 @@ namespace QBuild.UI
                 ResizePool(firstPosition);
             }
 
-            Debug.Log($"UpdatePosition: {firstPosition}, {firstIndex}, {forceRefresh}");
             UpdateCells(firstPosition, firstIndex, forceRefresh);
         }
 
-        void ResizePool(float firstPosition)
+        private void ResizePool(float firstPosition)
         {
             var addCount = Mathf.CeilToInt((1f - firstPosition) / _interval) - _pool.Count;
             for (var i = 0; i < addCount; i++)
             {
-                var cell = Instantiate(CellPrefab, _cellContainer).GetComponent<Cell>();
+                var cell = Instantiate(CellPrefab, _cellContainer).GetComponent<Cell<TItemData>>();
                 Debug.Log("Create cell");
                 if (cell == null)
                 {
@@ -65,14 +65,13 @@ namespace QBuild.UI
                     return;
                 }
 
-                //cell.SetContext(Context);
                 cell.Initialize();
                 cell.SetVisible(false);
                 _pool.Add(cell);
             }
         }
 
-        void UpdateCells(float firstPosition, int firstIndex, bool forceRefresh)
+        private void UpdateCells(float firstPosition, int firstIndex, bool forceRefresh)
         {
             for (var i = 0; i < _pool.Count; i++)
             {
@@ -105,16 +104,18 @@ namespace QBuild.UI
         int CircularIndex(int i, int size) => size < 1 ? 0 : i < 0 ? size - 1 + (i + 1) % size : i % size;
 
 #if UNITY_EDITOR
-        bool cachedLoop;
-        float cachedCellInterval;
-
+        private bool _cachedLoop;
+        private float _cachedCellInterval;
+        private float _cachedScrollOffset;
         void LateUpdate()
         {
-            if (cachedLoop != _loop ||
-                cachedCellInterval != _interval)
+            if (_cachedLoop != _loop ||
+                _cachedCellInterval != _interval ||
+                _cachedScrollOffset != _scrollOffset)
             {
-                cachedLoop = _loop;
-                cachedCellInterval = _interval;
+                _cachedLoop = _loop;
+                _cachedCellInterval = _interval;
+                _cachedScrollOffset = _scrollOffset;
                 UpdatePosition(_currentPosition);
             }
         }

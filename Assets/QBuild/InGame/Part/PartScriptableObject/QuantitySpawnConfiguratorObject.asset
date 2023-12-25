@@ -16,9 +16,9 @@ MonoBehaviour:
   - _blockPartScriptableObject: {fileID: 11400000, guid: cc954ed71113de548a5a55b654c272c9,
       type: 2}
     _quantity: 2
-  - _blockPartScriptableObject: {fileID: 11400000, guid: cc954ed71113de548a5a55b654c272c9,
+  - _blockPartScriptableObject: {fileID: 11400000, guid: 4dc884b2a148e734591234df877c7c29,
       type: 2}
     _quantity: 2
-  - _blockPartScriptableObject: {fileID: 11400000, guid: cc954ed71113de548a5a55b654c272c9,
+  - _blockPartScriptableObject: {fileID: 11400000, guid: 15a488299967d18448c61c8d394207dd,
       type: 2}
     _quantity: 2

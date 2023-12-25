@@ -779,9 +779,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8d78d5acc8b4f88af4a36fde0f7e392, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  viewport: {fileID: 0}
+  viewport: {fileID: 697985845}
   scrollDirection: 1
-  movementType: 1
+  movementType: 0
   elasticity: 0.1
   scrollSensitivity: 1
   inertia: 1
@@ -791,7 +791,7 @@ MonoBehaviour:
     VelocityThreshold: 0.5
     Duration: 0.3
     Easing: 24
-  draggable: 1
+  draggable: 0
   scrollbar: {fileID: 0}
 --- !u!114 &697985847
 MonoBehaviour:
@@ -805,11 +805,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 311172308d1148b393950910e3c31a22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interval: 0.5
+  _interval: 0.3
+  _scrollOffset: 0.5
   _loop: 1
   _cellContainer: {fileID: 697985845}
-  scroller: {fileID: 0}
-  cellPrefab: {fileID: 0}
+  scroller: {fileID: 697985846}
+  cellPrefab: {fileID: 6207457356618532961, guid: 4a95db42ee35242418ac7c1302d5591f,
+    type: 3}
 --- !u!1001 &896928980
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2449,6 +2451,11 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 1318701862621983858, guid: a4904820323a46c4b9de5a7ea9fb65bd,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 350
+      objectReference: {fileID: 0}
     - target: {fileID: 1690916691828822835, guid: a4904820323a46c4b9de5a7ea9fb65bd,
         type: 3}
       propertyPath: m_Mesh
@@ -2569,6 +2576,11 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 5418926242753278091, guid: a4904820323a46c4b9de5a7ea9fb65bd,
+        type: 3}
+      propertyPath: _holderScrollView
+      value: 
+      objectReference: {fileID: 697985847}
     - target: {fileID: 5901721345985877377, guid: a4904820323a46c4b9de5a7ea9fb65bd,
         type: 3}
       propertyPath: m_Mesh
@@ -2579,15 +2591,30 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 6252219461002127918, guid: a4904820323a46c4b9de5a7ea9fb65bd,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6265706519922049358, guid: a4904820323a46c4b9de5a7ea9fb65bd,
         type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 6379023044873523732, guid: a4904820323a46c4b9de5a7ea9fb65bd,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6643253680381607418, guid: a4904820323a46c4b9de5a7ea9fb65bd,
         type: 3}
       propertyPath: m_Mesh
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7687960706449605158, guid: a4904820323a46c4b9de5a7ea9fb65bd,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7873554527218858353, guid: a4904820323a46c4b9de5a7ea9fb65bd,
         type: 3}

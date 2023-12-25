@@ -8,7 +8,9 @@
         "VContainer",
         "QBuild.Const",
         "SherbetInspector",
-        "QBuild.UI"
+        "QBuild.UI",
+        "UniRx",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

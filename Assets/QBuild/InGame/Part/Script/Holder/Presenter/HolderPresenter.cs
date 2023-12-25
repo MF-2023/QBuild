@@ -22,6 +22,9 @@ namespace QBuild.Part.Presenter
         public void Bind(IPartsHoldable holder)
         {
             _holder = holder;
+            
+            _partHolderView.SetSize(_holder.Slots.Count());
+            
             _holder.OnChangedSelect += OnSelectChanged;
 
             _holder.OnUsePart += OnUsedPart;
