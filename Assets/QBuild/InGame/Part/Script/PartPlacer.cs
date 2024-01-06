@@ -31,6 +31,7 @@ namespace QBuild.Part
                 new PlayerPartHolder(_partListScriptableObject, _partListScriptableObject.GetPartObjectCount);
             _nextPartHolder.OnChangedSelect += OnSelectChanged;
             holderPresenter.Bind(_nextPartHolder);
+            _nextPartHolder.Initialize();
             OnPlaceEvent += repository.AddPart;
         }
 

@@ -25,6 +25,7 @@ namespace QBuild.Part.HolderView
 
         public void UpdateData(IList<SlotData> items)
         {
+            Debug.Log($"UpdateData :{items.Count}");
             UpdateContents(items);
             scroller.SetTotalCount(items.Count);
         }

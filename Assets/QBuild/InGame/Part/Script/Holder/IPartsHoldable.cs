@@ -38,13 +38,28 @@ namespace QBuild.Part
 
     public delegate void HolderUsedEventHandler(object sender, HolderUseEventArgs args);
 
+
+    public sealed class HolderSlotsUpdateEventArgs : EventArgs
+    {
+        public IEnumerable<BaseSlot> Slots { get; private set; }
+
+        public HolderSlotsUpdateEventArgs(IEnumerable<BaseSlot> slots)
+        {
+            Slots = slots;
+        }
+    }
+
+    public delegate void HolderSlotsUpdatedEventHandler(object sender, HolderSlotsUpdateEventArgs args);
+
     public interface IPartsHoldable
     {
         event HolderUsedEventHandler OnUsePart;
         event HolderSelectChangedEventHandler OnChangedSelect;
 
-        IEnumerable<BaseSlot> Slots { get; }
+        event HolderSlotsUpdatedEventHandler OnSlotsUpdated;
         
+        IEnumerable<BaseSlot> Slots { get; }
+
         int CurrentPartIndex { get; }
     }
 }

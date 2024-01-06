@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using QBuild.Part.HolderView;
+using UnityEngine;
 using VContainer;
 
 namespace QBuild.Part.Presenter
@@ -23,27 +24,17 @@ namespace QBuild.Part.Presenter
         {
             _holder = holder;
             
-            _partHolderView.SetSize(_holder.Slots.Count());
-            
             _holder.OnChangedSelect += OnSelectChanged;
 
             _holder.OnUsePart += OnUsedPart;
-
-            for (var i = 0; i < _holder.Slots.Count(); i++)
-            {
-                var slot = _holder.Slots.ElementAt(i);
-                SetIcon(i, slot.GetPart());
-                if (slot is QuantitySlot quantitySlot)
-                {
-                    SetQuantity(i, quantitySlot.Quantity);
-                }
-            }
-            _partHolderView.Pick(_holder.CurrentPartIndex);
+            _holder.OnSlotsUpdated += OnSlotsUpdated;
         }
 
         private void OnUsedPart(object sender, HolderUseEventArgs e)
         {
             if (e.Slot is not QuantitySlot quantitySlot) return;
+            if (sender is not PlayerPartHolder playerPartHolder) return;
+            
             SetIcon(e.CurrentIndex, quantitySlot.Quantity == 0 ? null : e.Part);
             SetQuantity(e.CurrentIndex, quantitySlot.Quantity);
         }
@@ -56,6 +47,7 @@ namespace QBuild.Part.Presenter
                 return;
             }
 
+            Debug.Log(holdersIndex);
             _partHolderView.SetPartIcon(holdersIndex, part.PartIcon);
         }
 
@@ -69,6 +61,23 @@ namespace QBuild.Part.Presenter
             _partHolderView.Pick(e.CurrentIndex);
         }
 
+        private void OnSlotsUpdated(object sender, HolderSlotsUpdateEventArgs args)
+        {
+            _partHolderView.SetSize(_holder.Slots.Count());
+
+            for (var i = 0; i < _holder.Slots.Count(); i++)
+            {
+                var slot = _holder.Slots.ElementAt(i);
+                SetIcon(i, slot.GetPart());
+                if (slot is QuantitySlot quantitySlot)
+                {
+                    SetQuantity(i, quantitySlot.Quantity);
+                }
+            }
+
+            _partHolderView.Pick(_holder.CurrentPartIndex);
+        }
+        
         private IPartsHoldable _holder;
         private PartHolderView _partHolderView;
     }

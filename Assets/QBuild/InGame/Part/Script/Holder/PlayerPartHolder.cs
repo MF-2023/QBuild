@@ -10,13 +10,16 @@ namespace QBuild.Part
         public event HolderUsedEventHandler OnUsePart;
         public event HolderSelectChangedEventHandler OnChangedSelect;
 
+        public event HolderSlotsUpdatedEventHandler OnSlotsUpdated;
+
+        public IEnumerable<BaseSlot> Slots => _slots;
+        public int CurrentPartIndex => _currentPartIndex;
 
         private BasePartSpawnConfiguratorObject _basePartSpawnConfiguratorObject;
         private ISlotFactory _slotFactory;
         private List<BaseSlot> _slots = new();
-        public IEnumerable<BaseSlot> Slots => _slots;
-        public int CurrentPartIndex => _currentPartIndex;
 
+        private int _holderSize = 0;
         private int _currentPartIndex = 0;
         private int _prevPartIndex = 0;
 
@@ -24,21 +27,32 @@ namespace QBuild.Part
         {
             _basePartSpawnConfiguratorObject = basePartSpawnConfiguratorObject;
             _slotFactory = new QuantitySlotFactory();
-            for (var i = 0; i < holderSize; i++)
+            _holderSize = holderSize;
+        }
+
+        public void Initialize()
+        {
+            for (var i = 0; i < _holderSize; i++)
             {
                 var slot = _slotFactory.CreateSlot(_basePartSpawnConfiguratorObject, i);
                 _slots.Add(slot);
             }
+            
+            OnSlotsUpdated?.Invoke(this, new HolderSlotsUpdateEventArgs(_slots));
         }
+
 
         public void Next()
         {
             _prevPartIndex = _currentPartIndex;
-            _currentPartIndex++;
-            if (_currentPartIndex >= _slots.Count)
+            do
             {
-                _currentPartIndex = 0;
-            }
+                _currentPartIndex++;
+                if (_currentPartIndex >= _slots.Count)
+                {
+                    _currentPartIndex = 0;
+                }
+            } while (_slots[_currentPartIndex].Disable && _currentPartIndex != _prevPartIndex);
 
             ChangedSelect();
         }
@@ -46,20 +60,31 @@ namespace QBuild.Part
         public void Prev()
         {
             _prevPartIndex = _currentPartIndex;
-            _currentPartIndex--;
-            if (_currentPartIndex < 0)
+            do
             {
-                _currentPartIndex = _slots.Count - 1;
-            }
+                _currentPartIndex--;
+                if (_currentPartIndex < 0)
+                {
+                    _currentPartIndex = _slots.Count - 1;
+                }
+            } while (_slots[_currentPartIndex].Disable && _currentPartIndex != _prevPartIndex);
 
             ChangedSelect();
         }
 
-        private void ChangedSelect()
+
+        public void Use()
         {
-            OnChangedSelect?.Invoke(this,
-                new HolderSelectChangeEventArgs(_slots[_currentPartIndex].GetPart(), _slots[_currentPartIndex],
-                    _currentPartIndex, _prevPartIndex));
+            var slot = GetCurrentSlot();
+            var part = slot.Use();
+            OnUsePart?.Invoke(this,
+                new HolderUseEventArgs(slot.GetPart(), slot, _currentPartIndex));
+
+            if (slot.Disable)
+            {
+                _slots.RemoveAt(CurrentPartIndex);
+                OnSlotsUpdated?.Invoke(this, new HolderSlotsUpdateEventArgs(_slots));
+            }
         }
 
         public BlockPartScriptableObject GetCurrentPart()
@@ -67,12 +92,17 @@ namespace QBuild.Part
             return _slots[_currentPartIndex].GetPart();
         }
 
-        public void Use()
+        private BaseSlot GetCurrentSlot()
         {
-            var part = _slots[_currentPartIndex].Use();
-            OnUsePart?.Invoke(this,
-                new HolderUseEventArgs(_slots[_currentPartIndex].GetPart(), _slots[_currentPartIndex],
-                    _currentPartIndex));
+            return _slots[_currentPartIndex];
+        }
+
+        private void ChangedSelect()
+        {
+            var slot = GetCurrentSlot();
+            OnChangedSelect?.Invoke(this,
+                new HolderSelectChangeEventArgs(slot.GetPart(), slot,
+                    _currentPartIndex, _prevPartIndex));
         }
     }
 }

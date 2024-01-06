@@ -10,7 +10,8 @@ namespace QBuild.Part.HolderView
         [SerializeField] Animator animator = default;
         [SerializeField] private Image _image;
         [SerializeField] private TextMeshProUGUI _quantityText;
-        static class AnimatorHash
+
+        private static class AnimatorHash
         {
             public static readonly int Scroll = Animator.StringToHash("PartSlotScrollAnimation");
         }

@@ -53,6 +53,7 @@ namespace QBuild.Part.HolderView
 
         public void Pick(int index)
         {
+            Debug.Log($"Pick {index}");
             _pickIndex = index;
             _holderScrollView.ScrollTo(index);
         }
