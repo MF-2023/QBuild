@@ -8,7 +8,13 @@
         "VContainer",
         "QBuild.Const",
         "SherbetInspector",
-        "QBuild.UI"
+        "DOTween.Modules",
+        "UniTask",
+        "UniTask.DOTween",
+        "UniTask.Linq",
+        "QBuild.UI",
+        "Unity.TextMeshPro",
+        "UniRx"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
