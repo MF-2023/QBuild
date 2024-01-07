@@ -5,6 +5,7 @@ using QBuild.Mino;
 using QBuild.Mino.ProvisionalMino;
 using QBuild.Part;
 using QBuild.Part.HolderView;
+using QBuild.Part.PartScriptableObject;
 using QBuild.Part.Presenter;
 using QBuild.Player;
 using QBuild.Stage;
@@ -55,7 +56,7 @@ namespace QBuild.Starter
         [SerializeField] private PlayerController _playerPrefab;
         [SerializeField] private CurrentStageVariable _currentStageVariable;
         [SerializeField] private PartHolderView _partHolderView;
-        [SerializeField] private PartListScriptableObject _partListScriptableObject;
+        [SerializeField] private BasePartSpawnConfiguratorObject _partListScriptableObject;
         
         [SerializeField] private PartRepository _partRepository;
         

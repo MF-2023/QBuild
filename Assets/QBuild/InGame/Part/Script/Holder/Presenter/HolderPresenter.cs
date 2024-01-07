@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using QBuild.Part.HolderView;
+using UnityEngine;
 using VContainer;
 
 namespace QBuild.Part.Presenter
@@ -19,37 +20,65 @@ namespace QBuild.Part.Presenter
         {
         }
 
-        public void Bind(PartPlacer partPlacer)
+        public void Bind(IPartsHoldable holder)
         {
-            _nextPartHolder.AddRange(partPlacer.NextPartHolders);
+            _holder = holder;
+            
+            _holder.OnChangedSelect += OnSelectChanged;
 
-            for (var i = 0; i < _nextPartHolder.Count; i++)
+            _holder.OnUsePart += OnUsedPart;
+            _holder.OnSlotsUpdated += OnSlotsUpdated;
+        }
+
+        private void OnUsedPart(object sender, HolderUseEventArgs e)
+        {
+            if (e.Slot is not QuantitySlot quantitySlot) return;
+            if (sender is not PlayerPartHolder playerPartHolder) return;
+            
+            SetIcon(e.CurrentIndex, quantitySlot.Quantity == 0 ? null : e.Part);
+            SetQuantity(e.CurrentIndex, quantitySlot.Quantity);
+        }
+
+        private void SetIcon(int holdersIndex, BlockPartScriptableObject part)
+        {
+            if (part == null)
             {
-                _nextPartHolder[i].OnChangeParts += OnChangeParts(i);
-                OnChangeParts(i, _nextPartHolder[i].GetParts());
+                _partHolderView.SetEmpty(holdersIndex);
+                return;
             }
 
-            partPlacer.OnSelectChangedEvent += OnSelectChanged;
-            _partHolderView.SetScaleUp(partPlacer.CurrentSelectHolderIndex);
+            Debug.Log(holdersIndex);
+            _partHolderView.SetPartIcon(holdersIndex, part.PartIcon);
         }
 
-        private Action<IEnumerable<BlockPartScriptableObject>> OnChangeParts(int holdersIndex)
+        private void SetQuantity(int holdersIndex, int quantity)
         {
-            return (blocks) => OnChangeParts(holdersIndex, blocks);
+            _partHolderView.SetQuantity(holdersIndex, quantity);
         }
 
-        private void OnChangeParts(int holdersIndex, IEnumerable<BlockPartScriptableObject> parts)
+        private void OnSelectChanged(object sender, HolderSelectChangeEventArgs e)
         {
-            _partHolderView.SetPartIcon(holdersIndex, _nextPartHolder[holdersIndex].GetParts().First().PartIcon);
+            _partHolderView.Pick(e.CurrentIndex);
         }
 
-        private void OnSelectChanged(ChangeSelectEvent changeSelectEvent)
+        private void OnSlotsUpdated(object sender, HolderSlotsUpdateEventArgs args)
         {
-            _partHolderView.SetScaleUp(changeSelectEvent.Index);
-            _partHolderView.SetScaleDown(changeSelectEvent.PrevIndex);
-        }
+            _partHolderView.SetSize(_holder.Slots.Count());
 
-        private List<NextPartHolder> _nextPartHolder = new();
+            for (var i = 0; i < _holder.Slots.Count(); i++)
+            {
+                var slot = _holder.Slots.ElementAt(i);
+                SetIcon(i, slot.GetPart());
+                if (slot is QuantitySlot quantitySlot)
+                {
+                    SetQuantity(i, quantitySlot.Quantity);
+                }
+            }
+
+            _partHolderView.Pick(_holder.CurrentPartIndex);
+        }
+        
+        private IPartsHoldable _holder;
         private PartHolderView _partHolderView;
     }
 }
