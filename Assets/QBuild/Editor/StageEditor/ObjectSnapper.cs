@@ -35,11 +35,14 @@ namespace QBuild.StageEditor
                 Mathf.Round(pos.y / SnapDistance) * SnapDistance,
                 Mathf.Round(pos.z / SnapDistance) * SnapDistance
             );
+
+            Vector3Int area;
+            area = stageArea == Vector3Int.zero ? new Vector3Int(100, 100, 100) : stageArea;
             
             //snapPos‚ðstageArea‚Ì”ÍˆÍ“à‚ÉŽû‚ß‚é
-            snapPos.x = Mathf.Clamp(snapPos.x, -stageArea.x / 2.0f, stageArea.x / 2.0f);
-            snapPos.y = Mathf.Clamp(snapPos.y, 0, stageArea.y);
-            snapPos.z = Mathf.Clamp(snapPos.z, -stageArea.z / 2.0f, stageArea.z / 2.0f);
+            snapPos.x = Mathf.Clamp(snapPos.x, -area.x / 2.0f, area.x / 2.0f);
+            snapPos.y = Mathf.Clamp(snapPos.y, 0, area.y);
+            snapPos.z = Mathf.Clamp(snapPos.z, -area.z / 2.0f, area.z / 2.0f);
             
             transform.position = snapPos;
         }

@@ -23,14 +23,14 @@ namespace QBuild.Gimmick
 
         private void OnEnable()
         {
-            if(_helper != null)return;
+            if(_helper == null)return;
             _helper.AddMoverEvent += AddMover;
             _helper.RemoveMoverEvent += RemoveMover;
         }
 
         private void OnDisable()
         {
-            if(_helper != null)return;
+            if(_helper == null)return;
             _helper.AddMoverEvent -= AddMover;
             _helper.RemoveMoverEvent -= RemoveMover;
         }
@@ -103,8 +103,12 @@ namespace QBuild.Gimmick
                 _initPosition = Vector3.zero;
             }
         }
-        
-        public void AddMover(IMover mover){_movers.Add(mover);}
+
+        public void AddMover(IMover mover)
+        {
+            Debug.Log("AddMover");
+            _movers.Add(mover);
+        }
         public void RemoveMover(IMover mover){_movers.Remove(mover);}
         
         public override void Active()
