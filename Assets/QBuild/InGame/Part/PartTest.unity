@@ -1841,6 +1841,12 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 3627399997189155529, guid: 6b4711a148c9ad64691c7ba00a9fea4a,
+        type: 3}
+      propertyPath: _goalEvent
+      value: 
+      objectReference: {fileID: 11400000, guid: 13a3c2d411897d047bf701f8ccec7230,
+        type: 2}
     - target: {fileID: 3799921607647369459, guid: 6b4711a148c9ad64691c7ba00a9fea4a,
         type: 3}
       propertyPath: m_Mesh
@@ -1970,6 +1976,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8232069211446632131, guid: 6b4711a148c9ad64691c7ba00a9fea4a,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8563045577054287704, guid: 6b4711a148c9ad64691c7ba00a9fea4a,
         type: 3}
