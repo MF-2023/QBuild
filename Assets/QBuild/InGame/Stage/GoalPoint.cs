@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+﻿using QBuild.Player.Controller;
+using UnityEngine;
 
 namespace QBuild.Stage
 {
     public class GoalPoint : MonoBehaviour
     {
+        
         private void Awake()
         {
 
@@ -11,6 +13,10 @@ namespace QBuild.Stage
 
         private void OnCollisionEnter(Collision other)
         {
+            if (other.gameObject.TryGetComponent(out PlayerController player))
+            {
+                
+            }
         }
     }
 }

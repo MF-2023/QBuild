@@ -13,12 +13,15 @@ MonoBehaviour:
   m_Name: QuantitySpawnConfiguratorObject
   m_EditorClassIdentifier: 
   _elements:
-  - _blockPartScriptableObject: {fileID: 11400000, guid: cc954ed71113de548a5a55b654c272c9,
+  - _blockPartScriptableObject: {fileID: 11400000, guid: 1b26cc72782671b459badba6e6b7b8da,
       type: 2}
     _quantity: 2
-  - _blockPartScriptableObject: {fileID: 11400000, guid: 4dc884b2a148e734591234df877c7c29,
+  - _blockPartScriptableObject: {fileID: 11400000, guid: 3db2b36416085204f84ebc82319c17ff,
       type: 2}
     _quantity: 3
   - _blockPartScriptableObject: {fileID: 11400000, guid: 15a488299967d18448c61c8d394207dd,
+      type: 2}
+    _quantity: 2
+  - _blockPartScriptableObject: {fileID: 11400000, guid: 03921000f50b29e4cb9f32132392d986,
       type: 2}
     _quantity: 2
