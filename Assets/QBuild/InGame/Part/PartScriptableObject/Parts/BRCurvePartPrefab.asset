@@ -15,4 +15,4 @@ MonoBehaviour:
   _partPrefab: {fileID: 2853952568482750670, guid: f6566d71a1cc611458ef25bd9b4cd88a,
     type: 3}
   _partIcon:
-    _sprite: {fileID: -368976199, guid: 27c1f9f5c3e019e4f9600613deb31373, type: 3}
+    _sprite: {fileID: 21300000, guid: a4eb2044dc7466943b947cecb6b4db85, type: 3}
