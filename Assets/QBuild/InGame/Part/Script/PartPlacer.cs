@@ -38,7 +38,6 @@ namespace QBuild.Part
         private void ChangeSelect(InputAction.CallbackContext context)
         {
             var value = (int) context.ReadValue<float>();
-            Debug.Log("input:"+value);
             if (value == 0) return;
             if (value > 0)
             {
