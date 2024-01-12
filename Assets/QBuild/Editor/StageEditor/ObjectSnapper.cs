@@ -8,6 +8,7 @@ namespace QBuild.StageEditor
     {
         private const float SnapDistance = 1.0f;
         public static Vector3Int stageArea;
+        public static bool isEnable;
 
         static ObjectSnapper()
         {
@@ -16,6 +17,10 @@ namespace QBuild.StageEditor
 
         private static void OnSceneGUI(SceneView sceneView)
         {
+            if (!isEnable)
+                return;
+
+
             var selectedGameObject = Selection.transforms;
 
             foreach (var transform in selectedGameObject)
@@ -35,12 +40,12 @@ namespace QBuild.StageEditor
                 Mathf.Round(pos.y / SnapDistance) * SnapDistance,
                 Mathf.Round(pos.z / SnapDistance) * SnapDistance
             );
-            
+
             //snapPos‚ðstageArea‚Ì”ÍˆÍ“à‚ÉŽû‚ß‚é
             snapPos.x = Mathf.Clamp(snapPos.x, -stageArea.x / 2.0f, stageArea.x / 2.0f);
             snapPos.y = Mathf.Clamp(snapPos.y, 0, stageArea.y);
             snapPos.z = Mathf.Clamp(snapPos.z, -stageArea.z / 2.0f, stageArea.z / 2.0f);
-            
+
             transform.position = snapPos;
         }
     }
