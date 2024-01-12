@@ -35,14 +35,15 @@ namespace QBuild.StageEditor
 
         private List<CheckNormalStageData.WarningLog> _warningLogs = new();
 
-        private Texture2D _trashIcon, _saveIcon, _refreshIcon, _newIcon, _warningIcon, _magnetIcon;
+        private Texture2D _trashIcon, _saveIcon, _refreshIcon, _newIcon, _warningIcon, _magnetIcon, _blockOnlyIcon;
 
         private const string TrashIconName = "Trash.png",
             SaveIconName = "Save.png",
             RefreshIconName = "Refresh.png",
             NewIconName = "New.png",
             WarningIconName = "Warning.png",
-            MagnetIconName = "Magnet.png";
+            MagnetIconName = "Magnet.png",
+            BlockOnlyIconName = "BlockOnly.png";
 
         [MenuItem(EditorConst.WindowPrePath + "ステージエディタ/ステージエディタウィンドウ")]
         private static void Open()
@@ -62,6 +63,7 @@ namespace QBuild.StageEditor
             _newIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(IconPath + NewIconName);
             _warningIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(IconPath + WarningIconName);
             _magnetIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(IconPath + MagnetIconName);
+            _blockOnlyIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(IconPath + BlockOnlyIconName);
         }
 
         private void OnDisable()
@@ -95,16 +97,17 @@ namespace QBuild.StageEditor
                 OnDrawOtherSceneWarning();
                 GUILayout.Box("", GUILayout.Height(2), GUILayout.ExpandWidth(true));
                 OnDrawTools();
+                ObjectSnapper.isEnableArea = false;
                 return;
             }
 
-            OnDrawDataEdit();
-            
-            GUILayout.Box("", GUILayout.Height(2), GUILayout.ExpandWidth(true));
+            ObjectSnapper.isEnableArea = true;
 
+            OnDrawDataEdit();
             OnDrawTools();
 
             GUILayout.Box("", GUILayout.Height(2), GUILayout.ExpandWidth(true));
+
             using (new EditorGUILayout.HorizontalScope())
             {
                 OnDrawStageScriptableObjects();
@@ -164,7 +167,7 @@ namespace QBuild.StageEditor
             using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox,
                        GUILayout.Height(40)))
             {
-                if (GUILayout.Button(_newIcon, GUILayout.Width(40), GUILayout.Height(40)))
+                if (GUILayout.Button(new GUIContent(_newIcon,"新たなステージデータを生成"), GUILayout.Width(40), GUILayout.Height(40)))
                 {
                     CreateStageData("NewStageData");
                 }
@@ -172,13 +175,13 @@ namespace QBuild.StageEditor
                 bool grayOut = _editingStageData == null;
                 using (new EditorGUI.DisabledScope(grayOut))
                 {
-                    if (GUILayout.Button(_saveIcon, GUILayout.Height(40)))
+                    if (GUILayout.Button(new GUIContent(_saveIcon,"ステージデータを保存する"), GUILayout.Height(40)))
                     {
                         SaveStageData();
                     }
                 }
 
-                if (GUILayout.Button(_refreshIcon, GUILayout.Width(80), GUILayout.Height(40)))
+                if (GUILayout.Button(new GUIContent(_refreshIcon,"更新"), GUILayout.Width(80), GUILayout.Height(40)))
                 {
                     Refresh();
                 }
@@ -234,13 +237,26 @@ namespace QBuild.StageEditor
 
         private void OnDrawTools()
         {
-            GUI.color = ObjectSnapper.isEnable ? Color.cyan : Color.white;
-            if (GUILayout.Button(_magnetIcon, GUILayout.Height(20), GUILayout.MaxWidth(60)))
+            using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox))
             {
-                ObjectSnapper.isEnable = !ObjectSnapper.isEnable;
-            }
+                GUI.color = ObjectSnapper.isEnable ? Color.cyan : Color.white;
+                if (GUILayout.Button(new GUIContent(_magnetIcon, "選択中のオブジェクトをスナップさせる"), GUILayout.Height(20),
+                        GUILayout.MaxWidth(60)))
+                {
+                    ObjectSnapper.isEnable = !ObjectSnapper.isEnable;
+                }
 
-            GUI.color = Color.white;
+                GUI.color = Color.white;
+
+                GUI.color = ObjectSnapper.isBlockOnly ? Color.cyan : Color.white;
+                if (GUILayout.Button(new GUIContent(_blockOnlyIcon, "スナップ対象をレイヤー[Block]に限定させる"), GUILayout.Height(20),
+                        GUILayout.MaxWidth(60)))
+                {
+                    ObjectSnapper.isBlockOnly = !ObjectSnapper.isBlockOnly;
+                }
+
+                GUI.color = Color.white;
+            }
         }
 
 
@@ -260,7 +276,7 @@ namespace QBuild.StageEditor
                     using (new EditorGUILayout.HorizontalScope())
                     {
                         GUI.color = Color.white;
-                        if (GUILayout.Button(_trashIcon, GUILayout.Height(20), GUILayout.Width(20))) //Delete
+                        if (GUILayout.Button(new GUIContent(_trashIcon,"ステージデータを削除する"), GUILayout.Height(20), GUILayout.Width(20))) //Delete
                         {
                             var result = EditorUtility.DisplayDialog("消去", "本当に消去しますか？",
                                 "はい",
@@ -297,7 +313,7 @@ namespace QBuild.StageEditor
             {
                 using (new EditorGUILayout.HorizontalScope())
                 {
-                    EditorGUILayout.LabelField("File name", GUILayout.Width(100));
+                    EditorGUILayout.LabelField("ファイル名（半角英数字）", GUILayout.Width(140));
 
                     var text = EditorGUILayout.DelayedTextField(_editingStageData.GetFileName());
                     if (text != null && text != _editingStageData.GetFileName())
@@ -322,7 +338,7 @@ namespace QBuild.StageEditor
 
                 using (new EditorGUILayout.HorizontalScope())
                 {
-                    EditorGUILayout.LabelField("Stage name", GUILayout.Width(100));
+                    EditorGUILayout.LabelField("ステージ名（全角可）", GUILayout.Width(140));
 
                     var text = EditorGUILayout.DelayedTextField(_editingStageData.GetStageName());
                     if (text != null && text != _editingStageData.GetStageName())
@@ -333,7 +349,7 @@ namespace QBuild.StageEditor
 
                 using (new EditorGUILayout.HorizontalScope())
                 {
-                    EditorGUILayout.LabelField("Stage difficult", GUILayout.Width(100));
+                    EditorGUILayout.LabelField("難易度", GUILayout.Width(140));
 
                     //1~5 slider
                     var difficult = EditorGUILayout.IntSlider(_editingStageData.GetStageDifficult(), 1, 5);
@@ -345,7 +361,7 @@ namespace QBuild.StageEditor
 
                 using (new EditorGUILayout.HorizontalScope())
                 {
-                    EditorGUILayout.LabelField("Stage area", GUILayout.Width(100));
+                    EditorGUILayout.LabelField("ステージ範囲", GUILayout.Width(140));
 
                     EditorGUILayout.LabelField("x", GUILayout.Width(10));
                     int x = EditorGUILayout.DelayedIntField(_editingStageData.GetStageArea().x);
@@ -367,7 +383,7 @@ namespace QBuild.StageEditor
                 }
 
                 {
-                    EditorGUILayout.LabelField("Stage image", GUILayout.Width(100));
+                    EditorGUILayout.LabelField("サムネイル画像");
 
                     var texture = EditorGUILayout.ObjectField(_editingStageData.GetStageImage(), typeof(Texture), false,
                         GUILayout.ExpandWidth(true),
