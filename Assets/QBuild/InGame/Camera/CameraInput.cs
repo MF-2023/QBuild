@@ -14,12 +14,12 @@ namespace QBuild.Camera
         {
             _inputSystem = inputSystem;
             _inputSystem.Enable();
-            _inputSystem.InGame.CameraMove.performed += CameraMove;
+            //_inputSystem.InGame.CameraMove.performed += CameraMove;
         }
 
         public void Dispose()
         {
-            _inputSystem.InGame.CameraMove.performed -= CameraMove;
+            //_inputSystem.InGame.CameraMove.performed -= CameraMove;
         }
         
         private void CameraMove(InputAction.CallbackContext context)
