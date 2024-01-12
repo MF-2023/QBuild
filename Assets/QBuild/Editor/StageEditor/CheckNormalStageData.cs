@@ -41,31 +41,31 @@ namespace QBuild.StageEditor
             }
 
             //stageが設定されているか
-            if (stageData._stage == null)
+            if (stageData.GetStagePrefab() == null)
             {
                 errorLogList.Add(AddWarningLog("Blockが設置されていません", null));
             }
 
             //ファイル名が設定されているか
-            if (stageData._fileName == "")
+            if (stageData.GetFileName() == "")
             {
                 errorLogList.Add(AddWarningLog("fileNameが設定されていません", null));
             }
 
             //ステージ名が設定されているか
-            if (stageData._stageName == "")
+            if (stageData.GetStageName() == "")
             {
                 errorLogList.Add(AddWarningLog("stageNameが設定されていません", null));
             }
 
             //クリスタルの数が設定されているか
-            if (stageData._stageImage == null)
+            if (stageData.GetStageImage() == null)
             {
                 errorLogList.Add(AddWarningLog("stageImageが設定されていません", null));
             }
 
             //ステージの大きさが設定されているか
-            if (stageData._stageArea.x == 0 || stageData._stageArea.y == 0 || stageData._stageArea.z == 0)
+            if (stageData.GetStageArea().x == 0 || stageData.GetStageArea().y == 0 || stageData.GetStageArea().z == 0)
             {
                 errorLogList.Add(AddWarningLog("stageAreaが設定されていません", null));
             }

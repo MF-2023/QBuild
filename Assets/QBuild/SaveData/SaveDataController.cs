@@ -3,7 +3,7 @@ using UnityEngine;
 using QBuild.StageSelect.Landmark;
 
 /*
- * ƒf[ƒ^‚ğ•Û‘¶
+ * ï¿½fï¿½[ï¿½^ï¿½ï¿½Û‘ï¿½
  * 
  * var saveData = new LandmarkInformationModel()
  * {
@@ -14,7 +14,7 @@ using QBuild.StageSelect.Landmark;
  */
 
 /*
- * ƒf[ƒ^‚ğæ“¾
+ * ï¿½fï¿½[ï¿½^ï¿½ï¿½ï¿½æ“¾
  *
  * var saveData = SaveDataController.GetSaveDataFromLandmark(landmarkInformationScriptable);
  * Debug.Log("isClear:" + saveData.isClear + " getCrystalNum:" + saveData.getCrystalNum);
@@ -26,7 +26,7 @@ namespace QBuild.PlayerPrefsController
     {
         public static LandmarkInformationModel GetSaveDataFromLandmark(StageData stageData)
         {
-            var key = stageData._fileName;
+            var key = stageData.GetFileName();
             var data = GetSaveDataKey(key);
             return data;
         }
@@ -44,7 +44,7 @@ namespace QBuild.PlayerPrefsController
         public static void SetSaveDataFromLandmark(StageData stageData,
             LandmarkInformationModel saveData)
         {
-            var key = stageData._fileName;
+            var key = stageData.GetFileName();
             SetSaveDataFromKey(key, saveData);
         }
 
