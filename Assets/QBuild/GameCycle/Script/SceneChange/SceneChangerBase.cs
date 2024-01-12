@@ -17,6 +17,7 @@ namespace QBuild.Scene
 
         protected abstract void Initialize();
 
+        /*
         protected void OnEnable()
         {
             SceneManager.AddSceneChanger(this);
@@ -26,15 +27,18 @@ namespace QBuild.Scene
         {
             SceneManager.RemoveSceneChanger(this);
         }
+        */
 
-        public virtual void InSCEffect(float scTime, SceneChangeEffect effect)
+        public virtual bool InSCEffect(float scTime, SceneChangeEffect effect)
         {
-            if (_sceneChangeEffect != effect) return;
+            if (_sceneChangeEffect != effect) return false;
+            return true;
         }
         
-        public virtual void OutSCEffect(float scTime, SceneChangeEffect effect)
+        public virtual bool OutSCEffect(float scTime, SceneChangeEffect effect)
         {
-            if (_sceneChangeEffect != effect) return;
+            if (_sceneChangeEffect != effect) return false;
+            return true;
         }
     }
 }

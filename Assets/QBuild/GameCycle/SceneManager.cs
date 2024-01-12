@@ -18,7 +18,7 @@ namespace QBuild.Scene
         private static SceneManager _instance = null;
         private bool _loadedScene = false;
 
-        private List<SceneChangerBase> _sceneChangers = new List<SceneChangerBase>();
+        [SerializeField] private List<SceneChangerBase> _sceneChangers = new List<SceneChangerBase>();
 
         public bool LoadedScene
         {
@@ -168,6 +168,7 @@ namespace QBuild.Scene
 
     public enum SceneChangeEffect
     {
-        Fade
+        Fade,
+        LoadPanel
     }
 }

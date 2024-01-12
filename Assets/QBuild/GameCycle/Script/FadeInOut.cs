@@ -16,16 +16,20 @@ namespace QBuild.GameCycle
             _sceneChangeEffect = SceneChangeEffect.Fade;
         }
 
-        public override void InSCEffect(float scTime, SceneChangeEffect effect)
+        public override bool InSCEffect(float scTime, SceneChangeEffect effect)
         {
-            base.InSCEffect(scTime, effect);
+            if (!base.InSCEffect(scTime, effect)) return false;
             FadeIn(scTime);
+
+            return true;
         }
         
-        public override void OutSCEffect(float scTime, SceneChangeEffect effect)
+        public override bool OutSCEffect(float scTime, SceneChangeEffect effect)
         {
-            base.OutSCEffect(scTime, effect);
+            if (!base.OutSCEffect(scTime, effect)) return false;
             FadeOut(scTime);
+
+            return true;
         }
         
         private void FadeIn(TweenCallback endEvent, float time)

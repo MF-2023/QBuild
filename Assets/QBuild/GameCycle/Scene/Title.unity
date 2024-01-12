@@ -3432,6 +3432,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _nextSceneIndex: 1
+  _sceneChangeEffect: 0
   _pressPushButtonText: {fileID: 1146338116}
   _buttons: {fileID: 1101988118}
   _optionPopup: {fileID: 1103098395}
