@@ -18,7 +18,7 @@ namespace QBuild.Result
 
         public async UniTask Show()
         {
-            //_animator.Play("Open");
+            _animator.Play("Open");
             await UniTask.WaitUntil(() => _animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f); 
         }
 
