@@ -35,13 +35,14 @@ namespace QBuild.StageEditor
 
         private List<CheckNormalStageData.WarningLog> _warningLogs = new();
 
-        private Texture2D _trashIcon, _saveIcon, _refreshIcon, _newIcon, _warningIcon;
+        private Texture2D _trashIcon, _saveIcon, _refreshIcon, _newIcon, _warningIcon, _magnetIcon;
 
         private const string TrashIconName = "Trash.png",
             SaveIconName = "Save.png",
             RefreshIconName = "Refresh.png",
             NewIconName = "New.png",
-            WarningIconName = "Warning.png";
+            WarningIconName = "Warning.png",
+            MagnetIconName = "Magnet.png";
 
         [MenuItem(EditorConst.WindowPrePath + "ステージエディタ/ステージエディタウィンドウ")]
         private static void Open()
@@ -60,6 +61,7 @@ namespace QBuild.StageEditor
             _refreshIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(IconPath + RefreshIconName);
             _newIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(IconPath + NewIconName);
             _warningIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(IconPath + WarningIconName);
+            _magnetIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(IconPath + MagnetIconName);
         }
 
         private void OnDisable()
@@ -91,10 +93,16 @@ namespace QBuild.StageEditor
             if (SceneManager.GetActiveScene().name != StageEditorSceneName)
             {
                 OnDrawOtherSceneWarning();
+                GUILayout.Box("", GUILayout.Height(2), GUILayout.ExpandWidth(true));
+                OnDrawTools();
                 return;
             }
 
             OnDrawDataEdit();
+            
+            GUILayout.Box("", GUILayout.Height(2), GUILayout.ExpandWidth(true));
+
+            OnDrawTools();
 
             GUILayout.Box("", GUILayout.Height(2), GUILayout.ExpandWidth(true));
             using (new EditorGUILayout.HorizontalScope())
@@ -224,6 +232,17 @@ namespace QBuild.StageEditor
             }
         }
 
+        private void OnDrawTools()
+        {
+            GUI.color = ObjectSnapper.isEnable ? Color.cyan : Color.white;
+            if (GUILayout.Button(_magnetIcon, GUILayout.Height(20), GUILayout.MaxWidth(60)))
+            {
+                ObjectSnapper.isEnable = !ObjectSnapper.isEnable;
+            }
+
+            GUI.color = Color.white;
+        }
+
 
         private Vector2 _dataScrollPosition;
 
@@ -256,7 +275,7 @@ namespace QBuild.StageEditor
                         }
 
                         if (stageData.IsExistWarningItem()) GUI.color = Color.yellow;
-                        if (stageData == _editingStageData) GUI.color = Color.gray;
+                        if (stageData == _editingStageData) GUI.color = Color.cyan;
 
                         if (GUILayout.Button(stageData.GetFileName(), GUILayout.ExpandWidth(true))) //Load
                         {
@@ -372,11 +391,12 @@ namespace QBuild.StageEditor
                 {
                     //Projectウィンドウでブロックフォルダを開く
                     var dummy = _blockList[0].prefab;
-                    if ( dummy ) {
+                    if (dummy)
+                    {
                         EditorGUIUtility.PingObject(dummy);
                     }
                 }
-                
+
                 using (var scroll = new EditorGUILayout.ScrollViewScope(
                            _inventoryScrollPosition,
                            EditorStyles.helpBox,
@@ -406,11 +426,8 @@ namespace QBuild.StageEditor
                     }
                 }
             }
-          
-
-         
         }
-        
+
 
         private void ChangeStageDataProperty(StageData data, string variable, object value)
         {
