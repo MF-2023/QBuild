@@ -18,7 +18,8 @@ namespace QBuild.Part
 
         private Connector _connector;
         private Channel<ShiftDirectionTimes> _channel;
-
+        private CancellationTokenSource _cancellationTokenSource;
+        
         public void Awake()
         {
             var r = transform.localRotation;
@@ -26,15 +27,18 @@ namespace QBuild.Part
             Direction = DirectionFRBLExtension.VectorToDirectionFRBL(e);
             Debug.Log(Direction);
             
-            _channel = Channel.CreateSingleConsumerUnbounded<ShiftDirectionTimes>();
+            _cancellationTokenSource = new CancellationTokenSource();
 
+            _channel = Channel.CreateSingleConsumerUnbounded<ShiftDirectionTimes>();
             var reader = _channel.Reader;
-            WaitForChannelAsync(reader, this.GetCancellationTokenOnDestroy()).Forget();
+            WaitForChannelAsync(reader, _cancellationTokenSource.Token).Forget();
         }
-        
+
         private void OnDestroy()
         {
             _channel.Writer.TryComplete();
+            _cancellationTokenSource.Cancel();
+            _cancellationTokenSource.Dispose();
         }
 
         public IEnumerable<Vector3> OnGetConnectPoints()
@@ -94,10 +98,7 @@ namespace QBuild.Part
             try
             {
                 await reader.ReadAllAsync()
-                    .ForEachAwaitAsync(async x =>
-                    {
-                        await TurnAsync(x);
-                    }, cancellationToken);
+                    .ForEachAwaitAsync(async x => { await TurnAsync(x); }, cancellationToken);
             }
             catch (Exception e)
             {
@@ -109,7 +110,7 @@ namespace QBuild.Part
         {
             _channel.Writer.TryWrite(times);
         }
-        
+
         public async Task TurnAsync(ShiftDirectionTimes times)
         {
             var turnDirection = Direction.Shift(times);
