@@ -1,5 +1,6 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
+using SoVariableTool;
 using UnityEngine;
 
 namespace QBuild.Result
@@ -7,12 +8,13 @@ namespace QBuild.Result
     public class ResultEffect : MonoBehaviour
     {
         [SerializeField] private ResultPopup _resultPopup;
+        private UniTask _token;
 
-        private void Start()
+        public void StartResult()
         {
-            ResultEffectTest();
+            _token = ResultEffectStart();
         }
-
+        
         public async UniTask ResultEffectStart()
         {
             //プレイヤーの取得どうする？
@@ -20,14 +22,8 @@ namespace QBuild.Result
             await _resultPopup.Show();
             await UniTask.WaitUntil(() => _resultPopup.IsClickAny);
             
-            _resultPopup.Close();
-        }
-
-        private async UniTask ResultEffectTest()
-        {
-            await UniTask.Delay(TimeSpan.FromSeconds(5));
-            await ResultEffectStart();
-            Debug.Log("ResultEffect終了");
+            //ポップアップ閉じる?
+            await _resultPopup.Close();
         }
     }
 }
