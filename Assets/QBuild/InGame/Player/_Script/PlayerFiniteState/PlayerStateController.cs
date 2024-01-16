@@ -12,6 +12,7 @@ namespace QBuild.Player.Controller
         private PlayerIdle _IdleState;
         private PlayerMove _MoveState;
         private PlayerFall _FallState;
+        private PlayerGoal _GoalState;
 
         private Core.Core _Core;
         private Movement _Movement;
@@ -47,6 +48,7 @@ namespace QBuild.Player.Controller
             _IdleState = new PlayerIdle(this, _StateMachine, data, "idle");
             _MoveState = new PlayerMove(this, _StateMachine, data, "move");
             _FallState = new PlayerFall(this, _StateMachine, data, "fall");
+            _GoalState = new PlayerGoal(this, _StateMachine, data, "goal");
 
             _StateMachine.Initialize(_IdleState);
         }
