@@ -1,4 +1,5 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
@@ -22,17 +23,28 @@ namespace QBuild.Result
             _isClickAny = true;
         }
 
+        private void Start()
+        {
+            TestUI();
+        }
+
+        private async UniTask TestUI()
+        {
+            await Show();
+            await UniTask.Delay(TimeSpan.FromSeconds(2));
+            Close();
+        }
+
         public async UniTask Show()
         {
-            _animator.Play("Open");
+            _animator.Play("PopupOpen");
             await UniTask.WaitUntil(() => _animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f);
-
             _isClickAny = false;
         }
 
-        public void Hide()
+        public void Close()
         {
-            _animator.Play("Hide");
+            _animator.Play("PopupClose");
         }
 
         public void OnClickSceenButton(int sceneIndex)
