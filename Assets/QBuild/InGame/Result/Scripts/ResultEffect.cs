@@ -11,6 +11,8 @@ namespace QBuild.Result
         {
             //await キャラクターアニメション
             await _resultPopup.Show();
+            await UniTask.WaitUntil(() => _resultPopup.IsClickAny);
+            _resultPopup.Hide();
         }
     }
 }
