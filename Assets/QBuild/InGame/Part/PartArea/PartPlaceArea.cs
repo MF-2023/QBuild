@@ -32,8 +32,7 @@ namespace QBuild.Part
                     {
                         var dirRay = magnet.Direction.ToVector3();
                         dirRay = outPartPosition.rotation * dirRay;
-                        //positionをdirRayの向きに0.5だけずらした位置にRayを飛ばす
-                        var ray = new Ray(position + dirRay * 0.5f, dirRay.normalized * 0.2f);
+                        var ray = new Ray(position - dirRay * 0.1f, dirRay.normalized * 0.2f);
                         if (!Physics.Raycast(ray, out var hit, 1f, LayerMask.GetMask("Block"))) continue;
                         var hitPart = hit.collider.GetComponentInParent<PartView>();
                         if (hitPart == null) continue;
