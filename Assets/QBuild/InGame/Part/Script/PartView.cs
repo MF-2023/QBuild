@@ -25,13 +25,13 @@ namespace QBuild.Part
             var r = transform.localRotation;
             var e = r.eulerAngles;
             Direction = DirectionFRBLExtension.VectorToDirectionFRBL(e);
-            Debug.Log(Direction);
             
             _cancellationTokenSource = new CancellationTokenSource();
 
             _channel = Channel.CreateSingleConsumerUnbounded<ShiftDirectionTimes>();
             var reader = _channel.Reader;
             WaitForChannelAsync(reader, _cancellationTokenSource.Token).Forget();
+            ContactUpdate();
         }
 
         private void OnDestroy()
@@ -118,6 +118,21 @@ namespace QBuild.Part
             var rot = transform.localRotation.eulerAngles;
             rot.y += times.Value * 90;
             await transform.DOLocalRotate(rot, 0.5f).AsyncWaitForCompletion();
+        }
+
+        private void ContactUpdate()
+        {
+            foreach (var magnet in OnGetMagnets())
+            {
+                var position = transform.TransformPoint(magnet.Position);
+                var dirRay = magnet.Direction.ToVector3();
+                dirRay = transform.rotation * dirRay;
+                var ray = new Ray(position - dirRay * 0.1f, dirRay.normalized * 0.2f);
+
+                // Blockに接触している
+                var contact = Physics.Raycast(ray, out var hit, 1f, LayerMask.GetMask("Block"));
+                SetCanConnect(magnet.Direction, !contact);
+            }
         }
     }
 }
