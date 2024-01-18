@@ -1,33 +1,40 @@
 ﻿using QBuild.UI;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace QBuild.Part.HolderView
 {
-    class PartSlotView : Cell
+    class PartSlotView : Cell<SlotData>
     {
         [SerializeField] Animator animator = default;
+        [SerializeField] private Image _image;
+        [SerializeField] private TextMeshProUGUI _quantityText;
 
-        static class AnimatorHash
+        private static class AnimatorHash
         {
-            public static readonly int Scroll = Animator.StringToHash("scroll");
+            public static readonly int Scroll = Animator.StringToHash("PartSlotScrollAnimation");
         }
 
-        public override void UpdateContent(object itemData)
+        public override void UpdateContent(SlotData itemData)
         {
-            //message.text = itemData.Message;
+            _image.sprite = itemData.Sprite;
+            _quantityText.text = itemData.Quantity.ToString();
         }
 
 
         public override void UpdatePosition(float position)
         {
-            currentPosition = position;
-            var rect = GetComponent<RectTransform>();
-            rect.anchorMax = new Vector2(position, 0.5f);
-            rect.anchorMin = new Vector2(position, 0.5f);
+            _currentPosition = position;
+            if (animator.isActiveAndEnabled)
+            {
+                animator.Play(AnimatorHash.Scroll, -1, position);
+            }
+
+            animator.speed = 0;
         }
 
-        float currentPosition = 0;
+        private float _currentPosition = 0;
 
-        void OnEnable() => UpdatePosition(currentPosition);
+        private void OnEnable() => UpdatePosition(_currentPosition);
     }
 }
