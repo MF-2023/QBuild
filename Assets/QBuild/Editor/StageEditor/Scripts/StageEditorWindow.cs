@@ -1,6 +1,7 @@
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using QBuild.Const;
@@ -35,7 +36,14 @@ namespace QBuild.StageEditor
 
         private List<CheckNormalStageData.WarningLog> _warningLogs = new();
 
-        private Texture2D _trashIcon, _saveIcon, _refreshIcon, _newIcon, _warningIcon, _magnetIcon, _blockOnlyIcon;
+        private Texture2D _trashIcon,
+            _saveIcon,
+            _refreshIcon,
+            _newIcon,
+            _warningIcon,
+            _magnetIcon,
+            _blockOnlyIcon,
+            _gridIcon;
 
         private const string TrashIconName = "Trash.png",
             SaveIconName = "Save.png",
@@ -43,7 +51,16 @@ namespace QBuild.StageEditor
             NewIconName = "New.png",
             WarningIconName = "Warning.png",
             MagnetIconName = "Magnet.png",
-            BlockOnlyIconName = "BlockOnly.png";
+            BlockOnlyIconName = "BlockOnly.png",
+            GridIconName = "Grid.png";
+
+        private static GameObject _wallObject;
+
+        [InitializeOnLoadMethod]
+        private static void InitializeOnLoad()
+        {
+            EditorApplication.delayCall += Open;
+        }
 
         [MenuItem(EditorConst.WindowPrePath + "ステージエディタ/ステージエディタウィンドウ")]
         private static void Open()
@@ -55,7 +72,15 @@ namespace QBuild.StageEditor
         private void OnEnable()
         {
             SceneView.duringSceneGui += OnSceneGUI;
-            EditorSceneManager.sceneClosing += (scene, mode) => Initialize();
+            EditorSceneManager.sceneClosing += (_, _) => Initialize();
+            EditorSceneManager.sceneOpened += (_, _) => Initialize();
+            EditorApplication.quitting += Initialize;
+            Selection.selectionChanged += () =>
+            {
+                CheckWarningLogs();
+                if (Selection.gameObjects.Length == 0)
+                    Refresh();
+            };
             Refresh();
             _trashIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(IconPath + TrashIconName);
             _saveIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(IconPath + SaveIconName);
@@ -64,6 +89,7 @@ namespace QBuild.StageEditor
             _warningIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(IconPath + WarningIconName);
             _magnetIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(IconPath + MagnetIconName);
             _blockOnlyIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(IconPath + BlockOnlyIconName);
+            _gridIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(IconPath + GridIconName);
         }
 
         private void OnDisable()
@@ -167,7 +193,8 @@ namespace QBuild.StageEditor
             using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox,
                        GUILayout.Height(40)))
             {
-                if (GUILayout.Button(new GUIContent(_newIcon,"新たなステージデータを生成"), GUILayout.Width(40), GUILayout.Height(40)))
+                if (GUILayout.Button(new GUIContent(_newIcon, "新たなステージデータを生成"), GUILayout.Width(40),
+                        GUILayout.Height(40)))
                 {
                     CreateStageData("NewStageData");
                 }
@@ -175,13 +202,13 @@ namespace QBuild.StageEditor
                 bool grayOut = _editingStageData == null;
                 using (new EditorGUI.DisabledScope(grayOut))
                 {
-                    if (GUILayout.Button(new GUIContent(_saveIcon,"ステージデータを保存する"), GUILayout.Height(40)))
+                    if (GUILayout.Button(new GUIContent(_saveIcon, "ステージデータを保存する"), GUILayout.Height(40)))
                     {
                         SaveStageData();
                     }
                 }
 
-                if (GUILayout.Button(new GUIContent(_refreshIcon,"更新"), GUILayout.Width(80), GUILayout.Height(40)))
+                if (GUILayout.Button(new GUIContent(_refreshIcon, "更新"), GUILayout.Width(80), GUILayout.Height(40)))
                 {
                     Refresh();
                 }
@@ -202,8 +229,27 @@ namespace QBuild.StageEditor
                 ChangeStageDataProperty(data, "_isExistWarningItem", result.Count > 0);
             }
 
+            CheckWarningLogs();
+
+            WallInitialize();
+            CheckGenerateWallFromPole();
+        }
+
+        private void CheckWarningLogs()
+        {
             _warningLogs = new List<CheckNormalStageData.WarningLog>();
             _warningLogs = CheckNormalStageData.CheckStageData(_editingStageData);
+        }
+
+        public static void WallInitialize()
+        {
+            var walls = FindObjectsByType<StageEditorWall>(FindObjectsSortMode.None);
+            foreach (var wall in walls)
+                DestroyImmediate(wall.gameObject);
+
+            var poles = FindObjectsByType<StageEditorPole>(FindObjectsSortMode.None);
+            foreach (var pole in poles)
+                pole.wallInfos.Clear();
         }
 
         private void RefreshStageDataList()
@@ -229,10 +275,88 @@ namespace QBuild.StageEditor
                 var path = AssetDatabase.GUIDToAssetPath(guid);
                 var block = AssetDatabase.LoadAssetAtPath<GameObject>(path);
                 if (block == null) continue;
+                if (block.TryGetComponent(out StageEditorWall wall))
+                {
+                    _wallObject = block;
+                    continue;
+                }
+
                 blockData.prefab = block;
                 blockData.thumbnail = AssetPreview.GetAssetPreview(block);
                 _blockList.Add(blockData);
             }
+        }
+
+        public static void CheckGenerateWallFromPole()
+        {
+            var poles = FindObjectsByType<StageEditorPole>(FindObjectsSortMode.None);
+
+            foreach (var pole1 in poles)
+            {
+                foreach (var pole2 in poles)
+                {
+                    if (pole1 == pole2) continue;
+                    var distance = Vector3.Distance(pole1.transform.position, pole2.transform.position);
+
+                    bool isExist = false;
+                    foreach (var wallInfo in pole1.wallInfos)
+                    {
+                        if (wallInfo.pairPole == pole2 &&
+                            distance > ObjectSnapper.GetSnapDistance() * 1.1f ||
+                            distance < ObjectSnapper.GetSnapDistance() * 0.1f)
+                        {
+                            if (wallInfo.wall != null)
+                                DestroyImmediate(wallInfo.wall.gameObject);
+                            pole1.wallInfos.Remove(wallInfo);
+                            isExist = true;
+                            break;
+                        }
+                    }
+
+                    if (isExist) continue;
+
+                    if (distance < ObjectSnapper.GetSnapDistance() * 1.1f &&
+                        Math.Abs(pole1.transform.position.y - pole2.transform.position.y) < 0.001f)
+                    {
+                        foreach (var wallInfo in pole1.wallInfos)
+                        {
+                            if (wallInfo.pairPole == pole2)
+                            {
+                                isExist = true;
+                                break;
+                            }
+                        }
+
+                        if (isExist) continue;
+
+                        var generatePos = (pole1.transform.position + pole2.transform.position) / 2.0f;
+                        //PoleとPoleの間に壁を生成するため、壁の向きを決める
+                        var rotY = Vector3.SignedAngle(pole1.transform.position - pole2.transform.position,
+                            Vector3.left, Vector3.up);
+                        var wall = GenerateWall(generatePos, rotY);
+                        if (wall.TryGetComponent(out StageEditorWall stageEditorWall))
+                        {
+                            StageEditorPole.WallInfo info = new();
+                            info.wall = stageEditorWall;
+                            info.pairPole = pole2;
+                            pole1.wallInfos.Add(info);
+                            info.pairPole = pole1;
+                            pole2.wallInfos.Add(info);
+                            stageEditorWall.position = generatePos;
+                        }
+                    }
+                }
+            }
+        }
+
+        private static GameObject GenerateWall(Vector3 pos, float rotY)
+        {
+            if (_wallObject == null) return null;
+
+            var wall = Instantiate(_wallObject);
+            wall.transform.position = pos;
+            wall.transform.rotation = Quaternion.Euler(-90f, rotY, 0f);
+            return wall;
         }
 
         private void OnDrawTools()
@@ -276,7 +400,8 @@ namespace QBuild.StageEditor
                     using (new EditorGUILayout.HorizontalScope())
                     {
                         GUI.color = Color.white;
-                        if (GUILayout.Button(new GUIContent(_trashIcon,"ステージデータを削除する"), GUILayout.Height(20), GUILayout.Width(20))) //Delete
+                        if (GUILayout.Button(new GUIContent(_trashIcon, "ステージデータを削除する"), GUILayout.Height(20),
+                                GUILayout.Width(20))) //Delete
                         {
                             var result = EditorUtility.DisplayDialog("消去", "本当に消去しますか？",
                                 "はい",
@@ -435,7 +560,9 @@ namespace QBuild.StageEditor
                         Texture2D thumbnail = _blockList[i].thumbnail;
 
                         if (GUILayout.Button(thumbnail, GUILayout.Width(buttonSize), GUILayout.Height(buttonSize)))
+                        {
                             InstanceObject(prefab);
+                        }
 
                         if ((i + 1) % buttonsPerRow == 0 || i == _blockList.Count - 1)
                             EditorGUILayout.EndHorizontal();
@@ -484,15 +611,17 @@ namespace QBuild.StageEditor
 
             var position = SceneView.lastActiveSceneView.camera.transform.position +
                            SceneView.lastActiveSceneView.camera.transform.forward * _InstanceDistance;
-            var rotation = Quaternion.identity;
 
             var instance = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
             if (instance != null)
             {
                 instance.transform.position = position;
-                instance.transform.rotation = rotation;
+                ObjectSnapper.CheckSnapBehaviorObject(instance);
                 ObjectSnapper.SnapToGrid(instance.transform);
+                Selection.activeGameObject = instance;
             }
+
+            CheckGenerateWallFromPole();
         }
 
         private Vector2 _stageStatusScrollPosition;
@@ -532,8 +661,11 @@ namespace QBuild.StageEditor
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
-            var obj = GetAllBlocksInScene();
-            foreach (var o in obj) DestroyImmediate(o);
+            if (_editingStageData == stageData)
+            {
+                DestroyAllBlocks();
+                _editingStageData = null;
+            }
 
             Refresh();
         }
@@ -619,6 +751,8 @@ namespace QBuild.StageEditor
                 }
 
                 DestroyImmediate(obj);
+
+                Refresh();
             };
         }
 
@@ -672,7 +806,7 @@ namespace QBuild.StageEditor
             var group = AddressableAssetSettingsDefaultObject.Settings.DefaultGroup;
             var setting = AddressableAssetSettingsDefaultObject.Settings;
 
-            AddressableAssetEntry entry = setting.CreateOrMoveEntry(
+            var entry = setting.CreateOrMoveEntry(
                 AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(prefab)), group, false, true);
 
             entry.SetLabel("StageData", true, true);
