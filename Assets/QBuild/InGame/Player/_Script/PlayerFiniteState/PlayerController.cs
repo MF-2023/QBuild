@@ -198,6 +198,11 @@ namespace QBuild.Player.Controller
 
         public void AnimationFinishedTrigger() => _StateController.AnimationFinishedTrigger();
 
+        public void Goal()
+        {
+            _StateController.ChangeGoalState();
+        }
+
         public void SetIcon(Sprite icon) 
         {
 
