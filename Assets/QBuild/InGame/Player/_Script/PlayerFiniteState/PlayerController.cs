@@ -10,6 +10,7 @@ namespace QBuild.Player.Controller
     {
         #region Variables        
         [SerializeField] private PlayerData         _playerData;
+        [SerializeField] private PlayerProgressData _progressData;
         [SerializeField] private PlayerInputHandler _inputHandler;
         [SerializeField] private Transform          _GroundCheckPosition;
         [SerializeField] private float              _GroundCheckRadius = 0.5f;
@@ -39,7 +40,7 @@ namespace QBuild.Player.Controller
         private void Start()
         {
             _AnimationController = new PlayerAnimationController(GetComponent<Animator>());
-            _StateController = new PlayerStateController(_core, _inputHandler, _playerData);
+            _StateController = new PlayerStateController(_core, _inputHandler, _playerData, _progressData);
             _StateController.OnChangeAnimation += _AnimationController.ChangeAnimation;
             _StateController.OnGetPlayerPos += () => transform.position;
             _StateController.OnSetPosition += (Vector3 pos) => transform.position = pos;
@@ -53,6 +54,8 @@ namespace QBuild.Player.Controller
             {
                 _movement.SetPhysicMaterial(coll.material);
             }
+
+            _progressData.EndGoalAnimation = false;
         }
 
         private void Update()

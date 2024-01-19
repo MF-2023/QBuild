@@ -1,6 +1,7 @@
 using QBuild.Player.Core;
 using QBuild.Player.State;
 using System;
+using Codice.Client.BaseCommands;
 using UnityEngine;
 
 namespace QBuild.Player.Controller
@@ -8,6 +9,7 @@ namespace QBuild.Player.Controller
     public class PlayerStateController
     {
         private PlayerStateMachine _StateMachine;
+        private PlayerProgressData _progressData;
 
         private PlayerIdle _IdleState;
         private PlayerMove _MoveState;
@@ -38,7 +40,7 @@ namespace QBuild.Player.Controller
 
 
 
-        public PlayerStateController(Core.Core core, PlayerInputHandler playerInputHandler, PlayerData data)
+        public PlayerStateController(Core.Core core, PlayerInputHandler playerInputHandler, PlayerData data, PlayerProgressData progressData)
         {
             _Core = core;
             this.inputHandler = playerInputHandler;
@@ -51,6 +53,7 @@ namespace QBuild.Player.Controller
             _GoalState = new PlayerGoal(this, _StateMachine, data, "goal");
 
             _StateMachine.Initialize(_IdleState);
+            _progressData = progressData;
         }
 
         public void LogicUpdate()
@@ -107,6 +110,11 @@ namespace QBuild.Player.Controller
         public void ChangeGoalState()
         {
             _StateMachine.ChangeState(_GoalState);
+        }
+
+        public void EndGoalAnimation()
+        {
+            _progressData.EndGoalAnimation = true;
         }
     }
 }

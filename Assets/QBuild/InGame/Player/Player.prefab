@@ -207,6 +207,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerData: {fileID: 11400000, guid: c1291a2a3872f2644a4adbf764acf367, type: 2}
+  _progressData: {fileID: 11400000, guid: 7d6fe54f5f9ae8f49b0d95ddae531840, type: 2}
   _inputHandler: {fileID: 6556612327111112238}
   _GroundCheckPosition: {fileID: 1469802400836876942}
   _GroundCheckRadius: 0.4

@@ -970,6 +970,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _resultPopup: {fileID: 5596616815361505761}
+  _playerProgressData: {fileID: 11400000, guid: 7d6fe54f5f9ae8f49b0d95ddae531840,
+    type: 2}
 --- !u!114 &6901655065573344834
 MonoBehaviour:
   m_ObjectHideFlags: 0
