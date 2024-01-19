@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
@@ -10,8 +11,8 @@ namespace QBuild.Result
     {
         [SerializeField] private GameObject _popup;
         [SerializeField] private Animator _animator;
-        [SerializeField] private Image _gameClearImage;
-        [SerializeField] private Image _gameOverImage;
+        [SerializeField] private GameObject _gameClearImage;
+        [SerializeField] private GameObject _gameOverImage;
 
         private bool _isClickAny;
         
@@ -26,24 +27,29 @@ namespace QBuild.Result
 
             _isClickAny = false;
             _popup.SetActive(false);
+            _gameClearImage.SetActive(false);
+            _gameOverImage.SetActive(false);
         }
 
-        public async UniTask Show()
+        public async UniTask Show(CancellationToken token)
         {
             _popup.SetActive(true);
             
             //TODO::ゲームクリアかゲームオーバーかで表示を変える
             
             _animator.Play("PopupOpen");
-            await UniTask.WaitUntil(() => _animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f);
+            await UniTask.WaitUntil(() => _animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f, cancellationToken: token);
             _isClickAny = false;
         }
 
-        public async UniTask Close()
+        public async UniTask Close(CancellationToken token)
         {
             _animator.Play("PopupClose");
-            await UniTask.WaitUntil(() => _animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f);
+            await UniTask.WaitUntil(() => _animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f,
+                cancellationToken: token);
             _popup.SetActive(false);
+            _gameClearImage.SetActive(false);
+            _gameOverImage.SetActive(false);
         }
 
         public void OnClickButton()
