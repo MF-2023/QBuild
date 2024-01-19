@@ -8,6 +8,15 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/QBuild/InGame/QBuildTestScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/QBuild/GameCycle/Scene/Title.unity
+    guid: a9fe4cf5d0a2cad48bc84cccd5c9c799
+  - enabled: 1
+    path: Assets/QBuild/GameCycle/Scene/StageSelect.unity
+    guid: fd567185199038d49a52fe29e7f0c6da
+  - enabled: 1
+    path: Assets/QBuild/GameCycle/Scene/SetupScene.unity
+    guid: 284cdbbedb1cd144190d8d225de7e4be
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: d89705a5c7ded2b4488d39c713ceefff,
       type: 2}
