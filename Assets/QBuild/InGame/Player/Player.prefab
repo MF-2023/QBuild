@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 7985243206567646367}
   - component: {fileID: 3382986692411021950}
   - component: {fileID: 1808681941869323978}
+  - component: {fileID: 5543035705183674927}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -292,6 +293,44 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _invincible: 0
   _invincibleTime: 1
+--- !u!114 &5543035705183674927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4119980009883112584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fabe13cc755497ebbd07bf881593121, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _eventResponses:
+  - _scriptableEvent: {fileID: 11400000, guid: 13a3c2d411897d047bf701f8ccec7230, type: 2}
+    _response:
+      _unityEventBase:
+        rid: 1833120514708340736
+  references:
+    version: 2
+    RefIds:
+    - rid: 1833120514708340736
+      type: {class: UnitUnityEvent, ns: SoVariableTool, asm: SOVT}
+      data:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 3012069623486725741}
+            m_TargetAssemblyTypeName: QBuild.Player.Controller.PlayerController,
+              QBuild
+            m_MethodName: Goal
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
 --- !u!1 &5170109219789538788
 GameObject:
   m_ObjectHideFlags: 0

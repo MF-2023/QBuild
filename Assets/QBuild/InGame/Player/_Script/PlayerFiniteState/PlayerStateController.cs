@@ -103,5 +103,10 @@ namespace QBuild.Player.Controller
         }
 
         public void SetPosition(Vector3 pos) { OnSetPosition?.Invoke(pos); }
+
+        public void ChangeGoalState()
+        {
+            _StateMachine.ChangeState(_GoalState);
+        }
     }
 }
