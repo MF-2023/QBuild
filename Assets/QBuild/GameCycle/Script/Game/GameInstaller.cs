@@ -30,7 +30,7 @@ namespace QBuild.GameCycle
 
         private async Task LoadStage()
         {
-            _handler = _selectStageSO.SelectStageData.GetReferenceStagePrefab()
+            _handler = _selectStageSO.SelectStageData.GetStagePrefab()
                 .LoadAssetAsync<GameObject>();
 
             await _handler.Task;
