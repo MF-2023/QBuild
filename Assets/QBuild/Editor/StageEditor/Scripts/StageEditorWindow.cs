@@ -17,7 +17,7 @@ namespace QBuild.StageEditor
     public class StageEditorWindow : EditorWindow
     {
         private StageData _editingStageData;
-        private const string BlocksInventoryPath = "Assets/QBuild/Editor/StageEditor/Blocks/";
+        private const string BlocksInventoryPath = "Assets/QBuild/InGame/Stage/Blocks/";
         private const string SaveStageDataFolderPath = "Assets/QBuild/InGame/Stage/StageData";
         private const string StageEditorSceneName = "StageEditor";
         private const string BlockLayerName = "Block";
