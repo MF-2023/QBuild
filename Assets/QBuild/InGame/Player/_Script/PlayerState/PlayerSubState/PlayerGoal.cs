@@ -10,6 +10,15 @@ namespace QBuild.Player.State
         public PlayerGoal(PlayerStateController player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
         {
         }
+        
+        public override void Enter()
+        {
+            base.Enter();
+            
+            Vector3 set = new Vector3(0, player.Movement.GetNowVelocity().y, 0);
+            player.Movement.SetVelocity(set);
+            player.Movement.SetLockVelocity(true);
+        }
 
         public override void LogicUpdate()
         {
