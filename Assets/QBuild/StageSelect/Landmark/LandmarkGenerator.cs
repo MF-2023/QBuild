@@ -57,9 +57,9 @@ namespace QBuild.StageSelect.Landmark
             //Set LandmarkInformation
             {
                 var scriptableObject = landmarkInformation._stageData;
-                landmarkInformationBinder.SetStageName(scriptableObject._stageName);
-                landmarkInformationBinder.SetStageImage(scriptableObject._stageImage);
-                landmarkInformationBinder.SetDifficultyImages(scriptableObject._stageDifficult);
+                landmarkInformationBinder.SetStageName(scriptableObject.GetStageName());
+                landmarkInformationBinder.SetStageImage(scriptableObject.GetStageImage());
+                landmarkInformationBinder.SetDifficultyImages(scriptableObject.GetStageDifficult());
             }
 
             //Load SaveData

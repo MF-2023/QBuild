@@ -1,8 +1,6 @@
 ﻿using System;
 using QBuild.Camera;
 using QBuild.Camera.Center;
-using QBuild.DebugSystem;
-using QBuild.Starter;
 using UnityEngine;
 using VContainer.Unity;
 
@@ -24,14 +22,11 @@ namespace QBuild.Starter
                     centerScope.Build();
                 }
                 
-                var debugScope = _inGameStater.CreateChildFromPrefab(_debugSystemScope);
-                debugScope.Build();
             }
         }
 
         [SerializeField] private InGameStater _inGameStater;
         [SerializeField] private CameraScope _cameraScope;
         [SerializeField] private CenterScope _centerScope;
-        [SerializeField] private DebugSystemScope _debugSystemScope;
     }
 }
