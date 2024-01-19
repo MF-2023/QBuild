@@ -109,6 +109,24 @@ namespace QBuild
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""BlockRotation"",
+                    ""type"": ""Button"",
+                    ""id"": ""b07b6a9f-80bc-477e-8a52-0acf6cdea3b1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""28532cb2-8c75-4938-a58c-79e3a9c26844"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -423,7 +441,7 @@ namespace QBuild
                 {
                     ""name"": ""Negative"",
                     ""id"": ""af140f27-4aea-4788-8dcd-a106468e0a1c"",
-                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -434,7 +452,7 @@ namespace QBuild
                 {
                     ""name"": ""Positive"",
                     ""id"": ""d571cf03-fd5c-497c-8a67-7c5abd83543a"",
-                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -529,6 +547,50 @@ namespace QBuild
                     ""action"": ""CameraMove"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""BlockRot"",
+                    ""id"": ""11fdf9f8-f0a5-4245-9d63-83e6a5b892db"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": ""Press"",
+                    ""processors"": ""Scale(factor=2)"",
+                    ""groups"": """",
+                    ""action"": ""BlockRotation"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""f28d6aed-46a9-4958-8bc2-7c67c70b518a"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""BlockRotation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""6ad5dcfb-51fd-46f5-823c-7ca40db14fb3"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""BlockRotation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f9fd0900-cc9c-4b67-be1b-f6b62ebe2d7d"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -546,6 +608,8 @@ namespace QBuild
             m_InGame_BlockPlaceB = m_InGame.FindAction("BlockPlaceB", throwIfNotFound: true);
             m_InGame_BlockPlaceL = m_InGame.FindAction("BlockPlaceL", throwIfNotFound: true);
             m_InGame_SelectChange = m_InGame.FindAction("SelectChange", throwIfNotFound: true);
+            m_InGame_BlockRotation = m_InGame.FindAction("BlockRotation", throwIfNotFound: true);
+            m_InGame_Pause = m_InGame.FindAction("Pause", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -616,6 +680,8 @@ namespace QBuild
         private readonly InputAction m_InGame_BlockPlaceB;
         private readonly InputAction m_InGame_BlockPlaceL;
         private readonly InputAction m_InGame_SelectChange;
+        private readonly InputAction m_InGame_BlockRotation;
+        private readonly InputAction m_InGame_Pause;
         public struct InGameActions
         {
             private @InputSystem m_Wrapper;
@@ -629,6 +695,8 @@ namespace QBuild
             public InputAction @BlockPlaceB => m_Wrapper.m_InGame_BlockPlaceB;
             public InputAction @BlockPlaceL => m_Wrapper.m_InGame_BlockPlaceL;
             public InputAction @SelectChange => m_Wrapper.m_InGame_SelectChange;
+            public InputAction @BlockRotation => m_Wrapper.m_InGame_BlockRotation;
+            public InputAction @Pause => m_Wrapper.m_InGame_Pause;
             public InputActionMap Get() { return m_Wrapper.m_InGame; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -665,6 +733,12 @@ namespace QBuild
                 @SelectChange.started += instance.OnSelectChange;
                 @SelectChange.performed += instance.OnSelectChange;
                 @SelectChange.canceled += instance.OnSelectChange;
+                @BlockRotation.started += instance.OnBlockRotation;
+                @BlockRotation.performed += instance.OnBlockRotation;
+                @BlockRotation.canceled += instance.OnBlockRotation;
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
             }
 
             private void UnregisterCallbacks(IInGameActions instance)
@@ -696,6 +770,12 @@ namespace QBuild
                 @SelectChange.started -= instance.OnSelectChange;
                 @SelectChange.performed -= instance.OnSelectChange;
                 @SelectChange.canceled -= instance.OnSelectChange;
+                @BlockRotation.started -= instance.OnBlockRotation;
+                @BlockRotation.performed -= instance.OnBlockRotation;
+                @BlockRotation.canceled -= instance.OnBlockRotation;
+                @Pause.started -= instance.OnPause;
+                @Pause.performed -= instance.OnPause;
+                @Pause.canceled -= instance.OnPause;
             }
 
             public void RemoveCallbacks(IInGameActions instance)
@@ -724,6 +804,8 @@ namespace QBuild
             void OnBlockPlaceB(InputAction.CallbackContext context);
             void OnBlockPlaceL(InputAction.CallbackContext context);
             void OnSelectChange(InputAction.CallbackContext context);
+            void OnBlockRotation(InputAction.CallbackContext context);
+            void OnPause(InputAction.CallbackContext context);
         }
     }
 }
