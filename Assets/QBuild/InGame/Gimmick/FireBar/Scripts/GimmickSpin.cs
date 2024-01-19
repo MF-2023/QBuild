@@ -1,4 +1,5 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System.Threading;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
@@ -35,10 +36,10 @@ namespace QBuild.Gimmick
         private void SpinStart()
         {
             if(_isMoving) return;
-            SpinAsync().Forget();
+            SpinAsync(this.GetCancellationTokenOnDestroy()).Forget();
         }
 
-        private async UniTask SpinAsync()
+        private async UniTask SpinAsync(CancellationToken token)
         {
             _isMoving = true;
             
@@ -64,7 +65,7 @@ namespace QBuild.Gimmick
                     }
                 }
                 
-                await UniTask.Yield(PlayerLoopTiming.FixedUpdate);
+                await UniTask.Yield(PlayerLoopTiming.FixedUpdate, token);
             }
         }
 
