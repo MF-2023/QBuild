@@ -9,5 +9,7 @@ EditorBuildSettings:
     path: Assets/QBuild/InGame/QBuildTestScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
   m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: d89705a5c7ded2b4488d39c713ceefff,
+      type: 2}
     com.unity.input.settings: {fileID: 11400000, guid: 9dee5788fa0cfe240bf3c29e605fc8f4,
       type: 2}
