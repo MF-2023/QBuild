@@ -776,7 +776,19 @@ namespace QBuild.StageEditor
         {
             var objects = FindObjectsOfType<GameObject>();
 
-            return objects.Where(obj => obj.layer == LayerMask.NameToLayer(BlockLayerName)).ToList();
+            //objectsの中からBlockレイヤーのオブジェクトを抽出
+            //objectsの中からMeshRendererを持っているオブジェクトを抽出
+            var blocks = new List<GameObject>();
+            foreach (var obj in objects)
+            {
+                if (obj.layer == LayerMask.NameToLayer(BlockLayerName) &&
+                    obj.TryGetComponent(out MeshRenderer _))
+                {
+                    blocks.Add(obj);
+                }
+            }
+            
+            return blocks;
         }
 
         private void ShrinkStageDataFromAddressable(StageData stageData)

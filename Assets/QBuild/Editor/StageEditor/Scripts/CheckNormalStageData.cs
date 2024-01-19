@@ -102,6 +102,11 @@ namespace QBuild.StageEditor
 
             foreach (var block in blocks)
             {
+                block.AddComponent<MeshCollider>();
+            }
+
+            foreach (var block in blocks)
+            {
                 if (!block.TryGetComponent(out Collider collider)) continue;
 
                 foreach (var otherBlock in blocks.Where(otherBlock => block != otherBlock))
@@ -119,6 +124,11 @@ namespace QBuild.StageEditor
                         break;
                     }
                 }
+            }
+            
+            foreach (var block in blocks)
+            {
+                DestroyImmediate(block.GetComponent<MeshCollider>());
             }
 
             overlappingBlocks = overlapBlockList;
