@@ -26,6 +26,8 @@ namespace QBuild.Part
             inputSystem.InGame.BlockPlaceL.performed += _ => LeftPlacePart();
 
             inputSystem.InGame.SelectChange.performed += ChangeSelect;
+            inputSystem.InGame.BlockRotation.performed += BlockRotation;
+            
             _partListScriptableObject = partListScriptableObject;
             _nextPartHolder =
                 new PlayerPartHolder(_partListScriptableObject, _partListScriptableObject.GetPartObjectCount);
@@ -53,11 +55,26 @@ namespace QBuild.Part
         {
             OnThePartUpdate();
 
-
+            /*
             if (Keyboard.current[Key.R].wasPressedThisFrame)
                 CurrentRotateIndex = (CurrentRotateIndex + 1) % RotateMap.Count;
             if (Keyboard.current[Key.T].wasPressedThisFrame)
                 CurrentRotateIndex = (CurrentRotateIndex - 1 + RotateMap.Count) % RotateMap.Count;
+            */
+        }
+
+        private void BlockRotation(InputAction.CallbackContext context)
+        {
+            var value = (int)context.ReadValue<float>();
+            if (value == 0) return;
+            if (value > 0)
+            {
+                CurrentRotateIndex = (CurrentRotateIndex + 1) % RotateMap.Count;
+            }
+            else
+            {
+                CurrentRotateIndex = (CurrentRotateIndex - 1 + RotateMap.Count) % RotateMap.Count;
+            }
         }
 
         private void ForwardPlacePart()
