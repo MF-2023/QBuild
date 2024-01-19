@@ -12,21 +12,29 @@ namespace QBuild.Result
         [SerializeField] private ResultPopup _resultPopup;
         [SerializeField] private PlayerProgressData _playerProgressData;
 
-        public void StartResult()
+        public void StartGoalResult()
         {
-            
-            ResultEffectStart(this.GetCancellationTokenOnDestroy()).Forget();
+            ResultEffectStartGoal(this.GetCancellationTokenOnDestroy()).Forget();
+        }
+        
+        public void StartFailedResult()
+        {
+            ResultEffectStartFailed(this.GetCancellationTokenOnDestroy()).Forget();
         }
 
-        private async UniTask ResultEffectStart(CancellationToken token)
+        private async UniTask ResultEffectStartGoal(CancellationToken token)
         {
             await UniTask.WaitUntil(() => _playerProgressData.EndGoalAnimation, cancellationToken: token);
-            
-            await _resultPopup.Show(token);
+            await _resultPopup.GoalShow(token);
             await UniTask.WaitUntil(() => _resultPopup.IsClickAny, cancellationToken: token);
-            
-            //ポップアップ閉じる?
-            await _resultPopup.Close(token);
+            //await _resultPopup.Close(token);
+        }
+
+        private async UniTask ResultEffectStartFailed(CancellationToken token)
+        {
+            await _resultPopup.FailedShow(token);
+            await UniTask.WaitUntil(() => _resultPopup.IsClickAny, cancellationToken: token);
+            //await _resultPopup.Close(token); 
         }
     }
 }

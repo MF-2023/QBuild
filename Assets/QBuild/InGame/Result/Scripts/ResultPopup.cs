@@ -42,6 +42,28 @@ namespace QBuild.Result
             _isClickAny = false;
         }
 
+        public async UniTask GoalShow(CancellationToken token)
+        {
+            _popup.SetActive(true);
+            _gameClearImage.SetActive(true);
+            _gameOverImage.SetActive(false);
+            
+            _animator.Play("PopupOpen");
+            await UniTask.WaitUntil( () => _animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f, cancellationToken: token);
+            _isClickAny = false;
+        }
+        
+        public async UniTask FailedShow(CancellationToken token)
+        {
+            _popup.SetActive(true);
+            _gameClearImage.SetActive(false);
+            _gameOverImage.SetActive(true);
+            
+            _animator.Play("PopupOpen");
+            await UniTask.WaitUntil( () => _animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f, cancellationToken: token);
+            _isClickAny = false;
+        }
+
         public async UniTask Close(CancellationToken token)
         {
             _animator.Play("PopupClose");
