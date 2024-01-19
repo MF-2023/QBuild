@@ -1,5 +1,5 @@
 {
-    "name": "QBuild",
+    "name": "QBuild.Editor",
     "rootNamespace": "",
     "references": [
         "GUID:8da52fdb448313042aa9ca21d0164171",
@@ -17,10 +17,14 @@
         "GUID:6055be8ebefd69e48b49212b09b47b2f",
         "GUID:6545d4bec79151645bf222e795497386",
         "GUID:9e24947de15b9834991c9d8411ea37cf",
-        "GUID:84651a3751eca9349aac36a66bba901b"
+        "GUID:84651a3751eca9349aac36a66bba901b",
+        "GUID:69448af7b92c7f342b298e06a37122aa",
+        "GUID:e48ef7a797a63cd4e8b3dbcc222e39be"
     ],
     "includePlatforms": [],
-    "excludePlatforms": [],
+    "excludePlatforms": [
+        "Editor"
+    ],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
