@@ -8,6 +8,16 @@ namespace QBuild.Gimmick
         [SerializeField] private bool _isOn;
         [SerializeField] private FireBar _fireBar;
 
+        private void Awake()
+        {
+            if (_fireBar == null)
+            {
+                Debug.LogError("FireBarが設定されていません", this);
+            }
+            
+            OnEnableChanged();
+        }
+        
         public override void Active()
         {
             _isOn = !_isOn;
