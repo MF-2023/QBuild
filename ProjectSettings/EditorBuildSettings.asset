@@ -18,5 +18,7 @@ EditorBuildSettings:
     path: Assets/QBuild/GameCycle/Scene/SetupScene.unity
     guid: 284cdbbedb1cd144190d8d225de7e4be
   m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: d89705a5c7ded2b4488d39c713ceefff,
+      type: 2}
     com.unity.input.settings: {fileID: 11400000, guid: 9dee5788fa0cfe240bf3c29e605fc8f4,
       type: 2}

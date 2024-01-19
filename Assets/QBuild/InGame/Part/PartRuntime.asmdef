@@ -11,7 +11,10 @@
         "DOTween.Modules",
         "UniTask",
         "UniTask.DOTween",
-        "UniTask.Linq"
+        "UniTask.Linq",
+        "QBuild.UI",
+        "Unity.TextMeshPro",
+        "UniRx"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

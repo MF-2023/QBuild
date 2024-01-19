@@ -18,6 +18,8 @@ namespace QBuild.Camera
         [SerializeField, Tooltip("カメラの縦軸リミット")]
         private float cameraHorizontalLimit;
 
+        [SerializeField] private CameraInputProvider _cameraInputProvider;
+
         private void Update()
         {
             CameraPositionUpdate();
@@ -25,7 +27,13 @@ namespace QBuild.Camera
 
         private void CameraPositionUpdate()
         {
-            if (Input.GetMouseButton(0))
+            if (_cameraInputProvider != null)
+            {
+                var inputValue = _cameraInputProvider.GetValue();
+                _mouseAxis.x += inputValue.x * mouseSensitivity;
+                _mouseAxis.y += inputValue.y * -mouseSensitivity;
+            }
+            else if (Input.GetMouseButton(0))
             {
                 _mouseAxis.x += Input.GetAxis("Mouse X") * mouseSensitivity;
 

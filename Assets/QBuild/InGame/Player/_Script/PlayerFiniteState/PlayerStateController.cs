@@ -1,6 +1,7 @@
 using QBuild.Player.Core;
 using QBuild.Player.State;
 using System;
+using Codice.Client.BaseCommands;
 using UnityEngine;
 
 namespace QBuild.Player.Controller
@@ -8,10 +9,12 @@ namespace QBuild.Player.Controller
     public class PlayerStateController
     {
         private PlayerStateMachine _StateMachine;
+        private PlayerProgressData _progressData;
 
         private PlayerIdle _IdleState;
         private PlayerMove _MoveState;
         private PlayerFall _FallState;
+        private PlayerGoal _GoalState;
 
         private Core.Core _Core;
         private Movement _Movement;
@@ -37,7 +40,7 @@ namespace QBuild.Player.Controller
 
 
 
-        public PlayerStateController(Core.Core core, PlayerInputHandler playerInputHandler, PlayerData data)
+        public PlayerStateController(Core.Core core, PlayerInputHandler playerInputHandler, PlayerData data, PlayerProgressData progressData)
         {
             _Core = core;
             this.inputHandler = playerInputHandler;
@@ -47,8 +50,10 @@ namespace QBuild.Player.Controller
             _IdleState = new PlayerIdle(this, _StateMachine, data, "idle");
             _MoveState = new PlayerMove(this, _StateMachine, data, "move");
             _FallState = new PlayerFall(this, _StateMachine, data, "fall");
+            _GoalState = new PlayerGoal(this, _StateMachine, data, "goal");
 
             _StateMachine.Initialize(_IdleState);
+            _progressData = progressData;
         }
 
         public void LogicUpdate()
@@ -101,5 +106,15 @@ namespace QBuild.Player.Controller
         }
 
         public void SetPosition(Vector3 pos) { OnSetPosition?.Invoke(pos); }
+
+        public void ChangeGoalState()
+        {
+            _StateMachine.ChangeState(_GoalState);
+        }
+
+        public void EndGoalAnimation()
+        {
+            _progressData.EndGoalAnimation = true;
+        }
     }
 }

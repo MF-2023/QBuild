@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEditor;
@@ -14,17 +15,32 @@ namespace SoVariableTool.ScriptableEvent
             {
                 typeof(int), typeof(float), typeof(double), typeof(string), typeof(bool)
             };
+            GenerateTypes("EventBuiltInTypes.cs", builtInTypes);
+        }
+        
+        [MenuItem("Tools/SoVariable/GenerateCustomTypeEvent", priority = 11)]
+        private static void GenerateCustomType()
+        {
+            Type[] builtInTypes =
+            {
+                typeof(Unit)
+            };
+            GenerateTypes("CustomTypes.cs", builtInTypes);
+        }
+        
+        private static void GenerateTypes(string packageName,IEnumerable<Type> types)
+        {
+
             var builder = new StringBuilder();
-            foreach (var type in builtInTypes)
+            foreach (var type in types)
             {
                 builder.AppendLine(GenerateEventClass(type));
                 Generate($"EventObject/{type.Name}ScriptableEventObject.cs",
                     GenerateDecorate(GenerateScriptableEventObjectClass(type), true, false));
             }
 
-            Generate("EventBuiltInTypes.cs", GenerateDecorate(builder.ToString(), false, true));
+            Generate($"{packageName}", GenerateDecorate(builder.ToString(), false, true));
         }
-
         private static void Generate(string filepath, string code)
         {
             var folderPath = PreFolderPath;

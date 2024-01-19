@@ -11,7 +11,7 @@ namespace QBuild.Part
         public void UpdatePart(Vector3 referencePosition, PartView onThePart,
             BlockPartScriptableObject partScriptableObject, Matrix4x4 multiplePartAreaMatrix)
         {
-            if (onThePart == null)
+            if (onThePart == null || partScriptableObject == null)
             {
                 _partPlaceAreaN.Hide();
                 _partPlaceAreaE.Hide();
