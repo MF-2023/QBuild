@@ -582,6 +582,39 @@ namespace QBuild
                     ""isPartOfComposite"": true
                 },
                 {
+                    ""name"": ""BlockRot-Keyboard"",
+                    ""id"": ""9eb5f02c-159a-4bba-bd9f-f0a050dc01cc"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": ""Press"",
+                    ""processors"": ""Scale(factor=2)"",
+                    ""groups"": """",
+                    ""action"": ""BlockRotation"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""9be2caa4-ed5f-4a75-86f3-8d66ab87e086"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""BlockRotation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""f744d9c2-9345-4e7b-a121-d5814df08314"",
+                    ""path"": ""<Keyboard>/t"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""BlockRotation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
                     ""name"": """",
                     ""id"": ""f9fd0900-cc9c-4b67-be1b-f6b62ebe2d7d"",
                     ""path"": ""<Gamepad>/start"",
