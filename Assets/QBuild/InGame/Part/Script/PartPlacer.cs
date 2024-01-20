@@ -115,6 +115,7 @@ namespace QBuild.Part
             {
                 _nextPartHolder.Use();
                 var view = Instantiate(partScriptableObject.PartPrefab, outMatrix.GetPosition(), outMatrix.rotation);
+                Instantiate(_particlePrefab, view.transform);
                 view.Direction =
                     DirectionFRBLExtension.VectorToDirectionFRBL(
                         multiplePartAreaMatrix.MultiplyVector(Vector3.forward));
@@ -170,6 +171,7 @@ namespace QBuild.Part
         [SerializeField] private PartView _currentOnThePart;
         [SerializeField] private MultiplePartArea _multiplePartArea;
 
+        [SerializeField] private GameObject _particlePrefab;
         private PartView CurrentOnThePart
         {
             get => _currentOnThePart;

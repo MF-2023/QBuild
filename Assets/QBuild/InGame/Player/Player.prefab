@@ -254,6 +254,8 @@ MonoBehaviour:
     type: 2}
   _currentOnThePart: {fileID: 0}
   _multiplePartArea: {fileID: 7985243206567646367}
+  _particlePrefab: {fileID: 1769271104023067785, guid: a389d4d56020e1e4b9f70b7ab26b9060,
+    type: 3}
 --- !u!114 &7985243206567646367
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -391,6 +391,113 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &3123628293764399508
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 198075928627785639}
+  - component: {fileID: 3087799014898766438}
+  - component: {fileID: 4861703875831651972}
+  - component: {fileID: 1328419896511113408}
+  m_Layer: 5
+  m_Name: CrystalSlots
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &198075928627785639
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3123628293764399508}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2701791153137772862}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 32, y: -18}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0, y: 1}
+--- !u!114 &3087799014898766438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3123628293764399508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ed6851a2896406fa82beeb895bd195b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _emptySprite: {fileID: 21300000, guid: 57f1f274061f7684b87e87c08f6f3164, type: 3}
+  _crystalSprite: {fileID: 21300000, guid: 28c1c0e6d60a8a84ba68377cf3dd1e97, type: 3}
+  _crystalSlotPrefab: {fileID: 1782564356561435708, guid: 69295c3debcdc554ca2fbb7577aa1262,
+    type: 3}
+  _margin: 15
+--- !u!114 &4861703875831651972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3123628293764399508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 376eb680e9fa4fc39db978874e000525, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _crystalSlots: {fileID: 3087799014898766438}
+--- !u!114 &1328419896511113408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3123628293764399508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fabe13cc755497ebbd07bf881593121, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _eventResponses:
+  - _scriptableEvent: {fileID: 11400000, guid: 3e2b56b291dc0d04ead73483cf025cd4, type: 2}
+    _response:
+      _unityEventBase:
+        rid: 5247433864615034880
+  references:
+    version: 2
+    RefIds:
+    - rid: 5247433864615034880
+      type: {class: Int32UnityEvent, ns: SoVariableTool, asm: SOVT}
+      data:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 4861703875831651972}
+            m_TargetAssemblyTypeName: QBuild.Gimmick.Crystal.CrystalRegisterAdapter,
+              QBuild
+            m_MethodName: OnGetCrystal
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
 --- !u!1 &3438100152313975033
 GameObject:
   m_ObjectHideFlags: 0
@@ -471,6 +578,7 @@ RectTransform:
   m_Children:
   - {fileID: 1318701862621983858}
   - {fileID: 4736350664041558379}
+  - {fileID: 198075928627785639}
   m_Father: {fileID: 6024754867840991231}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1134,10 +1242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40c9d0ade76f47babc94ed09fabe030e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _images:
-  - {fileID: 563278853451211176}
-  - {fileID: 4297679640672405920}
-  - {fileID: 690076528080689554}
+  _holderScrollView: {fileID: 0}
 --- !u!1 &9043618133199399533
 GameObject:
   m_ObjectHideFlags: 0
@@ -1303,18 +1408,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4a95db42ee35242418ac7c1302d5591f, type: 3}
---- !u!114 &563278853451211176 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 517952202019439591, guid: 4a95db42ee35242418ac7c1302d5591f,
-    type: 3}
-  m_PrefabInstance: {fileID: 63342772894229071}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &841847283226096330 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 815114485686816901, guid: 4a95db42ee35242418ac7c1302d5591f,
@@ -1569,18 +1662,6 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1054834324086823541}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &690076528080689554 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 517952202019439591, guid: 4a95db42ee35242418ac7c1302d5591f,
-    type: 3}
-  m_PrefabInstance: {fileID: 1054834324086823541}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &3295153386099155248
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1799,18 +1880,6 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 4365199788257643079}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4297679640672405920 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 517952202019439591, guid: 4a95db42ee35242418ac7c1302d5591f,
-    type: 3}
-  m_PrefabInstance: {fileID: 4365199788257643079}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &4574230200212711912
 PrefabInstance:
   m_ObjectHideFlags: 0

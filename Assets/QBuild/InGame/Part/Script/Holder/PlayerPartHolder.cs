@@ -89,6 +89,10 @@ namespace QBuild.Part
 
         public BlockPartScriptableObject GetCurrentPart()
         {
+            if (_currentPartIndex >= _slots.Count)
+            {
+                return null;
+            }
             return _slots[_currentPartIndex].GetPart();
         }
 
