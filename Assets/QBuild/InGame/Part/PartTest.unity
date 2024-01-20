@@ -1989,7 +1989,7 @@ PrefabInstance:
     - target: {fileID: 3612936571417513286, guid: 6b4711a148c9ad64691c7ba00a9fea4a,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 9
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3627399997189155529, guid: 6b4711a148c9ad64691c7ba00a9fea4a,
         type: 3}
@@ -2130,7 +2130,7 @@ PrefabInstance:
     - target: {fileID: 8232069211446632131, guid: 6b4711a148c9ad64691c7ba00a9fea4a,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8563045577054287704, guid: 6b4711a148c9ad64691c7ba00a9fea4a,
         type: 3}
@@ -2925,7 +2925,21 @@ MonoBehaviour:
   origin: {fileID: 1689567168}
   cameraDistance: 10
   cameraHorizontalLimit: 80
-  _cameraInputProvider: {fileID: 0}
+  _cameraInputProvider: {fileID: 1924259583}
+--- !u!114 &1924259583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1924259575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a95cda973a746cdbea9148b654534fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cameraMove: {fileID: -6050647850281899141, guid: 0178737819e282d41835970c061e6eec,
+    type: 3}
 --- !u!1001 &2003793697
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3423,6 +3437,11 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1781374640}
+    - target: {fileID: 198075928627785639, guid: a4904820323a46c4b9de5a7ea9fb65bd,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 935500335109080236, guid: a4904820323a46c4b9de5a7ea9fb65bd,
         type: 3}
       propertyPath: m_Mesh
@@ -3639,6 +3658,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1924259577}
+    - targetCorrespondingSourceObject: {fileID: 1049747601675952856, guid: a4904820323a46c4b9de5a7ea9fb65bd,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1924259583}
   m_SourcePrefab: {fileID: 100100000, guid: a4904820323a46c4b9de5a7ea9fb65bd, type: 3}
 --- !u!4 &4972603098262945332 stripped
 Transform:
