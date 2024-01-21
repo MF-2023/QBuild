@@ -1,4 +1,5 @@
-﻿using SoVariableTool.ScriptableEvent;
+﻿using System;
+using SoVariableTool.ScriptableEvent;
 using QBuild.Player.Controller;
 using SoVariableTool;
 using UnityEngine;
@@ -17,7 +18,7 @@ namespace QBuild.Stage
             }
         }
 
-        private void OnCollisionEnter(Collision other)
+        private void OnTriggerEnter(Collider other)
         {
             if (other.gameObject.TryGetComponent(out PlayerController player))
             {
