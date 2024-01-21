@@ -113,7 +113,6 @@ namespace QBuild.Part
                 cameraDiff2 = cameraDiff2.TurnRight();
             }
             
-            Debug.Log($"${cameraDiff} ${cameraDiff2}");
             _partPlaceAreaN.SetKeyIcon(cameraDiff);
             _partPlaceAreaE.SetKeyIcon(cameraDiff.TurnRight());
             _partPlaceAreaW.SetKeyIcon(cameraDiff.TurnLeft());

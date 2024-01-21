@@ -64,6 +64,8 @@ namespace QBuild.Part
 
         public void SetKeyIcon(DirectionFRBL dir)
         {
+            if (_keyIconSpriteRenderer == null) return;
+            Debug.DebugBreak();
             _keyIconSpriteRenderer.sprite = _icons.GetIcon(dir);
         }
 

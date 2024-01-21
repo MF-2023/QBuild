@@ -57,7 +57,7 @@ namespace QBuild.Part
             {
                 _connector = GetComponent<Connector>();
             }
-
+            
             return _connector.ConnectMagnet();
         }
 
@@ -67,7 +67,7 @@ namespace QBuild.Part
             {
                 _connector = GetComponent<Connector>();
             }
-
+            ContactUpdate();
             return _connector.TryGetConnectPoint(direction, out position);
         }
 
