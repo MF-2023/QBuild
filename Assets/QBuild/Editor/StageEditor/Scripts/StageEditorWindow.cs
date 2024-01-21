@@ -17,7 +17,8 @@ namespace QBuild.StageEditor
     public class StageEditorWindow : EditorWindow
     {
         private StageData _editingStageData;
-        private const string BlocksInventoryPath = "Assets/QBuild/Editor/StageEditor/Blocks/";
+        private const string BlocksInventoryPath = "Assets/QBuild/InGame/Part/Prefab/";
+        private const string GimmicksInventoryPath = "Assets/QBuild/InGame/Gimmick/Prefabs/";
         private const string SaveStageDataFolderPath = "Assets/QBuild/InGame/Stage/StageData";
         private const string StageEditorSceneName = "StageEditor";
         private const string BlockLayerName = "Block";
@@ -268,7 +269,7 @@ namespace QBuild.StageEditor
         private void RefreshBlockList()
         {
             _blockList.Clear();
-            var guids = AssetDatabase.FindAssets("t:GameObject", new[] { BlocksInventoryPath });
+            var guids = AssetDatabase.FindAssets("t:GameObject", new[] { BlocksInventoryPath, GimmicksInventoryPath });
             foreach (var guid in guids)
             {
                 BlockData blockData = new();
@@ -280,7 +281,6 @@ namespace QBuild.StageEditor
                     _wallObject = block;
                     continue;
                 }
-
                 blockData.prefab = block;
                 blockData.thumbnail = AssetPreview.GetAssetPreview(block);
                 _blockList.Add(blockData);
@@ -558,8 +558,7 @@ namespace QBuild.StageEditor
 
                         var prefab = _blockList[i].prefab;
                         Texture2D thumbnail = _blockList[i].thumbnail;
-
-                        if (GUILayout.Button(thumbnail, GUILayout.Width(buttonSize), GUILayout.Height(buttonSize)))
+                        if (GUILayout.Button(new GUIContent(thumbnail,prefab.name), GUILayout.Width(buttonSize), GUILayout.Height(buttonSize)))
                         {
                             InstanceObject(prefab);
                         }
