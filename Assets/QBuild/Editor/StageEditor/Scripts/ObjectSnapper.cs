@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using QBuild.Gimmick;
 using UnityEditor;
 using UnityEngine;
 
@@ -45,7 +46,7 @@ namespace QBuild.StageEditor
 
             //selectedGameObject‚Ì’†‚©‚çStageEditorWall‚ðŽæ“¾
             var wallList = selectedGameObject
-                .Where(tran => tran.TryGetComponent(out StageEditorWall wall))
+                .Where(tran => tran.TryGetComponent(out Wall wall))
                 .ToList();
             if (wallList.Count != 0)
             {
@@ -57,7 +58,7 @@ namespace QBuild.StageEditor
             bool doCheckGenerateWallFromPole = false;
             foreach (var tran in selectedGameObject)
             {
-                var isCursorLock = tran.TryGetComponent(out StageEditorWall wall);
+                var isCursorLock = tran.TryGetComponent(out Wall wall);
 
                 var p = _prevPos;
                 CheckSnapBehaviorObject(tran.gameObject);

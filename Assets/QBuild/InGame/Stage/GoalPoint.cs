@@ -1,6 +1,4 @@
-﻿using System;
-using SoVariableTool.ScriptableEvent;
-using QBuild.Player.Controller;
+﻿using QBuild.Player.Controller;
 using SoVariableTool;
 using UnityEngine;
 

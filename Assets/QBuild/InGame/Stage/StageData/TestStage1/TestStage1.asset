@@ -15,7 +15,7 @@ MonoBehaviour:
   _stage: {fileID: 0}
   _isExistWarningItem: 0
   _stagePrefab:
-    m_AssetGUID: 
+    m_AssetGUID: bc532e1023645e14ca638d007da6cedb
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
