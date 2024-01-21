@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 46927e83a00f3bd409c24f3a28365c70, type: 3}
-  m_Name: NewStageData2
+  m_Name: TestStage1
   m_EditorClassIdentifier: 
   _stage: {fileID: 0}
   _isExistWarningItem: 1
@@ -19,8 +19,8 @@ MonoBehaviour:
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
-  _fileName: NewStageData2
-  _stageName: NewStageData2
+  _fileName: TestStage1
+  _stageName: TestStage1
   _stageDifficult: 1
   _crystalCount: 0
   _stageImage: {fileID: 0}

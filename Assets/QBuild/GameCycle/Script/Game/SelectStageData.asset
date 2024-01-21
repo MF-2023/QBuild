@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33e691017fa94434890a1b43cd18d304, type: 3}
   m_Name: SelectStageData
   m_EditorClassIdentifier: 
-  SelectStagePrefab: {fileID: 0}
+  _selectStageData: {fileID: 11400000, guid: 0eaba0f88b8c18e45ab299e05c7a6837, type: 2}
