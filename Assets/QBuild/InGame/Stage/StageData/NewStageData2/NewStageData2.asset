@@ -24,4 +24,4 @@ MonoBehaviour:
   _stageDifficult: 1
   _crystalCount: 0
   _stageImage: {fileID: 0}
-  _stageArea: {x: 10, y: 10, z: 10}
+  _stageArea: {x: 10, y: 3, z: 10}
