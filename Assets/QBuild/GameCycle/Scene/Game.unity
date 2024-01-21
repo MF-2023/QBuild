@@ -170,6 +170,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &319212117 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1260361576874298593, guid: a4904820323a46c4b9de5a7ea9fb65bd,
+    type: 3}
+  m_PrefabInstance: {fileID: 3992462929263992960}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c3617adb8f142b99bde8b83bb3a20a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &404713773 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6489454749384316713, guid: a4904820323a46c4b9de5a7ea9fb65bd,
@@ -370,6 +382,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3234051547424333165, guid: a4904820323a46c4b9de5a7ea9fb65bd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 319212117}
     - target: {fileID: 4553007508341860283, guid: a4904820323a46c4b9de5a7ea9fb65bd,
         type: 3}
       propertyPath: m_Name

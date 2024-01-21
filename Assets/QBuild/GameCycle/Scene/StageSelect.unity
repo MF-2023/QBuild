@@ -299,6 +299,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fadeTime: 0.5
+  _selectStageSO: {fileID: 11400000, guid: 0443032af658f5348bd200fbc9881c17, type: 2}
 --- !u!114 &1036372698
 MonoBehaviour:
   m_ObjectHideFlags: 0
