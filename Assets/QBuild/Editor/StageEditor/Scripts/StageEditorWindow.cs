@@ -777,12 +777,12 @@ namespace QBuild.StageEditor
             var objects = FindObjectsOfType<GameObject>();
 
             //objectsの中からBlockレイヤーのオブジェクトを抽出
-            //objectsの中からMeshRendererを持っているオブジェクトを抽出
             var blocks = new List<GameObject>();
             foreach (var obj in objects)
             {
                 if (obj.layer == LayerMask.NameToLayer(BlockLayerName) &&
-                    obj.TryGetComponent(out MeshRenderer _))
+                    (obj.transform.parent == null ||
+                     obj.transform.parent.gameObject.layer != LayerMask.NameToLayer(BlockLayerName)))
                 {
                     blocks.Add(obj);
                 }
@@ -800,6 +800,7 @@ namespace QBuild.StageEditor
             foreach (var o in obj)
             {
                 isExistSaveData = true;
+                Debug.Log(o.name);
                 o.transform.SetParent(parent.transform);
             }
 

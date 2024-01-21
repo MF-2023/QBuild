@@ -12,7 +12,8 @@ namespace QBuild.Stage
         private StageData _selectStageData;
         public StageData SelectStageData
         {
-            get { return _selectStageData; }
+            get => _selectStageData;
+            set => _selectStageData = value;
         }
     }
 }

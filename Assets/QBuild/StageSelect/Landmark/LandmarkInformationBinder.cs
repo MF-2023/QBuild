@@ -1,5 +1,7 @@
+using System;
 using UnityEngine;
 using TMPro;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace QBuild.StageSelect.Landmark
@@ -18,6 +20,7 @@ namespace QBuild.StageSelect.Landmark
         
         [SerializeField] private Image _isClearedImage;
 
+        [SerializeField] private Button _startButton;
         private void Start()
         {
             if ( _stageName == null )
@@ -82,6 +85,12 @@ namespace QBuild.StageSelect.Landmark
         {
             if ( _isClearedImage == null ) return;
             _isClearedImage.gameObject.SetActive(isCleared);
+        }
+        
+        public void BindStartButton(UnityAction action)
+        {
+            if ( _startButton == null ) return;
+            _startButton.onClick.AddListener(action);
         }
     }
 }

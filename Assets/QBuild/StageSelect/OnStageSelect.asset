@@ -9,7 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33e691017fa94434890a1b43cd18d304, type: 3}
-  m_Name: SelectStageData
+  m_Script: {fileID: 11500000, guid: 4a96e949ffa441268a9d57046f859c11, type: 3}
+  m_Name: OnStageSelect
   m_EditorClassIdentifier: 
-  _selectStageData: {fileID: 11400000, guid: 56573c12f0655b645b6fa89b8656413d, type: 2}
+  _debugLogEnabled: 0
+  _debugValue: {fileID: 0}

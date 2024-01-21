@@ -19,6 +19,8 @@ namespace QBuild.GameCycle
     public class GameInstaller : MonoBehaviour,ILoadable
     {
         [SerializeField] private SelectStageSO _selectStageSO;
+        [SerializeField] private GameBuild _gameBuild;
+        [SerializeField] private GameObject _stageContainer;
         private AsyncOperationHandle<GameObject> _handler;
 
         private async void Awake()
@@ -35,7 +37,10 @@ namespace QBuild.GameCycle
 
             await _handler.Task;
             
-            Instantiate(_handler.Result);
+            var stage = Instantiate(_handler.Result, _stageContainer.transform);
+            var spawnPoint = FindFirstObjectByType(typeof(PlayerSpawnPoint)) as PlayerSpawnPoint;
+            _gameBuild.Bind(spawnPoint);
+            _gameBuild.Build();
         }
         
         private void OnDestroy()
