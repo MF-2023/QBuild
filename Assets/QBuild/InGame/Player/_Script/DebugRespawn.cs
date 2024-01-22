@@ -16,7 +16,7 @@ namespace QBuild.Player.Debug
         {
             if (transform.position.y < -5.0f)
             {
-                transform.position = new Vector3(0, 5, 0);
+                transform.position = _position;
             }
         }
     }

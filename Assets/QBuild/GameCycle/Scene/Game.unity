@@ -556,6 +556,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1672231435}
     m_Modifications:
+    - target: {fileID: 2162631031389722700, guid: a52e7011eccb13d4fa11971b8784dedd,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 2374778620695146019, guid: a52e7011eccb13d4fa11971b8784dedd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -626,10 +631,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2947877895162245854, guid: a52e7011eccb13d4fa11971b8784dedd,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3152300104464577689, guid: a52e7011eccb13d4fa11971b8784dedd,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4714911868932992222, guid: a52e7011eccb13d4fa11971b8784dedd,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 5009447881074945128, guid: a52e7011eccb13d4fa11971b8784dedd,
         type: 3}
       propertyPath: m_Name
       value: StageLevelBase
+      objectReference: {fileID: 0}
+    - target: {fileID: 5500845493482021977, guid: a52e7011eccb13d4fa11971b8784dedd,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
