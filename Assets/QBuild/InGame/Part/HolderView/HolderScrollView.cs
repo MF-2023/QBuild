@@ -25,7 +25,6 @@ namespace QBuild.Part.HolderView
 
         public void UpdateData(IList<SlotData> items)
         {
-            Debug.Log($"UpdateData :{items.Count}");
             this._loop = items.Count > 1;
             if (!this._loop) scroller.ContentMovementType = MovementType.Clamped;
             UpdateContents(items);

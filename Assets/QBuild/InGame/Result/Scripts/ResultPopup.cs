@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
@@ -14,6 +16,7 @@ namespace QBuild.Result
         [SerializeField] private GameObject _gameClearImage;
         [SerializeField] private GameObject _gameOverImage;
 
+        [SerializeField] private List<RectTransform> _buttonRectTransforms; 
         private bool _isClickAny;
         
         public bool IsClickAny {get{return _isClickAny; }}
@@ -39,6 +42,10 @@ namespace QBuild.Result
             
             _animator.Play("PopupOpen");
             await UniTask.WaitUntil(() => _animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f, cancellationToken: token);
+
+            var tasks = _buttonRectTransforms.Select(t => t.DOScale(1.0f, 0.5f).SetEase(Ease.OutQuart).ToUniTask(cancellationToken: token));
+            await UniTask.WhenAll(tasks);
+
             _isClickAny = false;
         }
 
@@ -47,9 +54,14 @@ namespace QBuild.Result
             _popup.SetActive(true);
             _gameClearImage.SetActive(true);
             _gameOverImage.SetActive(false);
-            
+            _buttonRectTransforms.ForEach(t => t.localScale = Vector3.zero);
+
             _animator.Play("PopupOpen");
             await UniTask.WaitUntil( () => _animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f, cancellationToken: token);
+
+            var tasks = _buttonRectTransforms.Select(t => t.DOScale(1.0f, 0.5f).SetEase(Ease.OutQuart).ToUniTask(cancellationToken: token));
+            await UniTask.WhenAll(tasks);
+            
             _isClickAny = false;
         }
         

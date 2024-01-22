@@ -891,6 +891,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c3617adb8f142b99bde8b83bb3a20a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _onClickRetryEvent: {fileID: 11400000, guid: 68062bffd7dc4a343931ccddc4b17586, type: 2}
+  _onClickNextStageEvent: {fileID: 11400000, guid: 082e9b42aeec45a4bbb355d81f799b96,
+    type: 2}
 --- !u!1 &8358902116004862253
 GameObject:
   m_ObjectHideFlags: 0
