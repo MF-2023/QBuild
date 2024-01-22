@@ -18,23 +18,27 @@ namespace QBuild.Part
 
         private Connector _connector;
         private Channel<ShiftDirectionTimes> _channel;
-
+        private CancellationTokenSource _cancellationTokenSource;
+        
         public void Awake()
         {
             var r = transform.localRotation;
             var e = r.eulerAngles;
             Direction = DirectionFRBLExtension.VectorToDirectionFRBL(e);
-            Debug.Log(Direction);
             
-            _channel = Channel.CreateSingleConsumerUnbounded<ShiftDirectionTimes>();
+            _cancellationTokenSource = new CancellationTokenSource();
 
+            _channel = Channel.CreateSingleConsumerUnbounded<ShiftDirectionTimes>();
             var reader = _channel.Reader;
-            WaitForChannelAsync(reader, this.GetCancellationTokenOnDestroy()).Forget();
+            WaitForChannelAsync(reader, _cancellationTokenSource.Token).Forget();
+            ContactUpdate();
         }
-        
+
         private void OnDestroy()
         {
             _channel.Writer.TryComplete();
+            _cancellationTokenSource.Cancel();
+            _cancellationTokenSource.Dispose();
         }
 
         public IEnumerable<Vector3> OnGetConnectPoints()
@@ -53,7 +57,7 @@ namespace QBuild.Part
             {
                 _connector = GetComponent<Connector>();
             }
-
+            
             return _connector.ConnectMagnet();
         }
 
@@ -63,7 +67,7 @@ namespace QBuild.Part
             {
                 _connector = GetComponent<Connector>();
             }
-
+            ContactUpdate();
             return _connector.TryGetConnectPoint(direction, out position);
         }
 
@@ -94,10 +98,7 @@ namespace QBuild.Part
             try
             {
                 await reader.ReadAllAsync()
-                    .ForEachAwaitAsync(async x =>
-                    {
-                        await TurnAsync(x);
-                    }, cancellationToken);
+                    .ForEachAwaitAsync(async x => { await TurnAsync(x); }, cancellationToken);
             }
             catch (Exception e)
             {
@@ -109,7 +110,7 @@ namespace QBuild.Part
         {
             _channel.Writer.TryWrite(times);
         }
-        
+
         public async Task TurnAsync(ShiftDirectionTimes times)
         {
             var turnDirection = Direction.Shift(times);
@@ -117,6 +118,21 @@ namespace QBuild.Part
             var rot = transform.localRotation.eulerAngles;
             rot.y += times.Value * 90;
             await transform.DOLocalRotate(rot, 0.5f).AsyncWaitForCompletion();
+        }
+
+        private void ContactUpdate()
+        {
+            foreach (var magnet in OnGetMagnets())
+            {
+                var position = transform.TransformPoint(magnet.Position);
+                var dirRay = magnet.Direction.ToVector3();
+                dirRay = transform.rotation * dirRay;
+                var ray = new Ray(position - dirRay * 0.1f, dirRay.normalized * 0.2f);
+
+                // Blockに接触している
+                var contact = Physics.Raycast(ray, out var hit, 1f, LayerMask.GetMask("Block"));
+                SetCanConnect(magnet.Direction, !contact);
+            }
         }
     }
 }

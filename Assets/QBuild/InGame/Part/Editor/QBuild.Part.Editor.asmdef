@@ -1,0 +1,19 @@
+{
+    "name": "QBuild.Part.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:6b15728fd99741d4385eea625d7b049e",
+        "GUID:bd06e448dff5e6546bafe10d66b24cf4"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

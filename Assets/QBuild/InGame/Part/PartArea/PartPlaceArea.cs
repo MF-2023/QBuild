@@ -18,7 +18,7 @@ namespace QBuild.Part
             Matrix4x4 multiplePartAreaMatrix)
         {
             _part = part;
-            var mesh = part.PartPrefab.GetComponent<MeshFilter>().sharedMesh;
+            var mesh = part.PartPrefab.GetComponentInChildren<MeshFilter>().sharedMesh;
             _meshFilter.sharedMesh = mesh;
             var tryPlaceInfo = new TryPlaceInfo(part, dir, connectPosition, multiplePartAreaMatrix);
 
@@ -32,8 +32,7 @@ namespace QBuild.Part
                     {
                         var dirRay = magnet.Direction.ToVector3();
                         dirRay = outPartPosition.rotation * dirRay;
-                        //positionをdirRayの向きに0.5だけずらした位置にRayを飛ばす
-                        var ray = new Ray(position + dirRay * 0.5f, dirRay.normalized * 0.2f);
+                        var ray = new Ray(position - dirRay * 0.1f, dirRay.normalized * 0.2f);
                         if (!Physics.Raycast(ray, out var hit, 1f, LayerMask.GetMask("Block"))) continue;
                         var hitPart = hit.collider.GetComponentInParent<PartView>();
                         if (hitPart == null) continue;
@@ -42,12 +41,12 @@ namespace QBuild.Part
                     }
                 }
 
-                GetComponent<Renderer>().material.SetColor("_WireframeColor", contact ? Color.green : Color.blue);
+                GetComponentInChildren<Renderer>().material.SetColor("_WireframeColor", contact ? Color.green : Color.blue);
             }
             else
             {
                 _state = PartPlaceAreaState.NotEnoughSpace;
-                GetComponent<Renderer>().material.SetColor("_WireframeColor", Color.red);
+                GetComponentInChildren<Renderer>().material.SetColor("_WireframeColor", Color.red);
             }
 
             transform.position = outPartPosition.GetPosition();
@@ -65,12 +64,14 @@ namespace QBuild.Part
 
         public void SetKeyIcon(DirectionFRBL dir)
         {
+            if (_keyIconSpriteRenderer == null) return;
+            Debug.DebugBreak();
             _keyIconSpriteRenderer.sprite = _icons.GetIcon(dir);
         }
 
         private void Start()
         {
-            _meshFilter = GetComponent<MeshFilter>();
+            _meshFilter = GetComponentInChildren<MeshFilter>();
             _keyIconSpriteRenderer = GetComponentInChildren<SpriteRenderer>();
         }
 

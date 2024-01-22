@@ -1,8 +1,6 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using QBuild.Player;
-using UnityEditor.SceneManagement;
+using SherbetInspector.Core.Attributes;
 using UnityEngine;
 
 namespace QBuild.Gimmick
@@ -13,6 +11,9 @@ namespace QBuild.Gimmick
         [SerializeField, Tooltip("動く距離")] private float _moveTransitionPeriod = 10.0f;
         [SerializeField, Tooltip("動く速度")] private float _moveTransitionSpeed = 5.0f;
         [SerializeField] private bool _isMove = true;
+
+        [SerializeField, Tooltip("補助線オブジェクト")] private GameObject _lineObject;
+        
         private GimmickMovePlatformHelper _helper;
         
         private Vector3 _initPosition;
@@ -119,6 +120,15 @@ namespace QBuild.Gimmick
         public override void Disable()
         {
             _isMove = false;
+        }
+
+        [Button]
+        private void GenerateLine()
+        {
+            if (_lineObject.TryGetComponent(out MoveLine moveLine))
+            {
+                moveLine.GenerateLine(transform.position, transform.TransformPoint(_moveTransitionAxis.normalized * _moveTransitionPeriod * 2.0f));
+            }
         }
     }
 }

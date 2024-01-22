@@ -47,7 +47,6 @@ namespace QBuild.Part.Presenter
                 return;
             }
 
-            Debug.Log(holdersIndex);
             _partHolderView.SetPartIcon(holdersIndex, part.PartIcon);
         }
 

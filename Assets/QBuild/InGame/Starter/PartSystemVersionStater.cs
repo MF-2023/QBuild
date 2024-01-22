@@ -1,8 +1,5 @@
 ﻿using System;
 using QBuild.Camera;
-using QBuild.Condition;
-using QBuild.Mino;
-using QBuild.Mino.ProvisionalMino;
 using QBuild.Part;
 using QBuild.Part.HolderView;
 using QBuild.Part.PartScriptableObject;

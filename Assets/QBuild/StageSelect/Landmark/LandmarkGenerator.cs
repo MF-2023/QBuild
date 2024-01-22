@@ -2,8 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using QBuild.PlayerPrefsController;
+using QBuild.StageEditor;
+using SoVariableTool;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace QBuild.StageSelect.Landmark
@@ -18,6 +21,8 @@ namespace QBuild.StageSelect.Landmark
         [SerializeField] private float _popUpPower = 0.05f;
         [SerializeField] private float _popUpTime = 0.5f;
         private Sequence _popUpTween;
+        
+        [SerializeField] private StageDataScriptableEventObject _onStartButtonClicked;
 
         // Start is called before the first frame update
         void Start()
@@ -68,6 +73,16 @@ namespace QBuild.StageSelect.Landmark
                 var saveData = SaveDataController.GetSaveDataFromLandmark(landmarkInformationScriptable);
                 landmarkInformationBinder.SetItemImages(saveData._getCrystalNum);
                 landmarkInformationBinder.SetIsClearedImage(saveData._isClear);
+            }
+
+            {
+                var scriptableObject = landmarkInformation._stageData;
+                landmarkInformationBinder.BindStartButton(() =>
+                {
+                    _onStartButtonClicked.Raise(new object[]{
+                        scriptableObject
+                    });
+                });
             }
         }
 

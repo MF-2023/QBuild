@@ -182,7 +182,6 @@ namespace QBuild.Utilities
                 result.Value++;
             }
 
-            Debug.Log($"${from} ${to} times:${result.Value}");
             return result;
         }
 

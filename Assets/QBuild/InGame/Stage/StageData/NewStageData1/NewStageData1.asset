@@ -10,18 +10,31 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 46927e83a00f3bd409c24f3a28365c70, type: 3}
+<<<<<<<< HEAD:Assets/QBuild/InGame/Stage/StageData/NewStageData1/NewStageData1.asset
   m_Name: NewStageData1
+========
+  m_Name: TestStageData
+>>>>>>>> feature-Gimmick:Assets/QBuild/InGame/Stage/StageData/TestStageData/TestStageData.asset
   m_EditorClassIdentifier: 
   _stage: {fileID: 0}
   _isExistWarningItem: 1
   _stagePrefab:
+<<<<<<<< HEAD:Assets/QBuild/InGame/Stage/StageData/NewStageData1/NewStageData1.asset
     m_AssetGUID: 
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
   _fileName: NewStageData1
   _stageName: NewStageData1
+========
+    m_AssetGUID: 863908bfff6078c49a89ef133f68d07b
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  _fileName: TestStageData
+  _stageName: "\u30C6\u30B9\u30C8\u30B9\u30C6\u30FC\u30B8\u30C7\u30FC\u30BF"
+>>>>>>>> feature-Gimmick:Assets/QBuild/InGame/Stage/StageData/TestStageData/TestStageData.asset
   _stageDifficult: 1
   _crystalCount: 0
-  _stageImage: {fileID: 0}
+  _stageImage: {fileID: 2800000, guid: 95b8a4df708d0e945a308b1587e11212, type: 3}
   _stageArea: {x: 10, y: 10, z: 10}

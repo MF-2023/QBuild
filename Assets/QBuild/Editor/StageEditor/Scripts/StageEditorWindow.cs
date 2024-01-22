@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using QBuild.Const;
+using QBuild.Gimmick;
 using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Settings;
 using UnityEditor.SceneManagement;
@@ -17,7 +18,8 @@ namespace QBuild.StageEditor
     public class StageEditorWindow : EditorWindow
     {
         private StageData _editingStageData;
-        private const string BlocksInventoryPath = "Assets/QBuild/Editor/StageEditor/Blocks/";
+        private const string BlocksInventoryPath = "Assets/QBuild/InGame/Part/Prefab/";
+        private const string GimmicksInventoryPath = "Assets/QBuild/InGame/Gimmick/Prefabs/";
         private const string SaveStageDataFolderPath = "Assets/QBuild/InGame/Stage/StageData";
         private const string StageEditorSceneName = "StageEditor";
         private const string BlockLayerName = "Block";
@@ -243,11 +245,11 @@ namespace QBuild.StageEditor
 
         public static void WallInitialize()
         {
-            var walls = FindObjectsByType<StageEditorWall>(FindObjectsSortMode.None);
+            var walls = FindObjectsByType<Wall>(FindObjectsSortMode.None);
             foreach (var wall in walls)
                 DestroyImmediate(wall.gameObject);
 
-            var poles = FindObjectsByType<StageEditorPole>(FindObjectsSortMode.None);
+            var poles = FindObjectsByType<Pole>(FindObjectsSortMode.None);
             foreach (var pole in poles)
                 pole.wallInfos.Clear();
         }
@@ -268,19 +270,18 @@ namespace QBuild.StageEditor
         private void RefreshBlockList()
         {
             _blockList.Clear();
-            var guids = AssetDatabase.FindAssets("t:GameObject", new[] { BlocksInventoryPath });
+            var guids = AssetDatabase.FindAssets("t:GameObject", new[] { BlocksInventoryPath, GimmicksInventoryPath });
             foreach (var guid in guids)
             {
                 BlockData blockData = new();
                 var path = AssetDatabase.GUIDToAssetPath(guid);
                 var block = AssetDatabase.LoadAssetAtPath<GameObject>(path);
                 if (block == null) continue;
-                if (block.TryGetComponent(out StageEditorWall wall))
+                if (block.TryGetComponent(out Wall wall))
                 {
                     _wallObject = block;
                     continue;
                 }
-
                 blockData.prefab = block;
                 blockData.thumbnail = AssetPreview.GetAssetPreview(block);
                 _blockList.Add(blockData);
@@ -289,7 +290,7 @@ namespace QBuild.StageEditor
 
         public static void CheckGenerateWallFromPole()
         {
-            var poles = FindObjectsByType<StageEditorPole>(FindObjectsSortMode.None);
+            var poles = FindObjectsByType<Pole>(FindObjectsSortMode.None);
 
             foreach (var pole1 in poles)
             {
@@ -334,9 +335,9 @@ namespace QBuild.StageEditor
                         var rotY = Vector3.SignedAngle(pole1.transform.position - pole2.transform.position,
                             Vector3.left, Vector3.up);
                         var wall = GenerateWall(generatePos, rotY);
-                        if (wall.TryGetComponent(out StageEditorWall stageEditorWall))
+                        if (wall.TryGetComponent(out Wall stageEditorWall))
                         {
-                            StageEditorPole.WallInfo info = new();
+                            Pole.WallInfo info = new();
                             info.wall = stageEditorWall;
                             info.pairPole = pole2;
                             pole1.wallInfos.Add(info);
@@ -558,8 +559,7 @@ namespace QBuild.StageEditor
 
                         var prefab = _blockList[i].prefab;
                         Texture2D thumbnail = _blockList[i].thumbnail;
-
-                        if (GUILayout.Button(thumbnail, GUILayout.Width(buttonSize), GUILayout.Height(buttonSize)))
+                        if (GUILayout.Button(new GUIContent(thumbnail,prefab.name), GUILayout.Width(buttonSize), GUILayout.Height(buttonSize)))
                         {
                             InstanceObject(prefab);
                         }
@@ -777,12 +777,12 @@ namespace QBuild.StageEditor
             var objects = FindObjectsOfType<GameObject>();
 
             //objectsの中からBlockレイヤーのオブジェクトを抽出
-            //objectsの中からMeshRendererを持っているオブジェクトを抽出
             var blocks = new List<GameObject>();
             foreach (var obj in objects)
             {
                 if (obj.layer == LayerMask.NameToLayer(BlockLayerName) &&
-                    obj.TryGetComponent(out MeshRenderer _))
+                    (obj.transform.parent == null ||
+                     obj.transform.parent.gameObject.layer != LayerMask.NameToLayer(BlockLayerName)))
                 {
                     blocks.Add(obj);
                 }
@@ -800,6 +800,7 @@ namespace QBuild.StageEditor
             foreach (var o in obj)
             {
                 isExistSaveData = true;
+                Debug.Log(o.name);
                 o.transform.SetParent(parent.transform);
             }
 
@@ -836,6 +837,8 @@ namespace QBuild.StageEditor
                 child.transform.SetParent(null);
 
             DestroyImmediate(parent);
+            
+            Debug.Log($"セーブ完了:{AssetDatabase.GetAssetPath(prefab)}");
         }
 
         private void ShrinkStageData(StageData stageData)

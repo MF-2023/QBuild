@@ -245,7 +245,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &4629649972644371289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -292,6 +292,7 @@ MonoBehaviour:
   _enabledDifficultyImage: {fileID: 21300000, guid: bb4b2695ec4c783458323d8d8dc6dd5d,
     type: 3}
   _isClearedImage: {fileID: 8038158728114897039}
+  _startButton: {fileID: 6804671053312640166}
 --- !u!1 &2036410700723780777
 GameObject:
   m_ObjectHideFlags: 0
@@ -971,7 +972,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3694667112095320895
 RectTransform:
   m_ObjectHideFlags: 0

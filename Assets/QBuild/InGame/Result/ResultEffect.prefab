@@ -134,6 +134,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 3518247721070619216}
+        m_TargetAssemblyTypeName: QBuild.Result.ResultAction, QBuild
+        m_MethodName: OnClickNext
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5174651382587969016
 GameObject:
   m_ObjectHideFlags: 0
@@ -268,6 +280,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: QBuild.Result.ResultAction, QBuild
+        m_MethodName: OnClickTitle
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5420701729949439603
 GameObject:
   m_ObjectHideFlags: 0
@@ -393,6 +417,18 @@ MonoBehaviour:
       - m_Target: {fileID: 5596616815361505761}
         m_TargetAssemblyTypeName: QBuild.Result.ResultPopup, QBuild
         m_MethodName: OnClickButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 3518247721070619216}
+        m_TargetAssemblyTypeName: QBuild.Result.ResultAction, QBuild
+        m_MethodName: OnClickRetry
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -785,6 +821,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3597387312808763326}
   - component: {fileID: 5465269785031803249}
+  - component: {fileID: 3518247721070619216}
   m_Layer: 0
   m_Name: Button
   m_TagString: Untagged
@@ -842,6 +879,21 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &3518247721070619216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7244294501709409610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c3617adb8f142b99bde8b83bb3a20a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _onClickRetryEvent: {fileID: 11400000, guid: 68062bffd7dc4a343931ccddc4b17586, type: 2}
+  _onClickNextStageEvent: {fileID: 11400000, guid: 082e9b42aeec45a4bbb355d81f799b96,
+    type: 2}
 --- !u!1 &8358902116004862253
 GameObject:
   m_ObjectHideFlags: 0
@@ -1053,6 +1105,18 @@ MonoBehaviour:
       - m_Target: {fileID: 5596616815361505761}
         m_TargetAssemblyTypeName: QBuild.Result.ResultPopup, QBuild
         m_MethodName: OnClickButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 3518247721070619216}
+        m_TargetAssemblyTypeName: QBuild.Result.ResultAction, QBuild
+        m_MethodName: OnClickStageSelect
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -11,15 +11,14 @@ namespace QBuild.Starter
     {
         private void Awake()
         {
+            Build();
+        }
+        
+        public void Build()
+        {
             _inGameStater.Build();
-
-            using (LifetimeScope.EnqueueParent(_inGameStater))
-            {
-            }
         }
 
         [SerializeField] private PartSystemVersionStater _inGameStater;
-        [SerializeField] private CameraScope _cameraScope;
-        [SerializeField] private CenterScope _centerScope;
     }
 }

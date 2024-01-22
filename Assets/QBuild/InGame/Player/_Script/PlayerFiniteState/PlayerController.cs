@@ -1,8 +1,6 @@
 using System;
 using QBuild.Player.Core;
 using UnityEngine;
-using UnityEngine.UIElements;
-using static UnityEditor.PlayerSettings;
 
 namespace QBuild.Player.Controller
 {
