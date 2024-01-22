@@ -566,15 +566,20 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: 7.4999995
       objectReference: {fileID: 0}
+    - target: {fileID: 2388660028030082430, guid: a52e7011eccb13d4fa11971b8784dedd,
+        type: 3}
+      propertyPath: m_Size.z
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2567940189321128036, guid: a52e7011eccb13d4fa11971b8784dedd,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.64
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2567940189321128036, guid: a52e7011eccb13d4fa11971b8784dedd,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 7.4199996
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2904303439107607225, guid: a52e7011eccb13d4fa11971b8784dedd,
         type: 3}
@@ -636,6 +641,16 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
+    - target: {fileID: 3043151233864076242, guid: a52e7011eccb13d4fa11971b8784dedd,
+        type: 3}
+      propertyPath: m_Size.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3108174117957283699, guid: a52e7011eccb13d4fa11971b8784dedd,
+        type: 3}
+      propertyPath: m_Size.z
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3152300104464577689, guid: a52e7011eccb13d4fa11971b8784dedd,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -651,10 +666,25 @@ PrefabInstance:
       propertyPath: m_Name
       value: StageLevelBase
       objectReference: {fileID: 0}
+    - target: {fileID: 5342795218690668132, guid: a52e7011eccb13d4fa11971b8784dedd,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5342795218690668132, guid: a52e7011eccb13d4fa11971b8784dedd,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -5
+      objectReference: {fileID: 0}
     - target: {fileID: 5500845493482021977, guid: a52e7011eccb13d4fa11971b8784dedd,
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6585976263826886172, guid: a52e7011eccb13d4fa11971b8784dedd,
+        type: 3}
+      propertyPath: m_Size.z
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
