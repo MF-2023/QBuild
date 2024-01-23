@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace Seaeees.GButton
 {
-    public class GButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
+    public class GButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler,ISelectHandler,IDeselectHandler,ISubmitHandler
     {
         private GButtonCore _core;
 
@@ -83,6 +83,21 @@ namespace Seaeees.GButton
             _core = new GButtonCore(scaleAnimationPlayer, colorAnimationPlayer, audioPlayer, imageChanger, fillAnimationPlayer);
 
             _core.CalculateScale();
+        }
+
+        public void OnSelect(BaseEventData eventData)
+        {
+            PlayButtonEffects(AnimationType.PointerEnter);
+        }
+
+        public void OnDeselect(BaseEventData eventData)
+        {
+            PlayButtonEffects(AnimationType.PointerExit);
+        }
+
+        public void OnSubmit(BaseEventData eventData)
+        {
+            PlayButtonEffects(AnimationType.PointerDown);
         }
     }
 }
