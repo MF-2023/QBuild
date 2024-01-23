@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using QBuild.Scene;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -21,6 +22,8 @@ namespace QBuild.GameCycle.Title
         [SerializeField] private Popup _optionPopup = null;
         [SerializeField] private Popup _gameEndPopup = null;
         [SerializeField] private float _fadeTime = 0.5f;
+        
+        [SerializeField] private InputActionMap _inputActionMap = null;
         
         private void Start()
         {

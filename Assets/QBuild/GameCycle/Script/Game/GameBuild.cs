@@ -14,11 +14,11 @@ namespace QBuild.GameCycle
 {
     public class GameBuild : LifetimeScope
     {
-        public void Bind(PlayerSpawnPoint spawnPoint)
+        public void Bind(PlayerSpawnPoint spawnPoint,BasePartSpawnConfiguratorObject partListScriptableObject)
         {
             _playerSpawnPoint = spawnPoint;
+            _partListScriptableObject = partListScriptableObject;
         }
-        
         
         protected override void Configure(IContainerBuilder builder)
         {
