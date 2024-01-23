@@ -21,6 +21,7 @@ namespace QBuild.StageSelect.Landmark
         [SerializeField] private Image _isClearedImage;
 
         [SerializeField] private Button _startButton;
+        public Selectable StartButton => _startButton;
         private void Start()
         {
             if ( _stageName == null )
