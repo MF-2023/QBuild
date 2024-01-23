@@ -12,9 +12,9 @@ namespace QBuild.StageEditor
     {
         private const string FolderPath = "Assets/QBuild/Editor/StageEditor/";
         private const string SceneName = "StageEditor.unity";
-        private const string ButtonName = "ƒXƒe[ƒWƒGƒfƒBƒ^ƒV[ƒ“";
+        private const string ButtonName = "ã‚¹ãƒ†ãƒ¼ã‚¸ã‚¨ãƒ‡ã‚£ã‚¿ã‚·ãƒ¼ãƒ³";
 
-        [MenuItem(EditorConst.WindowPrePath + "ƒXƒe[ƒWƒGƒfƒBƒ^/" + ButtonName)]
+        [MenuItem(EditorConst.WindowPrePath + "ã‚¹ãƒ†ãƒ¼ã‚¸ã‚¨ãƒ‡ã‚£ã‚¿/" + ButtonName)]
         public static void OpenStageEditorScene()
         {
             if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())

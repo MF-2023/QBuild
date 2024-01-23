@@ -61,6 +61,9 @@ namespace QBuild.StageEditor
         [InitializeOnLoadMethod]
         private static void InitializeOnLoad()
         {
+            if (3 < EditorApplication.timeSinceStartup)
+                return;
+            Debug.Log("StageEditorWindow InitializeOnLoad");
             EditorApplication.delayCall += Open;
         }
 
