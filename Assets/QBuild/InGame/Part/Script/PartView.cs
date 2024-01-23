@@ -8,6 +8,7 @@ using Cysharp.Threading.Tasks.Linq;
 using DG.Tweening;
 using QBuild.Utilities;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace QBuild.Part
 {
@@ -19,13 +20,13 @@ namespace QBuild.Part
         private Connector _connector;
         private Channel<ShiftDirectionTimes> _channel;
         private CancellationTokenSource _cancellationTokenSource;
-        
+
         public void Awake()
         {
             var r = transform.localRotation;
             var e = r.eulerAngles;
             Direction = DirectionFRBLExtension.VectorToDirectionFRBL(e);
-            
+
             _cancellationTokenSource = new CancellationTokenSource();
 
             _channel = Channel.CreateSingleConsumerUnbounded<ShiftDirectionTimes>();
@@ -57,7 +58,7 @@ namespace QBuild.Part
             {
                 _connector = GetComponent<Connector>();
             }
-            
+
             return _connector.ConnectMagnet();
         }
 
@@ -67,7 +68,8 @@ namespace QBuild.Part
             {
                 _connector = GetComponent<Connector>();
             }
-            ContactUpdate();
+
+            if (gameObject.activeInHierarchy) ContactUpdate();
             return _connector.TryGetConnectPoint(direction, out position);
         }
 
@@ -89,6 +91,7 @@ namespace QBuild.Part
             }
 
             var shiftedDir = DirectionUtilities.CalcDirectionFRBL(Direction, dir);
+            Debug.Log($"{gameObject.name} SetCanConnect: {shiftedDir},{Direction},{dir}", this);
             _connector.SetCanConnect(shiftedDir, canConnect);
         }
 
@@ -125,13 +128,25 @@ namespace QBuild.Part
             foreach (var magnet in OnGetMagnets())
             {
                 var position = transform.TransformPoint(magnet.Position);
+                position.y -= 0.1f;
                 var dirRay = magnet.Direction.ToVector3();
-                dirRay = transform.rotation * dirRay;
-                var ray = new Ray(position - dirRay * 0.1f, dirRay.normalized * 0.2f);
+                dirRay = transform.TransformDirection(dirRay).normalized;
+                var ray = new Ray(position - dirRay * 0.1f, dirRay);
 
                 // Blockに接触している
                 var contact = Physics.Raycast(ray, out var hit, 1f, LayerMask.GetMask("Block"));
-                SetCanConnect(magnet.Direction, !contact);
+                var shift = new ShiftDirectionTimes((((int)Direction - 1)));
+                Debug.Log($"Dir:{magnet.Direction.Shift(shift)},{Direction}");
+                if (Input.GetKey(KeyCode.B))
+                {
+                    Debug.DrawRay(ray.origin + Vector3.up, ray.direction + Vector3.up, Color.HSVToRGB((int)magnet.Direction / 4.0f,1,1), 50f);
+                    var obj1 = new GameObject($"Test1 S:{magnet.Direction}");
+                    obj1.transform.position = ray.origin + Vector3.up;
+                    var obj2 = new GameObject($"Test1 E:{magnet.Direction}");
+                    obj2.transform.position = ray.GetPoint(1) + Vector3.up;
+                }
+                if (contact)
+                    SetCanConnect(magnet.Direction.Shift(shift), !contact);
             }
         }
     }

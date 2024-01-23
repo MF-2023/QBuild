@@ -36,8 +36,15 @@ namespace QBuild.Part
                 {
                     var pos = matrix.MultiplyPoint(boxCollider.center);
                     var rot = matrix.rotation * boxCollider.transform.rotation;
-                    if (!Physics.CheckBox(pos, (boxCollider.size / 2) * 0.9f,
+                    if (!Physics.CheckBox(pos, (boxCollider.size / 2) * 0.7f,
                             rot, LayerMask.GetMask("Block"))) continue;
+                    bool t = false;
+                    if (t)
+                    {
+                        var trans = new GameObject("Test").transform;
+                        trans.position = pos;
+                        trans.rotation = rot;
+                    }
                     return false;
                 }
 
