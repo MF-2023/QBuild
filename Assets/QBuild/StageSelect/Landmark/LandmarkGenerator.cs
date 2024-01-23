@@ -7,6 +7,7 @@ using SoVariableTool;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace QBuild.StageSelect.Landmark
@@ -24,6 +25,7 @@ namespace QBuild.StageSelect.Landmark
         
         [SerializeField] private StageDataScriptableEventObject _onStartButtonClicked;
 
+        private Selectable _startButton;
         // Start is called before the first frame update
         void Start()
         {
@@ -76,13 +78,16 @@ namespace QBuild.StageSelect.Landmark
             }
 
             {
+                Debug.Log($"LandmarkGenerator:{landmarkInformation._stageData.name}", this);
                 var scriptableObject = landmarkInformation._stageData;
                 landmarkInformationBinder.BindStartButton(() =>
                 {
+                    Debug.Log($"StartButtonClicked:{scriptableObject.name}", landmarkInformationBinder.StartButton);
                     _onStartButtonClicked.Raise(new object[]{
                         scriptableObject
                     });
                 });
+                _startButton = landmarkInformationBinder.StartButton;
             }
         }
 
@@ -90,7 +95,9 @@ namespace QBuild.StageSelect.Landmark
         {
             _popUpTween?.Complete();
             _popUpTween = DOTween.Sequence();
-
+//            EventSystem.current.SetSelectedGameObject(_startButton.gameObject);
+            _startButton.Select();
+            Debug.Log($"SetLandmarkEnable:{_startButton.gameObject.name}",this);
             _landmarkImage.SetActive(true);
             _popUpTween.Append(_landmarkImage.transform.DOPunchScale(new Vector3(_popUpPower, _popUpPower, _popUpPower),
                 _popUpTime));
@@ -101,7 +108,8 @@ namespace QBuild.StageSelect.Landmark
         {
             _popUpTween?.Complete();
             _popUpTween = DOTween.Sequence();
-
+            EventSystem.current.SetSelectedGameObject(null);
+            Debug.Log($"SetLandmarkDisable:{_startButton.gameObject.name}",this);
             _popUpTween.Append(
                 _landmarkImage.transform.DOPunchScale(new Vector3(-_popUpPower, -_popUpPower, -_popUpPower),
                     _popUpTime));

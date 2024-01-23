@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerTitleData
   m_EditorClassIdentifier: 
   playerHeight: 2
-  moveSpeed: 4
+  moveSpeed: 5
   maxMoveSpeed: 8
   inAirMoveSpeed: 1
   crimbTime: 0.5

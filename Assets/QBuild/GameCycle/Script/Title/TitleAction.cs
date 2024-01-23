@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using QBuild.Scene;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -22,10 +23,19 @@ namespace QBuild.GameCycle.Title
         [SerializeField] private Popup _gameEndPopup = null;
         [SerializeField] private float _fadeTime = 0.5f;
         
+        [SerializeField] private InputActionReference _inputActionReference = null;
+        
+        //TODO:[ó—] ê‚ëŒè¡Ç∑
+        private bool _isStart = false;
         private void Start()
         {
             _homePanelSelectables.AddRange(_buttons.GetComponentsInChildren<Selectable>());
-            
+            if (_inputActionReference != null) _inputActionReference.action.performed += _ =>
+            {
+                if (_isStart) return;
+                _isStart = true;
+                ShowButtons();
+            };
             ShowPressPushButtonText();
             _optionPopup.gameObject.SetActive(false);
             _gameEndPopup.gameObject.SetActive(false);
