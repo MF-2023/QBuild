@@ -86,7 +86,8 @@ namespace QBuild.Scene
 
         private void StartChangeSceneWait(float scChangeTime, float waitTime, int index, SceneChangeEffect scEffect)
         {
-            StartCoroutine(changeSceneWait(scChangeTime, waitTime, index, scEffect));
+            //StartCoroutine(changeSceneWait(scChangeTime, waitTime, index, scEffect));
+            changeSceneWaitUni(scChangeTime,waitTime,index,scEffect).Forget();
         }
 
         private IEnumerator changeSceneWait(float scChangeTime, float waitTime, int index, SceneChangeEffect scEffect)
@@ -122,6 +123,36 @@ namespace QBuild.Scene
             yield return async;
 
             //シーンの切り替えエフェクト
+            InSCStart(scChangeTime, scEffect);
+            _loadedScene = false;
+        }
+        
+        private async UniTask changeSceneWaitUni(float scChangeTime, float waitTime, int index, SceneChangeEffect scEffect)
+        {
+            if (_loadedScene) return;
+            _loadedScene = true;
+            OutSCStart(scChangeTime,scEffect);
+            await UniTask.Delay(TimeSpan.FromSeconds(scChangeTime + waitTime));
+            
+            UnityEngine.SceneManagement.Scene delScene = UnitySceneManager.GetActiveScene();
+            var async = UnitySceneManager.LoadSceneAsync(index, LoadSceneMode.Additive);
+            async.completed += (asunc) =>
+            {
+                for (int i = 0; i < UnitySceneManager.sceneCount; i++)
+                {
+                    UnityEngine.SceneManagement.Scene scene = UnitySceneManager.GetSceneAt(i);
+                    if (scene.buildIndex == index)
+                    {
+                        UnitySceneManager.SetActiveScene(scene);
+                        break;
+                    }
+                }
+            };
+            
+            await async;
+            var unloadAsync = UnitySceneManager.UnloadSceneAsync(delScene);
+            await unloadAsync;
+
             InSCStart(scChangeTime, scEffect);
             _loadedScene = false;
         }
