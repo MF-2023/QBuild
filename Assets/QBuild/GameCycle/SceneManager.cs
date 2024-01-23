@@ -125,6 +125,18 @@ namespace QBuild.Scene
             InSCStart(scChangeTime, scEffect);
             _loadedScene = false;
         }
+        
+        private async UniTask changeSceneWaitUni(float scChangeTime, float waitTime, int index, SceneChangeEffect scEffect)
+        {
+            if (_loadedScene) return;
+            OutSCStart(scChangeTime,scEffect);
+            
+            UnityEngine.SceneManagement.Scene delScene = UnitySceneManager.GetActiveScene();
+            await UniTask.WaitUntil(() => UnitySceneManager.GetSceneByBuildIndex(index).isLoaded);
+            await UniTask.WaitUntil(() => delScene.isLoaded == false);
+
+            InSCStart(scChangeTime, scEffect);
+        }
 
         private static bool CheckInstance()
         {
