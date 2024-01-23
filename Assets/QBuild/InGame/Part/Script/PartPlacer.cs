@@ -23,7 +23,7 @@ namespace QBuild.Part
             inputSystem.InGame.BlockPlaceF.performed += _ => ForwardPlacePart();
             inputSystem.InGame.BlockPlaceR.performed += _ => RightPlacePart();
             inputSystem.InGame.BlockPlaceB.performed += _ => BackPlacePart();
-            inputSystem.InGame.BlockPlaceL.performed += _ => LeftPlacePart();
+                inputSystem.InGame.BlockPlaceL.performed += _ => LeftPlacePart();
 
             inputSystem.InGame.SelectChange.performed += ChangeSelect;
             inputSystem.InGame.BlockRotation.performed += BlockRotation;
@@ -114,7 +114,12 @@ namespace QBuild.Part
             if (PlacePartService.TryPlacePartPosition(tryPlaceInfo, out var outMatrix))
             {
                 _nextPartHolder.Use();
-                var view = Instantiate(partScriptableObject.PartPrefab, outMatrix.GetPosition(), outMatrix.rotation);
+                
+                var pos = outMatrix.GetPosition();
+                pos.x = (float)Math.Round(pos.x, 4);
+                pos.y = (float)Math.Round(pos.y, 4);
+                pos.z = (float)Math.Round(pos.z, 4);
+                var view = Instantiate(partScriptableObject.PartPrefab, pos, outMatrix.rotation);
                 Instantiate(_particlePrefab, view.transform);
                 view.Direction =
                     DirectionFRBLExtension.VectorToDirectionFRBL(
