@@ -23,12 +23,19 @@ namespace QBuild.GameCycle.Title
         [SerializeField] private Popup _gameEndPopup = null;
         [SerializeField] private float _fadeTime = 0.5f;
         
-        [SerializeField] private InputActionMap _inputActionMap = null;
+        [SerializeField] private InputActionReference _inputActionReference = null;
         
+        //TODO:[ó—] ê‚ëŒè¡Ç∑
+        private bool _isStart = false;
         private void Start()
         {
             _homePanelSelectables.AddRange(_buttons.GetComponentsInChildren<Selectable>());
-            
+            if (_inputActionReference != null) _inputActionReference.action.performed += _ =>
+            {
+                if (_isStart) return;
+                _isStart = true;
+                ShowButtons();
+            };
             ShowPressPushButtonText();
             _optionPopup.gameObject.SetActive(false);
             _gameEndPopup.gameObject.SetActive(false);
