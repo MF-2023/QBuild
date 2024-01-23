@@ -128,6 +128,18 @@ namespace QBuild.Utilities
                 _ => throw new ArgumentOutOfRangeException(nameof(dir), dir, null)
             };
         }
+        
+        public static ShiftDirectionTimes CalcShiftTimesFromForward(this DirectionFRBL dir)
+        {
+            return dir switch
+            {
+                DirectionFRBL.Forward => new ShiftDirectionTimes(0),
+                DirectionFRBL.Right => new ShiftDirectionTimes(1),
+                DirectionFRBL.Back => new ShiftDirectionTimes(2),
+                DirectionFRBL.Left => new ShiftDirectionTimes(3),
+                _ => throw new ArgumentOutOfRangeException(nameof(dir), dir, null)
+            };
+        }
 
         public static DirectionFRBL TurnLeft(this DirectionFRBL dir)
         {

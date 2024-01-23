@@ -1,6 +1,10 @@
+using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using QBuild.Scene;
+using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 namespace QBuild.GameCycle.Title
 {
@@ -13,12 +17,15 @@ namespace QBuild.GameCycle.Title
         [Header("タイトルシーン管理")]
         [SerializeField] private GameObject _pressPushButtonText = null;
         [SerializeField] private GameObject _buttons = null;
+        private List<Selectable> _homePanelSelectables = new();
         [SerializeField] private Popup _optionPopup = null;
         [SerializeField] private Popup _gameEndPopup = null;
         [SerializeField] private float _fadeTime = 0.5f;
         
         private void Start()
         {
+            _homePanelSelectables.AddRange(_buttons.GetComponentsInChildren<Selectable>());
+            
             ShowPressPushButtonText();
             _optionPopup.gameObject.SetActive(false);
             _gameEndPopup.gameObject.SetActive(false);
@@ -38,14 +45,34 @@ namespace QBuild.GameCycle.Title
         
         public void ShowOptionPopup()
         {
+            ShowOptionPopupAsync().Forget();
+        }
+        
+        private async UniTask ShowOptionPopupAsync()
+        {
             _optionPopup.gameObject.SetActive(true);
-            _optionPopup.ShowPopup();
+
+            var currentSelected = EventSystem.current.currentSelectedGameObject;
+            _homePanelSelectables.ForEach(x => x.interactable = false);
+            await _optionPopup.ShowPopupAsync();
+            _homePanelSelectables.ForEach(x => x.interactable = true);
+            EventSystem.current.SetSelectedGameObject(currentSelected);
         }
 
         public void ShowGameEndPopup()
         {
+            ShowEndPopupAsync().Forget();
+        }
+        
+        private async UniTask ShowEndPopupAsync()
+        {
             _gameEndPopup.gameObject.SetActive(true);
-            _gameEndPopup.ShowPopup();
+
+            var currentSelected = EventSystem.current.currentSelectedGameObject;
+            _homePanelSelectables.ForEach(x => x.interactable = false);
+            await _gameEndPopup.ShowPopupAsync();
+            _homePanelSelectables.ForEach(x => x.interactable = true);
+            EventSystem.current.SetSelectedGameObject(currentSelected);
         }
 
         public void SceneChangeFadeOut()

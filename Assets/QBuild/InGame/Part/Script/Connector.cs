@@ -66,12 +66,10 @@ namespace QBuild.Part
         public void SetCanConnect(DirectionFRBL dir, bool canConnect)
         {
             var connectPoint = _connectPoints.FirstOrDefault(x => x.Direction == dir);
-            if (connectPoint == null)
-            {
-                return;
-            }
 
-            connectPoint.SetCanConnect(canConnect);
+            if (!gameObject.activeInHierarchy) return;
+            
+            connectPoint?.SetCanConnect(canConnect);
         }
     }
 }
