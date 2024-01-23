@@ -4,7 +4,8 @@ namespace QBuild.Camera
 {
     public class NewCameraWork : MonoBehaviour
     {
-        private Vector2 _mouseAxis;
+        [SerializeField] private Vector2 _mouseInitAxis;
+        [SerializeField] private Vector2 _mouseAxis;
 
         [SerializeField, Tooltip("マウス感度")] private float mouseSensitivity;
 
@@ -56,6 +57,7 @@ namespace QBuild.Camera
         public void SetTarget(Transform target)
         {
             origin = target;
+            _mouseAxis = _mouseInitAxis;
             CameraPositionUpdate();
         }
     }

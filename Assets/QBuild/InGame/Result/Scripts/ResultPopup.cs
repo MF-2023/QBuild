@@ -16,7 +16,8 @@ namespace QBuild.Result
         [SerializeField] private GameObject _gameClearImage;
         [SerializeField] private GameObject _gameOverImage;
 
-        [SerializeField] private List<RectTransform> _buttonRectTransforms; 
+        [SerializeField] private List<RectTransform> _buttonRectTransforms;
+        [SerializeField] private Selectable _firstButton;
         private bool _isClickAny;
         
         public bool IsClickAny {get{return _isClickAny; }}
@@ -45,7 +46,7 @@ namespace QBuild.Result
 
             var tasks = _buttonRectTransforms.Select(t => t.DOScale(1.0f, 0.5f).SetEase(Ease.OutQuart).ToUniTask(cancellationToken: token));
             await UniTask.WhenAll(tasks);
-
+            
             _isClickAny = false;
         }
 
@@ -59,6 +60,8 @@ namespace QBuild.Result
             _animator.Play("PopupOpen");
             await UniTask.WaitUntil( () => _animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f, cancellationToken: token);
 
+            if (_firstButton != null) _firstButton.Select();
+            
             var tasks = _buttonRectTransforms.Select(t => t.DOScale(1.0f, 0.5f).SetEase(Ease.OutQuart).ToUniTask(cancellationToken: token));
             await UniTask.WhenAll(tasks);
             
