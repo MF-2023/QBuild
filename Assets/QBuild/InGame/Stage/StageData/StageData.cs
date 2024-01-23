@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using QBuild.Part.PartScriptableObject.ConfiguratorObject;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Serialization;
@@ -37,5 +38,8 @@ namespace QBuild.StageEditor
 
         [SerializeField] private Vector3Int _stageArea;
         public Vector3Int GetStageArea() => _stageArea;
+        
+        [SerializeField] private QuantitySpawnConfiguratorObject _quatitySpawnconfiguratorObject;
+        public QuantitySpawnConfiguratorObject GetQuantitySpawnConfiguratorObject() => _quatitySpawnconfiguratorObject;
     }
 }
