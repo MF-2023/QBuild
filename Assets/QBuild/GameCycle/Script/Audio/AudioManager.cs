@@ -8,22 +8,23 @@ namespace QBuild.Audio
 {
     public class AudioManager : MonoBehaviour
     {
-        public AudioManager Instance { get; private set; }
-        
         [SerializeField] private AudioMixer _audioMixer;
         [SerializeField] private AudioSO _audioSO;
+        [SerializeField] private AudioEventSO _eventSO;
         [SerializeField] private AudioSource _bgmSource;
-        
-        private void Awake()
+
+        private void OnEnable()
         {
-            if (Instance == null)
-            {
-                Instance = this;
-            }
-            else
-            {
-                Destroy(this);
-            }
+            _eventSO.SetMasterVolumeEvent += SetMasterVolume;
+            _eventSO.SetBGMVolumeEvent += SetBGMVolume;
+            _eventSO.SetSEVolumeEvent += SetSEVolume;
+        }
+
+        private void OnDisable()
+        {
+            _eventSO.SetMasterVolumeEvent -= SetMasterVolume;
+            _eventSO.SetBGMVolumeEvent -= SetBGMVolume;
+            _eventSO.SetSEVolumeEvent -= SetSEVolume;
         }
 
         private void Start()
