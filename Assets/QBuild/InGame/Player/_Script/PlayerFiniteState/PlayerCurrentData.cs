@@ -5,8 +5,9 @@ using UnityEngine;
 namespace  QBuild.Player
 {
     [CreateAssetMenu(fileName = "newPlayerProgressData", menuName = "Data/Player Data/Progress Data")]
-    public class PlayerProgressData : ScriptableObject
+    public class PlayerCurrentData : ScriptableObject
     {
         [HideInInspector] public bool EndGoalAnimation;
+        [HideInInspector] public int CurrentHelth;
     }
 }

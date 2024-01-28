@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1240be554d86b5f4dab27e38e41e236e, type: 3}
-  m_Name: PlayerProgressData
+  m_Name: PlayerCurrentData
   m_EditorClassIdentifier: 
   EndGoalAnimation: 0
