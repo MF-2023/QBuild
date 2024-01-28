@@ -18,9 +18,34 @@ namespace QBuild.StageEditor
 
         private static float _snapOffset = 0.0f;
         public static Vector3Int stageArea;
-        public static bool isEnable = true;
+
+        private static bool _isEnable;
+
+        public static bool IsEnable
+        {
+            get => _isEnable;
+            set
+            {
+                _isEnable = value;
+                EditorPrefs.SetBool("ObjectSnapper.isEnable", value);
+                Debug.Log(value);
+            }
+        }
+
         public static bool isEnableArea = true;
-        public static bool isBlockOnly = true;
+
+        private static bool _isBlockOnly;
+
+        public static bool IsBlockOnly
+        {
+            get => _isBlockOnly;
+            set
+            {
+                _isBlockOnly = value;
+                EditorPrefs.SetBool("ObjectSnapper.isBlockOnly", value);
+                Debug.Log(value);
+            }
+        }
 
         private static readonly SnapBehaviorObject SnapBehaviorObject;
 
@@ -32,10 +57,14 @@ namespace QBuild.StageEditor
             SceneView.duringSceneGui += OnSceneGUI;
             var path = AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("t:SnapBehaviorObject")[0]);
             SnapBehaviorObject = AssetDatabase.LoadAssetAtPath<SnapBehaviorObject>(path);
+            _isEnable = EditorPrefs.GetBool("ObjectSnapper.isEnable", true);
+            _isBlockOnly = EditorPrefs.GetBool("ObjectSnapper.isBlockOnly", true);
+            Debug.Log(EditorPrefs.GetBool("ObjectSnapper.isEnable", true));
         }
 
         private void OnEnable()
         {
+   
         }
 
         private static void OnSceneGUI(SceneView sceneView)
@@ -63,7 +92,7 @@ namespace QBuild.StageEditor
                 var p = _prevPos;
                 CheckSnapBehaviorObject(tran.gameObject);
 
-                if (isBlockOnly && tran.gameObject.layer != LayerMask.NameToLayer("Block"))
+                if (_isBlockOnly && tran.gameObject.layer != LayerMask.NameToLayer("Block"))
                     continue;
 
                 if (isCursorLock)
@@ -86,7 +115,6 @@ namespace QBuild.StageEditor
                 StageEditorWindow.WallInitialize();
                 StageEditorWindow.CheckGenerateWallFromPole();
             }
-            
         }
 
         public static void CheckSnapBehaviorObject(GameObject obj)
@@ -133,7 +161,7 @@ namespace QBuild.StageEditor
 
             var snapPos = pos;
 
-            if (isEnable)
+            if (_isEnable)
             {
                 //1mごとにスナップ
                 snapPos = new Vector3(
