@@ -73,13 +73,13 @@ namespace QBuild.StageEditor
 
             if (selectedGameObject == null) return;
 
-            //selectedGameObject‚Ì’†‚©‚çStageEditorWall‚ğæ“¾
+            //selectedGameObjectã®ä¸­ã‹ã‚‰StageEditorWallã‚’å–å¾—
             var wallList = selectedGameObject
                 .Where(tran => tran.TryGetComponent(out Wall wall))
                 .ToList();
             if (wallList.Count != 0)
             {
-                //selectedGameObject‚©‚çwallList‚ğœŠO
+                //selectedGameObjectã‹ã‚‰wallListã‚’é™¤å¤–
                 selectedGameObject = selectedGameObject.Except(wallList).ToArray();
                 Selection.objects = selectedGameObject.Select(tran => tran.gameObject).ToArray();
             }
@@ -140,15 +140,15 @@ namespace QBuild.StageEditor
             var mesh = meshFilter.sharedMesh;
             var selectedMesh = selectedObj.sharedMesh;
 
-            //ƒƒbƒVƒ…‚ª‚È‚¢ê‡‚ÍƒXƒLƒbƒv
+            //ãƒ¡ãƒƒã‚·ãƒ¥ãŒãªã„å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
             if (mesh == null || selectedMesh == null)
                 return false;
 
-            //’¸“_”‚ªˆá‚¤ê‡‚ÍƒXƒLƒbƒv
+            //é ‚ç‚¹æ•°ãŒé•ã†å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
             if (mesh.vertices.Length != selectedMesh.vertices.Length)
                 return false;
 
-            //’¸“_‚ÌˆÊ’u‚ªˆá‚¤ê‡‚ÍƒXƒLƒbƒv
+            //é ‚ç‚¹ã®ä½ç½®ãŒé•ã†å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
             if (mesh.vertices.Where((t, i) => t != selectedMesh.vertices[i]).Any())
                 return false;
 
@@ -163,7 +163,7 @@ namespace QBuild.StageEditor
 
             if (_isEnable)
             {
-                //1m‚²‚Æ‚ÉƒXƒiƒbƒv
+                //1mã”ã¨ã«ã‚¹ãƒŠãƒƒãƒ—
                 snapPos = new Vector3(
                     Mathf.Round(pos.x / SnapDistance - _snapOffset) * SnapDistance + _snapOffset,
                     Mathf.Round(pos.y / SnapDistance) * SnapDistance,
