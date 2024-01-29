@@ -131,10 +131,13 @@ namespace QBuild.Scene
         {
             if (_loadedScene) return;
             _loadedScene = true;
-            OutSCStart(scChangeTime,scEffect);
+            OutSCStart(scChangeTime, scEffect);
             await UniTask.Delay(TimeSpan.FromSeconds(scChangeTime + waitTime));
-            
+
             UnityEngine.SceneManagement.Scene delScene = UnitySceneManager.GetActiveScene();
+            var unloadAsync = UnitySceneManager.UnloadSceneAsync(delScene);
+            await unloadAsync;
+
             var async = UnitySceneManager.LoadSceneAsync(index, LoadSceneMode.Additive);
             async.completed += (asunc) =>
             {
@@ -148,10 +151,8 @@ namespace QBuild.Scene
                     }
                 }
             };
-            
+
             await async;
-            var unloadAsync = UnitySceneManager.UnloadSceneAsync(delScene);
-            await unloadAsync;
 
             InSCStart(scChangeTime, scEffect);
             _loadedScene = false;
