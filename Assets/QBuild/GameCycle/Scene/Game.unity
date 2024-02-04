@@ -926,6 +926,11 @@ PrefabInstance:
       propertyPath: m_Transition
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7498783044301229103, guid: a4904820323a46c4b9de5a7ea9fb65bd,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7783850539229421392, guid: a4904820323a46c4b9de5a7ea9fb65bd,
         type: 3}
       propertyPath: _firstButton

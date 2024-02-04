@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 620635a8abc49454d9a748475625c54f, type: 3}
   m_Name: GoalEvent
   m_EditorClassIdentifier: 
-  _debugLogEnabled: 1
+  _debugLogEnabled: 0
