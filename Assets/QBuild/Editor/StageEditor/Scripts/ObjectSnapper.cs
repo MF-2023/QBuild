@@ -18,9 +18,34 @@ namespace QBuild.StageEditor
 
         private static float _snapOffset = 0.0f;
         public static Vector3Int stageArea;
-        public static bool isEnable = true;
+
+        private static bool _isEnable;
+
+        public static bool IsEnable
+        {
+            get => _isEnable;
+            set
+            {
+                _isEnable = value;
+                EditorPrefs.SetBool("ObjectSnapper.isEnable", value);
+                Debug.Log(value);
+            }
+        }
+
         public static bool isEnableArea = true;
-        public static bool isBlockOnly = true;
+
+        private static bool _isBlockOnly;
+
+        public static bool IsBlockOnly
+        {
+            get => _isBlockOnly;
+            set
+            {
+                _isBlockOnly = value;
+                EditorPrefs.SetBool("ObjectSnapper.isBlockOnly", value);
+                Debug.Log(value);
+            }
+        }
 
         private static readonly SnapBehaviorObject SnapBehaviorObject;
 
@@ -32,10 +57,14 @@ namespace QBuild.StageEditor
             SceneView.duringSceneGui += OnSceneGUI;
             var path = AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets("t:SnapBehaviorObject")[0]);
             SnapBehaviorObject = AssetDatabase.LoadAssetAtPath<SnapBehaviorObject>(path);
+            _isEnable = EditorPrefs.GetBool("ObjectSnapper.isEnable", true);
+            _isBlockOnly = EditorPrefs.GetBool("ObjectSnapper.isBlockOnly", true);
+            Debug.Log(EditorPrefs.GetBool("ObjectSnapper.isEnable", true));
         }
 
         private void OnEnable()
         {
+   
         }
 
         private static void OnSceneGUI(SceneView sceneView)
@@ -44,13 +73,13 @@ namespace QBuild.StageEditor
 
             if (selectedGameObject == null) return;
 
-            //selectedGameObjectÇÃíÜÇ©ÇÁStageEditorWallÇéÊìæ
+            //selectedGameObject„ÅÆ‰∏≠„Åã„ÇâStageEditorWall„ÇíÂèñÂæó
             var wallList = selectedGameObject
                 .Where(tran => tran.TryGetComponent(out Wall wall))
                 .ToList();
             if (wallList.Count != 0)
             {
-                //selectedGameObjectÇ©ÇÁwallListÇèúäO
+                //selectedGameObject„Åã„ÇâwallList„ÇíÈô§Â§ñ
                 selectedGameObject = selectedGameObject.Except(wallList).ToArray();
                 Selection.objects = selectedGameObject.Select(tran => tran.gameObject).ToArray();
             }
@@ -63,7 +92,7 @@ namespace QBuild.StageEditor
                 var p = _prevPos;
                 CheckSnapBehaviorObject(tran.gameObject);
 
-                if (isBlockOnly && tran.gameObject.layer != LayerMask.NameToLayer("Block"))
+                if (_isBlockOnly && tran.gameObject.layer != LayerMask.NameToLayer("Block"))
                     continue;
 
                 if (isCursorLock)
@@ -86,7 +115,6 @@ namespace QBuild.StageEditor
                 StageEditorWindow.WallInitialize();
                 StageEditorWindow.CheckGenerateWallFromPole();
             }
-            
         }
 
         public static void CheckSnapBehaviorObject(GameObject obj)
@@ -112,15 +140,15 @@ namespace QBuild.StageEditor
             var mesh = meshFilter.sharedMesh;
             var selectedMesh = selectedObj.sharedMesh;
 
-            //ÉÅÉbÉVÉÖÇ™Ç»Ç¢èÍçáÇÕÉXÉLÉbÉv
+            //„É°„ÉÉ„Ç∑„É•„Åå„Å™„ÅÑÂ†¥Âêà„ÅØ„Çπ„Ç≠„ÉÉ„Éó
             if (mesh == null || selectedMesh == null)
                 return false;
 
-            //í∏ì_êîÇ™à·Ç§èÍçáÇÕÉXÉLÉbÉv
+            //È†ÇÁÇπÊï∞„ÅåÈÅï„ÅÜÂ†¥Âêà„ÅØ„Çπ„Ç≠„ÉÉ„Éó
             if (mesh.vertices.Length != selectedMesh.vertices.Length)
                 return false;
 
-            //í∏ì_ÇÃà íuÇ™à·Ç§èÍçáÇÕÉXÉLÉbÉv
+            //È†ÇÁÇπ„ÅÆ‰ΩçÁΩÆ„ÅåÈÅï„ÅÜÂ†¥Âêà„ÅØ„Çπ„Ç≠„ÉÉ„Éó
             if (mesh.vertices.Where((t, i) => t != selectedMesh.vertices[i]).Any())
                 return false;
 
@@ -133,9 +161,9 @@ namespace QBuild.StageEditor
 
             var snapPos = pos;
 
-            if (isEnable)
+            if (_isEnable)
             {
-                //1mÇ≤Ç∆Ç…ÉXÉiÉbÉv
+                //1m„Åî„Å®„Å´„Çπ„Éä„ÉÉ„Éó
                 snapPos = new Vector3(
                     Mathf.Round(pos.x / SnapDistance - _snapOffset) * SnapDistance + _snapOffset,
                     Mathf.Round(pos.y / SnapDistance) * SnapDistance,

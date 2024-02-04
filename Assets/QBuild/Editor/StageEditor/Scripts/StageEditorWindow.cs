@@ -61,6 +61,9 @@ namespace QBuild.StageEditor
         [InitializeOnLoadMethod]
         private static void InitializeOnLoad()
         {
+            if (3 < EditorApplication.timeSinceStartup)
+                return;
+            Debug.Log("StageEditorWindow InitializeOnLoad");
             EditorApplication.delayCall += Open;
         }
 
@@ -364,20 +367,20 @@ namespace QBuild.StageEditor
         {
             using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox))
             {
-                GUI.color = ObjectSnapper.isEnable ? Color.cyan : Color.white;
+                GUI.color = ObjectSnapper.IsEnable ? Color.cyan : Color.white;
                 if (GUILayout.Button(new GUIContent(_magnetIcon, "選択中のオブジェクトをスナップさせる"), GUILayout.Height(20),
                         GUILayout.MaxWidth(60)))
                 {
-                    ObjectSnapper.isEnable = !ObjectSnapper.isEnable;
+                    ObjectSnapper.IsEnable = !ObjectSnapper.IsEnable;
                 }
 
                 GUI.color = Color.white;
 
-                GUI.color = ObjectSnapper.isBlockOnly ? Color.cyan : Color.white;
+                GUI.color = ObjectSnapper.IsBlockOnly ? Color.cyan : Color.white;
                 if (GUILayout.Button(new GUIContent(_blockOnlyIcon, "スナップ対象をレイヤー[Block]に限定させる"), GUILayout.Height(20),
                         GUILayout.MaxWidth(60)))
                 {
-                    ObjectSnapper.isBlockOnly = !ObjectSnapper.isBlockOnly;
+                    ObjectSnapper.IsBlockOnly = !ObjectSnapper.IsBlockOnly;
                 }
 
                 GUI.color = Color.white;
