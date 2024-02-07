@@ -9,6 +9,6 @@ namespace QBuild.Audio
     {
         public float MasterVolume = 0.5f;
         public float BGMVolume = 0.8f;
-        public float SEVolume 1f;
+        public float SEVolume = 1f;
     }
 }
