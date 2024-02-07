@@ -14,6 +14,7 @@ namespace QBuild.Player.Controller
         private PlayerMove _MoveState;
         private PlayerFall _FallState;
         private PlayerGoal _GoalState;
+        private PlayerDead _DeadState;
 
         private Core.Core _Core;
         private Movement _Movement;
@@ -50,6 +51,7 @@ namespace QBuild.Player.Controller
             _MoveState = new PlayerMove(this, _StateMachine, data, "move");
             _FallState = new PlayerFall(this, _StateMachine, data, "fall");
             _GoalState = new PlayerGoal(this, _StateMachine, data, "goal");
+            _DeadState = new PlayerDead(this, _StateMachine, data, "dead");
 
             _StateMachine.Initialize(_IdleState);
             _progressData = progressData;
@@ -111,9 +113,19 @@ namespace QBuild.Player.Controller
             _StateMachine.ChangeState(_GoalState);
         }
 
+        public void ChangeDeadState()
+        {
+            _StateMachine.ChangeState(_DeadState);
+        }
+
         public void EndGoalAnimation()
         {
             _progressData.EndGoalAnimation = true;
+        }
+        
+        public void EndFailedAnimation()
+        {
+            _progressData.EndFailedAnimation = true;
         }
     }
 }

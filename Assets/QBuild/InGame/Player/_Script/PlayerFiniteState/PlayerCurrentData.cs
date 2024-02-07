@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 namespace  QBuild.Player
 {
@@ -8,6 +7,9 @@ namespace  QBuild.Player
     public class PlayerCurrentData : ScriptableObject
     {
         [HideInInspector] public bool EndGoalAnimation;
+        [HideInInspector] public bool EndFailedAnimation;
         [HideInInspector] public int CurrentHelth;
+
+        public Action ChangeGoalState;
     }
 }
