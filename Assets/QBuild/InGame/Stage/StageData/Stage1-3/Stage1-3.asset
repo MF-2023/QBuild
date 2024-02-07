@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46927e83a00f3bd409c24f3a28365c70, type: 3}
   m_Name: Stage1-3
   m_EditorClassIdentifier: 
-  _stage: {fileID: 0}
+  _stage: {fileID: 4644474259785842452, guid: 7e1f7cc087327404aad891a6523b20e5, type: 3}
   _isExistWarningItem: 0
   _stagePrefab:
     m_AssetGUID: 7e1f7cc087327404aad891a6523b20e5
@@ -25,5 +25,5 @@ MonoBehaviour:
   _crystalCount: 0
   _stageImage: {fileID: 2800000, guid: 2cf8bb4800227fb42949607a2c261503, type: 3}
   _stageArea: {x: 9, y: 5, z: 9}
-  _quatitySpawnconfiguratorObject: {fileID: 11400000, guid: d79e2a0da4b2ce9439c4b654e8a24f2a,
+  _quatitySpawnconfiguratorObject: {fileID: 11400000, guid: 6102a5fcf7cb61f43b2ee3e1cc241891,
     type: 2}

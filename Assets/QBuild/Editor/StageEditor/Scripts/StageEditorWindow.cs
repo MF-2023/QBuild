@@ -735,7 +735,7 @@ namespace QBuild.StageEditor
 
         private void ExpandStageDataFromAddressable(StageData stageData)
         {
-            var guid = stageData.GetStagePrefab().AssetGUID;
+            var guid = "";//stageData.GetStagePrefab().AssetGUID;
             if (guid is null or "") return;
 
             var key = stageData.GetStagePrefab();

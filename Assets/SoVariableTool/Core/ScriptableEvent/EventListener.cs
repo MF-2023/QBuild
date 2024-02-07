@@ -10,6 +10,7 @@ namespace SoVariableTool
 
         public void OnEventRaised(ScriptableEventObjectBase scriptableEventRaised, object[] param, bool debug = false)
         {
+            Debug.Log($"Event: {scriptableEventRaised.name} Raised");
             _dictionary[scriptableEventRaised].Invoke(param);
         }
 
@@ -18,14 +19,17 @@ namespace SoVariableTool
         {
             foreach (var eventResponse in _eventResponses)
             {
+                Debug.Log($"EventListener: {name} BindRegistration: {eventResponse.ScriptableEvent.name}");
                 eventResponse.ScriptableEvent.RegisterListener(this);
                 _dictionary.TryAdd(eventResponse.ScriptableEvent, eventResponse.Response);
+                Debug.Log($"End: EventListener: {name} BindRegistration: {eventResponse.ScriptableEvent.name}");
             }
         }
         private void UnbindRegistration()
         {
             foreach (var eventResponse in _eventResponses)
             {
+                Debug.Log($"EventListener: {name} UnbindRegistration: {eventResponse.ScriptableEvent.name}");
                 eventResponse.ScriptableEvent.UnregisterListener(this);
                 _dictionary.Remove(eventResponse.ScriptableEvent);
             }
@@ -33,6 +37,7 @@ namespace SoVariableTool
 
         private void OnEnable()
         {
+            Debug.Log($"EventListener: {name} Enabled");
             BindRegistration();
         }
 

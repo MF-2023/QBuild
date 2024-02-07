@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Stage1-4
   m_EditorClassIdentifier: 
   _stage: {fileID: 0}
-  _isExistWarningItem: 0
+  _isExistWarningItem: 1
   _stagePrefab:
     m_AssetGUID: 07eeb643db2ea9a4192b77ba64de41f0
     m_SubObjectName: 

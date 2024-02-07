@@ -18,7 +18,7 @@ namespace QBuild.StageEditor
         public bool IsExistWarningItem() => _isExistWarningItem;
 
         [SerializeField] private AssetReferenceGameObject _stagePrefab;
-        public AssetReferenceGameObject GetStagePrefab() => _stagePrefab;
+        public GameObject GetStagePrefab() => _stage;
 
         [SerializeField] private string _fileName;
         public string GetFileName() => _fileName;

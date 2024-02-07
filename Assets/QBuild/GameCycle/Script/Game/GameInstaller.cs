@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using QBuild.Scene;
 using QBuild.Stage;
+using SoVariableTool;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -22,7 +23,8 @@ namespace QBuild.GameCycle
         [SerializeField] private GameBuild _gameBuild;
         [SerializeField] private GameObject _stageContainer;
         private AsyncOperationHandle<GameObject> _handler;
-
+        [SerializeField] private AssetReferenceT<UnitScriptableEventObject> _unitScriptableEventObject;
+        private AsyncOperationHandle<UnitScriptableEventObject> _unitHandler;
         private async void Awake()
         {
             await LoadStage();
@@ -32,20 +34,17 @@ namespace QBuild.GameCycle
 
         private async Task LoadStage()
         {
-            _handler = _selectStageSO.SelectStageData.GetStagePrefab()
-                .LoadAssetAsync<GameObject>();
 
-            await _handler.Task;
-
-            var stage = Instantiate(_handler.Result, _stageContainer.transform);
+            await UniTask.Yield();
+            var stage = Instantiate(_selectStageSO.SelectStageData.GetStagePrefab(), _stageContainer.transform);
             var spawnPoint = FindFirstObjectByType(typeof(PlayerSpawnPoint)) as PlayerSpawnPoint;
+            await UniTask.Yield();
             _gameBuild.Bind(spawnPoint, _selectStageSO.SelectStageData.GetQuantitySpawnConfiguratorObject());
             _gameBuild.Build();
         }
 
         private void OnDestroy()
         {
-            Addressables.Release(_handler);
         }
 
         public async Task Load()

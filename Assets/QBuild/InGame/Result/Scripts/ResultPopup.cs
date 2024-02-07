@@ -62,6 +62,8 @@ namespace QBuild.Result
             //_gameOverImage.SetActive(true);
             _animator.Play("PopupFaileOpen");
             await UniTask.WaitUntil( () => _animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f, cancellationToken: token);
+            if (_firstButton != null) _firstButton.Select();
+
             _isClickAny = false;
         }
 

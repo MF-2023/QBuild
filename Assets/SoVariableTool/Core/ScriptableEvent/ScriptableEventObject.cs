@@ -9,34 +9,43 @@ using Object = UnityEngine.Object;
 namespace SoVariableTool
 {
     [Serializable]
-    public abstract class ScriptableEventObjectBase : ScriptableObject
+    public abstract class ScriptableEventObjectBase : ScriptableObject,ISerializationCallbackReceiver
     {
         public virtual Type GenericType { get; }
         public abstract UnityEventBase CreateUnityEvent();
 
         public void RegisterListener(EventListener eventListener)
         {
+            Debug.Log($"{this.GetInstanceID()} ScriptableEventObjectBase EventListener: {eventListener.name} BindRegistration: {name}");
             EventListeners.Add(eventListener);
+            Debug.Log($"EventListeners Added: {EventListeners.Count}");
         }
 
         public void UnregisterListener(EventListener listener)
         {
             EventListeners.Remove(listener);
+            Debug.Log($"EventListeners Removed: {EventListeners.Count}");
         }
 
         public void Raise()
         {
+            Debug.Log($"{this.GetInstanceID()} Event: {name} Raised");
+            
             if (!IsPlay())
                 return;
-
+            
+            Debug.Log($"EventListeners: {EventListeners.Count}");
             foreach (var eventListener in EventListeners)
             {
+                Debug.Log($"OnEventRaised: {eventListener.name} Raised");
                 eventListener.OnEventRaised(this, Array.Empty<object>(), _debugLogEnabled);
             }
         }
 
         public void Raise(object[] args)
         {
+            Debug.Log($"{this.GetInstanceID()} Event: {name} Raised");
+
             if (!IsPlay())
                 return;
 
@@ -44,6 +53,11 @@ namespace SoVariableTool
             {
                 eventListener.OnEventRaised(this, args, _debugLogEnabled);
             }
+        }
+
+        private void OnEnable()
+        {
+            Debug.Log($"{this.GetInstanceID()} Event: {name} Enabled");
         }
 
         protected bool IsPlay()
@@ -58,6 +72,13 @@ namespace SoVariableTool
         [SerializeField] protected bool _debugLogEnabled = false;
         protected readonly HashSet<EventListener> EventListeners = new();
         protected readonly HashSet<Object> ListenersObjects = new();
+        public void OnBeforeSerialize()
+        {
+        }
+
+        public void OnAfterDeserialize()
+        {
+        }
     }
 
     [Serializable]

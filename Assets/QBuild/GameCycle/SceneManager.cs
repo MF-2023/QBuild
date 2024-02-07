@@ -137,7 +137,7 @@ namespace QBuild.Scene
             UnityEngine.SceneManagement.Scene delScene = UnitySceneManager.GetActiveScene();
             var unloadAsync = UnitySceneManager.UnloadSceneAsync(delScene);
             await unloadAsync;
-
+            
             var async = UnitySceneManager.LoadSceneAsync(index, LoadSceneMode.Additive);
             async.completed += (asunc) =>
             {
