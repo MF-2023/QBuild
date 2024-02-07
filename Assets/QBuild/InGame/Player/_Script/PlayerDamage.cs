@@ -1,4 +1,5 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System.Threading;
+using Cysharp.Threading.Tasks;
 using QBuild.Player.Controller;
 using QBuild.Player.Core;
 using UnityEngine;
@@ -10,9 +11,13 @@ namespace QBuild.Player
         private PlayerController _playerController;
         private Movement _movement;
 
+        [SerializeField] private GameObject _mesh;
         //無敵
         [SerializeField] private bool _invincible = false;
         [SerializeField] private float _invincibleTime = 0.5f;
+        
+        [SerializeField] private float _flashInterval = 0.1f;
+        [SerializeField] private float _flashTime = 0.1f;
         private float _invincibleTimer = 0f;
 
         private void Start()
@@ -48,9 +53,13 @@ namespace QBuild.Player
             while (_invincibleTimer < _invincibleTime)
             {
                 _invincibleTimer += Time.deltaTime;
-                await UniTask.Yield();
+                
+                //点滅 _flashInterval秒間隔で_flashTime秒間点灯
+                _mesh.SetActive(!(_invincibleTimer % _flashInterval < _flashTime));
+                await UniTask.Yield(PlayerLoopTiming.Update, this.GetCancellationTokenOnDestroy());
             }
 
+            _mesh.SetActive(true);
             _invincible = false;
         }
     }
