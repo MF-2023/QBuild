@@ -15,7 +15,7 @@ MonoBehaviour:
   _elements:
   - _blockPartScriptableObject: {fileID: 11400000, guid: 03921000f50b29e4cb9f32132392d986,
       type: 2}
-    _quantity: 2
+    _quantity: 4
   - _blockPartScriptableObject: {fileID: 11400000, guid: 15a488299967d18448c61c8d394207dd,
       type: 2}
-    _quantity: 4
+    _quantity: 2
