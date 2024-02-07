@@ -1,3 +1,4 @@
+using Cinemachine;
 using QBuild.Camera;
 using QBuild.Part;
 using QBuild.Part.HolderView;
@@ -6,7 +7,9 @@ using QBuild.Part.Presenter;
 using QBuild.Player;
 using QBuild.Player.Controller;
 using QBuild.Stage;
+using QBuild.Stage.Grid;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using VContainer;
 using VContainer.Unity;
 
@@ -23,7 +26,7 @@ namespace QBuild.GameCycle
         protected override void Configure(IContainerBuilder builder)
         {
             // Input
-            builder.Register<@InputSystem>(Lifetime.Singleton);
+            builder.RegisterInstance(_playerInputActions.InputSystem);
 
             // Stage
             builder.RegisterInstance(_currentStageVariable.RuntimeValue);
@@ -39,8 +42,12 @@ namespace QBuild.GameCycle
                 var playerTransform = playerController.transform;
                 playerTransform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
                 _cameraView.SetTarget(playerTransform);
+                _gridViewControl.Bind();
+                _camera.Follow = playerTransform;
+                _camera.LookAt = playerTransform;
                 return playerController;
             }, Lifetime.Singleton);
+            
             builder.RegisterEntryPoint<PlayerPresenter>();
 
             builder.RegisterInstance(_healthBar);
@@ -53,7 +60,8 @@ namespace QBuild.GameCycle
             builder.RegisterInstance(_partRepository);
             builder.RegisterEntryPoint<PlacePresenter>();
         }
-
+        [SerializeField] private CinemachineVirtualCamera _camera;
+        [SerializeField] private InputController _playerInputActions;
         [SerializeField] private PlayerController _playerPrefab;
         [SerializeField] private HealthBar _healthBar;
         [SerializeField] private CurrentStageVariable _currentStageVariable;
@@ -65,5 +73,6 @@ namespace QBuild.GameCycle
         [SerializeField] private PlayerSpawnPoint _playerSpawnPoint;
 
         [SerializeField] private NewCameraWork _cameraView;
+        [SerializeField] private GridViewControl _gridViewControl;
     }
 }

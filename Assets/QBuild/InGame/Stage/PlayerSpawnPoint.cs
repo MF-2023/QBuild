@@ -11,7 +11,7 @@ namespace QBuild.Stage
 
         public Vector3 GetSpawnPoint()
         {
-            return transform.position + new Vector3(0, 2f, 0);
+            return transform.position + new Vector3(0, 1f, 0);
         }
     }
 }

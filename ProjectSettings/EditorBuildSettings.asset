@@ -9,8 +9,8 @@ EditorBuildSettings:
     path: Assets/QBuild/GameCycle/Scene/Title.unity
     guid: a9fe4cf5d0a2cad48bc84cccd5c9c799
   - enabled: 1
-    path: Assets/QBuild/GameCycle/Scene/StageSelect.unity
-    guid: fd567185199038d49a52fe29e7f0c6da
+    path: Assets/QBuild/GameCycle/Scene/StageSelect2D.unity
+    guid: c433a3128eb7ad2469ff813c39326a72
   - enabled: 1
     path: Assets/QBuild/GameCycle/Scene/Game.unity
     guid: d3d31abdd88bc1e439124bbc9fd0ebf5
