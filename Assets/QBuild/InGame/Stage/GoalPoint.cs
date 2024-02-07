@@ -1,13 +1,16 @@
-﻿using QBuild.Player.Controller;
+﻿using Cinemachine;
+using QBuild.Player.Controller;
 using QBuild.Result;
 using SoVariableTool;
 using UnityEngine;
+using UnityEngine.Playables;
 
 namespace QBuild.Stage
 {
     public class GoalPoint : MonoBehaviour
     {
         [SerializeField] private UnitScriptableEventObject _goalEvent;
+        [SerializeField] private CinemachineVirtualCamera _virtualCamera;
         
         private void Awake()
         {
@@ -21,7 +24,8 @@ namespace QBuild.Stage
         {
             if (other.gameObject.TryGetComponent(out PlayerController player))
             {
-                player.Goal();
+                _virtualCamera.Priority = 15;
+                //player.Goal();
                 _goalEvent.Raise();
                 //_goalEvent.Raise();
             }
