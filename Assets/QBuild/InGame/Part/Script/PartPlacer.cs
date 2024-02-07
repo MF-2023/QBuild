@@ -168,6 +168,7 @@ namespace QBuild.Part
         {
             if (_currentOnThePart != null) _thePartHasChanged?.Invoke(_currentOnThePart);
             _multiplePartArea.UpdatePart(transform.position, _currentOnThePart, CurrentPart(), CurrentRotateMatrix());
+            
         }
 
         private void OnSelectChanged(object o, HolderSelectChangeEventArgs e)

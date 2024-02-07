@@ -15,11 +15,13 @@ namespace  QBuild.GameCycle
         [SerializeField] private float _popupShowTime = 0.2f;
         
         private bool _isShow = false;
+        public bool IsShow => _isShow;
         
         public void ShowPopup()
         {
             _popupWindow.localScale = Vector3.zero;
             _popupWindow.DOScale(1.0f,_popupShowTime).SetEase(Ease.Linear);
+            EventSystem.current.SetSelectedGameObject(_firstSelectable.gameObject);
         }
 
         public async UniTask ShowPopupAsync()
@@ -37,7 +39,6 @@ namespace  QBuild.GameCycle
             _popupWindow.DOScale(0.0f, _popupShowTime).SetEase(Ease.Linear)
                 .OnComplete(() =>
                 {
-                    this.gameObject.SetActive(false);
                     _isShow = false;
                 });
         }
