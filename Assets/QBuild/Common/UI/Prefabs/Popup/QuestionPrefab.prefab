@@ -30,11 +30,11 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2350682102008724153}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -86,7 +86,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &1329121184773142969
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116,7 +116,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9730c52551e3ff94a86dd98169105f7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _firstSelectable: {fileID: 0}
+  _firstSelectable: {fileID: 8748349390481778603}
   _popupWindow: {fileID: 2350682102008724153}
   _popupShowTime: 0.2
 --- !u!1 &907311329037084900
@@ -128,7 +128,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4449499790240981542}
-  - component: {fileID: 4425842104297014198}
   m_Layer: 5
   m_Name: Buttons
   m_TagString: Untagged
@@ -153,35 +152,11 @@ RectTransform:
   m_Father: {fileID: 3974966148285997468}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -107.74}
-  m_SizeDelta: {x: 0, y: 100}
+  m_SizeDelta: {x: 600, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &4425842104297014198
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 907311329037084900}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
-  m_ChildAlignment: 4
-  m_StartCorner: 0
-  m_StartAxis: 0
-  m_CellSize: {x: 298, y: 122}
-  m_Spacing: {x: 60, y: 0}
-  m_Constraint: 0
-  m_ConstraintCount: 2
 --- !u!1 &2603990806255014059
 GameObject:
   m_ObjectHideFlags: 0
@@ -217,11 +192,11 @@ RectTransform:
   m_Father: {fileID: 4449499790240981542}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -300, y: 0}
+  m_SizeDelta: {x: 298, y: 122}
+  m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &1734438465575821049
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -273,8 +248,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
+    m_Mode: 1
+    m_WrapAround: 1
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -316,18 +291,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e846f7bdd2b591846bddeae1b870f154, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useScaleAnimationOnHover: 0
-  useScaleAnimationOnClick: 0
+  useScaleAnimationOnHover: 1
+  useScaleAnimationOnClick: 1
   useColorAnimationOnHover: 0
   useColorAnimationOnClick: 0
   useAudioPlayer: 0
   useFillAmountAnimation: 0
   useImageChangerOnHover: 0
   useImageChangerOnClick: 0
-  scaleOnHover: {x: 0, y: 0}
+  scaleOnHover: {x: 10, y: 10}
   scaleDurationOnHover: 0.3
   scaleEaseTypeOnHover: 0
-  scaleOnClick: {x: 0, y: 0}
+  scaleOnClick: {x: -5, y: -5}
   scaleDurationOnClick: 0
   scaleEaseTypeOnClick: 0
   colorEaseTypeOnClick: 0
@@ -582,7 +557,6 @@ GameObject:
   - component: {fileID: 2396079392531349260}
   - component: {fileID: 8748349390481778603}
   - component: {fileID: 6621005517826196383}
-  - component: {fileID: 7149414864971163522}
   m_Layer: 5
   m_Name: NoButton
   m_TagString: Untagged
@@ -605,10 +579,10 @@ RectTransform:
   m_Father: {fileID: 4449499790240981542}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 200, y: 0}
+  m_SizeDelta: {x: 298, y: 122}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9099050823730421040
 CanvasRenderer:
@@ -661,8 +635,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
+    m_Mode: 1
+    m_WrapAround: 1
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -716,18 +690,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e846f7bdd2b591846bddeae1b870f154, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useScaleAnimationOnHover: 0
-  useScaleAnimationOnClick: 0
+  useScaleAnimationOnHover: 1
+  useScaleAnimationOnClick: 1
   useColorAnimationOnHover: 0
   useColorAnimationOnClick: 0
   useAudioPlayer: 0
   useFillAmountAnimation: 0
   useImageChangerOnHover: 0
   useImageChangerOnClick: 0
-  scaleOnHover: {x: 0, y: 0}
+  scaleOnHover: {x: 10, y: 10}
   scaleDurationOnHover: 0.3
   scaleEaseTypeOnHover: 0
-  scaleOnClick: {x: 0, y: 0}
+  scaleOnClick: {x: -5, y: -5}
   scaleDurationOnClick: 0
   scaleEaseTypeOnClick: 0
   colorEaseTypeOnClick: 0
@@ -748,17 +722,3 @@ MonoBehaviour:
   fillImageDuration: 0.3
   hoverImage: {fileID: 0}
   clickImage: {fileID: 0}
---- !u!114 &7149414864971163522
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8043886919471100051}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HorizontalFit: 2
-  m_VerticalFit: 2

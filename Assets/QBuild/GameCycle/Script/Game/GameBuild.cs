@@ -8,6 +8,7 @@ using QBuild.Player.Controller;
 using QBuild.Stage;
 using QBuild.Stage.Grid;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using VContainer;
 using VContainer.Unity;
 
@@ -24,7 +25,7 @@ namespace QBuild.GameCycle
         protected override void Configure(IContainerBuilder builder)
         {
             // Input
-            builder.Register<@InputSystem>(Lifetime.Singleton);
+            builder.RegisterInstance(_playerInputActions.InputSystem);
 
             // Stage
             builder.RegisterInstance(_currentStageVariable.RuntimeValue);
@@ -55,7 +56,7 @@ namespace QBuild.GameCycle
             builder.RegisterInstance(_partRepository);
             builder.RegisterEntryPoint<PlacePresenter>();
         }
-
+        [SerializeField] private InputController _playerInputActions;
         [SerializeField] private PlayerController _playerPrefab;
         [SerializeField] private HealthBar _healthBar;
         [SerializeField] private CurrentStageVariable _currentStageVariable;
