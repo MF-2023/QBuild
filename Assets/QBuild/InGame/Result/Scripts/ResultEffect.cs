@@ -26,6 +26,11 @@ namespace QBuild.Result
 
         private async UniTask ResultEffectStartGoal(CancellationToken token)
         {
+            //カメラ遷移中のため2秒待つ
+            await UniTask.Delay(TimeSpan.FromSeconds(2), cancellationToken: token);
+            
+            _playerProgressData.ChangeGoalState?.Invoke();
+            
             await UniTask.WaitUntil(() => _playerProgressData.EndGoalAnimation, cancellationToken: token);
             await _resultPopup.GoalShow(token);
             await UniTask.WaitUntil(() => _resultPopup.IsClickAny, cancellationToken: token);

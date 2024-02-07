@@ -45,6 +45,16 @@ namespace QBuild.Player.Controller
 
         #region UnityCallBack
 
+        private void OnEnable()
+        {
+            _currentData.ChangeGoalState += Goal;
+        }
+
+        private void OnDisable()
+        {
+            _currentData.ChangeGoalState -= Goal;
+        }
+
         private void Awake()
         {
             _core = GetComponentInChildren<Core.Core>();
