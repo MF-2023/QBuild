@@ -391,6 +391,7 @@ MonoBehaviour:
   _partRepository: {fileID: 586823954}
   _playerSpawnPoint: {fileID: 0}
   _cameraView: {fileID: 603619245}
+  _gridViewControl: {fileID: 1335471777}
 --- !u!114 &586823954 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5127670146263857954, guid: a4904820323a46c4b9de5a7ea9fb65bd,
@@ -555,6 +556,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aba2abbac5514aee90bed7e2e3cb123c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1335471777 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1688249875197104979, guid: a4904820323a46c4b9de5a7ea9fb65bd,
+    type: 3}
+  m_PrefabInstance: {fileID: 3992462929263992960}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f03b65235b20421699d8126e68d1893c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &1672231435 stripped

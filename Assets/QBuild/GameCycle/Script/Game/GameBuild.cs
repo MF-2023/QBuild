@@ -6,6 +6,7 @@ using QBuild.Part.Presenter;
 using QBuild.Player;
 using QBuild.Player.Controller;
 using QBuild.Stage;
+using QBuild.Stage.Grid;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -39,6 +40,7 @@ namespace QBuild.GameCycle
                 var playerTransform = playerController.transform;
                 playerTransform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
                 _cameraView.SetTarget(playerTransform);
+                _gridViewControl.Bind();
                 return playerController;
             }, Lifetime.Singleton);
             builder.RegisterEntryPoint<PlayerPresenter>();
@@ -65,5 +67,6 @@ namespace QBuild.GameCycle
         [SerializeField] private PlayerSpawnPoint _playerSpawnPoint;
 
         [SerializeField] private NewCameraWork _cameraView;
+        [SerializeField] private GridViewControl _gridViewControl;
     }
 }
