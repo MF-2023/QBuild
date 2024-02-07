@@ -41,7 +41,7 @@ namespace QBuild.GameCycle
                     Quaternion.identity, null);
                 var playerTransform = playerController.transform;
                 playerTransform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-                _cameraView.SetTarget(playerTransform);
+                //_cameraView.SetTarget(playerTransform);
                 _gridViewControl.Bind();
                 _camera.Follow = playerTransform;
                 _camera.LookAt = playerTransform;
