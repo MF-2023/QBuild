@@ -22,8 +22,7 @@ namespace QBuild.Stage
             if (other.gameObject.TryGetComponent(out PlayerController player))
             {
                 player.Goal();
-                var result = FindFirstObjectByType<ResultEffect>();
-                result.StartGoalResult();
+                _goalEvent.Raise();
                 //_goalEvent.Raise();
             }
         }
