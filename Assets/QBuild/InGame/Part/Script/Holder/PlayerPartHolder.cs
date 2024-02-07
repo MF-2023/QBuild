@@ -83,6 +83,10 @@ namespace QBuild.Part
             if (slot.Disable)
             {
                 _slots.RemoveAt(CurrentPartIndex);
+                if(_currentPartIndex >= _slots.Count)
+                {
+                    _currentPartIndex = 0;
+                }
                 OnSlotsUpdated?.Invoke(this, new HolderSlotsUpdateEventArgs(_slots));
             }
         }

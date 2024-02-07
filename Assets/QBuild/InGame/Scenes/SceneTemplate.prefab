@@ -571,6 +571,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2767e09b7f251248a2aa4337e64d78e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mouseInitAxis: {x: 0, y: 0}
+  _mouseAxis: {x: 0, y: 0}
   mouseSensitivity: 0.1
   mainCamera: {fileID: 1049747601675952856}
   origin: {fileID: 0}
@@ -990,10 +992,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _inGameStater: {fileID: 8298713436594459336}
-  _cameraScope: {fileID: 3476832123396132886, guid: 99b7d52e7c457824f8c2e08929b84eac,
-    type: 3}
-  _centerScope: {fileID: 5104160117491178289, guid: 2b75b610d2c6ab34e90adae06ab79ecf,
-    type: 3}
 --- !u!1 &7110218826251515963
 GameObject:
   m_ObjectHideFlags: 0
@@ -1348,7 +1346,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 625, y: 410}
-  m_SizeDelta: {x: 400, y: 100}
+  m_SizeDelta: {x: 260, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5418926242753278091
 MonoBehaviour:
@@ -1406,7 +1404,7 @@ MonoBehaviour:
     VelocityThreshold: 0.5
     Duration: 0.3
     Easing: 24
-  draggable: 1
+  draggable: 0
   scrollbar: {fileID: 0}
 --- !u!1 &9043618133199399533
 GameObject:
