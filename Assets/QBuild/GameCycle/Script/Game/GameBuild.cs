@@ -1,3 +1,4 @@
+using Cinemachine;
 using QBuild.Camera;
 using QBuild.Part;
 using QBuild.Part.HolderView;
@@ -42,8 +43,11 @@ namespace QBuild.GameCycle
                 playerTransform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
                 _cameraView.SetTarget(playerTransform);
                 _gridViewControl.Bind();
+                _camera.Follow = playerTransform;
+                _camera.LookAt = playerTransform;
                 return playerController;
             }, Lifetime.Singleton);
+            
             builder.RegisterEntryPoint<PlayerPresenter>();
 
             builder.RegisterInstance(_healthBar);
@@ -56,6 +60,7 @@ namespace QBuild.GameCycle
             builder.RegisterInstance(_partRepository);
             builder.RegisterEntryPoint<PlacePresenter>();
         }
+        [SerializeField] private CinemachineVirtualCamera _camera;
         [SerializeField] private InputController _playerInputActions;
         [SerializeField] private PlayerController _playerPrefab;
         [SerializeField] private HealthBar _healthBar;
