@@ -11,6 +11,7 @@ namespace QBuild.Result
     {
         [SerializeField] private ResultPopup _resultPopup;
         [SerializeField] private PlayerCurrentData _playerProgressData;
+        [SerializeField] private AudioSource _audioSource;
 
         public void StartGoalResult()
         {
@@ -32,6 +33,7 @@ namespace QBuild.Result
             _playerProgressData.ChangeGoalState?.Invoke();
             
             await UniTask.WaitUntil(() => _playerProgressData.EndGoalAnimation, cancellationToken: token);
+            _audioSource.Play();
             await _resultPopup.GoalShow(token);
             await UniTask.WaitUntil(() => _resultPopup.IsClickAny, cancellationToken: token);
             //await _resultPopup.Close(token);

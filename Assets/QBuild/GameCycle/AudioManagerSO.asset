@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MasterVolume: 0.5
   BGMVolume: 0.8
-  SEVolume: 0.8
+  SEVolume: 1
