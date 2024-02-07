@@ -5,6 +5,7 @@ using QBuild.Part.PartScriptableObject;
 using QBuild.Part.Presenter;
 using QBuild.Utilities;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using VContainer;
 
@@ -13,6 +14,7 @@ namespace QBuild.Part
     public class PartPlacer : MonoBehaviour
     {
         public event Action<PartView> OnPlaceEvent = delegate { };
+        [SerializeField] private UnityEvent<PartView> _thePartHasChanged;
 
         [Inject]
         private void Inject(@InputSystem inputSystem, HolderPresenter holderPresenter, PartRepository repository,
@@ -151,6 +153,7 @@ namespace QBuild.Part
 
         private void OnThePartChanged()
         {
+            _thePartHasChanged?.Invoke(_currentOnThePart);
             _multiplePartArea.UpdatePart(transform.position, _currentOnThePart, CurrentPart(), CurrentRotateMatrix());
         }
 

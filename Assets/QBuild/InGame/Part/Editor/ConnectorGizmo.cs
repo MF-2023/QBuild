@@ -19,5 +19,12 @@ namespace QBuild.Part.Editor
                 Gizmos.DrawRay(localPosition, matrix.MultiplyVector(connectPoint.Direction.ToVector3()));
             }
         }
+
+        [DrawGizmo(GizmoType.Selected | GizmoType.NonSelected, typeof(PartView))]
+        private static void DrawGizmo(PartView partView, GizmoType gizmoType)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawSphere(partView.GetSpawnPosition(), 0.05f);
+        }
     }
 }

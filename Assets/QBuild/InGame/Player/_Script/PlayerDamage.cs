@@ -26,13 +26,18 @@ namespace QBuild.Player
             if(_invincible) return;
             
             _movement.AddForce(direction * power, ForceMode.VelocityChange);
-            //仮に1ダメージ負うように
-            _playerController.Health.Damage(1);
             _invincible = true;
             _invincibleTimer = 0f;
             UniTask.Create(InvincibleTimer);
         }
-        
+
+        public void Damage(int damage)
+        {
+            if(_invincible) return;
+
+            _playerController.Health.Damage(damage);
+        }
+
         private async UniTask InvincibleTimer()
         {
             while (_invincibleTimer < _invincibleTime)

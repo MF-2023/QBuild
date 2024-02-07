@@ -18,6 +18,8 @@ namespace QBuild.Part
         public DirectionFRBL Direction { get; set; } = DirectionFRBL.Forward;
 
         private Connector _connector;
+        [SerializeField] private Vector3 _spawnPosition;
+        
         private Channel<ShiftDirectionTimes> _channel;
         private CancellationTokenSource _cancellationTokenSource;
 
@@ -146,6 +148,11 @@ namespace QBuild.Part
                 if (contact)
                     SetCanConnect(magnet.Direction.Shift(shift), !contact);
             }
+        }
+        
+        public Vector3 GetSpawnPosition()
+        {
+            return transform.TransformPoint(_spawnPosition);
         }
     }
 }

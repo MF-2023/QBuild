@@ -92,12 +92,13 @@ GameObject:
   - component: {fileID: 6537649865210204473}
   - component: {fileID: 3012069623486725741}
   - component: {fileID: 6556612327111112238}
-  - component: {fileID: 5398937672946440802}
   - component: {fileID: 4584714065432843130}
   - component: {fileID: 7985243206567646367}
   - component: {fileID: 3382986692411021950}
   - component: {fileID: 1808681941869323978}
   - component: {fileID: 5543035705183674927}
+  - component: {fileID: 2486061183707514310}
+  - component: {fileID: 461015866075501319}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -227,19 +228,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5509615b9bc2aa047884da40262bdf96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5398937672946440802
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4119980009883112584}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1afe16303c7bac64d9b0492b0a3851d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _position: {x: 0, y: 0, z: 0}
 --- !u!114 &4584714065432843130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -252,6 +240,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69622661ed104a67ad124e3a96c28b6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _thePartHasChanged:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 461015866075501319}
+        m_TargetAssemblyTypeName: QBuild.Player.PlayerRespawnOnPartProvider, QBuild
+        m_MethodName: SetPart
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _partListScriptableObject: {fileID: 11400000, guid: 5096b154eb7eb744084d8faec58508ed,
     type: 2}
   _currentOnThePart: {fileID: 0}
@@ -336,6 +339,31 @@ MonoBehaviour:
               m_StringArgument: 
               m_BoolArgument: 0
             m_CallState: 2
+--- !u!114 &2486061183707514310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4119980009883112584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c867c79e3e77425d9d99aaf933e9f374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerRespawnProvider: {fileID: 461015866075501319}
+--- !u!114 &461015866075501319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4119980009883112584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d0a610b02964585adeca5f287a115d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4200604897140505108
 GameObject:
   m_ObjectHideFlags: 0
