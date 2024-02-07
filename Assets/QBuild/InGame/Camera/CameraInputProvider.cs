@@ -15,6 +15,8 @@ namespace QBuild.Camera
 
         public Vector2 GetValue()
         {
+            _cameraMove.action.Enable();
+
             return _cameraMove.action.ReadValue<Vector2>();
         }
     }

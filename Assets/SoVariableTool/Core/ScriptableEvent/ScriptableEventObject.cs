@@ -26,7 +26,7 @@ namespace SoVariableTool
 
         public void Raise()
         {
-            if (!Application.isPlaying)
+            if (!IsPlay())
                 return;
 
             foreach (var eventListener in EventListeners)
@@ -34,9 +34,10 @@ namespace SoVariableTool
                 eventListener.OnEventRaised(this, Array.Empty<object>(), _debugLogEnabled);
             }
         }
+
         public void Raise(object[] args)
         {
-            if (!Application.isPlaying)
+            if (!IsPlay())
                 return;
 
             foreach (var eventListener in EventListeners)
@@ -45,6 +46,15 @@ namespace SoVariableTool
             }
         }
 
+        protected bool IsPlay()
+        {
+#if UNITY_EDITOR
+            return Application.isPlaying;
+#else
+            return true;
+#endif
+        }
+        
         [SerializeField] protected bool _debugLogEnabled = false;
         protected readonly HashSet<EventListener> EventListeners = new();
         protected readonly HashSet<Object> ListenersObjects = new();
@@ -80,10 +90,10 @@ namespace SoVariableTool
 
         public void Raise(T param)
         {
-            if (!Application.isPlaying)
+            if (!IsPlay())
                 return;
 
-            Raise(new[] {(object)param});
+            Raise(new[] {(object) param});
             _onRaised?.Invoke(param);
 
 #if UNITY_EDITOR

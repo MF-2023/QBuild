@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
 using QBuild.Scene;
 using UnityEngine.EventSystems;
@@ -11,13 +12,14 @@ namespace QBuild.GameCycle.Title
 {
     public class TitleAction : MonoBehaviour
     {
-        [Header("ƒV[ƒ“ŠÇ—")] 
-        [SerializeField,Tooltip("ƒQ[ƒ€ƒZƒŒƒNƒg‚ÌƒV[ƒ“”Ô†")] private int _nextSceneIndex = 0;
+        [Header("ã‚·ãƒ¼ãƒ³ç®¡ç†")] 
+        [SerializeField,Tooltip("ã‚²ãƒ¼ãƒ ã‚»ãƒ¬ã‚¯ãƒˆã®ã‚·ãƒ¼ãƒ³ç•ªå·")] private int _nextSceneIndex = 0;
         [SerializeField] private SceneChangeEffect _sceneChangeEffect = SceneChangeEffect.Fade;
         
-        [Header("ƒ^ƒCƒgƒ‹ƒV[ƒ“ŠÇ—")]
+        [Header("ã‚¿ã‚¤ãƒˆãƒ«ã‚·ãƒ¼ãƒ³ç®¡ç†")]
         [SerializeField] private GameObject _pressPushButtonText = null;
         [SerializeField] private GameObject _buttons = null;
+        [SerializeField] private Selectable _firstButton = null;
         private List<Selectable> _homePanelSelectables = new();
         [SerializeField] private Popup _optionPopup = null;
         [SerializeField] private Popup _gameEndPopup = null;
@@ -25,7 +27,7 @@ namespace QBuild.GameCycle.Title
         
         [SerializeField] private InputActionReference _inputActionReference = null;
         
-        //TODO:[—Ñ] â‘ÎÁ‚·
+        //TODO:[æž—] çµ¶å¯¾æ¶ˆã™
         private bool _isStart = false;
         private void Start()
         {
@@ -43,8 +45,13 @@ namespace QBuild.GameCycle.Title
         
         public void ShowButtons()
         {
-            _pressPushButtonText.SetActive(false);
+            if(_pressPushButtonText != null)_pressPushButtonText.SetActive(false);
+            
             _buttons.SetActive(true);
+            DOVirtual.DelayedCall(0.5f, () =>
+            {
+                _firstButton.Select();
+            });
         }
         
         public void ShowPressPushButtonText()

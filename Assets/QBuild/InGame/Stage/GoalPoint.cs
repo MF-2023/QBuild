@@ -1,4 +1,5 @@
 ﻿using QBuild.Player.Controller;
+using QBuild.Result;
 using SoVariableTool;
 using UnityEngine;
 
@@ -20,7 +21,10 @@ namespace QBuild.Stage
         {
             if (other.gameObject.TryGetComponent(out PlayerController player))
             {
-                _goalEvent.Raise();
+                player.Goal();
+                var result = FindFirstObjectByType<ResultEffect>();
+                result.StartGoalResult();
+                //_goalEvent.Raise();
             }
         }
     }
