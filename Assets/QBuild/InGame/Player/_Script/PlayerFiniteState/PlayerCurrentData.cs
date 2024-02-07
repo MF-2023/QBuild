@@ -8,6 +8,7 @@ namespace  QBuild.Player
     public class PlayerCurrentData : ScriptableObject
     {
         [HideInInspector] public bool EndGoalAnimation;
+        [HideInInspector] public bool EndFailedAnimation;
         [HideInInspector] public int CurrentHelth;
     }
 }

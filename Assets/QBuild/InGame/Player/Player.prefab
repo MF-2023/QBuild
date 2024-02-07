@@ -216,6 +216,7 @@ MonoBehaviour:
   _GroundLayer:
     serializedVersion: 2
     m_Bits: 65591
+  _deadEvent: {fileID: 11400000, guid: b07cded61a49d6149b4887661cea7197, type: 2}
 --- !u!114 &6556612327111112238
 MonoBehaviour:
   m_ObjectHideFlags: 0

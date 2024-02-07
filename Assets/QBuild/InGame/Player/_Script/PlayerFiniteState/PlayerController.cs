@@ -1,5 +1,6 @@
 using System;
 using QBuild.Player.Core;
+using SoVariableTool;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -15,11 +16,15 @@ namespace QBuild.Player.Controller
         [SerializeField] private float              _GroundCheckRadius = 0.5f;
         [SerializeField] private LayerMask          _GroundLayer;
 
+        [Header("Event")] [SerializeField] private UnitScriptableEventObject _deadEvent;
+
         private PlayerStateController _StateController;
         private PlayerAnimationController _AnimationController;
         private Core.Core _core;
         private Movement _movement;
         private Health _health;
+
+        private bool _isDead;
         
         public Health Health
         {
@@ -64,7 +69,9 @@ namespace QBuild.Player.Controller
             }
 
             _currentData.EndGoalAnimation = false;
-
+            _currentData.EndFailedAnimation = false;
+            _isDead = false;
+            
             Health.Initialize(_playerData.MaxHealth, Daamge,Dead);
         }
 
@@ -221,17 +228,20 @@ namespace QBuild.Player.Controller
 
         }
 
-        public void Dead()
+        private void Dead()
         {
-            //死亡処理
             UnityEngine.Debug.Log("死亡");
+            _isDead = true;
+            _StateController.ChangeDeadState();
+            _deadEvent.Raise();
         }
 
         public void Daamge()
         {
             //ダメージを受けたときの処理
             UnityEngine.Debug.Log("ダメージ");
-            _currentData.CurrentHelth = Health.GetNowHealth();
+            int health = Health.GetNowHealth();
+            _currentData.CurrentHelth = health;
             OnDamage?.Invoke();
         }
     }

@@ -34,7 +34,7 @@ namespace QBuild.Result
 
         private async UniTask ResultEffectStartFailed(CancellationToken token)
         {
-            await UniTask.WaitUntil(() => _playerProgressData.EndGoalAnimation, cancellationToken: token);
+            await UniTask.WaitUntil(() => _playerProgressData.EndFailedAnimation, cancellationToken: token);
             await _resultPopup.FailedShow(token);
             await UniTask.WaitUntil(() => _resultPopup.IsClickAny, cancellationToken: token);
         }

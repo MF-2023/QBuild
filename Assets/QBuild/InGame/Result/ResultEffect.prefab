@@ -578,10 +578,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35210a9fbe094cf3a7cfbd092f487bc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _popup: {fileID: 6687975097969968279}
   _animator: {fileID: 535396377366629869}
-  _gameClearImage: {fileID: 7086884279192626477}
-  _gameOverImage: {fileID: 5483149725955263967}
+  _buttonRectTransforms: []
+  _firstButton: {fileID: 0}
 --- !u!1 &5483149725955263967
 GameObject:
   m_ObjectHideFlags: 0
@@ -891,7 +890,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c3617adb8f142b99bde8b83bb3a20a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _onClickRetryEvent: {fileID: 11400000, guid: 68062bffd7dc4a343931ccddc4b17586, type: 2}
   _onClickNextStageEvent: {fileID: 11400000, guid: 082e9b42aeec45a4bbb355d81f799b96,
     type: 2}
 --- !u!1 &8358902116004862253
@@ -905,6 +903,7 @@ GameObject:
   - component: {fileID: 5249645357141778658}
   - component: {fileID: 1324476694996317682}
   - component: {fileID: 6901655065573344834}
+  - component: {fileID: 4608031588545511793}
   m_Layer: 0
   m_Name: ResultEffect
   m_TagString: Untagged
@@ -971,6 +970,43 @@ MonoBehaviour:
           - m_Target: {fileID: 1324476694996317682}
             m_TargetAssemblyTypeName: QBuild.Result.ResultEffect, QBuild
             m_MethodName: StartGoalResult
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+--- !u!114 &4608031588545511793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8358902116004862253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fabe13cc755497ebbd07bf881593121, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _eventResponses:
+  - _scriptableEvent: {fileID: 11400000, guid: b07cded61a49d6149b4887661cea7197, type: 2}
+    _response:
+      _unityEventBase:
+        rid: 5059759169085112324
+  references:
+    version: 2
+    RefIds:
+    - rid: 5059759169085112324
+      type: {class: UnitUnityEvent, ns: SoVariableTool, asm: SOVT}
+      data:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 1324476694996317682}
+            m_TargetAssemblyTypeName: QBuild.Result.ResultEffect, QBuild
+            m_MethodName: StartFailedResult
             m_Mode: 1
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
