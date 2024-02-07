@@ -19,7 +19,6 @@ namespace QBuild.Player
 
         public void PostStart()
         {
-            UnityEngine.Debug.Log("PlayerHealthPresenter Initialize");
             _healthBar.Initialize(_playerController.Health.GetMaxHealth(),_playerController.Health.GetNowHealth());
             _playerController.OnDamage += Damage;
         }
