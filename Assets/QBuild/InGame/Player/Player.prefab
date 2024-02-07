@@ -352,6 +352,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerRespawnProvider: {fileID: 461015866075501319}
+  _playerDamage: {fileID: 1808681941869323978}
 --- !u!114 &461015866075501319
 MonoBehaviour:
   m_ObjectHideFlags: 0

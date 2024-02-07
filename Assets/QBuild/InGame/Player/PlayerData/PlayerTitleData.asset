@@ -17,5 +17,6 @@ MonoBehaviour:
   maxMoveSpeed: 8
   inAirMoveSpeed: 1
   crimbTime: 0.5
+  MaxHealth: 5
   checkBlockCollectX: 0.5
   checkBlockCollectZ: 0.9

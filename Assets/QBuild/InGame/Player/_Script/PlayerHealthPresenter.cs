@@ -5,7 +5,7 @@ using VContainer.Unity;
 
 namespace QBuild.Player
 {
-    public class PlayerHealthPresenter : IInitializable,IDisposable
+    public class PlayerHealthPresenter : IPostStartable,IDisposable
     {
         private readonly PlayerController _playerController;
         private readonly HealthBar _healthBar;
@@ -17,8 +17,9 @@ namespace QBuild.Player
             _healthBar = healthBar;
         }
 
-        public void Initialize()
+        public void PostStart()
         {
+            UnityEngine.Debug.Log("PlayerHealthPresenter Initialize");
             _healthBar.Initialize(_playerController.Health.GetMaxHealth(),_playerController.Health.GetNowHealth());
             _playerController.OnDamage += Damage;
         }
