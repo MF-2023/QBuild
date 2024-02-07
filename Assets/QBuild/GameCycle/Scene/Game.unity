@@ -366,6 +366,46 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 3992462929263992960}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &294161709 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9043618133199399533, guid: a4904820323a46c4b9de5a7ea9fb65bd,
+    type: 3}
+  m_PrefabInstance: {fileID: 3992462929263992960}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &294161710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 294161709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72ece51f2901e7445ab60da3685d6b5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShowDebugText: 0
+  m_ShowCameraFrustum: 1
+  m_IgnoreTimeScale: 0
+  m_WorldUpOverride: {fileID: 0}
+  m_UpdateMethod: 2
+  m_BlendUpdateMethod: 1
+  m_DefaultBlend:
+    m_Style: 1
+    m_Time: 2
+    m_CustomCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  m_CustomBlends: {fileID: 0}
+  m_CameraCutEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_CameraActivatedEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &319212117 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1260361576874298593, guid: a4904820323a46c4b9de5a7ea9fb65bd,
@@ -1378,12 +1418,12 @@ PrefabInstance:
     - target: {fileID: 436100306154764572, guid: a4904820323a46c4b9de5a7ea9fb65bd,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.27
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 436100306154764572, guid: a4904820323a46c4b9de5a7ea9fb65bd,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 436100306154764572, guid: a4904820323a46c4b9de5a7ea9fb65bd,
         type: 3}
@@ -1489,6 +1529,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2828122274954882872, guid: a4904820323a46c4b9de5a7ea9fb65bd,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 4.27
       objectReference: {fileID: 0}
     - target: {fileID: 2840234760741151038, guid: a4904820323a46c4b9de5a7ea9fb65bd,
         type: 3}
@@ -1839,6 +1884,7 @@ PrefabInstance:
     - {fileID: 2504456902423156119, guid: a4904820323a46c4b9de5a7ea9fb65bd, type: 3}
     - {fileID: 7324731577344896039, guid: a4904820323a46c4b9de5a7ea9fb65bd, type: 3}
     - {fileID: 6018973029825809324, guid: a4904820323a46c4b9de5a7ea9fb65bd, type: 3}
+    - {fileID: 2927452043556068867, guid: a4904820323a46c4b9de5a7ea9fb65bd, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 4765991125779710945, guid: a4904820323a46c4b9de5a7ea9fb65bd,
@@ -1854,6 +1900,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1946452047}
+    - targetCorrespondingSourceObject: {fileID: 9043618133199399533, guid: a4904820323a46c4b9de5a7ea9fb65bd,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 294161710}
     - targetCorrespondingSourceObject: {fileID: 6489454749384316713, guid: a4904820323a46c4b9de5a7ea9fb65bd,
         type: 3}
       insertIndex: -1
