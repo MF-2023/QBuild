@@ -7,8 +7,8 @@ namespace QBuild.Audio
     [CreateAssetMenu(fileName = "AudioManagerSO",menuName = "Data/Audio")]
     public class AudioSO : ScriptableObject
     {
-        public float MasterVolume;
-        public float BGMVolume;
-        public float SEVolume;
+        public float MasterVolume = 0.5f;
+        public float BGMVolume = 0.8f;
+        public float SEVolume 1f;
     }
 }
