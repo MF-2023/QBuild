@@ -8,7 +8,7 @@ namespace QBuild.Player.Controller
     public class PlayerStateController
     {
         private PlayerStateMachine _StateMachine;
-        private PlayerProgressData _progressData;
+        private PlayerCurrentData _progressData;
 
         private PlayerIdle _IdleState;
         private PlayerMove _MoveState;
@@ -39,7 +39,7 @@ namespace QBuild.Player.Controller
 
 
 
-        public PlayerStateController(Core.Core core, PlayerInputHandler playerInputHandler, PlayerData data, PlayerProgressData progressData)
+        public PlayerStateController(Core.Core core, PlayerInputHandler playerInputHandler, PlayerData data, PlayerCurrentData progressData)
         {
             _Core = core;
             this.inputHandler = playerInputHandler;

@@ -10,7 +10,7 @@ namespace QBuild.Result
     public class ResultEffect : MonoBehaviour
     {
         [SerializeField] private ResultPopup _resultPopup;
-        [SerializeField] private PlayerProgressData _playerProgressData;
+        [SerializeField] private PlayerCurrentData _playerProgressData;
 
         public void StartGoalResult()
         {
