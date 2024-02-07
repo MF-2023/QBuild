@@ -102,14 +102,14 @@ namespace QBuild.Player.Core
         {
             if(isLock)
             {
-                //_myRB.constraints = RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotation;
+                _myRB.constraints = RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotation;
             }
             else
             {
-                //_myRB.constraints = RigidbodyConstraints.FreezeRotation;
+                _myRB.constraints = RigidbodyConstraints.FreezeRotation;
             }
 
-            SetPhysicMaterial(isLock);
+            //SetPhysicMaterial(isLock);
         }
 
         public void SetPhysicMaterial(PhysicMaterial pm) { _myPM = pm;}

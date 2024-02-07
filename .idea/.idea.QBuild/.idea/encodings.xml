@@ -5,6 +5,7 @@
     <file url="file://$PROJECT_DIR$/Assets/QBuild/Editor/StageEditor/Scripts/StageEditorWindow.cs" charset="windows-31j" />
     <file url="file://$PROJECT_DIR$/Assets/QBuild/Editor/StageEditor/StageDataSceneTab.cs" charset="windows-31j" />
     <file url="file://$PROJECT_DIR$/Assets/QBuild/Editor/StageEditor/StageEditorWindow.cs" charset="windows-31j" />
+    <file url="file://$PROJECT_DIR$/Assets/QBuild/InGame/Player/_Script/PlayerFiniteState/PlayerController.cs" charset="windows-31j" />
     <file url="file://$PROJECT_DIR$/Assets/QBuild/StageSelect/Landmark/LandmarkGenerator.cs" charset="windows-31j" />
     <file url="file://$PROJECT_DIR$/Assets/QBuild/StageSelect/Landmark/LandmarkInformation.cs" charset="windows-31j" />
     <file url="file://$PROJECT_DIR$/Assets/QBuild/StageSelect/Landmark/LandmarkInformationBinder.cs" charset="windows-31j" />
