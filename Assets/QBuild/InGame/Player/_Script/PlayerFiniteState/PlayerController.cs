@@ -34,6 +34,8 @@ namespace QBuild.Player.Controller
         private Vector3Int currentPosition;
         public event Action<Vector3> OnChangeGridPosition;
         public event Func<Vector3Int, bool> OnCheckBlock;
+        public event Action OnDamage;
+        public event Action OnDead;
         #endregion
 
         #region UnityCallBack
@@ -230,6 +232,7 @@ namespace QBuild.Player.Controller
             //ダメージを受けたときの処理
             UnityEngine.Debug.Log("ダメージ");
             _currentData.CurrentHelth = Health.GetNowHealth();
+            OnDamage?.Invoke();
         }
     }
 }

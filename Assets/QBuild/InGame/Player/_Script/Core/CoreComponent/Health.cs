@@ -12,6 +12,7 @@ namespace QBuild.Player.Core
         private int _maxHealth;
         private int _currentHealth;
         
+        public int GetMaxHealth() => _maxHealth;
         public int GetNowHealth() => _currentHealth;
 
         public void Initialize(int maxHealth, Action damageEvent ,Action healthZeroEvent)

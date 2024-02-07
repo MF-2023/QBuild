@@ -9,7 +9,7 @@ namespace QBuild.Part.HolderView
         public Sprite Sprite;
         public int Quantity;
     }
-    
+
     class HolderScrollView : ScrollView<SlotData>
     {
         [SerializeField] Scroller scroller = default;
@@ -26,11 +26,11 @@ namespace QBuild.Part.HolderView
         public void UpdateData(IList<SlotData> items)
         {
             this._loop = items.Count > 1;
-            if (!this._loop) scroller.ContentMovementType = MovementType.Clamped;
+            scroller.ContentMovementType = !this._loop ? MovementType.Clamped : MovementType.Unrestricted;
             UpdateContents(items);
             scroller.SetTotalCount(items.Count);
         }
-        
+
         public void ScrollTo(int index)
         {
             scroller.ScrollTo(index, 0.35f);

@@ -5,6 +5,7 @@ using QBuild.Part.PartScriptableObject;
 using QBuild.Part.Presenter;
 using QBuild.Utilities;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using VContainer;
 
@@ -13,6 +14,7 @@ namespace QBuild.Part
     public class PartPlacer : MonoBehaviour
     {
         public event Action<PartView> OnPlaceEvent = delegate { };
+        [SerializeField] private UnityEvent<PartView> _thePartHasChanged;
 
         [Inject]
         private void Inject(@InputSystem inputSystem, HolderPresenter holderPresenter, PartRepository repository,
@@ -23,11 +25,11 @@ namespace QBuild.Part
             inputSystem.InGame.BlockPlaceF.performed += _ => ForwardPlacePart();
             inputSystem.InGame.BlockPlaceR.performed += _ => RightPlacePart();
             inputSystem.InGame.BlockPlaceB.performed += _ => BackPlacePart();
-                inputSystem.InGame.BlockPlaceL.performed += _ => LeftPlacePart();
+            inputSystem.InGame.BlockPlaceL.performed += _ => LeftPlacePart();
 
             inputSystem.InGame.SelectChange.performed += ChangeSelect;
             inputSystem.InGame.BlockRotation.performed += BlockRotation;
-            
+
             _partListScriptableObject = partListScriptableObject;
             _nextPartHolder =
                 new PlayerPartHolder(_partListScriptableObject, _partListScriptableObject.GetPartObjectCount);
@@ -39,7 +41,7 @@ namespace QBuild.Part
 
         private void ChangeSelect(InputAction.CallbackContext context)
         {
-            var value = (int) context.ReadValue<float>();
+            var value = (int)context.ReadValue<float>();
             if (value == 0) return;
             if (value > 0)
             {
@@ -114,7 +116,7 @@ namespace QBuild.Part
             if (PlacePartService.TryPlacePartPosition(tryPlaceInfo, out var outMatrix))
             {
                 _nextPartHolder.Use();
-                
+
                 var pos = outMatrix.GetPosition();
                 pos.x = (float)Math.Round(pos.x, 4);
                 pos.y = (float)Math.Round(pos.y, 4);
@@ -151,6 +153,7 @@ namespace QBuild.Part
 
         private void OnThePartChanged()
         {
+            if (_currentOnThePart != null) _thePartHasChanged?.Invoke(_currentOnThePart);
             _multiplePartArea.UpdatePart(transform.position, _currentOnThePart, CurrentPart(), CurrentRotateMatrix());
         }
 
@@ -177,6 +180,7 @@ namespace QBuild.Part
         [SerializeField] private MultiplePartArea _multiplePartArea;
 
         [SerializeField] private GameObject _particlePrefab;
+
         private PartView CurrentOnThePart
         {
             get => _currentOnThePart;

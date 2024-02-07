@@ -43,6 +43,9 @@ namespace QBuild.GameCycle
             }, Lifetime.Singleton);
             builder.RegisterEntryPoint<PlayerPresenter>();
 
+            builder.RegisterInstance(_healthBar);
+            builder.RegisterEntryPoint<PlayerHealthPresenter>();
+            
             builder.RegisterInstance(_partHolderView);
             builder.RegisterInstance(_partListScriptableObject);
             builder.Register<HolderPresenter>(Lifetime.Singleton);
@@ -52,6 +55,7 @@ namespace QBuild.GameCycle
         }
 
         [SerializeField] private PlayerController _playerPrefab;
+        [SerializeField] private HealthBar _healthBar;
         [SerializeField] private CurrentStageVariable _currentStageVariable;
         [SerializeField] private PartHolderView _partHolderView;
         [SerializeField] private BasePartSpawnConfiguratorObject _partListScriptableObject;

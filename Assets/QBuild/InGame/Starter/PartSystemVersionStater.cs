@@ -30,6 +30,9 @@ namespace QBuild.Starter
             // Camera
             builder.Register<CameraModel>(Lifetime.Singleton);
             
+            // Health
+            builder.RegisterInstance(_healthBar);
+            
             // Player
             builder.Register(container =>
             {
@@ -41,6 +44,7 @@ namespace QBuild.Starter
                 return playerController;
             }, Lifetime.Singleton);
             builder.RegisterEntryPoint<PlayerPresenter>();
+            builder.RegisterEntryPoint<PlayerHealthPresenter>();
             
             builder.RegisterInstance(_partHolderView);
             builder.RegisterInstance(_partListScriptableObject);
@@ -51,6 +55,7 @@ namespace QBuild.Starter
         }
 
         [SerializeField] private PlayerController _playerPrefab;
+        [SerializeField] private HealthBar _healthBar;
         [SerializeField] private CurrentStageVariable _currentStageVariable;
         [SerializeField] private PartHolderView _partHolderView;
         [SerializeField] private BasePartSpawnConfiguratorObject _partListScriptableObject;

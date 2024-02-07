@@ -18,6 +18,8 @@ namespace QBuild.Part
         public DirectionFRBL Direction { get; set; } = DirectionFRBL.Forward;
 
         private Connector _connector;
+        [SerializeField] private Vector3 _spawnPosition;
+        
         private Channel<ShiftDirectionTimes> _channel;
         private CancellationTokenSource _cancellationTokenSource;
 
@@ -91,7 +93,6 @@ namespace QBuild.Part
             }
 
             var shiftedDir = DirectionUtilities.CalcDirectionFRBL(Direction, dir);
-            Debug.Log($"{gameObject.name} SetCanConnect: {shiftedDir},{Direction},{dir}", this);
             _connector.SetCanConnect(shiftedDir, canConnect);
         }
 
@@ -136,7 +137,6 @@ namespace QBuild.Part
                 // Blockに接触している
                 var contact = Physics.Raycast(ray, out var hit, 1f, LayerMask.GetMask("Block"));
                 var shift = new ShiftDirectionTimes((((int)Direction - 1)));
-                Debug.Log($"Dir:{magnet.Direction.Shift(shift)},{Direction}");
                 if (Input.GetKey(KeyCode.B))
                 {
                     Debug.DrawRay(ray.origin + Vector3.up, ray.direction + Vector3.up, Color.HSVToRGB((int)magnet.Direction / 4.0f,1,1), 50f);
@@ -148,6 +148,11 @@ namespace QBuild.Part
                 if (contact)
                     SetCanConnect(magnet.Direction.Shift(shift), !contact);
             }
+        }
+        
+        public Vector3 GetSpawnPosition()
+        {
+            return transform.TransformPoint(_spawnPosition);
         }
     }
 }

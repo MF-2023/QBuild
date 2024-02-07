@@ -13,6 +13,7 @@ namespace QBuild.Gimmick
             if (other.gameObject.TryGetComponent(out IDamageable damageable))
             {
                 damageable.Knockback(-contactPoint.normal, _knockbackPower);
+                damageable.Damage(1);
             }
         }
     }
