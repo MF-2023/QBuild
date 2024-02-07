@@ -16,6 +16,13 @@ namespace QBuild.Part
         public event Action<PartView> OnPlaceEvent = delegate { };
         [SerializeField] private UnityEvent<PartView> _thePartHasChanged;
 
+        [Header("Sound")] 
+        [SerializeField] private AudioSource _audioSource;
+
+        [SerializeField] private AudioClip _blockPlace;
+        [SerializeField] private AudioClip _blockRotate;
+        [SerializeField] private AudioClip _blockSelect;
+
         [Inject]
         private void Inject(@InputSystem inputSystem, HolderPresenter holderPresenter, PartRepository repository,
             BasePartSpawnConfiguratorObject partListScriptableObject)
@@ -51,6 +58,8 @@ namespace QBuild.Part
             {
                 _nextPartHolder.Prev();
             }
+
+            PlaySE(_blockSelect);
         }
 
         private void Update()
@@ -77,6 +86,8 @@ namespace QBuild.Part
             {
                 CurrentRotateIndex = (CurrentRotateIndex - 1 + RotateMap.Count) % RotateMap.Count;
             }
+            
+            PlaySE(_blockRotate);
         }
 
         private void ForwardPlacePart()
@@ -133,6 +144,8 @@ namespace QBuild.Part
 
                 OnPlaceEvent?.Invoke(view);
                 OnThePartChanged();
+                
+                PlaySE(_blockPlace);
             }
         }
 
@@ -170,6 +183,12 @@ namespace QBuild.Part
         public void OnReset()
         {
             OnThePartUpdate();
+        }
+
+        private void PlaySE(AudioClip clip)
+        {
+            _audioSource.clip = clip;
+            _audioSource.Play();
         }
 
         [SerializeField] private BasePartSpawnConfiguratorObject _partListScriptableObject;
